@@ -474,3 +474,76 @@ footer .copyright {
   }
 
 }
+/* Google Reviews Rating Summary */
+
+.google-rating {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 0 auto 25px;
+  padding: 12px 20px;
+  background: white;
+  border: 1px solid #e5eaf0;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+}
+
+.google-rating-stars {
+  color: #f5b301;
+  font-size: 24px;
+  letter-spacing: 2px;
+}
+
+.google-rating-score {
+  font-size: 24px;
+  font-weight: 700;
+  color: #123c75;
+}
+
+.google-rating-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  line-height: 1.3;
+}
+
+.google-rating-text strong {
+  color: #123c75;
+  font-size: 15px;
+}
+
+.google-rating-text span {
+  color: #687386;
+  font-size: 13px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .google-rating {
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .google-rating-stars {
+    font-size: 19px;
+    letter-spacing: 1px;
+  }
+
+  .google-rating-score {
+    font-size: 20px;
+  }
+
+  .google-rating-text strong {
+    font-size: 14px;
+  }
+
+  .google-rating-text span {
+    font-size: 12px;
+  }
+
+}
