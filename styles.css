@@ -665,3 +665,139 @@ footer .copyright {
   }
 
 }
+/* ================================
+   ABOUT THE DOCTOR
+================================ */
+
+.doctor-profile {
+  padding: 70px 7%;
+  background: #f5f8fc;
+}
+
+.doctor-profile-content {
+  max-width: 1050px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  background: white;
+  padding: 45px;
+  border-radius: 20px;
+  border: 1px solid #e5eaf0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.doctor-profile-icon {
+  width: 90px;
+  height: 90px;
+  min-width: 90px;
+  border-radius: 50%;
+  background: #eaf2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45px;
+}
+
+.doctor-profile-text {
+  flex: 1;
+}
+
+.doctor-profile-text h2 {
+  color: #123c75;
+  font-size: 32px;
+  margin: 5px 0 8px;
+  line-height: 1.25;
+}
+
+.doctor-profile-text h3 {
+  color: #1261d6;
+  margin: 0 0 18px;
+  font-size: 20px;
+}
+
+.doctor-profile-text p {
+  color: #4f5d70;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+.doctor-subheading {
+  margin-top: 32px !important;
+  margin-bottom: 18px !important;
+  color: #123c75 !important;
+  font-size: 22px !important;
+}
+
+.qualification {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  background: #f8fafc;
+  border-left: 4px solid #1261d6;
+  border-radius: 8px;
+}
+
+.qualification strong {
+  color: #123c75;
+  font-size: 17px;
+}
+
+.qualification span {
+  color: #4f5d70;
+  line-height: 1.5;
+}
+
+.qualification small {
+  color: #687386;
+  font-size: 13px;
+}
+
+.doctor-interests {
+  margin: 10px 0 0;
+  padding-left: 22px;
+}
+
+.doctor-interests li {
+  color: #4f5d70;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .doctor-profile {
+    padding: 50px 20px;
+  }
+
+  .doctor-profile-content {
+    flex-direction: column;
+    gap: 20px;
+    padding: 28px 22px;
+  }
+
+  .doctor-profile-icon {
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    font-size: 35px;
+  }
+
+  .doctor-profile-text h2 {
+    font-size: 26px;
+  }
+
+  .doctor-profile-text h3 {
+    font-size: 18px;
+  }
+
+  .doctor-profile-text p {
+    font-size: 15px;
+  }
+
+}
