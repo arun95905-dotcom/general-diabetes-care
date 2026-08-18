@@ -252,7 +252,144 @@
 
 
 <section class="clinic-info">
+<section class="appointment-section">
 
+  <div class="appointment-card">
+
+    <p class="section-label">BOOK A VISIT</p>
+
+    <h2>Appointment Booking</h2>
+
+    <p class="appointment-intro">
+      Request an appointment at General &amp; Diabetes Care.
+      Our clinic will confirm the appointment through WhatsApp.
+    </p>
+
+    <form id="appointmentForm">
+
+      <div class="form-group">
+
+        <label for="patientName">
+          Patient Name
+        </label>
+
+        <input
+          type="text"
+          id="patientName"
+          placeholder="Enter patient name"
+          required>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="patientPhone">
+          Phone Number
+        </label>
+
+        <input
+          type="tel"
+          id="patientPhone"
+          placeholder="Enter phone number"
+          required>
+
+      </div>
+
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label for="appointmentDate">
+            Preferred Date
+          </label>
+
+          <input
+            type="date"
+            id="appointmentDate"
+            required>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="appointmentTime">
+            Preferred Time
+          </label>
+
+          <select id="appointmentTime" required>
+
+            <option value="">
+              Select time
+            </option>
+
+            <option>6:00 PM – 6:30 PM</option>
+            <option>6:30 PM – 7:00 PM</option>
+            <option>7:00 PM – 7:30 PM</option>
+            <option>7:30 PM – 8:00 PM</option>
+            <option>8:00 PM – 8:30 PM</option>
+            <option>8:30 PM – 9:00 PM</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="patientType">
+          Patient Type
+        </label>
+
+        <select id="patientType" required>
+
+          <option value="">
+            Select
+          </option>
+
+          <option>New Patient</option>
+          <option>Existing Patient</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="reason">
+          Reason for Consultation
+        </label>
+
+        <textarea
+          id="reason"
+          rows="4"
+          placeholder="Briefly mention the reason for your visit"></textarea>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="appointment-button">
+
+        📅 Book Appointment on WhatsApp
+
+      </button>
+
+    </form>
+
+    <p class="appointment-note">
+      ⏰ Clinic hours: 6:00 PM – 9:00 PM, Monday–Saturday
+    </p>
+
+  </div>
+
+</section>
   <div class="info-card">
 
     <h3>📍 Clinic Location</h3>
@@ -692,6 +829,59 @@
 </footer>
 
 <script src="script.js"></script>
+<script>
 
+document.getElementById("appointmentForm").addEventListener("submit", function(event) {
+
+  event.preventDefault();
+
+  const name =
+    document.getElementById("patientName").value.trim();
+
+  const phone =
+    document.getElementById("patientPhone").value.trim();
+
+  const date =
+    document.getElementById("appointmentDate").value;
+
+  const time =
+    document.getElementById("appointmentTime").value;
+
+  const patientType =
+    document.getElementById("patientType").value;
+
+  const reason =
+    document.getElementById("reason").value.trim();
+
+
+  const message =
+`Hello General & Diabetes Care,
+
+I would like to request an appointment.
+
+Patient Name: ${name}
+Phone Number: ${phone}
+Preferred Date: ${date}
+Preferred Time: ${time}
+Patient Type: ${patientType}
+Reason for Consultation: ${reason || "Not specified"}
+
+Please confirm the appointment.
+
+Thank you.`;
+
+  const whatsappNumber = "919486365896";
+
+  const whatsappURL =
+    "https://wa.me/" +
+    whatsappNumber +
+    "?text=" +
+    encodeURIComponent(message);
+
+  window.open(whatsappURL, "_blank");
+
+});
+
+</script>
 </body>
 </html>
