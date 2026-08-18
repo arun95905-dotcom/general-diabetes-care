@@ -547,3 +547,39 @@ footer .copyright {
   }
 
 }
+/* See All Google Reviews Button */
+
+.see-reviews-button {
+  display: inline-block;
+  margin: 0 auto 28px;
+  padding: 11px 20px;
+  border: 1px solid #1261d6;
+  border-radius: 10px;
+  background: white;
+  color: #1261d6;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.see-reviews-button:hover {
+  background: #1261d6;
+  color: white;
+}
+
+.see-reviews-button:active {
+  transform: scale(0.97);
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .see-reviews-button {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+}
