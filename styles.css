@@ -328,3 +328,149 @@ footer .copyright {
   }
 
 }
+/* Patient Reviews */
+
+.reviews-section {
+  padding: 70px 7%;
+  background: #f5f8fc;
+  text-align: center;
+}
+
+.reviews-section h2 {
+  font-size: 38px;
+  color: #123c75;
+  margin: 5px 0 10px;
+}
+
+.reviews-intro {
+  color: #687386;
+  margin: 0 auto 30px;
+}
+
+.reviews-slider {
+  max-width: 850px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reviews-track {
+  flex: 1;
+}
+
+.review-card {
+  display: none;
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  border: 1px solid #e5eaf0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  min-height: 230px;
+}
+
+.review-card.active {
+  display: block;
+}
+
+.stars {
+  color: #f5b301;
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 15px;
+}
+
+.review-card p {
+  color: #4f5d70;
+  font-size: 17px;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.review-card h3 {
+  color: #123c75;
+  margin: 18px 0 2px;
+}
+
+.review-card small {
+  color: #687386;
+}
+
+.review-arrow {
+  border: none;
+  background: #1261d6;
+  color: white;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+.review-arrow:active {
+  transform: scale(0.95);
+}
+
+.review-dots {
+  margin-top: 20px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border: none;
+  border-radius: 50%;
+  background: #c8d1dc;
+  margin: 5px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: #1261d6;
+}
+
+.google-review-button {
+  display: inline-block;
+  margin-top: 25px;
+  background: #16a05d;
+  color: white;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.google-review-button:hover {
+  opacity: 0.9;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .reviews-section {
+    padding: 55px 20px;
+  }
+
+  .reviews-section h2 {
+    font-size: 30px;
+  }
+
+  .review-card {
+    padding: 22px;
+    min-height: 260px;
+  }
+
+  .review-card p {
+    font-size: 15px;
+  }
+
+  .review-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 25px;
+  }
+
+}
