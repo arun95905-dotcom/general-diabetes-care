@@ -1,4 +1,4 @@
-* {
+no* {
   box-sizing: border-box;
 }
 
@@ -845,4 +845,135 @@ footer .copyright {
   }
 
 }
+/* ================================
+   APPOINTMENT BOOKING
+================================ */
 
+.appointment-section {
+  padding: 60px 7%;
+  background: #f5f8fc;
+}
+
+.appointment-card {
+  max-width: 850px;
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid #e5eaf0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.appointment-card h2 {
+  color: #123c75;
+  font-size: 34px;
+  margin: 5px 0 10px;
+}
+
+.appointment-intro {
+  color: #687386;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #123c75;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border: 1px solid #d8dee8;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 15px;
+  background: #fff;
+  color: #333;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #1261d6;
+  box-shadow: 0 0 0 3px rgba(18, 97, 214, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.appointment-button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: #1261d6;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.appointment-button:hover {
+  opacity: 0.9;
+}
+
+.appointment-button:active {
+  transform: scale(0.99);
+}
+
+.appointment-note {
+  text-align: center;
+  margin-top: 18px;
+  color: #687386;
+  font-size: 14px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .appointment-section {
+    padding: 45px 15px;
+  }
+
+  .appointment-card {
+    padding: 28px 20px;
+    border-radius: 16px;
+  }
+
+  .appointment-card h2 {
+    font-size: 28px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px;
+  }
+
+}
