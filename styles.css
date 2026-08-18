@@ -1,0 +1,323 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f8fc;
+  color: #18212f;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+}
+
+.header {
+  background: white;
+  padding: 18px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid #e5eaf0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #1261d6, #19a974);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 18px;
+  color: #123c75;
+}
+
+.logo p {
+  margin: 2px 0 0;
+  color: #687386;
+  font-size: 12px;
+}
+
+.whatsapp {
+  background: #16a05d;
+  color: white;
+  padding: 11px 17px;
+  border-radius: 9px;
+  font-weight: bold;
+}
+
+.hero {
+  background:
+    linear-gradient(120deg, #eaf4ff, #f4fbf8);
+  padding: 75px 7%;
+}
+
+.hero-content {
+  max-width: 850px;
+}
+
+.welcome,
+.section-label {
+  color: #1261d6;
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-size: 13px;
+}
+
+.hero h2 {
+  font-size: clamp(42px, 7vw, 72px);
+  line-height: 1.05;
+  margin: 10px 0 25px;
+  color: #123c75;
+}
+
+.hero p {
+  max-width: 720px;
+  font-size: 18px;
+  color: #4f5d70;
+}
+
+.hero .doctor {
+  font-size: 17px;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.button {
+  display: inline-block;
+  background: #1261d6;
+  color: white;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.whatsapp-button {
+  background: #16a05d;
+}
+
+.clinic-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  padding: 30px 7%;
+  background: white;
+}
+
+.info-card {
+  padding: 20px;
+  border-radius: 14px;
+  background: #f7f9fc;
+}
+
+.info-card h3 {
+  color: #123c75;
+  margin-top: 0;
+}
+
+.section {
+  padding: 70px 7%;
+}
+
+.section h2,
+.appointment h2,
+.diabetes-section h2 {
+  font-size: 38px;
+  color: #123c75;
+  margin-top: 5px;
+}
+
+.section-intro {
+  color: #687386;
+  max-width: 700px;
+}
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 35px;
+}
+
+.service {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid #e5eaf0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.service:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+}
+
+.service span {
+  font-size: 30px;
+}
+
+.service h3 {
+  color: #123c75;
+  margin-bottom: 8px;
+}
+
+.service p {
+  color: #687386;
+}
+
+.diabetes-section {
+  padding: 70px 7%;
+  background: #123c75;
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 45px;
+}
+
+.diabetes-section h2 {
+  color: white;
+}
+
+.diabetes-section .section-label {
+  color: #8bd8b4;
+}
+
+.diabetes-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-content: center;
+}
+
+.diabetes-list div {
+  background: rgba(255,255,255,0.09);
+  padding: 13px;
+  border-radius: 9px;
+}
+
+.appointment {
+  text-align: center;
+  padding: 75px 7%;
+  background: white;
+}
+
+.appointment p {
+  color: #687386;
+}
+
+.appointment .hero-buttons {
+  justify-content: center;
+}
+
+footer {
+  background: #0d274d;
+  color: white;
+  text-align: center;
+  padding: 40px 7%;
+}
+
+footer h3 {
+  margin-top: 0;
+}
+
+footer p {
+  color: #cbd5e1;
+}
+
+footer .copyright {
+  margin-top: 25px;
+  font-size: 12px;
+}
+
+@media (max-width: 850px) {
+
+  .clinic-info {
+    grid-template-columns: 1fr;
+  }
+
+  .services {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .diabetes-section {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .header {
+    padding: 14px;
+  }
+
+  .logo h1 {
+    font-size: 14px;
+  }
+
+  .logo p {
+    font-size: 10px;
+  }
+
+  .header .whatsapp {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .hero {
+    padding: 50px 20px;
+  }
+
+  .hero h2 {
+    font-size: 43px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .clinic-info,
+  .section,
+  .diabetes-section,
+  .appointment {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .services {
+    grid-template-columns: 1fr;
+  }
+
+  .diabetes-list {
+    grid-template-columns: 1fr;
+  }
+
+}
