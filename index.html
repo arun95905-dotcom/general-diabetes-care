@@ -830,7 +830,31 @@
 
 <script src="script.js"></script>
 <script>
+const appointmentDate =
+  document.getElementById("appointmentDate");
 
+const today = new Date();
+
+const year = today.getFullYear();
+const month = String(today.getMonth() + 1).padStart(2, "0");
+const day = String(today.getDate()).padStart(2, "0");
+
+appointmentDate.min = `${year}-${month}-${day}`;
+
+
+appointmentDate.addEventListener("change", function() {
+
+  const selectedDate = new Date(this.value + "T00:00:00");
+
+  if (selectedDate.getDay() === 0) {
+
+    alert("Sunday appointments are not available. Please select another date.");
+
+    this.value = "";
+
+  }
+
+});
 document.getElementById("appointmentForm").addEventListener("submit", function(event) {
 
   event.preventDefault();
