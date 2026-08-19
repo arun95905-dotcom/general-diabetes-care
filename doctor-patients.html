@@ -798,7 +798,14 @@ document
 
 
     <br>
+<button
+  type="button"
+  class="doctor-login-button"
+  id="editPatientButton">
 
+  ✏️ Edit Patient
+
+</button>
     <button
       type="button"
       class="doctor-login-button"
@@ -810,7 +817,357 @@ document
 
   `;
 
+document
+  .getElementById("editPatientButton")
+  .onclick = function () {
 
+    editPatient(patient);
+
+  };
+      function editPatient(patient) {
+
+  const container =
+    document.getElementById(
+      "patientsContainer"
+    );
+
+  container.innerHTML = `
+
+    <div class="patient-profile-section">
+
+      <h2>✏️ Edit Patient</h2>
+
+      <p>
+        <strong>🆔 Patient ID:</strong>
+        ${patient.id}
+      </p>
+
+
+      <label>Patient Name</label>
+
+      <input
+        type="text"
+        id="editPatientName"
+        value="${patient.patient_name || ""}">
+
+
+      <label>Phone Number</label>
+
+      <input
+        type="tel"
+        id="editPatientPhone"
+        value="${patient.patient_phone || ""}">
+
+
+      <label>Date of Birth</label>
+
+      <input
+        type="date"
+        id="editPatientDOB"
+        value="${patient.date_of_birth || ""}">
+
+
+      <label>Gender</label>
+
+      <select id="editPatientGender">
+
+        <option value="">
+          Select Gender
+        </option>
+
+        <option value="Male"
+          ${patient.gender === "Male" ? "selected" : ""}>
+          Male
+        </option>
+
+        <option value="Female"
+          ${patient.gender === "Female" ? "selected" : ""}>
+          Female
+        </option>
+
+        <option value="Other"
+          ${patient.gender === "Other" ? "selected" : ""}>
+          Other
+        </option>
+
+      </select>
+
+
+      <label>Address</label>
+
+      <textarea
+        id="editPatientAddress">${patient.address || ""}</textarea>
+
+
+      <label>Blood Group</label>
+
+      <input
+        type="text"
+        id="editPatientBloodGroup"
+        value="${patient.blood_group || ""}">
+
+
+      <h3>🩺 Clinical Information</h3>
+
+
+      <label>Chief Complaints</label>
+
+      <textarea
+        id="editPatientChiefComplaints">${patient.chief_complaints || ""}</textarea>
+
+
+      <label>Pulse</label>
+
+      <input
+        type="text"
+        id="editPatientPulse"
+        value="${patient.Pulse || ""}">
+
+
+      <label>Blood Pressure</label>
+
+      <input
+        type="text"
+        id="editPatientBP"
+        value="${patient.blood_pressure || ""}">
+
+
+      <label>SpO₂</label>
+
+      <input
+        type="text"
+        id="editPatientSpO2"
+        value="${patient.spo2 || ""}">
+
+
+      <label>Weight (kg)</label>
+
+      <input
+        type="number"
+        step="0.1"
+        id="editPatientWeight"
+        value="${patient.weight || ""}">
+
+
+      <label>Height (cm)</label>
+
+      <input
+        type="number"
+        step="0.1"
+        id="editPatientHeight"
+        value="${patient.height || ""}">
+
+
+      <h3>📋 Medical History</h3>
+
+
+      <label>Medical History</label>
+
+      <textarea
+        id="editPatientMedicalHistory">${patient.medical_history || ""}</textarea>
+
+
+      <label>Surgical History</label>
+
+      <textarea
+        id="editPatientSurgicalHistory">${patient.surgical_history || ""}</textarea>
+
+
+      <label>Allergies</label>
+
+      <textarea
+        id="editPatientAllergies">${patient.allergies || ""}</textarea>
+
+
+      <label>Current Medications</label>
+
+      <textarea
+        id="editPatientMedications">${patient.current_medications || ""}</textarea>
+
+
+      <h3>🩺 Assessment & Treatment</h3>
+
+
+      <label>Diagnosis</label>
+
+      <textarea
+        id="editPatientDiagnosis">${patient.diagnosis || ""}</textarea>
+
+
+      <label>Lab Reports / Investigations</label>
+
+      <textarea
+        id="editPatientLabReports">${patient.lab_reports || ""}</textarea>
+
+
+      <label>Treatment / Prescription</label>
+
+      <textarea
+        id="editPatientTreatment">${patient.treatment || ""}</textarea>
+
+
+      <label>Advice</label>
+
+      <textarea
+        id="editPatientAdvice">${patient.advice || ""}</textarea>
+
+
+      <label>Follow-up Date</label>
+
+      <input
+        type="date"
+        id="editPatientFollowUp"
+        value="${patient.follow_up_date || ""}">
+
+
+      <br>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="savePatientChangesButton">
+
+        💾 Save Changes
+
+      </button>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="cancelPatientEditButton">
+
+        ↩️ Cancel
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById("savePatientChangesButton")
+    .onclick = function () {
+
+      savePatientChanges(patient.id);
+
+    };
+
+
+  document
+    .getElementById("cancelPatientEditButton")
+    .onclick = function () {
+
+      viewPatient(patient.id);
+
+    };
+
+      }
+      async function savePatientChanges(patientId) {
+
+  const updatedPatient = {
+
+    patient_name:
+      document.getElementById("editPatientName").value.trim(),
+
+    patient_phone:
+      document.getElementById("editPatientPhone").value.trim(),
+
+    date_of_birth:
+      document.getElementById("editPatientDOB").value || null,
+
+    gender:
+      document.getElementById("editPatientGender").value || null,
+
+    address:
+      document.getElementById("editPatientAddress").value.trim(),
+
+    blood_group:
+      document.getElementById("editPatientBloodGroup").value.trim(),
+
+    chief_complaints:
+      document.getElementById("editPatientChiefComplaints").value.trim(),
+
+    Pulse:
+      document.getElementById("editPatientPulse").value.trim(),
+
+    blood_pressure:
+      document.getElementById("editPatientBP").value.trim(),
+
+    spo2:
+      document.getElementById("editPatientSpO2").value.trim(),
+
+    weight:
+      document.getElementById("editPatientWeight").value || null,
+
+    height:
+      document.getElementById("editPatientHeight").value || null,
+
+    medical_history:
+      document.getElementById("editPatientMedicalHistory").value.trim(),
+
+    surgical_history:
+      document.getElementById("editPatientSurgicalHistory").value.trim(),
+
+    allergies:
+      document.getElementById("editPatientAllergies").value.trim(),
+
+    current_medications:
+      document.getElementById("editPatientMedications").value.trim(),
+
+    diagnosis:
+      document.getElementById("editPatientDiagnosis").value.trim(),
+
+    lab_reports:
+      document.getElementById("editPatientLabReports").value.trim(),
+
+    treatment:
+      document.getElementById("editPatientTreatment").value.trim(),
+
+    advice:
+      document.getElementById("editPatientAdvice").value.trim(),
+
+    follow_up_date:
+      document.getElementById("editPatientFollowUp").value || null
+
+  };
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("patients")
+      .update(updatedPatient)
+      .eq("id", patientId)
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Error updating patient:",
+      error
+    );
+
+    alert(
+      "Unable to save changes: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Patient details updated successfully."
+  );
+
+
+  viewPatient(patientId);
+
+      }
   document
     .getElementById(
       "backToPatientSearchButton"
