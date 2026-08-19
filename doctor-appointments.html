@@ -452,7 +452,56 @@ if (appointment.status === "Pending") {
   
 }
 
+async function viewPatient(patientId) {
 
+  const { data: patient, error } =
+    await supabaseClient
+      .from("patients")
+      .select("*")
+      .eq("id", patientId)
+      .single();
+
+  if (error) {
+    console.error("Error loading patient:", error);
+    alert("Unable to load patient details.");
+    return;
+  }
+
+  const patientDetails = `
+Patient Details
+
+Name: ${patient.patient_name || "-"}
+
+Phone: ${patient.patient_phone || "-"}
+
+Date of Birth: ${patient.date_of_birth || "-"}
+
+Gender: ${patient.gender || "-"}
+
+Blood Group: ${patient.blood_group || "-"}
+
+Chief Complaints:
+${patient.chief_complaints || "-"}
+
+Medical History:
+${patient.medical_history || "-"}
+
+Surgical History:
+${patient.surgical_history || "-"}
+
+Allergies:
+${patient.allergies || "-"}
+
+Current Medications:
+${patient.current_medications || "-"}
+
+Notes:
+${patient.notes || "-"}
+  `;
+
+  alert(patientDetails);
+
+    }
 loadAppointments();
   async function protectAppointments() {
 
@@ -465,7 +514,7 @@ loadAppointments();
 
   }
 
-}
+} 
 
 protectAppointments();
   document
