@@ -148,6 +148,20 @@ document
     window.location.href = "doctor-login.html";
 
   });
+  async function protectDashboard() {
+
+  const { data: { session } } =
+    await supabaseClient.auth.getSession();
+
+  if (!session) {
+
+    window.location.href = "doctor-login.html";
+
+  }
+
+}
+
+protectDashboard();  
   </script>
 
 </body>
