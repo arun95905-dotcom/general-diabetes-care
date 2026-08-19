@@ -138,7 +138,18 @@
       Loading patient details...
 
     </div>
+<div class="patient-profile-actions">
 
+  <button
+    type="button"
+    id="editPatientButton"
+    class="doctor-login-button">
+
+    ✏️ Edit Patient
+
+  </button>
+
+</div>
   </div>
 
 </div>
@@ -493,17 +504,17 @@ async function viewPatient(patientId) {
       error
     );
 
-    alert(
-      "Unable to load patient details."
-    );
+    alert("Unable to load patient details.");
 
     return;
   }
 
+  const content =
+    document.getElementById(
+      "patientProfileContent"
+    );
 
-  document.getElementById(
-    "patientProfileContent"
-  ).innerHTML = `
+  content.innerHTML = `
 
     <div class="patient-profile-section">
 
@@ -536,9 +547,7 @@ async function viewPatient(patientId) {
 
     </div>
 
-
     <hr>
-
 
     <div class="patient-profile-section">
 
@@ -580,22 +589,244 @@ async function viewPatient(patientId) {
 
 
   document.getElementById(
+    "editPatientButton"
+  ).onclick = function () {
+
+    editPatient(patient);
+
+  };
+
+
+  document.getElementById(
     "patientModal"
   ).style.display = "flex";
 
-}
+}function editPatient(patient) {
+
+  const content =
+    document.getElementById(
+      "patientProfileContent"
+    );
+
+  content.innerHTML = `
+
+    <div class="patient-profile-section">
+
+      <h3>👤 Personal Information</h3>
+
+      <label>Name</label>
+
+      <input
+        type="text"
+        id="editPatientName"
+        value="${patient.patient_name || ""}">
+
+      <label>Phone</label>
+
+      <input
+        type="tel"
+        id="editPatientPhone"
+        value="${patient.patient_phone || ""}">
+
+      <label>Date of Birth</label>
+
+      <input
+        type="date"
+        id="editPatientDOB"
+        value="${patient.date_of_birth || ""}">
+
+      <label>Gender</label>
+
+      <select id="editPatientGender">
+
+        <option value="">
+          Select gender
+        </option>
+
+        <option value="Male"
+          ${patient.gender === "Male" ? "selected" : ""}>
+          Male
+        </option>
+
+        <option value="Female"
+          ${patient.gender === "Female" ? "selected" : ""}>
+          Female
+        </option>
+
+        <option value="Other"
+          ${patient.gender === "Other" ? "selected" : ""}>
+          Other
+        </option>
+
+      </select>
+
+      <label>Blood Group</label>
+
+      <input
+        type="text"
+        id="editBloodGroup"
+        value="${patient.blood_group || ""}">
+
+    </div>
+
+
+    <hr>
+
+
+    <div class="patient-profile-section">
+
+      <h3>🩺 Clinical History</h3>
+
+      <label>Chief Complaints</label>
+
+      <textarea
+        id="editChiefComplaints">${patient.chief_complaints || ""}</textarea>
+
+      <label>Medical History</label>
+
+      <textarea
+        id="editMedicalHistory">${patient.medical_history || ""}</textarea>
+
+      <label>Surgical History</label>
+
+      <textarea
+        id="editSurgicalHistory">${patient.surgical_history || ""}</textarea>
+
+      <label>Allergies</label>
+
+      <textarea
+        id="editAllergies">${patient.allergies || ""}</textarea>
+
+      <label>Current Medications</label>
+
+      <textarea
+        id="editMedications">${patient.current_medications || ""}</textarea>
+
+      <label>Notes</label>
+
+      <textarea
+        id="editPatientNotes">${patient.notes || ""}</textarea>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="doctor-login-button"
+      id="savePatientButton">
+
+      💾 Save Changes
+
+    </button>
+
+    <button
+      type="button"
+      class="doctor-login-button"
+      id="cancelEditButton">
+
+      ↩️ Cancel
+
+    </button>
+
+  `;
+
+
   document
-  .getElementById("closePatientModal")
-  .addEventListener(
-    "click",
-    function () {
+    .getElementById("savePatientButton")
+    .onclick = function () {
 
-      document.getElementById(
-        "patientModal"
-      ).style.display = "none";
+      savePatientChanges(patient.id);
 
-    }
+    };
+
+
+  document
+    .getElementById("cancelEditButton")
+    .onclick = function () {
+
+      viewPatient(patient.id);
+
+    };
+
+}async function savePatientChanges(patientId) {
+
+  const updatedPatient = {
+
+    patient_name:
+      document.getElementById("editPatientName").value.trim(),
+
+    patient_phone:
+      document.getElementById("editPatientPhone").value.trim(),
+
+    date_of_birth:
+      document.getElementById("editPatientDOB").value || null,
+
+    gender:
+      document.getElementById("editPatientGender").value || null,
+
+    blood_group:
+      document.getElementById("editBloodGroup").value.trim(),
+
+    chief_complaints:
+      document.getElementById("editChiefComplaints").value.trim(),
+
+    medical_history:
+      document.getElementById("editMedicalHistory").value.trim(),
+
+    surgical_history:
+      document.getElementById("editSurgicalHistory").value.trim(),
+
+    allergies:
+      document.getElementById("editAllergies").value.trim(),
+
+    current_medications:
+      document.getElementById("editMedications").value.trim(),
+
+    notes:
+      document.getElementById("editPatientNotes").value.trim()
+
+  };
+
+
+  if (!updatedPatient.patient_name) {
+
+    alert("Patient name is required.");
+
+    return;
+
+  }
+
+
+  const { error } =
+    await supabaseClient
+      .from("patients")
+      .update(updatedPatient)
+      .eq("id", patientId);
+
+
+  if (error) {
+
+    console.error(
+      "Error updating patient:",
+      error
+    );
+
+    alert(
+      "Unable to save patient details."
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Patient details updated successfully."
   );
+
+
+  viewPatient(patientId);
+
+}
 loadAppointments();
   async function protectAppointments() {
 
