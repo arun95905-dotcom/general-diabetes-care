@@ -602,7 +602,9 @@ async function viewPatient(patientId) {
   ).style.display = "flex";
 
 }function editPatient(patient) {
-
+document.getElementById(
+  "editPatientButton"
+).style.display = "none";
   const content =
     document.getElementById(
       "patientProfileContent"
@@ -730,14 +732,18 @@ async function viewPatient(patientId) {
 
   `;
 
+document
+  .getElementById("cancelEditButton")
+  .onclick = function () {
 
-  document
-    .getElementById("savePatientButton")
-    .onclick = function () {
+    document.getElementById(
+      "editPatientButton"
+    ).style.display = "block";
 
-      savePatientChanges(patient.id);
+    viewPatient(patient.id);
 
-    };
+  };
+  
 
 
   document
@@ -823,7 +829,9 @@ async function viewPatient(patientId) {
     "Patient details updated successfully."
   );
 
-
+document.getElementById(
+  "editPatientButton"
+).style.display = "block";
   viewPatient(patientId);
 
 }
