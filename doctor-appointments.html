@@ -116,7 +116,32 @@
     </p>
 
   </div>
+<!-- Patient Profile Modal -->
 
+<div id="patientModal" class="patient-modal">
+
+  <div class="patient-modal-content">
+
+    <button
+      type="button"
+      id="closePatientModal"
+      class="patient-modal-close">
+
+      ✖
+
+    </button>
+
+    <h2>👤 Patient Profile</h2>
+
+    <div id="patientProfileContent">
+
+      Loading patient details...
+
+    </div>
+
+  </div>
+
+</div>
 </div>
       <div class="dashboard-item">
 
@@ -462,51 +487,115 @@ async function viewPatient(patientId) {
       .single();
 
   if (error) {
-  console.error("Error loading patient:", error);
 
-  alert(
-    "Patient error: " +
-    error.message
-  );
+    console.error(
+      "Error loading patient:",
+      error
+    );
 
-  return;
+    alert(
+      "Unable to load patient details."
+    );
+
+    return;
   }
 
-  const patientDetails = `
-Patient Details
 
-Name: ${patient.patient_name || "-"}
+  document.getElementById(
+    "patientProfileContent"
+  ).innerHTML = `
 
-Phone: ${patient.patient_phone || "-"}
+    <div class="patient-profile-section">
 
-Date of Birth: ${patient.date_of_birth || "-"}
+      <h3>👤 Personal Information</h3>
 
-Gender: ${patient.gender || "-"}
+      <p>
+        <strong>Name:</strong>
+        ${patient.patient_name || "-"}
+      </p>
 
-Blood Group: ${patient.blood_group || "-"}
+      <p>
+        <strong>📞 Phone:</strong>
+        ${patient.patient_phone || "-"}
+      </p>
 
-Chief Complaints:
-${patient.chief_complaints || "-"}
+      <p>
+        <strong>🎂 Date of Birth:</strong>
+        ${patient.date_of_birth || "-"}
+      </p>
 
-Medical History:
-${patient.medical_history || "-"}
+      <p>
+        <strong>Gender:</strong>
+        ${patient.gender || "-"}
+      </p>
 
-Surgical History:
-${patient.surgical_history || "-"}
+      <p>
+        <strong>🩸 Blood Group:</strong>
+        ${patient.blood_group || "-"}
+      </p>
 
-Allergies:
-${patient.allergies || "-"}
+    </div>
 
-Current Medications:
-${patient.current_medications || "-"}
 
-Notes:
-${patient.notes || "-"}
+    <hr>
+
+
+    <div class="patient-profile-section">
+
+      <h3>🩺 Clinical History</h3>
+
+      <p>
+        <strong>Chief Complaints:</strong><br>
+        ${patient.chief_complaints || "-"}
+      </p>
+
+      <p>
+        <strong>Medical History:</strong><br>
+        ${patient.medical_history || "-"}
+      </p>
+
+      <p>
+        <strong>Surgical History:</strong><br>
+        ${patient.surgical_history || "-"}
+      </p>
+
+      <p>
+        <strong>⚠️ Allergies:</strong><br>
+        ${patient.allergies || "-"}
+      </p>
+
+      <p>
+        <strong>💊 Current Medications:</strong><br>
+        ${patient.current_medications || "-"}
+      </p>
+
+      <p>
+        <strong>📝 Notes:</strong><br>
+        ${patient.notes || "-"}
+      </p>
+
+    </div>
+
   `;
 
-  alert(patientDetails);
+
+  document.getElementById(
+    "patientModal"
+  ).style.display = "flex";
+
+}
+  document
+  .getElementById("closePatientModal")
+  .addEventListener(
+    "click",
+    function () {
+
+      document.getElementById(
+        "patientModal"
+      ).style.display = "none";
 
     }
+  );
 loadAppointments();
   async function protectAppointments() {
 
