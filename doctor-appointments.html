@@ -352,6 +352,39 @@ protectAppointments();
     window.location.href = "doctor-login.html";
 
   });
+ const appointmentDate =
+  document.getElementById("appointmentDate");
+
+const today =
+  new Date();
+
+const todayString =
+  today.toISOString().split("T")[0];
+
+appointmentDate.min =
+  todayString; 
+ appointmentDate.addEventListener(
+  "change",
+  function () {
+
+    const selectedDate =
+      new Date(this.value + "T00:00:00");
+
+    const day =
+      selectedDate.getDay();
+
+    if (day === 0) {
+
+      alert(
+        "Appointments are not available on Sundays."
+      );
+
+      this.value = "";
+
+    }
+
+  }
+); 
 </script>
 </body>
 
