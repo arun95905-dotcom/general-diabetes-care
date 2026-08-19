@@ -233,6 +233,94 @@ document
     alert("Appointment saved successfully.");
 
 });
+  async function loadAppointments() {
+
+  const container =
+    document.getElementById("appointmentsContainer");
+
+  const { data, error } =
+    await supabaseClient
+      .from("appointments")
+      .select("*")
+      .order("appointment_date", {
+        ascending: true
+      })
+      .order("appointment_time", {
+        ascending: true
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    container.innerHTML =
+      "<p>Unable to load appointments.</p>";
+
+    return;
+  }
+
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML =
+      "<p>No appointments found.</p>";
+
+    return;
+  }
+
+
+  container.innerHTML = "";
+
+
+  data.forEach(function (appointment) {
+
+    const appointmentCard =
+      document.createElement("div");
+
+    appointmentCard.className =
+      "appointment-card";
+
+
+    appointmentCard.innerHTML = `
+
+      <strong>
+        ${appointment.patient_name}
+      </strong>
+
+      <span>
+        📞 ${appointment.patient_phone}
+      </span>
+
+      <span>
+        📅 ${appointment.appointment_date}
+      </span>
+
+      <span>
+        🕐 ${appointment.appointment_time}
+      </span>
+
+      <span>
+        ${appointment.appointment_type}
+      </span>
+
+      ${
+        appointment.notes
+          ? `<span>📝 ${appointment.notes}</span>`
+          : ""
+      }
+
+    `;
+
+
+    container.appendChild(appointmentCard);
+
+  });
+
+}
+
+
+loadAppointments();
 </script>
 </body>
 
