@@ -420,12 +420,17 @@ appointmentDate.min =
       return;
     }
 
-    const bookedTimes =
-      data.map(function (appointment) {
-        return appointment.appointment_time;
-      });
+    const slotCounts = {};
 
-    Array.from(
+data.forEach(function (appointment) {
+
+  const time =
+    appointment.appointment_time.substring(0, 5);
+
+  slotCounts[time] =
+    (slotCounts[time] || 0) + 1;
+
+});    Array.from(
       appointmentTime.options
     ).forEach(function (option) {
 
@@ -433,8 +438,26 @@ appointmentDate.min =
         return;
       }
 
+      const count =
+        slotCounts[option.value] || 0;
+
       option.disabled =
-        bookedTimes.includes(option.value);
+        count >= 5;
+
+      const timeLabels = {
+        "18:00": "6:00–6:30 PM",
+        "18:30": "6:30–7:00 PM",
+        "19:00": "7:00–7:30 PM",
+        "19:30": "7:30–8:00 PM",
+        "20:00": "8:00–8:30 PM",
+        "20:30": "8:30–9:00 PM"
+      };
+
+      option.textContent =
+        timeLabels[option.value] +
+        " — " +
+        count +
+        "/5";
 
     });
 
