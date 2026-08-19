@@ -321,6 +321,20 @@ document
 
 
 loadAppointments();
+  async function protectAppointments() {
+
+  const { data: { session } } =
+    await supabaseClient.auth.getSession();
+
+  if (!session) {
+
+    window.location.href = "doctor-login.html";
+
+  }
+
+}
+
+protectAppointments();
 </script>
 </body>
 
