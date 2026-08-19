@@ -222,7 +222,22 @@ document
       return;
     }
 
+const { count, error: countError } =
+  await supabaseClient
+    .from("appointments")
+    .select("*", { count: "exact", head: true })
+    .eq("appointment_date", appointmentDate)
+    .eq("appointment_time", appointmentTime);
 
+if (countError) {
+  alert("Unable to check slot availability.");
+  return;
+}
+
+if (count >= 5) {
+  alert("This appointment slot is full. Please choose another time.");
+  return;
+}
     const { error } =
       await supabaseClient
         .from("appointments")
