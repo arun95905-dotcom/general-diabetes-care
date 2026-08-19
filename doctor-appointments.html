@@ -30,7 +30,71 @@
       <p class="dashboard-welcome">
         Doctor appointment management
       </p>
+<div class="appointment-form">
 
+  <h2>Add Appointment</h2>
+
+  <input
+    type="text"
+    id="patientName"
+    placeholder="Patient Name"
+    required>
+
+  <input
+    type="tel"
+    id="patientPhone"
+    placeholder="Patient Phone Number"
+    required>
+
+  <input
+    type="date"
+    id="appointmentDate"
+    required>
+
+  <input
+    type="time"
+    id="appointmentTime"
+    required>
+
+  <select id="appointmentType">
+
+    <option value="">
+      Select Appointment Type
+    </option>
+
+    <option value="New Consultation">
+      New Consultation
+    </option>
+
+    <option value="Follow-up">
+      Follow-up
+    </option>
+
+    <option value="Diabetes Review">
+      Diabetes Review
+    </option>
+
+    <option value="General Consultation">
+      General Consultation
+    </option>
+
+  </select>
+
+  <textarea
+    id="appointmentNotes"
+    placeholder="Notes (optional)">
+  </textarea>
+
+  <button
+    type="button"
+    class="doctor-login-button"
+    id="saveAppointment">
+
+    💾 Save Appointment
+
+  </button>
+
+</div>
 
       <div class="dashboard-item">
 
