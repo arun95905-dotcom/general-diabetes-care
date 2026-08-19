@@ -1175,3 +1175,65 @@ footer .copyright {
   }
 
 }
+/* ================================
+   APPOINTMENTS
+================================ */
+
+.appointment-form {
+  margin-top: 30px;
+  padding: 25px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 15px;
+  text-align: left;
+}
+
+.appointment-form h2,
+.appointments-list h2 {
+  color: #123c75;
+  margin-top: 0;
+}
+
+.appointment-form input,
+.appointment-form select,
+.appointment-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 8px 0;
+  padding: 13px;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.appointment-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.appointments-list {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.appointment-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 15px;
+  padding: 18px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.appointment-card strong {
+  color: #123c75;
+  font-size: 18px;
+}
+
+.appointment-card span {
+  color: #687386;
+  font-size: 14px;
+}
