@@ -133,6 +133,14 @@
         ← Back to Dashboard
 
       </a>
+      <button
+  type="button"
+  class="doctor-login-button"
+  id="appointmentsLogoutButton">
+
+  🔒 Logout
+
+      </button>
 
     </div>
 
@@ -335,6 +343,15 @@ loadAppointments();
 }
 
 protectAppointments();
+  document
+  .getElementById("appointmentsLogoutButton")
+  .addEventListener("click", async function () {
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href = "doctor-login.html";
+
+  });
 </script>
 </body>
 
