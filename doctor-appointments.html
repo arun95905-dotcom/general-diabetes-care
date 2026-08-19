@@ -390,13 +390,58 @@ appointmentDate.min =
       alert(
         "Appointments are not available on Sundays."
       );
-
       this.value = "";
 
     }
 
   }
 ); 
+      appointmentDate.addEventListener(
+  "change",
+  async function () {
+
+    const selectedDate =
+      this.value;
+
+    if (!selectedDate) {
+      return;
+    }
+
+    const { data, error } =
+      await supabaseClient
+        .from("appointments")
+        .select("appointment_time")
+        .eq("appointment_date", selectedDate);
+
+    if (error) {
+
+      console.error(error);
+
+      return;
+    }
+
+    const bookedTimes =
+      data.map(function (appointment) {
+        return appointment.appointment_time;
+      });
+
+    Array.from(
+      appointmentTime.options
+    ).forEach(function (option) {
+
+      if (option.value === "") {
+        return;
+      }
+
+      option.disabled =
+        bookedTimes.includes(option.value);
+
+    });
+
+  }
+);
+
+      
 </script>
 </body>
 
