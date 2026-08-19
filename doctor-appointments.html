@@ -204,6 +204,9 @@
 
 <script>
 
+let currentConsultations = [];
+let currentPatientId = null;
+
 const SUPABASE_URL = "https://twdmvdqqckcpwoccvtkj.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
@@ -525,7 +528,8 @@ const { data: consultations, error: consultationError } =
     .order("created_at", {
       ascending: false
     });
-
+currentConsultations = consultations || [];
+currentPatientId = patientId;
 if (consultationError) {
 
   console.error(
@@ -619,7 +623,7 @@ if (consultationError) {
       ${
         consultations && consultations.length > 0
 
-          ? consultations.map(function (consultation) {
+          ? consultations.map(function (consultation, index ) {
 
               return `
 
@@ -670,11 +674,25 @@ if (consultationError) {
                     ${consultation.advice || "-"}
                   </p>
 
-                  <p>
-                    <strong>Follow-up Date:</strong><br>
-                    ${consultation.follow_up_date || "-"}
-                  </p>
+                  
+<p>
+  <strong>Follow-up Date:</strong><br>
+  ${
+    consultation.follow_up_date
+      ? new Date(
+          consultation.follow_up_date + "T00:00:00"
+        ).toLocaleDateString("en-IN")
+      : "-"
+  }
+</p>
+<button
+  type="button"
+  class="doctor-login-button"
+  onclick="showConsultationDetails(${index})">
 
+  ▶️ View Full Consultation
+
+</button>
                 </div>
 
                 <hr>
@@ -1334,7 +1352,97 @@ data.forEach(function (appointment) {
   }
 );
 
-      
+  function showConsultationDetails(index) {
+
+  const consultation =
+    currentConsultations[index];
+
+  if (!consultation) {
+    alert("Consultation details not found.");
+    return;
+  }
+
+  const content =
+    document.getElementById(
+      "patientProfileContent"
+    );
+
+  content.innerHTML = `
+
+    <div class="patient-profile-section">
+
+      <h3>📋 Full Consultation</h3>
+
+      <p>
+        <strong>📅 Date:</strong><br>
+        ${
+          consultation.created_at
+            ? new Date(
+                consultation.created_at
+              ).toLocaleDateString("en-IN")
+            : "-"
+        }
+      </p>
+
+      <p>
+        <strong>Chief Complaints:</strong><br>
+        ${consultation.chief_complaints || "-"}
+      </p>
+
+      <p>
+        <strong>Vitals:</strong><br>
+        ${consultation.vitals || "-"}
+      </p>
+
+      <p>
+        <strong>Examination:</strong><br>
+        ${consultation.examination || "-"}
+      </p>
+
+      <p>
+        <strong>Diagnosis / Assessment:</strong><br>
+        ${consultation.diagnosis || "-"}
+      </p>
+
+      <p>
+        <strong>Investigations:</strong><br>
+        ${consultation.investigations || "-"}
+      </p>
+
+      <p>
+        <strong>Prescription:</strong><br>
+        ${consultation.prescription || "-"}
+      </p>
+
+      <p>
+        <strong>Advice:</strong><br>
+        ${consultation.advice || "-"}
+      </p>
+
+      <p>
+        <strong>Follow-up Date:</strong><br>
+        ${
+          consultation.follow_up_date
+            ? new Date(
+                consultation.follow_up_date + "T00:00:00"
+              ).toLocaleDateString("en-IN")
+            : "-"
+        }
+      </p>
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        onclick="viewPatient(currentPatientId)">
+
+        ↩️ Back to Patient Profile
+
+      </button>
+
+    </div>
+
+  `;
+  }    
 </script>
 </body>
 
