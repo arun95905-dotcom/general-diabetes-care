@@ -480,6 +480,159 @@ document
   .style.display = "block";
 
   });
+   async function searchPatients() {
+
+  const search =
+    document
+      .getElementById("patientSearch")
+      .value
+      .trim();
+
+  const container =
+    document.getElementById("patientsContainer");
+
+
+  if (!search) {
+
+    container.innerHTML =
+      "<p>Please enter Patient ID, name or phone number.</p>";
+
+    return;
+  }
+
+
+  let query =
+    supabaseClient
+      .from("patients")
+      .select("*");
+
+
+  // If search is a number, search Patient ID,
+  // phone number, and name
+  if (/^\d+$/.test(search)) {
+
+    query = query.or(
+      `patient_phone.ilike.%${search}%,patient_name.ilike.%${search}%,id.eq.${search}`
+    );
+
+  } else {
+
+    // For text, search only name and phone
+    query = query.or(
+      `patient_name.ilike.%${search}%,patient_phone.ilike.%${search}%`
+    );
+
+  }
+
+
+  const { data, error } =
+    await query.order(
+      "patient_name",
+      {
+        ascending: true
+      }
+    );
+
+
+  if (error) {
+
+    console.error(
+      "Patient search error:",
+      error
+    );
+
+    container.innerHTML =
+      "<p>Unable to search patients.</p>";
+
+    return;
+  }
+
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML =
+      "<p>No patients found.</p>";
+
+    return;
+  }
+
+
+  container.innerHTML = "";
+
+
+  data.forEach(function (patient) {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "appointment-card";
+
+
+    card.innerHTML = `
+
+      <strong>
+        👤 ${patient.patient_name || "-"}
+      </strong>
+
+      <span>
+        🆔 Patient ID: ${patient.id}
+      </span>
+
+      <span>
+        📞 ${patient.patient_phone || "-"}
+      </span>
+
+      <span>
+        🎂 ${patient.date_of_birth || "-"}
+      </span>
+
+      <span>
+        ⚧ ${patient.gender || "-"}
+      </span>
+
+    `;
+
+
+    const viewButton =
+      document.createElement("button");
+
+    viewButton.type =
+      "button";
+
+    viewButton.className =
+      "doctor-login-button";
+
+    viewButton.textContent =
+      "👁️ View Patient";
+
+
+    viewButton.onclick =
+      function () {
+
+        viewPatient(patient.id);
+
+      };
+
+
+    card.appendChild(
+      viewButton
+    );
+
+
+    container.appendChild(
+      card
+    );
+
+  });
+
+   } 
+    document
+  .getElementById("searchPatientButton")
+  .addEventListener(
+    "click",
+    searchPatients
+  );
   </script>
 
 </body>
