@@ -833,10 +833,26 @@
 </footer>
 
 <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+</script>
 <script>
 const appointmentDate =
   document.getElementById("appointmentDate");
-
+const appointmentTime =
+  document.getElementById("appointmentTime");
 const today = new Date();
 
 const year = today.getFullYear();
@@ -845,20 +861,88 @@ const day = String(today.getDate()).padStart(2, "0");
 
 appointmentDate.min = `${year}-${month}-${day}`;
 
+appointmentDate.addEventListener("change", async function() {
 
-appointmentDate.addEventListener("change", function() {
+  const selectedDate =
+    this.value;
 
-  const selectedDate = new Date(this.value + "T00:00:00");
+  if (!selectedDate) {
+    return;
+  }
 
-  if (selectedDate.getDay() === 0) {
+  const selectedDateObject =
+    new Date(selectedDate + "T00:00:00");
 
-    alert("Sunday appointments are not available. Please select another date.");
+  if (selectedDateObject.getDay() === 0) {
+
+    alert(
+      "Sunday appointments are not available. Please select another date."
+    );
 
     this.value = "";
 
+    return;
   }
 
+  const { data, error } =
+    await supabaseClient
+      .from("appointments")
+      .select("appointment_time")
+      .eq("appointment_date", selectedDate);
+
+  if (error) {
+
+    console.error(error);
+
+    return;
+  }
+
+  const slotCounts = {};
+
+  data.forEach(function(appointment) {
+
+    const time =
+      appointment.appointment_time.substring(0, 5);
+
+    slotCounts[time] =
+      (slotCounts[time] || 0) + 1;
+
+  });
+
+  Array.from(
+    appointmentTime.options
+  ).forEach(function(option) {
+
+    if (option.value === "") {
+      return;
+    }
+
+    const count =
+      slotCounts[option.value] || 0;
+
+    const timeLabels = {
+      "18:00": "6:00 PM – 6:30 PM",
+      "18:30": "6:30 PM – 7:00 PM",
+      "19:00": "7:00 PM – 7:30 PM",
+      "19:30": "7:30 PM – 8:00 PM",
+      "20:00": "8:00 PM – 8:30 PM",
+      "20:30": "8:30 PM – 9:00 PM"
+    };
+
+    option.textContent =
+      timeLabels[option.value] +
+      " — " +
+      count +
+      "/5" +
+      (count >= 5 ? " FULL" : "");
+
+    option.disabled =
+      count >= 5;
+
+  });
+
 });
+
 document.getElementById("appointmentForm").addEventListener("submit", function(event) {
 
   event.preventDefault();
