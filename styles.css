@@ -1090,3 +1090,88 @@ footer .copyright {
   }
 
 }
+/* ================================
+   DOCTOR DASHBOARD
+================================ */
+
+.doctor-dashboard {
+  min-height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  background: #f5f8fc;
+}
+
+.dashboard-card {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 40px;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e5eaf0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.dashboard-card h1 {
+  color: #123c75;
+  font-size: 34px;
+  margin: 5px 0 10px;
+}
+
+.dashboard-welcome {
+  color: #687386;
+  margin-bottom: 30px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.dashboard-item {
+  padding: 25px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 28px;
+}
+
+.dashboard-item strong {
+  color: #123c75;
+  font-size: 17px;
+}
+
+.dashboard-item span {
+  color: #687386;
+  font-size: 14px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+  .doctor-dashboard {
+    padding: 25px 15px;
+  }
+
+  .dashboard-card {
+    padding: 30px 20px;
+  }
+
+  .dashboard-card h1 {
+    font-size: 28px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
