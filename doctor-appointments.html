@@ -345,7 +345,27 @@ data.forEach(function (appointment) {
     </span>
 
     `;
+// View Patient button
+const viewPatientButton =
+  document.createElement("button");
 
+viewPatientButton.textContent =
+  "👤 View Patient";
+
+viewPatientButton.onclick = function () {
+
+  if (!appointment.patient_id) {
+    alert("Patient record is not linked to this appointment.");
+    return;
+  }
+
+  viewPatient(appointment.patient_id);
+
+};
+
+appointmentCard.appendChild(
+  viewPatientButton
+);
   // Add action buttons only for Pending appointments
 if (appointment.status === "Pending") {
 
