@@ -142,6 +142,15 @@
 
   <button
     type="button"
+    id="startConsultationButton"
+    class="doctor-login-button">
+
+    🩺 Start Consultation
+
+  </button>
+
+  <button
+    type="button"
     id="editPatientButton"
     class="doctor-login-button">
 
@@ -595,7 +604,13 @@ async function viewPatient(patientId) {
     editPatient(patient);
 
   };
+document.getElementById(
+  "startConsultationButton"
+).onclick = function () {
 
+  startConsultation(patient.id);
+
+};
 
   document.getElementById(
     "patientModal"
@@ -753,8 +768,213 @@ document
   };
 
   
+function startConsultation(patientId) {
 
-}async function savePatientChanges(patientId) {
+  const content =
+    document.getElementById(
+      "patientProfileContent"
+    );
+
+  content.innerHTML = `
+
+    <div class="patient-profile-section">
+
+      <h3>🩺 Consultation</h3>
+
+      <label>Chief Complaints</label>
+
+      <textarea
+        id="consultChiefComplaints"
+        placeholder="Enter chief complaints">
+      </textarea>
+
+
+      <label>Vitals</label>
+
+      <textarea
+        id="consultVitals"
+        placeholder="BP, Pulse, SpO₂, Temperature, Weight">
+      </textarea>
+
+
+      <label>Examination</label>
+
+      <textarea
+        id="consultExamination"
+        placeholder="Enter examination findings">
+      </textarea>
+
+
+      <label>Diagnosis / Assessment</label>
+
+      <textarea
+        id="consultDiagnosis"
+        placeholder="Enter diagnosis or assessment">
+      </textarea>
+
+
+      <label>Investigations</label>
+
+      <textarea
+        id="consultInvestigations"
+        placeholder="Enter investigations">
+      </textarea>
+
+
+      <label>Prescription</label>
+
+      <textarea
+        id="consultPrescription"
+        placeholder="Enter medicines and dosage">
+      </textarea>
+
+
+      <label>Advice</label>
+
+      <textarea
+        id="consultAdvice"
+        placeholder="Diet, lifestyle and other advice">
+      </textarea>
+
+
+      <label>Follow-up Date</label>
+
+      <input
+        type="date"
+        id="consultFollowUpDate">
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="saveConsultationButton">
+
+        💾 Save Consultation
+
+      </button>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="cancelConsultationButton">
+
+        ↩️ Cancel
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById("saveConsultationButton")
+    .onclick = function () {
+
+      saveConsultation(patientId);
+
+    };
+
+
+  document
+    .getElementById("cancelConsultationButton")
+    .onclick = function () {
+
+      viewPatient(patientId);
+
+    };
+
+}
+ 
+}
+  async function saveConsultation(patientId) {
+
+  const consultation = {
+
+    patient_id: patientId,
+
+    chief_complaints:
+      document
+        .getElementById("consultChiefComplaints")
+        .value
+        .trim(),
+
+    vitals:
+      document
+        .getElementById("consultVitals")
+        .value
+        .trim(),
+
+    examination:
+      document
+        .getElementById("consultExamination")
+        .value
+        .trim(),
+
+    diagnosis:
+      document
+        .getElementById("consultDiagnosis")
+        .value
+        .trim(),
+
+    investigations:
+      document
+        .getElementById("consultInvestigations")
+        .value
+        .trim(),
+
+    prescription:
+      document
+        .getElementById("consultPrescription")
+        .value
+        .trim(),
+
+    advice:
+      document
+        .getElementById("consultAdvice")
+        .value
+        .trim(),
+
+    follow_up_date:
+      document
+        .getElementById("consultFollowUpDate")
+        .value || null
+
+  };
+
+
+  const { error } =
+    await supabaseClient
+      .from("consultations")
+      .insert([consultation]);
+
+
+  if (error) {
+
+    console.error(
+      "Error saving consultation:",
+      error
+    );
+
+    alert(
+      "Unable to save consultation: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Consultation saved successfully."
+  );
+
+
+  viewPatient(patientId);
+
+          }
+  async function savePatientChanges(patientId) {
 
   const updatedPatient = {
 
