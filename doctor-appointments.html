@@ -746,13 +746,7 @@ document
   
 
 
-  document
-    .getElementById("cancelEditButton")
-    .onclick = function () {
-
-      viewPatient(patient.id);
-
-    };
+  
 
 }async function savePatientChanges(patientId) {
 
@@ -835,6 +829,16 @@ document.getElementById(
   viewPatient(patientId);
 
 }
+  document
+  .getElementById("closePatientModal")
+  .onclick = function () {
+
+    document.getElementById(
+      "patientModal"
+    ).style.display = "none";
+
+  };
+  
 loadAppointments();
   async function protectAppointments() {
 
