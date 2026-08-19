@@ -47,6 +47,159 @@
   </button>
 
 </div>
+      <div
+  id="patientFormContainer"
+  class="appointment-form"
+  style="display:none;">
+
+  <h2>👤 New Patient Registration</h2>
+
+  <input
+    type="text"
+    id="newPatientName"
+    placeholder="Patient Name"
+    required>
+
+  <input
+    type="tel"
+    id="newPatientPhone"
+    placeholder="Phone Number"
+    required>
+
+  <label>Date of Birth</label>
+
+  <input
+    type="date"
+    id="newPatientDOB">
+
+  <select id="newPatientGender">
+
+    <option value="">
+      Select Gender
+    </option>
+
+    <option value="Male">
+      Male
+    </option>
+
+    <option value="Female">
+      Female
+    </option>
+
+    <option value="Other">
+      Other
+    </option>
+
+  </select>
+
+  <input
+    type="text"
+    id="newPatientAddress"
+    placeholder="Address">
+
+  <input
+    type="text"
+    id="newPatientBloodGroup"
+    placeholder="Blood Group">
+
+
+  <h3>🩺 Current Visit</h3>
+
+  <textarea
+    id="newPatientChiefComplaints"
+    placeholder="Present Symptoms / Chief Complaints"></textarea>
+
+  <input
+    type="text"
+    id="newPatientPulse"
+    placeholder="Pulse (bpm)">
+
+  <input
+    type="text"
+    id="newPatientBP"
+    placeholder="Blood Pressure (mmHg)">
+
+  <input
+    type="text"
+    id="newPatientSpO2"
+    placeholder="SpO₂ (%)">
+
+  <input
+    type="number"
+    step="0.1"
+    id="newPatientWeight"
+    placeholder="Weight (kg)">
+
+  <input
+    type="number"
+    step="0.1"
+    id="newPatientHeight"
+    placeholder="Height (cm)">
+
+
+  <h3>📋 Medical History</h3>
+
+  <textarea
+    id="newPatientMedicalHistory"
+    placeholder="Past Medical History"></textarea>
+
+  <textarea
+    id="newPatientSurgicalHistory"
+    placeholder="Surgical History"></textarea>
+
+  <textarea
+    id="newPatientAllergies"
+    placeholder="Allergy History"></textarea>
+
+  <textarea
+    id="newPatientCurrentMedication"
+    placeholder="Current Medications"></textarea>
+
+
+  <h3>🩺 Assessment & Treatment</h3>
+
+  <textarea
+    id="newPatientDiagnosis"
+    placeholder="Diagnosis"></textarea>
+
+  <textarea
+    id="newPatientLabReports"
+    placeholder="Lab Reports / Investigations"></textarea>
+
+  <textarea
+    id="newPatientTreatment"
+    placeholder="Treatment / Prescription"></textarea>
+
+  <textarea
+    id="newPatientAdvice"
+    placeholder="Advice"></textarea>
+
+  <label>Follow-up Date</label>
+
+  <input
+    type="date"
+    id="newPatientFollowUp">
+
+
+  <button
+    type="button"
+    class="doctor-login-button"
+    id="saveNewPatientButton">
+
+    💾 Save Patient
+
+  </button>
+
+  <button
+    type="button"
+    class="doctor-login-button"
+    id="cancelNewPatientButton">
+
+    ↩️ Cancel
+
+  </button>
+
+      </div>
       <!-- Search Patients -->
 
       <div class="appointment-form">
@@ -161,7 +314,34 @@
 
       });
 
+document
+  .getElementById("addPatientButton")
+  .addEventListener("click", function () {
 
+    document.getElementById(
+      "patientFormContainer"
+    ).style.display = "block";
+
+    document.getElementById(
+      "addPatientButton"
+    ).style.display = "none";
+
+  });
+
+
+document
+  .getElementById("cancelNewPatientButton")
+  .addEventListener("click", function () {
+
+    document.getElementById(
+      "patientFormContainer"
+    ).style.display = "none";
+
+    document.getElementById(
+      "addPatientButton"
+    ).style.display = "block";
+
+  });
   </script>
 
 </body>
