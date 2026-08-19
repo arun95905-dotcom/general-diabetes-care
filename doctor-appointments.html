@@ -156,7 +156,71 @@ async function checkDoctorLogin() {
 
 
 checkDoctorLogin();
+document
+  .getElementById("saveAppointment")
+  .addEventListener("click", async function () {
 
+    const patientName =
+      document.getElementById("patientName").value.trim();
+
+    const patientPhone =
+      document.getElementById("patientPhone").value.trim();
+
+    const appointmentDate =
+      document.getElementById("appointmentDate").value;
+
+    const appointmentTime =
+      document.getElementById("appointmentTime").value;
+
+    const appointmentType =
+      document.getElementById("appointmentType").value;
+
+    const notes =
+      document.getElementById("appointmentNotes").value.trim();
+
+
+    if (
+      !patientName ||
+      !patientPhone ||
+      !appointmentDate ||
+      !appointmentTime ||
+      !appointmentType
+    ) {
+
+      alert("Please fill in all required fields.");
+
+      return;
+    }
+
+
+    const { error } =
+      await supabaseClient
+        .from("appointments")
+        .insert([
+          {
+            patient_name: patientName,
+            patient_phone: patientPhone,
+            appointment_date: appointmentDate,
+            appointment_time: appointmentTime,
+            appointment_type: appointmentType,
+            notes: notes
+          }
+        ]);
+
+
+    if (error) {
+
+      console.error(error);
+
+      alert("Unable to save appointment.");
+
+      return;
+    }
+
+
+    alert("Appointment saved successfully.");
+
+});
 </script>
 </body>
 
