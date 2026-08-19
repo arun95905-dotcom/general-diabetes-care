@@ -302,54 +302,54 @@ if (count >= 5) {
     return;
   }
 
+container.innerHTML = "";
 
-  container.innerHTML = "";
+data.forEach(function (appointment) {
 
+  const appointmentCard =
+    document.createElement("div");
 
-  data.forEach(function (appointment) {
+  appointmentCard.className =
+    "appointment-card";
 
-    const appointmentCard =
-      document.createElement("div");
+  appointmentCard.innerHTML = `
 
-    appointmentCard.className =
-      "appointment-card";
+    <strong>
+      ${appointment.patient_name}
+    </strong>
 
+    <span>
+      📞 ${appointment.patient_phone}
+    </span>
 
-    appointmentCard.innerHTML = `
+    <span>
+      📅 ${appointment.appointment_date}
+    </span>
 
-      <strong>
-        ${appointment.patient_name}
-      </strong>
+    <span>
+      🕐 ${appointment.appointment_time}
+    </span>
 
-      <span>
-        📞 ${appointment.patient_phone}
-      </span>
+    <span>
+      🩺 ${appointment.appointment_type}
+    </span>
 
-      <span>
-        📅 ${appointment.appointment_date}
-      </span>
+    ${
+      appointment.notes
+        ? `<span>📝 ${appointment.notes}</span>`
+        : ""
+    }
 
-      <span>
-        🕐 ${appointment.appointment_time}
-      </span>
+    <span>
+      📌 Status: ${appointment.status}
+    </span>
 
-      <span>
-        ${appointment.appointment_type}
-      </span>
+  `;
 
-      ${
-        appointment.notes
-          ? `<span>📝 ${appointment.notes}</span>`
-          : ""
-      }
+  container.appendChild(appointmentCard);
 
-    `;
-
-
-    container.appendChild(appointmentCard);
-
-  });
-
+});
+  
 }
 
 
