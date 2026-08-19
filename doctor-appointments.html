@@ -609,11 +609,20 @@ const startConsultationButton =
   document.getElementById(
     "startConsultationButton"
   );
+const startConsultationButton =
+  document.getElementById(
+    "startConsultationButton"
+  );
 
 if (startConsultationButton) {
 
   startConsultationButton.onclick =
-    function () {
+    function (event) {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      alert("Start Consultation clicked");
 
       startConsultation(patient.id);
 
