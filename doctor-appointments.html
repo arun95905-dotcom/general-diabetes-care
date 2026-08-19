@@ -1095,19 +1095,32 @@ document.getElementById(
 
   };
   
-loadAppointments();
-  async function protectAppointments() {
+async function protectAppointments() {
 
-  const { data: { session } } =
+  const { data: { session }, error } =
     await supabaseClient.auth.getSession();
+
+  if (error) {
+
+    console.error("Session error:", error);
+
+    return;
+
+  }
 
   if (!session) {
 
     window.location.href = "doctor-login.html";
 
+    return;
+
   }
 
-} 
+  // User is logged in — now load appointments
+  loadAppointments();
+
+}
+
 
 protectAppointments();
   document
