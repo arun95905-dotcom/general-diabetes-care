@@ -643,21 +643,25 @@ if (consultationError) {
                     <strong>Chief Complaints:</strong><br>
                     ${consultation.chief_complaints || "-"}
                   </p>
-
-                  <p>
-                    <strong>Vitals:</strong><br>
-                    ${consultation.vitals || "-"}
-                  </p>
-
-                  <p>
-                    <strong>Examination:</strong><br>
-                    ${consultation.examination || "-"}
-                  </p>
-
-                  <p>
+<p>
                     <strong>Diagnosis / Assessment:</strong><br>
                     ${consultation.diagnosis || "-"}
                   </p>
+                  <div
+  id="consultation-details-${index}"
+  style="display:none;">
+
+  <p>
+    <strong>Vitals:</strong><br>
+    ${consultation.vitals || "-"}
+  </p>
+
+  <p>
+    <strong>Examination:</strong><br>
+    ${consultation.examination || "-"}
+  </p>
+
+                  
 
                   <p>
                     <strong>Investigations:</strong><br>
@@ -685,6 +689,7 @@ if (consultationError) {
       : "-"
   }
 </p>
+</div>
 <button
   type="button"
   class="doctor-login-button"
@@ -1442,7 +1447,28 @@ data.forEach(function (appointment) {
     </div>
 
   `;
-  }    
+  }  function showConsultationDetails(index) {
+
+  const details =
+    document.getElementById(
+      "consultation-details-" + index
+    );
+
+  if (!details) {
+    return;
+  }
+
+  if (details.style.display === "none") {
+
+    details.style.display = "block";
+
+  } else {
+
+    details.style.display = "none";
+
+  }
+
+  }  
 </script>
 </body>
 
