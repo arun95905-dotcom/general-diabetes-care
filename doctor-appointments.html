@@ -604,22 +604,43 @@ async function viewPatient(patientId) {
     editPatient(patient);
 
   };
-document.getElementById(
+
+const startConsultationButton =
+  document.getElementById(
+    "startConsultationButton"
+  );
+
+if (startConsultationButton) {
+
+  startConsultationButton.onclick =
+    function () {
+
+      startConsultation(patient.id);
+
+    };
+
+}
+  document.getElementById(
   "startConsultationButton"
-).onclick = function () {
+).style.display = "block";
 
-  startConsultation(patient.id);
-
-};
-
+document.getElementById(
+  "editPatientButton"
+).style.display = "block";
   document.getElementById(
     "patientModal"
   ).style.display = "flex";
 
-}function editPatient(patient) {
-document.getElementById(
-  "editPatientButton"
-).style.display = "none";
+}
+  function editPatient(patient) {
+
+  document.getElementById(
+    "editPatientButton"
+  ).style.display = "none";
+
+  document.getElementById(
+    "startConsultationButton"
+  ).style.display = "none";
   const content =
     document.getElementById(
       "patientProfileContent"
@@ -753,6 +774,10 @@ document
 
     document.getElementById(
       "editPatientButton"
+    ).style.display = "block";
+
+    document.getElementById(
+      "startConsultationButton"
     ).style.display = "block";
 
     viewPatient(patient.id);
