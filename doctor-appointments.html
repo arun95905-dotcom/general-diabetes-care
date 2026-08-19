@@ -462,9 +462,14 @@ async function viewPatient(patientId) {
       .single();
 
   if (error) {
-    console.error("Error loading patient:", error);
-    alert("Unable to load patient details.");
-    return;
+  console.error("Error loading patient:", error);
+
+  alert(
+    "Patient error: " +
+    error.message
+  );
+
+  return;
   }
 
   const patientDetails = `
