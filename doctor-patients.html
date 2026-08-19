@@ -627,6 +627,201 @@ document
   });
 
    } 
+    async function viewPatient(patientId) {
+
+  const { data: patient, error } =
+    await supabaseClient
+      .from("patients")
+      .select("*")
+      .eq("id", patientId)
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Error loading patient:",
+      error
+    );
+
+    alert(
+      "Unable to load patient details."
+    );
+
+    return;
+  }
+
+
+  const container =
+    document.getElementById(
+      "patientsContainer"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="patient-profile-section">
+
+      <h2>👤 Patient Profile</h2>
+
+      <p>
+        <strong>🆔 Patient ID:</strong>
+        ${patient.id || "-"}
+      </p>
+
+      <p>
+        <strong>👤 Name:</strong>
+        ${patient.patient_name || "-"}
+      </p>
+
+      <p>
+        <strong>📞 Phone:</strong>
+        ${patient.patient_phone || "-"}
+      </p>
+
+      <p>
+        <strong>🎂 Date of Birth:</strong>
+        ${patient.date_of_birth || "-"}
+      </p>
+
+      <p>
+        <strong>⚧ Gender:</strong>
+        ${patient.gender || "-"}
+      </p>
+
+      <p>
+        <strong>🏠 Address:</strong>
+        ${patient.address || "-"}
+      </p>
+
+      <p>
+        <strong>🩸 Blood Group:</strong>
+        ${patient.blood_group || "-"}
+      </p>
+
+    </div>
+
+
+    <hr>
+
+
+    <div class="patient-profile-section">
+
+      <h3>🩺 Clinical Information</h3>
+
+      <p>
+        <strong>Chief Complaints:</strong><br>
+        ${patient.chief_complaints || "-"}
+      </p>
+
+      <p>
+        <strong>Pulse:</strong>
+        ${patient.Pulse || "-"}
+      </p>
+
+      <p>
+        <strong>Blood Pressure:</strong>
+        ${patient.blood_pressure || "-"}
+      </p>
+
+      <p>
+        <strong>SpO₂:</strong>
+        ${patient.spo2 || "-"}
+      </p>
+
+      <p>
+        <strong>Weight:</strong>
+        ${patient.weight || "-"} kg
+      </p>
+
+      <p>
+        <strong>Height:</strong>
+        ${patient.height || "-"} cm
+      </p>
+
+      <p>
+        <strong>Medical History:</strong><br>
+        ${patient.medical_history || "-"}
+      </p>
+
+      <p>
+        <strong>Surgical History:</strong><br>
+        ${patient.surgical_history || "-"}
+      </p>
+
+      <p>
+        <strong>⚠️ Allergies:</strong><br>
+        ${patient.allergies || "-"}
+      </p>
+
+      <p>
+        <strong>💊 Current Medications:</strong><br>
+        ${patient.current_medications || "-"}
+      </p>
+
+    </div>
+
+
+    <hr>
+
+
+    <div class="patient-profile-section">
+
+      <h3>🩺 Assessment & Treatment</h3>
+
+      <p>
+        <strong>Diagnosis:</strong><br>
+        ${patient.diagnosis || "-"}
+      </p>
+
+      <p>
+        <strong>🧪 Lab Reports:</strong><br>
+        ${patient.lab_reports || "-"}
+      </p>
+
+      <p>
+        <strong>💊 Treatment:</strong><br>
+        ${patient.treatment || "-"}
+      </p>
+
+      <p>
+        <strong>Advice:</strong><br>
+        ${patient.advice || "-"}
+      </p>
+
+      <p>
+        <strong>📅 Follow-up Date:</strong><br>
+        ${patient.follow_up_date || "-"}
+      </p>
+
+    </div>
+
+
+    <br>
+
+    <button
+      type="button"
+      class="doctor-login-button"
+      id="backToPatientSearchButton">
+
+      ← Back to Patient Search
+
+    </button>
+
+  `;
+
+
+  document
+    .getElementById(
+      "backToPatientSearchButton"
+    )
+    .onclick = function () {
+
+      location.reload();
+
+    };
+
+      }
     document
   .getElementById("searchPatientButton")
   .addEventListener(
