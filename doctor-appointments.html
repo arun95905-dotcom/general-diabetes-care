@@ -800,7 +800,13 @@ document
 
   }
 function startConsultation(patientId) {
+document.getElementById(
+  "startConsultationButton"
+).style.display = "none";
 
+document.getElementById(
+  "editPatientButton"
+).style.display = "none";
   const content =
     document.getElementById(
       "patientProfileContent"
