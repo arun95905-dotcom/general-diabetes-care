@@ -70,7 +70,13 @@
             required>
 
         </div>
-
+<p>
+  <a
+    href="#"
+    id="forgotPassword">
+    Forgot Password?
+  </a>
+</p>
 
         <button
           type="submit"
@@ -102,7 +108,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
-const SUPABASE_URL = "https://twdmvdqqckcpwoccvtkj.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://twdmvdqqckcpwoccvtkj.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
@@ -154,7 +160,54 @@ document
       "doctor-dashboard.html";
 
 });
+document
+  .getElementById("forgotPassword")
+  .addEventListener("click", async function(event) {
 
+    event.preventDefault();
+
+    const email =
+      document.getElementById("doctorEmail").value.trim();
+
+    const message =
+      document.getElementById("loginMessage");
+
+    if (!email) {
+
+      message.textContent =
+        "Please enter your email address first.";
+
+      return;
+
+    }
+
+    message.textContent =
+      "Sending password recovery email...";
+
+    const { error } =
+      await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo:
+            "https://general-diabetes-care.netlify.app/reset-password.html"
+        }
+      );
+
+    if (error) {
+
+      console.error(error);
+
+      message.textContent =
+        "Unable to send recovery email. Please try again later.";
+
+      return;
+
+    }
+
+    message.textContent =
+      "Password recovery email sent. Please check your inbox.";
+
+});
 </script>
 
 </body>
