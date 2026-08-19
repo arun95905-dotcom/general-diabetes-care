@@ -1549,6 +1549,217 @@ document
 
   }
 
+    }async function editPatient(patient) {
+
+  const container =
+    document.getElementById("patientsContainer");
+
+  container.innerHTML = `
+
+    <div class="patient-profile-section">
+
+      <h2>✏️ Edit Patient</h2>
+
+      <input
+        type="text"
+        id="editPatientName"
+        value="${patient.patient_name || ""}"
+        placeholder="Patient Name">
+
+      <input
+        type="tel"
+        id="editPatientPhone"
+        value="${patient.patient_phone || ""}"
+        placeholder="Phone Number">
+
+      <label>Date of Birth</label>
+
+      <input
+        type="date"
+        id="editPatientDOB"
+        value="${patient.date_of_birth || ""}">
+
+      <select id="editPatientGender">
+
+        <option value="">Select Gender</option>
+
+        <option value="Male"
+          ${patient.gender === "Male" ? "selected" : ""}>
+          Male
+        </option>
+
+        <option value="Female"
+          ${patient.gender === "Female" ? "selected" : ""}>
+          Female
+        </option>
+
+        <option value="Other"
+          ${patient.gender === "Other" ? "selected" : ""}>
+          Other
+        </option>
+
+      </select>
+
+      <input
+        type="text"
+        id="editPatientAddress"
+        value="${patient.address || ""}"
+        placeholder="Address">
+
+      <input
+        type="text"
+        id="editPatientBloodGroup"
+        value="${patient.blood_group || ""}"
+        placeholder="Blood Group">
+
+      <textarea
+        id="editPatientMedicalHistory"
+        placeholder="Medical History">${patient.medical_history || ""}</textarea>
+
+      <textarea
+        id="editPatientSurgicalHistory"
+        placeholder="Surgical History">${patient.surgical_history || ""}</textarea>
+
+      <textarea
+        id="editPatientAllergies"
+        placeholder="Allergies">${patient.allergies || ""}</textarea>
+
+      <textarea
+        id="editPatientCurrentMedications"
+        placeholder="Current Medications">${patient.current_medications || ""}</textarea>
+
+      <br>
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="saveEditedPatientButton">
+
+        💾 Save Changes
+
+      </button>
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="cancelEditPatientButton">
+
+        ↩️ Cancel
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById("saveEditedPatientButton")
+    .onclick = function () {
+
+      saveEditedPatient(patient.id);
+
+    };
+
+
+  document
+    .getElementById("cancelEditPatientButton")
+    .onclick = function () {
+
+      viewPatient(patient.id);
+
+    };
+
+    }async function saveEditedPatient(patientId) {
+
+  const updatedPatient = {
+
+    patient_name:
+      document.getElementById("editPatientName").value.trim(),
+
+    patient_phone:
+      document.getElementById("editPatientPhone").value.trim(),
+
+    date_of_birth:
+      document.getElementById("editPatientDOB").value || null,
+
+    gender:
+      document.getElementById("editPatientGender").value || null,
+
+    address:
+      document.getElementById("editPatientAddress").value.trim(),
+
+    blood_group:
+      document.getElementById("editPatientBloodGroup").value.trim(),
+
+    medical_history:
+      document.getElementById("editPatientMedicalHistory").value.trim(),
+
+    surgical_history:
+      document.getElementById("editPatientSurgicalHistory").value.trim(),
+
+    allergies:
+      document.getElementById("editPatientAllergies").value.trim(),
+
+    current_medications:
+      document
+        .getElementById("editPatientCurrentMedications")
+        .value
+        .trim()
+
+  };
+
+
+  if (
+    !updatedPatient.patient_name ||
+    !updatedPatient.patient_phone
+  ) {
+
+    alert(
+      "Patient name and phone number are required."
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .update(updatedPatient)
+      .eq("id", patientId)
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Error updating patient:",
+      error
+    );
+
+    alert(
+      "Unable to save changes: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    "Patient details updated successfully."
+  );
+
+
+  viewPatient(patientId);
+
     }
   </script>
 
