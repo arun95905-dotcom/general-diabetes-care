@@ -346,6 +346,9 @@ data.forEach(function (appointment) {
 
     `;
 
+  // Add action buttons only for Pending appointments
+if (appointment.status === "Pending") {
+
   // Create Complete button
   const completeButton =
     document.createElement("button");
@@ -368,8 +371,6 @@ data.forEach(function (appointment) {
       console.error(error);
       return;
     }
-
-    alert("Appointment marked as Completed");
 
     loadAppointments();
 
@@ -408,8 +409,6 @@ data.forEach(function (appointment) {
       return;
     }
 
-    alert("Appointment cancelled");
-
     loadAppointments();
 
   };
@@ -423,6 +422,8 @@ data.forEach(function (appointment) {
   appointmentCard.appendChild(
     cancelButton
   );
+
+}
 
 
   container.appendChild(appointmentCard);
