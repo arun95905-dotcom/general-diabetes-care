@@ -344,7 +344,86 @@ data.forEach(function (appointment) {
       📌 Status: ${appointment.status}
     </span>
 
-  `;
+    `;
+
+  // Create Complete button
+  const completeButton =
+    document.createElement("button");
+
+  completeButton.textContent =
+    "✅ Complete";
+
+  completeButton.onclick = async function () {
+
+    const { error } =
+      await supabaseClient
+        .from("appointments")
+        .update({
+          status: "Completed"
+        })
+        .eq("id", appointment.id);
+
+    if (error) {
+      alert("Unable to complete appointment");
+      console.error(error);
+      return;
+    }
+
+    alert("Appointment marked as Completed");
+
+    loadAppointments();
+
+  };
+
+
+  // Create Cancel button
+  const cancelButton =
+    document.createElement("button");
+
+  cancelButton.textContent =
+    "❌ Cancel";
+
+  cancelButton.onclick = async function () {
+
+    const confirmCancel =
+      confirm(
+        "Are you sure you want to cancel this appointment?"
+      );
+
+    if (!confirmCancel) {
+      return;
+    }
+
+    const { error } =
+      await supabaseClient
+        .from("appointments")
+        .update({
+          status: "Cancelled"
+        })
+        .eq("id", appointment.id);
+
+    if (error) {
+      alert("Unable to cancel appointment");
+      console.error(error);
+      return;
+    }
+
+    alert("Appointment cancelled");
+
+    loadAppointments();
+
+  };
+
+
+  // Add buttons to appointment card
+  appointmentCard.appendChild(
+    completeButton
+  );
+
+  appointmentCard.appendChild(
+    cancelButton
+  );
+
 
   container.appendChild(appointmentCard);
 
