@@ -342,6 +342,144 @@ document
     ).style.display = "block";
 
   });
+    document
+  .getElementById("saveNewPatientButton")
+  .addEventListener("click", async function () {
+
+    const patientName =
+      document.getElementById("newPatientName").value.trim();
+
+    const patientPhone =
+      document.getElementById("newPatientPhone").value.trim();
+
+    if (!patientName || !patientPhone) {
+
+      alert(
+        "Patient name and phone number are required."
+      );
+
+      return;
+
+    }
+
+
+    const newPatient = {
+
+      patient_name:
+        patientName,
+
+      patient_phone:
+        patientPhone,
+
+      dob:
+        document.getElementById("newPatientDOB").value || null,
+
+      gender:
+        document.getElementById("newPatientGender").value || null,
+
+      address:
+        document.getElementById("newPatientAddress").value.trim(),
+
+      blood_group:
+        document.getElementById("newPatientBloodGroup").value.trim(),
+
+      chief_complaints:
+        document.getElementById("newPatientChiefComplaints").value.trim(),
+
+      pulse:
+        document.getElementById("newPatientPulse").value.trim(),
+
+      blood_pressure:
+        document.getElementById("newPatientBP").value.trim(),
+
+      spo2:
+        document.getElementById("newPatientSpO2").value.trim(),
+
+      weight:
+        document.getElementById("newPatientWeight").value || null,
+
+      height:
+        document.getElementById("newPatientHeight").value || null,
+
+      medical_history:
+        document.getElementById("newPatientMedicalHistory").value.trim(),
+
+      surgical_history:
+        document.getElementById("newPatientSurgicalHistory").value.trim(),
+
+      allergies:
+        document.getElementById("newPatientAllergies").value.trim(),
+
+      current_medication:
+        document.getElementById("newPatientCurrentMedication").value.trim(),
+
+      diagnosis:
+        document.getElementById("newPatientDiagnosis").value.trim(),
+
+      lab_reports:
+        document.getElementById("newPatientLabReports").value.trim(),
+
+      treatment:
+        document.getElementById("newPatientTreatment").value.trim(),
+
+      advice:
+        document.getElementById("newPatientAdvice").value.trim(),
+
+      follow_up_date:
+        document.getElementById("newPatientFollowUp").value || null
+
+    };
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("patients")
+        .insert([newPatient])
+        .select()
+        .single();
+
+
+    if (error) {
+
+      console.error(
+        "Error saving patient:",
+        error
+      );
+
+      alert(
+        "Unable to save patient: " +
+        error.message
+      );
+
+      return;
+
+    }
+
+
+    
+
+
+    alert(
+  "Patient registered successfully."
+);
+
+console.log(
+  "New patient:",
+  data
+);
+
+document
+  .getElementById("patientFormContainer")
+  .style.display = "none";
+
+document
+  .getElementById("addPatientButton")
+  .style.display = "block";
+
+  });
   </script>
 
 </body>
