@@ -1524,6 +1524,32 @@ document
     "click",
     searchPatients
   );
+    function showConsultationDetails(index) {
+
+  const details =
+    document.getElementById(
+      "consultation-details-" + index
+    );
+
+  if (!details) {
+    console.error(
+      "Consultation details not found:",
+      index
+    );
+    return;
+  }
+
+  if (details.style.display === "none") {
+
+    details.style.display = "block";
+
+  } else {
+
+    details.style.display = "none";
+
+  }
+
+    }
   </script>
 
 </body>
