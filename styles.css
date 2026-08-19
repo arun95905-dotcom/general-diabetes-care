@@ -1237,3 +1237,65 @@ footer .copyright {
   color: #687386;
   font-size: 14px;
 }
+/* ==============================
+   PATIENT PROFILE MODAL
+   ============================== */
+
+.patient-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.patient-modal-content {
+  position: relative;
+  background: white;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+.patient-modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.patient-profile-section {
+  margin-bottom: 20px;
+}
+
+.patient-profile-section h3 {
+  margin-bottom: 15px;
+}
+
+.patient-profile-section p {
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.patient-profile-section strong {
+  font-weight: 600;
+}
+
+.patient-modal-close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+}
