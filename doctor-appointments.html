@@ -61,7 +61,39 @@
     </div>
 
   </section>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+
+const SUPABASE_URL = "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+
+async function checkDoctorLogin() {
+
+  const { data: { session } } =
+    await supabaseClient.auth.getSession();
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+  }
+
+}
+
+
+checkDoctorLogin();
+
+</script>
 </body>
 
 </html>
