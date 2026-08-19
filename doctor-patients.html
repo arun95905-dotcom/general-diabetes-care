@@ -886,6 +886,14 @@ if (consultationError) {
                           : "-"
                       }
                     </p>
+                    <button
+  type="button"
+  class="doctor-login-button"
+  onclick="editConsultation(${consultation.id})">
+
+  ✏️ Edit Consultation
+
+</button>
 
                   </div>
 
@@ -1755,6 +1763,246 @@ document
 
   alert(
     "Patient details updated successfully."
+  );
+
+
+  viewPatient(patientId);
+
+    } async function editConsultation(consultationId) {
+
+  const {
+    data: consultation,
+    error
+  } = await supabaseClient
+    .from("consultations")
+    .select("*")
+    .eq("id", consultationId)
+    .single();
+
+  if (error) {
+
+    console.error(
+      "Error loading consultation:",
+      error
+    );
+
+    alert(
+      "Unable to load consultation."
+    );
+
+    return;
+  }
+
+
+  const container =
+    document.getElementById("patientsContainer");
+
+
+  container.innerHTML = `
+
+    <div class="patient-profile-section">
+
+      <h2>✏️ Edit Consultation</h2>
+
+      <p>
+        <strong>🆔 Consultation ID:</strong>
+        ${consultation.id}
+      </p>
+
+
+      <label>Chief Complaints / Present Symptoms</label>
+
+      <textarea
+        id="editConsultChiefComplaints"
+        placeholder="Chief Complaints">${consultation.chief_complaints || ""}</textarea>
+
+
+      <label>Vitals</label>
+
+      <textarea
+        id="editConsultVitals"
+        placeholder="BP, Pulse, SpO₂, Weight, Height">${consultation.vitals || ""}</textarea>
+
+
+      <label>Examination</label>
+
+      <textarea
+        id="editConsultExamination"
+        placeholder="Examination findings">${consultation.examination || ""}</textarea>
+
+
+      <label>Diagnosis / Assessment</label>
+
+      <textarea
+        id="editConsultDiagnosis"
+        placeholder="Diagnosis / Assessment">${consultation.diagnosis || ""}</textarea>
+
+
+      <label>Investigations / Lab Reports</label>
+
+      <textarea
+        id="editConsultInvestigations"
+        placeholder="Investigations / Lab Reports">${consultation.investigations || ""}</textarea>
+
+
+      <label>Prescription / Treatment</label>
+
+      <textarea
+        id="editConsultPrescription"
+        placeholder="Medicines, dose and duration">${consultation.prescription || ""}</textarea>
+
+
+      <label>Advice</label>
+
+      <textarea
+        id="editConsultAdvice"
+        placeholder="Advice">${consultation.advice || ""}</textarea>
+
+
+      <label>Follow-up Date</label>
+
+      <input
+        type="date"
+        id="editConsultFollowUpDate"
+        value="${consultation.follow_up_date || ""}">
+
+
+      <br>
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="saveEditedConsultationButton">
+
+        💾 Save Changes
+
+      </button>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="cancelEditConsultationButton">
+
+        ↩️ Cancel
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById("saveEditedConsultationButton")
+    .onclick = function () {
+
+      saveEditedConsultation(
+        consultation.id,
+        consultation.patient_id
+      );
+
+    };
+
+
+  document
+    .getElementById("cancelEditConsultationButton")
+    .onclick = function () {
+
+      viewPatient(
+        consultation.patient_id
+      );
+
+    };
+
+        }async function saveEditedConsultation(
+  consultationId,
+  patientId
+) {
+
+  const updatedConsultation = {
+
+    chief_complaints:
+      document
+        .getElementById("editConsultChiefComplaints")
+        .value
+        .trim(),
+
+    vitals:
+      document
+        .getElementById("editConsultVitals")
+        .value
+        .trim(),
+
+    examination:
+      document
+        .getElementById("editConsultExamination")
+        .value
+        .trim(),
+
+    diagnosis:
+      document
+        .getElementById("editConsultDiagnosis")
+        .value
+        .trim(),
+
+    investigations:
+      document
+        .getElementById("editConsultInvestigations")
+        .value
+        .trim(),
+
+    prescription:
+      document
+        .getElementById("editConsultPrescription")
+        .value
+        .trim(),
+
+    advice:
+      document
+        .getElementById("editConsultAdvice")
+        .value
+        .trim(),
+
+    follow_up_date:
+      document
+        .getElementById("editConsultFollowUpDate")
+        .value || null
+
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .update(updatedConsultation)
+      .eq("id", consultationId)
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Error updating consultation:",
+      error
+    );
+
+    alert(
+      "Unable to save consultation changes: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    "Consultation updated successfully."
   );
 
 
