@@ -813,77 +813,105 @@ if (consultationError) {
     </div>
     <hr>
 
-    <div class="patient-profile-section">
+<div class="patient-profile-section">
 
-      <h3>📋 Consultation History</h3>
+  <h3>📋 Consultation History</h3>
 
-      ${
-        consultations && consultations.length > 0
+  ${
+    consultations && consultations.length > 0
 
-          ? consultations.map(function (consultation) {
+      ? consultations.map(function (consultation, index) {
 
-              return `
+          return `
 
-                <div class="consultation-history-card">
+            <div class="consultation-history-card">
 
-                  <strong>
-                    📅 ${
-                      consultation.created_at
-                        ? new Date(
-                            consultation.created_at
-                          ).toLocaleDateString("en-IN")
-                        : "-"
-                    }
-                  </strong>
+              <strong>
+                📅 ${
+                  consultation.created_at
+                    ? new Date(
+                        consultation.created_at
+                      ).toLocaleDateString("en-IN")
+                    : "-"
+                }
+              </strong>
 
-                  <p>
-                    <strong>Chief Complaints:</strong><br>
-                    ${consultation.chief_complaints || "-"}
-                  </p>
+              <p>
+                <strong>Chief Complaints:</strong><br>
+                ${consultation.chief_complaints || "-"}
+              </p>
 
-                  <p>
-                    <strong>Vitals:</strong><br>
-                    ${consultation.vitals || "-"}
-                  </p>
+              <p>
+                <strong>Diagnosis:</strong><br>
+                ${consultation.diagnosis || "-"}
+              </p>
 
-                  <p>
-                    <strong>Examination:</strong><br>
-                    ${consultation.examination || "-"}
-                  </p>
 
-                  <p>
-                    <strong>Diagnosis:</strong><br>
-                    ${consultation.diagnosis || "-"}
-                  </p>
+              <div
+                id="consultation-details-${index}"
+                style="display:none;">
 
-                  <p>
-                    <strong>Investigations:</strong><br>
-                    ${consultation.investigations || "-"}
-                  </p>
+                <p>
+                  <strong>Vitals:</strong><br>
+                  ${consultation.vitals || "-"}
+                </p>
 
-                  <p>
-                    <strong>Prescription:</strong><br>
-                    ${consultation.prescription || "-"}
-                  </p>
+                <p>
+                  <strong>Examination:</strong><br>
+                  ${consultation.examination || "-"}
+                </p>
 
-                  <p>
-                    <strong>Advice:</strong><br>
-                    ${consultation.advice || "-"}
-                  </p>
+                <p>
+                  <strong>Investigations:</strong><br>
+                  ${consultation.investigations || "-"}
+                </p>
 
-                  <p>
-                    <strong>Follow-up Date:</strong><br>
-                    ${
-                      consultation.follow_up_date
-                        ? new Date(
-                            consultation.follow_up_date +
-                            "T00:00:00"
-                          ).toLocaleDateString("en-IN")
-                        : "-"
-                    }
-                  </p>
+                <p>
+                  <strong>Prescription:</strong><br>
+                  ${consultation.prescription || "-"}
+                </p>
 
-                </div>
+                <p>
+                  <strong>Advice:</strong><br>
+                  ${consultation.advice || "-"}
+                </p>
+
+                <p>
+                  <strong>Follow-up Date:</strong><br>
+                  ${
+                    consultation.follow_up_date
+                      ? new Date(
+                          consultation.follow_up_date +
+                          "T00:00:00"
+                        ).toLocaleDateString("en-IN")
+                      : "-"
+                  }
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="doctor-login-button"
+                onclick="showConsultationDetails(${index})">
+
+                ▶️ View Full Consultation
+
+              </button>
+
+            </div>
+
+            <hr>
+
+          `;
+
+        }).join("")
+
+      : `<p>No previous consultations found.</p>`
+  }
+
+</div>
 
                 <hr>
 
