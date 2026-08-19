@@ -99,6 +99,63 @@
     </div>
 
   </section>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+
+const SUPABASE_URL = "https://twdmvdqqckcpwoccvtkj.supabase.co/rest/v1/";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+
+document
+  .getElementById("doctorLoginForm")
+  .addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const email =
+      document.getElementById("doctorEmail").value.trim();
+
+    const password =
+      document.getElementById("doctorPassword").value;
+
+    const message =
+      document.getElementById("loginMessage");
+
+    message.textContent = "Signing in...";
+
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+
+    if (error) {
+
+      message.textContent =
+        "Login failed. Please check your email and password.";
+
+      return;
+
+    }
+
+
+    message.textContent =
+      "Login successful.";
+
+    window.location.href =
+      "doctor-dashboard.html";
+
+});
+
+</script>
 
 </body>
 
