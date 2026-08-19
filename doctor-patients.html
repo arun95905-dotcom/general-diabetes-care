@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Patients | General & Diabetes Care</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+  <section class="doctor-dashboard">
+
+    <div class="dashboard-card">
+
+      <p class="section-label">
+        GENERAL &amp; DIABETES CARE
+      </p>
+
+      <h1>
+        Patient Management
+      </h1>
+
+      <p class="dashboard-welcome">
+        Manage patient records
+      </p>
+
+
+      <!-- Search Patients -->
+
+      <div class="appointment-form">
+
+        <h2>🔎 Search Patients</h2>
+
+        <input
+          type="text"
+          id="patientSearch"
+          placeholder="Search by Patient ID, Name or Phone Number">
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          id="searchPatientButton">
+
+          🔎 Search
+
+        </button>
+
+      </div>
+
+
+      <!-- Patient Results -->
+
+      <div class="appointments-list">
+
+        <h2>👥 Patients</h2>
+
+        <div id="patientsContainer">
+
+          <p>
+            Search for a patient to view records.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <br>
+
+
+      <a
+        href="doctor-dashboard.html"
+        class="doctor-login-button">
+
+        ← Back to Dashboard
+
+      </a>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="patientsLogoutButton">
+
+        🔒 Logout
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    async function checkDoctorLogin() {
+
+      const { data: { session } } =
+        await supabaseClient.auth.getSession();
+
+      if (!session) {
+
+        window.location.href =
+          "doctor-login.html";
+
+        return;
+
+      }
+
+    }
+
+
+    checkDoctorLogin();
+
+
+    document
+      .getElementById("patientsLogoutButton")
+      .addEventListener("click", async function () {
+
+        await supabaseClient.auth.signOut();
+
+        window.location.href =
+          "doctor-login.html";
+
+      });
+
+
+  </script>
+
+</body>
+
+</html>
