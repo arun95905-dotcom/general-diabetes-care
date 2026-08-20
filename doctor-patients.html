@@ -2095,12 +2095,19 @@ document
         id="editConsultPrescription"
         placeholder="Medicines, dose and duration">${consultation.prescription || ""}</textarea>
 
-<label>📷 Replace Prescription Image</label>
+
+<label>📷 Add Prescription Images</label>
 
 <input
   type="file"
-  id="editConsultPrescriptionImage"
-  accept="image/*">
+  id="editConsultPrescriptionImages"
+  accept="image/*"
+  multiple>
+
+<p
+  id="editPrescriptionImageNames"
+  style="font-size:14px;">
+</p>
 
 ${
   consultation.prescription_image_url
@@ -2161,7 +2168,27 @@ ${
 
   `;
 
+document
+  .getElementById("editConsultPrescriptionImages")
+  .addEventListener("change", function () {
 
+    const files = this.files;
+
+    const names =
+      Array.from(files)
+        .map(function (file) {
+          return file.name;
+        })
+        .join("<br>");
+
+    document
+      .getElementById("editPrescriptionImageNames")
+      .innerHTML =
+        files.length > 0
+          ? "Selected images:<br>" + names
+          : "";
+
+  });
   document
     .getElementById("saveEditedConsultationButton")
     .onclick = function () {
@@ -2338,7 +2365,121 @@ ${
     return;
 
   }
+  const prescriptionFiles =
+    document
+      .getElementById("editConsultPrescriptionImages")
+      .files;
 
+  if (prescriptionFiles.length > 0) {
+
+    for (
+      let i = 0;
+      i < prescriptionFiles.length;
+      i++
+    ) {
+
+      const imageFile =
+        prescriptionFiles[i];
+
+      const fileExtension =
+        imageFile.name.split(".").pop();
+
+      const fileName =
+        patientId +
+        "_" +
+        Date.now() +
+        "_" +
+        i +
+        "." +
+        fileExtension;
+
+      const filePath =
+        "patient-" +
+        patientId +
+        "/" +
+        fileName;
+
+
+      const {
+        error: uploadError
+      } =
+        await supabaseClient
+          .storage
+          .from("prescriptions")
+          .upload(
+            filePath,
+            imageFile,
+            {
+              upsert: false
+            }
+          );
+
+
+      if (uploadError) {
+
+        console.error(
+          "Prescription image upload error:",
+          uploadError
+        );
+
+        alert(
+          "Consultation updated, but image upload failed: " +
+          uploadError.message
+        );
+
+        return;
+      }
+
+
+      const {
+        data: publicUrlData
+      } =
+        supabaseClient
+          .storage
+          .from("prescriptions")
+          .getPublicUrl(filePath);
+
+
+      const imageUrl =
+        publicUrlData.publicUrl;
+
+
+      const {
+        error: imageInsertError
+      } =
+        await supabaseClient
+          .from("consultation_images")
+          .insert([
+
+            {
+              consultation_id:
+                consultationId,
+
+              image_url:
+                imageUrl
+            }
+
+          ]);
+
+
+      if (imageInsertError) {
+
+        console.error(
+          "Error saving consultation image:",
+          imageInsertError
+        );
+
+        alert(
+          "Consultation updated, but image record could not be saved: " +
+          imageInsertError.message
+        );
+
+        return;
+      }
+
+    }
+
+    }
 
   alert(
     "Consultation updated successfully."
