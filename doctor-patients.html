@@ -676,6 +676,10 @@ document
 
       consultationImages =
         imageData || [];
+      console.log(
+  "Consultation images:",
+  consultationImages
+);
 
     }
 
@@ -908,15 +912,36 @@ if (consultationError) {
                       ${consultation.prescription || "-"}
                     </p>
 
-  ${
+    ${
+  consultation.prescription_image_url
+    ? `
+      <p>
+        <strong>📷 Prescription Image:</strong><br>
+
+        <img
+          src="${consultation.prescription_image_url}"
+          alt="Prescription"
+          style="
+            max-width:100%;
+            width:500px;
+            border-radius:10px;
+            border:1px solid #ddd;
+            margin-top:10px;
+          ">
+      </p>
+    `
+    : ""
+}
+
+${
   consultationImages.filter(function (image) {
-    return image.consultation_id === consultation.id;
+    return String(image.consultation_id) === String(consultation.id);
   }).length > 0
 
   ? `
 
     <p>
-      <strong>📷 Prescription Images:</strong>
+      <strong>📷 Additional Prescription Images:</strong>
     </p>
 
     <div
@@ -929,12 +954,11 @@ if (consultationError) {
       ${
         consultationImages
           .filter(function (image) {
-            return image.consultation_id === consultation.id;
+            return String(image.consultation_id) === String(consultation.id);
           })
           .map(function (image) {
 
             return `
-
               <img
                 src="${image.image_url}"
                 alt="Prescription Image"
@@ -945,7 +969,6 @@ if (consultationError) {
                   border:1px solid #ddd;
                   margin-top:10px;
                 ">
-
             `;
 
           })
@@ -955,9 +978,9 @@ if (consultationError) {
     </div>
 
   `
-
   : ""
-}                  <p>
+  }             
+  <p>
                       <strong>Advice:</strong><br>
                       ${consultation.advice || "-"}
                     </p>
