@@ -1089,11 +1089,77 @@ document
 
     } 
       async function saveConsultation(patientId) {
+  let prescriptionImageUrl = null;
 
+  const imageFile =
+    document
+      .getElementById("consultPrescriptionImage")
+      .files[0];
+
+  if (imageFile) {
+
+    const fileExtension =
+      imageFile.name.split(".").pop();
+
+    const fileName =
+      patientId +
+      "_" +
+      Date.now() +
+      "." +
+      fileExtension;
+
+    const filePath =
+      "patient-" +
+      patientId +
+      "/" +
+      fileName;
+
+
+    const { error: uploadError } =
+      await supabaseClient
+        .storage
+        .from("prescriptions")
+        .upload(
+          filePath,
+          imageFile,
+          {
+            upsert: false
+          }
+        );
+
+
+    if (uploadError) {
+
+      console.error(
+        "Prescription image upload error:",
+        uploadError
+      );
+
+      alert(
+        "Unable to upload prescription image: " +
+        uploadError.message
+      );
+
+      return;
+    }
+
+
+    const { data: publicUrlData } =
+      supabaseClient
+        .storage
+        .from("prescriptions")
+        .getPublicUrl(filePath);
+
+
+    prescriptionImageUrl =
+      publicUrlData.publicUrl;
+
+  }
   const consultation = {
 
     patient_id: patientId,
-
+    prescription_image_url:
+      prescriptionImageUrl,
     chief_complaints:
       document
         .getElementById("consultChiefComplaints")
