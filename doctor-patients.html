@@ -1108,14 +1108,24 @@ document
 
     } 
       async function saveConsultation(patientId) {
-  let prescriptionImageUrl = null;
+    let prescriptionImageUrl = null;
 
-  const imageFile =
+  const prescriptionFiles =
     document
-      .getElementById("consultPrescriptionImage")
-      .files[0];
+      .getElementById("consultPrescriptionImages")
+      .files;
 
-  if (imageFile) {
+  const uploadedImageUrls = [];
+
+
+  for (
+    let i = 0;
+    i < prescriptionFiles.length;
+    i++
+  ) {
+
+    const imageFile =
+      prescriptionFiles[i];
 
     const fileExtension =
       imageFile.name.split(".").pop();
@@ -1124,6 +1134,8 @@ document
       patientId +
       "_" +
       Date.now() +
+      "_" +
+      i +
       "." +
       fileExtension;
 
@@ -1170,8 +1182,17 @@ document
         .getPublicUrl(filePath);
 
 
+    uploadedImageUrls.push(
+      publicUrlData.publicUrl
+    );
+
+  }
+
+
+  if (uploadedImageUrls.length > 0) {
+
     prescriptionImageUrl =
-      publicUrlData.publicUrl;
+      uploadedImageUrls[0];
 
   }
   const consultation = {
@@ -1252,7 +1273,43 @@ document
     return;
   }
 
+  if (uploadedImageUrls.length > 0) {
 
+    const imageRecords =
+      uploadedImageUrls.map(function (imageUrl) {
+
+        return {
+          consultation_id: data.id,
+          image_url: imageUrl
+        };
+
+      });
+
+
+    const {
+      error: imageInsertError
+    } =
+      await supabaseClient
+        .from("consultation_images")
+        .insert(imageRecords);
+
+
+    if (imageInsertError) {
+
+      console.error(
+        "Error saving consultation images:",
+        imageInsertError
+      );
+
+      alert(
+        "Consultation saved, but prescription images could not be linked: " +
+        imageInsertError.message
+      );
+
+      return;
+    }
+
+  }
   alert(
     "Consultation saved successfully."
   );
