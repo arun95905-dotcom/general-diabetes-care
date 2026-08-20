@@ -870,7 +870,25 @@ if (consultationError) {
                       <strong>Prescription:</strong><br>
                       ${consultation.prescription || "-"}
                     </p>
+${
+  consultation.prescription_image_url
+    ? `
+      <p>
+        <strong>📷 Prescription Image:</strong><br>
 
+        <img
+          src="${consultation.prescription_image_url}"
+          alt="Prescription"
+          style="
+            max-width:100%;
+            width:500px;
+            border-radius:10px;
+            margin-top:10px;
+          ">
+      </p>
+    `
+    : ""
+}
                     <p>
                       <strong>Advice:</strong><br>
                       ${consultation.advice || "-"}
