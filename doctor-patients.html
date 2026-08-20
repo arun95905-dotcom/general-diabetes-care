@@ -1946,7 +1946,32 @@ document
         id="editConsultPrescription"
         placeholder="Medicines, dose and duration">${consultation.prescription || ""}</textarea>
 
+<label>📷 Replace Prescription Image</label>
 
+<input
+  type="file"
+  id="editConsultPrescriptionImage"
+  accept="image/*">
+
+${
+  consultation.prescription_image_url
+    ? `
+      <p>
+        <strong>Current Prescription Image:</strong><br>
+
+        <img
+          src="${consultation.prescription_image_url}"
+          alt="Current Prescription"
+          style="
+            max-width:100%;
+            width:300px;
+            border-radius:10px;
+            margin-top:10px;
+          ">
+      </p>
+    `
+    : ""
+}
       <label>Advice</label>
 
       <textarea
