@@ -2039,9 +2039,79 @@ ${
   consultationId,
   patientId
 ) {
+  let newPrescriptionImageUrl = null;
 
+  const imageFile =
+    document
+      .getElementById("editConsultPrescriptionImage")
+      .files[0];
+
+  if (imageFile) {
+
+    const fileExtension =
+      imageFile.name.split(".").pop();
+
+    const fileName =
+      patientId +
+      "_" +
+      Date.now() +
+      "." +
+      fileExtension;
+
+    const filePath =
+      "patient-" +
+      patientId +
+      "/" +
+      fileName;
+
+
+    const { error: uploadError } =
+      await supabaseClient
+        .storage
+        .from("prescriptions")
+        .upload(
+          filePath,
+          imageFile,
+          {
+            upsert: false
+          }
+        );
+
+
+    if (uploadError) {
+
+      console.error(
+        "Prescription image upload error:",
+        uploadError
+      );
+
+      alert(
+        "Unable to upload new prescription image: " +
+        uploadError.message
+      );
+
+      return;
+    }
+
+
+    const { data: publicUrlData } =
+      supabaseClient
+        .storage
+        .from("prescriptions")
+        .getPublicUrl(filePath);
+
+
+    newPrescriptionImageUrl =
+      publicUrlData.publicUrl;
+
+  }
   const updatedConsultation = {
-
+    ...(newPrescriptionImageUrl
+      ? {
+          prescription_image_url:
+            newPrescriptionImageUrl
+        }
+      : {}),
     chief_complaints:
       document
         .getElementById("editConsultChiefComplaints")
