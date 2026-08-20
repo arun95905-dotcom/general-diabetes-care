@@ -2510,195 +2510,7 @@ document
           "Error saving consultation image:",
           imageInsertError
         );
-async function saveEditedConsultation(
-  consultationId,
-  patientId
-) {
-
-  const updatedConsultation = {
-
-    chief_complaints:
-      document
-        .getElementById("editConsultChiefComplaints")
-        .value
-        .trim(),
-
-    vitals:
-      document
-        .getElementById("editConsultVitals")
-        .value
-        .trim(),
-
-    examination:
-      document
-        .getElementById("editConsultExamination")
-        .value
-        .trim(),
-
-    diagnosis:
-      document
-        .getElementById("editConsultDiagnosis")
-        .value
-        .trim(),
-
-    investigations:
-      document
-        .getElementById("editConsultInvestigations")
-        .value
-        .trim(),
-
-    prescription:
-      document
-        .getElementById("editConsultPrescription")
-        .value
-        .trim(),
-
-    advice:
-      document
-        .getElementById("editConsultAdvice")
-        .value
-        .trim(),
-
-    follow_up_date:
-      document
-        .getElementById("editConsultFollowUpDate")
-        .value || null
-
-  };
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("consultations")
-      .update(updatedConsultation)
-      .eq("id", consultationId)
-      .select()
-      .single();
-
-
-  if (error) {
-
-    console.error(
-      "Error updating consultation:",
-      error
-    );
-
-    alert(
-      "Unable to save consultation changes: " +
-      error.message
-    );
-
-    return;
-
-  }
-
-
-  const prescriptionFiles =
-    document
-      .getElementById("editConsultPrescriptionImages")
-      .files;
-
-
-  for (
-    let i = 0;
-    i < prescriptionFiles.length;
-    i++
-  ) {
-
-    const imageFile =
-      prescriptionFiles[i];
-
-
-    const fileExtension =
-      imageFile.name.split(".").pop();
-
-
-    const fileName =
-      patientId +
-      "_" +
-      Date.now() +
-      "_" +
-      i +
-      "." +
-      fileExtension;
-
-
-    const filePath =
-      "patient-" +
-      patientId +
-      "/" +
-      fileName;
-
-
-    const {
-      error: uploadError
-    } =
-      await supabaseClient
-        .storage
-        .from("prescriptions")
-        .upload(
-          filePath,
-          imageFile,
-          {
-            upsert: false
-          }
-        );
-
-
-    if (uploadError) {
-
-      console.error(
-        "Prescription image upload error:",
-        uploadError
-      );
-
-      alert(
-        "Consultation updated, but image upload failed: " +
-        uploadError.message
-      );
-
-      return;
-    }
-
-
-    const {
-      data: publicUrlData
-    } =
-      supabaseClient
-        .storage
-        .from("prescriptions")
-        .getPublicUrl(filePath);
-
-
-    const imageUrl =
-      publicUrlData.publicUrl;
-
-
-    const {
-      error: imageInsertError
-    } =
-      await supabaseClient
-        .from("consultation_images")
-        .insert([
-          {
-            consultation_id:
-              consultationId,
-
-            image_url:
-              imageUrl
-          }
-        ]);
-
-
-    if (imageInsertError) {
-
-      console.error(
-        "Error saving consultation image:",
-        imageInsertError
-      );
+  
 
       alert(
         "Consultation updated, but image record could not be saved: " +
@@ -2710,7 +2522,7 @@ async function saveEditedConsultation(
 
   }
 
-
+  }
   alert(
     "Consultation updated successfully."
   );
@@ -2718,7 +2530,7 @@ async function saveEditedConsultation(
 
   viewPatient(patientId);
 
-                      }
+      }
   </script>
 
 </body>
