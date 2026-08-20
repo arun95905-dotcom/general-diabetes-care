@@ -642,7 +642,44 @@ document
     .order("created_at", {
       ascending: false
     });
+  const consultationIds =
+    consultations
+      ? consultations.map(function (consultation) {
+          return consultation.id;
+        })
+      : [];
 
+  let consultationImages = [];
+
+  if (consultationIds.length > 0) {
+
+    const {
+      data: imageData,
+      error: imageError
+    } =
+      await supabaseClient
+        .from("consultation_images")
+        .select("*")
+        .in(
+          "consultation_id",
+          consultationIds
+        );
+
+    if (imageError) {
+
+      console.error(
+        "Error loading consultation images:",
+        imageError
+      );
+
+    } else {
+
+      consultationImages =
+        imageData || [];
+
+    }
+
+  }
 if (consultationError) {
 
   console.error(
@@ -871,23 +908,55 @@ if (consultationError) {
                       ${consultation.prescription || "-"}
                     </p>
 ${
-  consultation.prescription_image_url
-    ? `
-      <p>
-        <strong>📷 Prescription Image:</strong><br>
+  ${
+  consultationImages.filter(function (image) {
+    return image.consultation_id === consultation.id;
+  }).length > 0
 
-        <img
-          src="${consultation.prescription_image_url}"
-          alt="Prescription"
-          style="
-            max-width:100%;
-            width:500px;
-            border-radius:10px;
-            margin-top:10px;
-          ">
-      </p>
-    `
-    : ""
+  ? `
+
+    <p>
+      <strong>📷 Prescription Images:</strong>
+    </p>
+
+    <div
+      style="
+        display:flex;
+        flex-direction:column;
+        gap:15px;
+      ">
+
+      ${
+        consultationImages
+          .filter(function (image) {
+            return image.consultation_id === consultation.id;
+          })
+          .map(function (image) {
+
+            return `
+
+              <img
+                src="${image.image_url}"
+                alt="Prescription Image"
+                style="
+                  max-width:100%;
+                  width:500px;
+                  border-radius:10px;
+                  border:1px solid #ddd;
+                  margin-top:10px;
+                ">
+
+            `;
+
+          })
+          .join("")
+      }
+
+    </div>
+
+  `
+
+  : ""
 }
                     <p>
                       <strong>Advice:</strong><br>
