@@ -168,16 +168,7 @@
           placeholder="₹ 0">
 
 
-        <label>
-          Discount
-        </label>
-
-        <input
-          type="number"
-          id="discount"
-          min="0"
-          step="0.01"
-          placeholder="₹ 0">
+        
 
 
         <h3>
@@ -478,21 +469,13 @@ function calculateTotal() {
     ) || 0;
 
 
-  const discount =
-    Number(
-      document
-        .getElementById(
-          "discount"
-        )
-        .value
-    ) || 0;
-
+  
 
   const total =
     consultationFee +
     medicineCharges +
-    procedureCharges -
-    discount;
+    procedureCharges;
+  
 
 
   document
@@ -515,8 +498,7 @@ function calculateTotal() {
 [
   "consultationFee",
   "medicineCharges",
-  "procedureCharges",
-  "discount"
+  "procedureCharges"
 ].forEach(
   function(id) {
 
@@ -868,14 +850,7 @@ async function saveBill() {
     ) || 0;
 
 
-  const discount =
-    Number(
-      document
-        .getElementById(
-          "discount"
-        )
-        .value
-    ) || 0;
+  
 
 
   const total =
@@ -883,8 +858,8 @@ async function saveBill() {
       0,
       consultationFee +
       medicineCharges +
-      procedureCharges -
-      discount
+      procedureCharges
+      
     );
 
 
@@ -952,8 +927,7 @@ async function saveBill() {
         procedure_charges:
           procedureCharges,
 
-        discount:
-          discount,
+        
 
         total_amount:
           total,
@@ -1035,11 +1009,7 @@ function clearBillingForm() {
     .value = "";
 
 
-  document
-    .getElementById(
-      "discount"
-    )
-    .value = "";
+  
 
 
   document
@@ -1317,10 +1287,7 @@ async function printBillReceipt(
     );
 
 
-  const discount =
-    Number(
-      bill.discount || 0
-    );
+  
 
 
   const totalAmount =
@@ -1723,17 +1690,7 @@ async function printBillReceipt(
             </tr>
 
 
-            <tr>
-
-              <td>
-                Discount
-              </td>
-
-              <td class="amount">
-                - ₹${discount.toFixed(2)}
-              </td>
-
-            </tr>
+            
 
 
             <tr class="total-row">
@@ -1917,10 +1874,7 @@ async function downloadBillReceipt(
     );
 
 
-  const discount =
-    Number(
-      bill.discount || 0
-    );
+  
 
 
   const totalAmount =
@@ -2295,17 +2249,7 @@ Procedure Charges
 </tr>
 
 
-<tr>
 
-<td>
-Discount
-</td>
-
-<td class="amount">
-- ₹${discount.toFixed(2)}
-</td>
-
-</tr>
 
 
 <tr class="total">
@@ -2661,14 +2605,7 @@ async function loadBillingHistory(
             </p>
 
 
-            <p>
-              <strong>
-                Discount:
-              </strong>
-              ₹${Number(
-                bill.discount || 0
-              ).toFixed(2)}
-            </p>
+            
 
 
             <p>
