@@ -268,10 +268,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
 /* =========================================================
    GENERAL & DIABETES CARE
@@ -4008,35 +4004,7 @@ function openBillingForConsultation(
 
 }
 
-
-window.openBillingForConsultation =
-  openBillingForConsultation;
-  window.openBillingForNewPatient =
-  openBillingForNewPatient;
-  window.uploadPrescriptionForPatient =
-  uploadPrescriptionForPatient;
-/* =========================================================
-   START
-   ========================================================= */
-
-(async function () {
-
-  const loggedIn =
-    await checkDoctorLogin();
-
-  if (!loggedIn) {
-    return;
-  }
-
-  console.log(
-    "PATIENT PAGE SCRIPT STARTED"
-  );
-
-})();
-</script>
-      
-   
-  function openBillingForConsultation(
+function openBillingForConsultation(
   patientId,
   consultationId
 ) {
@@ -4107,7 +4075,35 @@ window.openBillingForConsultation =
 
   if (existing) {
     existing.remove();
+    }
+window.openBillingForConsultation =
+  openBillingForConsultation;
+  window.openBillingForNewPatient =
+  openBillingForNewPatient;
+  window.uploadPrescriptionForPatient =
+  uploadPrescriptionForPatient;
+/* =========================================================
+   START
+   ========================================================= */
+
+(async function () {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+  if (!loggedIn) {
+    return;
   }
+
+  console.log(
+    "PATIENT PAGE SCRIPT STARTED"
+  );
+
+})();
+</script>
+      
+   
+  
 
 
   const container =
