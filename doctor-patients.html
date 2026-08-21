@@ -1366,7 +1366,16 @@ async function viewPatient(patientId) {
                   >
                     ✏️ Edit Consultation
                   </button>
-
+<button
+  type="button"
+  class="doctor-login-button"
+  onclick="openBillingForConsultation(
+    ${consultation.patient_id},
+    ${consultation.id}
+  )"
+>
+  💰 Create Bill
+</button>
                 </div>
 
 
@@ -3847,7 +3856,45 @@ window.downloadPrescriptionImage =
 </script>
       
    
-  
+  function openBillingForConsultation(
+  patientId,
+  consultationId
+) {
+
+  if (!patientId) {
+
+    alert(
+      "Patient ID is missing."
+    );
+
+    return;
+
+  }
+
+
+  let url =
+    "doctor-billing.html" +
+    "?patient_id=" +
+    encodeURIComponent(
+      patientId
+    );
+
+
+  if (consultationId) {
+
+    url +=
+      "&consultation_id=" +
+      encodeURIComponent(
+        consultationId
+      );
+
+  }
+
+
+  window.location.href =
+    url;
+
+}
   </script>
 
 </body>
