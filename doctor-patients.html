@@ -270,217 +270,385 @@
 
   <script>
 
-    const SUPABASE_URL =
-      "https://twdmvdqqckcpwoccvtkj.supabase.co";
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+<script>
+/* =========================================================
+   GENERAL & DIABETES CARE
+   DOCTOR PATIENT MANAGEMENT
+   Clean consolidated JavaScript
+   ========================================================= */
 
-    const supabaseClient =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-      );
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
 
-    async function checkDoctorLogin() {
+/* =========================================================
+   BASIC HELPERS
+   ========================================================= */
 
-      const { data: { session } } =
-        await supabaseClient.auth.getSession();
+function escapeHTML(value) {
 
-      if (!session) {
+  if (value === null || value === undefined) {
+    return "";
+  }
 
-        window.location.href =
-          "doctor-login.html";
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
-        return;
 
-      }
+function formatDate(dateValue) {
 
+  if (!dateValue) {
+    return "-";
+  }
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.getTime())) {
+    return escapeHTML(dateValue);
+  }
+
+  return date.toLocaleDateString("en-IN");
+}
+
+
+function formatDateTime(dateValue) {
+
+  if (!dateValue) {
+    return "-";
+  }
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.getTime())) {
+    return escapeHTML(dateValue);
+  }
+
+  return date.toLocaleString("en-IN");
+}
+
+
+function getStoragePathFromUrl(imageUrl) {
+
+  if (!imageUrl) {
+    return null;
+  }
+
+  try {
+
+    const url = new URL(imageUrl);
+
+    const marker =
+      "/storage/v1/object/public/prescriptions/";
+
+    const index =
+      url.pathname.indexOf(marker);
+
+    if (index === -1) {
+      return null;
     }
 
-console.log("PATIENT PAGE SCRIPT STARTED");
-    checkDoctorLogin();
+    return decodeURIComponent(
+      url.pathname.substring(
+        index + marker.length
+      )
+    );
 
+  } catch (error) {
 
-    document
-      .getElementById("patientsLogoutButton")
-      .addEventListener("click", async function () {
-
-        await supabaseClient.auth.signOut();
-
-        window.location.href =
-          "doctor-login.html";
-
-      });
-
-document
-  .getElementById("addPatientButton")
-  .addEventListener("click", function () {
-
-    document.getElementById(
-      "patientFormContainer"
-    ).style.display = "block";
-
-    document.getElementById(
-      "addPatientButton"
-    ).style.display = "none";
-
-  });
-
-
-document
-  .getElementById("cancelNewPatientButton")
-  .addEventListener("click", function () {
-
-    document.getElementById(
-      "patientFormContainer"
-    ).style.display = "none";
-
-    document.getElementById(
-      "addPatientButton"
-    ).style.display = "block";
-
-  });
-    document
-  .getElementById("saveNewPatientButton")
-  .addEventListener("click", async function () {
-
-    const patientName =
-      document.getElementById("newPatientName").value.trim();
-
-    const patientPhone =
-      document.getElementById("newPatientPhone").value.trim();
-
-    if (!patientName || !patientPhone) {
-
-      alert(
-        "Patient name and phone number are required."
-      );
-
-      return;
-
-    }
-
-
-    const newPatient = {
-
-      patient_name:
-        patientName,
-
-      patient_phone:
-        patientPhone,
-
-      date_of_birth:
-        document.getElementById("newPatientDOB").value || null,
-
-      gender:
-        document.getElementById("newPatientGender").value || null,
-
-      address:
-        document.getElementById("newPatientAddress").value.trim(),
-
-      blood_group:
-        document.getElementById("newPatientBloodGroup").value.trim(),
-
-      chief_complaints:
-        document.getElementById("newPatientChiefComplaints").value.trim(),
-
-      Pulse:
-        document.getElementById("newPatientPulse").value.trim(),
-
-      blood_pressure:
-        document.getElementById("newPatientBP").value.trim(),
-
-      spo2:
-        document.getElementById("newPatientSpO2").value.trim(),
-
-      weight:
-        document.getElementById("newPatientWeight").value || null,
-
-      height:
-        document.getElementById("newPatientHeight").value || null,
-
-      medical_history:
-        document.getElementById("newPatientMedicalHistory").value.trim(),
-
-      surgical_history:
-        document.getElementById("newPatientSurgicalHistory").value.trim(),
-
-      allergies:
-        document.getElementById("newPatientAllergies").value.trim(),
-
-      current_medications:
-        document.getElementById("newPatientCurrentMedication").value.trim(),
-
-      diagnosis:
-        document.getElementById("newPatientDiagnosis").value.trim(),
-
-      lab_reports:
-        document.getElementById("newPatientLabReports").value.trim(),
-
-      treatment:
-        document.getElementById("newPatientTreatment").value.trim(),
-
-      advice:
-        document.getElementById("newPatientAdvice").value.trim(),
-
-      follow_up_date:
-        document.getElementById("newPatientFollowUp").value || null
-
-    };
-
-
-    const {
-      data,
+    console.warn(
+      "Unable to determine storage path:",
       error
-    } =
-      await supabaseClient
-        .from("patients")
-        .insert([newPatient])
-        .select()
-        .single();
+    );
+
+    return null;
+  }
+}
 
 
-    if (error) {
+async function deleteStorageFile(imageUrl) {
 
-      console.error(
-        "Error saving patient:",
-        error
-      );
+  const storagePath =
+    getStoragePathFromUrl(imageUrl);
 
-      alert(
-        "Unable to save patient: " +
-        error.message
-      );
+  if (!storagePath) {
+    return;
+  }
 
-      return;
+  const {
+    error
+  } =
+    await supabaseClient
+      .storage
+      .from("prescriptions")
+      .remove([storagePath]);
 
+  if (error) {
+
+    console.warn(
+      "Storage file could not be deleted:",
+      error
+    );
+
+  }
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
     }
+  } =
+    await supabaseClient.auth.getSession();
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+  }
+
+  return true;
+}
 
 
-    
+/* =========================================================
+   LOGOUT
+   ========================================================= */
 
+async function logoutDoctor() {
+
+  await supabaseClient.auth.signOut();
+
+  window.location.href =
+    "doctor-login.html";
+}
+
+
+/* =========================================================
+   NEW PATIENT FORM
+   ========================================================= */
+
+function openNewPatientForm() {
+
+  document.getElementById(
+    "patientFormContainer"
+  ).style.display = "block";
+
+  document.getElementById(
+    "addPatientButton"
+  ).style.display = "none";
+}
+
+
+function closeNewPatientForm() {
+
+  document.getElementById(
+    "patientFormContainer"
+  ).style.display = "none";
+
+  document.getElementById(
+    "addPatientButton"
+  ).style.display = "block";
+}
+
+
+async function saveNewPatient() {
+
+  const patientName =
+    document
+      .getElementById("newPatientName")
+      .value
+      .trim();
+
+  const patientPhone =
+    document
+      .getElementById("newPatientPhone")
+      .value
+      .trim();
+
+  if (!patientName || !patientPhone) {
 
     alert(
-  "Patient registered successfully."
-);
+      "Patient name and phone number are required."
+    );
 
-console.log(
-  "New patient:",
-  data
-);
+    return;
+  }
 
-document
-  .getElementById("patientFormContainer")
-  .style.display = "none";
 
-document
-  .getElementById("addPatientButton")
-  .style.display = "block";
+  const newPatient = {
 
-  });
-   async function searchPatients() {
+    patient_name:
+      patientName,
+
+    patient_phone:
+      patientPhone,
+
+    date_of_birth:
+      document.getElementById(
+        "newPatientDOB"
+      ).value || null,
+
+    gender:
+      document.getElementById(
+        "newPatientGender"
+      ).value || null,
+
+    address:
+      document.getElementById(
+        "newPatientAddress"
+      ).value.trim(),
+
+    blood_group:
+      document.getElementById(
+        "newPatientBloodGroup"
+      ).value.trim(),
+
+    chief_complaints:
+      document.getElementById(
+        "newPatientChiefComplaints"
+      ).value.trim(),
+
+    Pulse:
+      document.getElementById(
+        "newPatientPulse"
+      ).value.trim(),
+
+    blood_pressure:
+      document.getElementById(
+        "newPatientBP"
+      ).value.trim(),
+
+    spo2:
+      document.getElementById(
+        "newPatientSpO2"
+      ).value.trim(),
+
+    weight:
+      document.getElementById(
+        "newPatientWeight"
+      ).value || null,
+
+    height:
+      document.getElementById(
+        "newPatientHeight"
+      ).value || null,
+
+    medical_history:
+      document.getElementById(
+        "newPatientMedicalHistory"
+      ).value.trim(),
+
+    surgical_history:
+      document.getElementById(
+        "newPatientSurgicalHistory"
+      ).value.trim(),
+
+    allergies:
+      document.getElementById(
+        "newPatientAllergies"
+      ).value.trim(),
+
+    current_medications:
+      document.getElementById(
+        "newPatientCurrentMedication"
+      ).value.trim(),
+
+    diagnosis:
+      document.getElementById(
+        "newPatientDiagnosis"
+      ).value.trim(),
+
+    lab_reports:
+      document.getElementById(
+        "newPatientLabReports"
+      ).value.trim(),
+
+    treatment:
+      document.getElementById(
+        "newPatientTreatment"
+      ).value.trim(),
+
+    advice:
+      document.getElementById(
+        "newPatientAdvice"
+      ).value.trim(),
+
+    follow_up_date:
+      document.getElementById(
+        "newPatientFollowUp"
+      ).value || null
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .insert([newPatient])
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Error saving patient:",
+      error
+    );
+
+    alert(
+      "Unable to save patient: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Patient registered successfully."
+  );
+
+  closeNewPatientForm();
+
+  console.log(
+    "New patient:",
+    data
+  );
+}
+
+
+/* =========================================================
+   SEARCH PATIENTS
+   ========================================================= */
+
+async function searchPatients() {
 
   const search =
     document
@@ -489,7 +657,9 @@ document
       .trim();
 
   const container =
-    document.getElementById("patientsContainer");
+    document.getElementById(
+      "patientsContainer"
+    );
 
 
   if (!search) {
@@ -507,31 +677,33 @@ document
       .select("*");
 
 
-  // If search is a number, search Patient ID,
-  // phone number, and name
   if (/^\d+$/.test(search)) {
 
-    query = query.or(
-      `patient_phone.ilike.%${search}%,patient_name.ilike.%${search}%,id.eq.${search}`
-    );
+    query =
+      query.or(
+        `patient_phone.ilike.%${search}%,patient_name.ilike.%${search}%,id.eq.${search}`
+      );
 
   } else {
 
-    // For text, search only name and phone
-    query = query.or(
-      `patient_name.ilike.%${search}%,patient_phone.ilike.%${search}%`
-    );
-
+    query =
+      query.or(
+        `patient_name.ilike.%${search}%,patient_phone.ilike.%${search}%`
+      );
   }
 
 
-  const { data, error } =
-    await query.order(
-      "patient_name",
-      {
-        ascending: true
-      }
-    );
+  const {
+    data,
+    error
+  } =
+    await query
+      .order(
+        "patient_name",
+        {
+          ascending: true
+        }
+      );
 
 
   if (error) {
@@ -572,23 +744,23 @@ document
     card.innerHTML = `
 
       <strong>
-        👤 ${patient.patient_name || "-"}
+        👤 ${escapeHTML(patient.patient_name || "-")}
       </strong>
 
       <span>
-        🆔 Patient ID: ${patient.id}
+        🆔 Patient ID: ${escapeHTML(patient.id)}
       </span>
 
       <span>
-        📞 ${patient.patient_phone || "-"}
+        📞 ${escapeHTML(patient.patient_phone || "-")}
       </span>
 
       <span>
-        🎂 ${patient.date_of_birth || "-"}
+        🎂 ${escapeHTML(patient.date_of_birth || "-")}
       </span>
 
       <span>
-        ⚧ ${patient.gender || "-"}
+        ⚧ ${escapeHTML(patient.gender || "-")}
       </span>
 
     `;
@@ -606,7 +778,6 @@ document
     viewButton.textContent =
       "👁️ View Patient";
 
-
     viewButton.onclick =
       function () {
 
@@ -619,95 +790,307 @@ document
       viewButton
     );
 
-
     container.appendChild(
       card
     );
 
   });
+}
 
-   } 
-    async function viewPatient(patientId) {
 
-  const { data: patient, error } =
+/* =========================================================
+   LOAD PATIENT
+   ========================================================= */
+
+async function getPatient(patientId) {
+
+  const {
+    data,
+    error
+  } =
     await supabaseClient
       .from("patients")
       .select("*")
       .eq("id", patientId)
-      .single();const { data: consultations, error: consultationError } =
-  await supabaseClient
-    .from("consultations")
-    .select("*")
-    .eq("patient_id", patientId)
-    .order("created_at", {
-      ascending: false
-    });
-  const consultationIds =
-    consultations
-      ? consultations.map(function (consultation) {
-          return consultation.id;
-        })
-      : [];
-
-  let consultationImages = [];
-
-  if (consultationIds.length > 0) {
-
-    const {
-      data: imageData,
-      error: imageError
-    } =
-      await supabaseClient
-        .from("consultation_images")
-        .select("*")
-        .in(
-          "consultation_id",
-          consultationIds
-        );
-
-    if (imageError) {
-
-      console.error(
-        "Error loading consultation images:",
-        imageError
-      );
-
-    } else {
-
-      consultationImages =
-        imageData || [];
-      console.log(
-  "Consultation images:",
-  consultationImages
-);
-
-    }
-
-  }
-if (consultationError) {
-
-  console.error(
-    "Error loading consultations:",
-    consultationError
-  );
-
-}
+      .single();
 
 
   if (error) {
 
     console.error(
-      "Error loading patient:",
+      "Patient loading error:",
       error
     );
 
-    alert(
-      "Unable to load patient details."
-    );
-
-    return;
+    return null;
   }
 
+  return data;
+}
+
+
+/* =========================================================
+   LOAD CONSULTATIONS
+   ========================================================= */
+
+async function getConsultations(patientId) {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select("*")
+      .eq("patient_id", patientId)
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Consultation loading error:",
+      error
+    );
+
+    return [];
+  }
+
+
+  return data || [];
+}
+
+
+/* =========================================================
+   LOAD CONSULTATION IMAGES
+   ========================================================= */
+
+async function getConsultationImages(
+  consultationIds
+) {
+
+  if (
+    !consultationIds ||
+    consultationIds.length === 0
+  ) {
+
+    return [];
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("consultation_images")
+      .select("*")
+      .in(
+        "consultation_id",
+        consultationIds
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Consultation image loading error:",
+      error
+    );
+
+    return [];
+  }
+
+
+  return data || [];
+}
+
+
+/* =========================================================
+   GET ALL IMAGES FOR ONE CONSULTATION
+   ========================================================= */
+
+function getImagesForConsultation(
+  consultation,
+  consultationImages
+) {
+
+  const images = [];
+
+  const mainUrl =
+    consultation.prescription_image_url;
+
+
+  if (mainUrl) {
+
+    images.push({
+
+      id: null,
+
+      image_url:
+        mainUrl,
+
+      isMain:
+        true
+
+    });
+  }
+
+
+  consultationImages
+    .filter(function (image) {
+
+      return String(
+        image.consultation_id
+      ) === String(
+        consultation.id
+      );
+
+    })
+    .forEach(function (image) {
+
+      const alreadyExists =
+        images.some(function (existing) {
+
+          return existing.image_url ===
+            image.image_url;
+
+        });
+
+
+      if (!alreadyExists) {
+
+        images.push({
+
+          id:
+            image.id,
+
+          image_url:
+            image.image_url,
+
+          isMain:
+            false
+
+        });
+
+      }
+
+    });
+
+
+  return images;
+}
+
+
+/* =========================================================
+   RENDER PRESCRIPTION IMAGES
+   ========================================================= */
+
+function renderPrescriptionImages(
+  consultation,
+  consultationImages
+) {
+
+  const images =
+    getImagesForConsultation(
+      consultation,
+      consultationImages
+    );
+
+
+  if (images.length === 0) {
+
+    return `
+      <p>
+        <strong>📷 Prescription Images:</strong>
+        No prescription images.
+      </p>
+    `;
+  }
+
+
+  const imageHTML =
+    images.map(function (image, index) {
+
+      return `
+
+        <div
+          style="
+            margin-bottom:20px;
+            padding:10px;
+            border:1px solid #ddd;
+            border-radius:10px;
+          "
+        >
+
+          <p>
+            <strong>
+              📷 Prescription Image ${index + 1}
+            </strong>
+          </p>
+
+          <img
+            src="${escapeHTML(image.image_url)}"
+            alt="Prescription Image ${index + 1}"
+            style="
+              max-width:100%;
+              width:500px;
+              border-radius:10px;
+              border:1px solid #ddd;
+              display:block;
+            "
+          >
+
+          <br>
+
+          <button
+            type="button"
+            class="doctor-login-button"
+            onclick="deleteConsultationImage(
+              ${consultation.id},
+              ${image.id === null ? "null" : image.id},
+              '${escapeHTML(image.image_url)}',
+              ${image.isMain ? "true" : "false"}
+            )"
+          >
+            🗑️ Delete This Image
+          </button>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+
+  return `
+
+    <div>
+
+      <p>
+        <strong>
+          📷 Prescription Images
+        </strong>
+      </p>
+
+      ${imageHTML}
+
+    </div>
+
+  `;
+}
+
+
+/* =========================================================
+   VIEW PATIENT
+   ========================================================= */
+
+async function viewPatient(patientId) {
 
   const container =
     document.getElementById(
@@ -715,900 +1098,691 @@ if (consultationError) {
     );
 
 
-  container.innerHTML = `
-
-    <div class="patient-profile-section">
-
-      <h2>👤 Patient Profile</h2>
-
-      <p>
-        <strong>🆔 Patient ID:</strong>
-        ${patient.id || "-"}
-      </p>
-
-      <p>
-        <strong>👤 Name:</strong>
-        ${patient.patient_name || "-"}
-      </p>
-
-      <p>
-        <strong>📞 Phone:</strong>
-        ${patient.patient_phone || "-"}
-      </p>
-
-      <p>
-        <strong>🎂 Date of Birth:</strong>
-        ${patient.date_of_birth || "-"}
-      </p>
-
-      <p>
-        <strong>⚧ Gender:</strong>
-        ${patient.gender || "-"}
-      </p>
-
-      <p>
-        <strong>🏠 Address:</strong>
-        ${patient.address || "-"}
-      </p>
-
-      <p>
-        <strong>🩸 Blood Group:</strong>
-        ${patient.blood_group || "-"}
-      </p>
-
-    </div>
+  container.innerHTML =
+    "<p>Loading patient record...</p>";
 
 
-    <hr>
+  const patient =
+    await getPatient(patientId);
 
 
-    <div class="patient-profile-section">
+  if (!patient) {
 
-      <h3>🩺 Clinical Information</h3>
+    container.innerHTML =
+      "<p>Unable to load patient details.</p>";
 
-      <p>
-        <strong>Chief Complaints:</strong><br>
-        ${patient.chief_complaints || "-"}
-      </p>
-
-      <p>
-        <strong>Pulse:</strong>
-        ${patient.Pulse || "-"}
-      </p>
-
-      <p>
-        <strong>Blood Pressure:</strong>
-        ${patient.blood_pressure || "-"}
-      </p>
-
-      <p>
-        <strong>SpO₂:</strong>
-        ${patient.spo2 || "-"}
-      </p>
-
-      <p>
-        <strong>Weight:</strong>
-        ${patient.weight || "-"} kg
-      </p>
-
-      <p>
-        <strong>Height:</strong>
-        ${patient.height || "-"} cm
-      </p>
-
-      <p>
-        <strong>Medical History:</strong><br>
-        ${patient.medical_history || "-"}
-      </p>
-
-      <p>
-        <strong>Surgical History:</strong><br>
-        ${patient.surgical_history || "-"}
-      </p>
-
-      <p>
-        <strong>⚠️ Allergies:</strong><br>
-        ${patient.allergies || "-"}
-      </p>
-
-      <p>
-        <strong>💊 Current Medications:</strong><br>
-        ${patient.current_medications || "-"}
-      </p>
-
-    </div>
+    return;
+  }
 
 
-    <hr>
+  const consultations =
+    await getConsultations(
+      patientId
+    );
 
 
-    <div class="patient-profile-section">
+  const consultationIds =
+    consultations.map(function (
+      consultation
+    ) {
 
-      <h3>🩺 Assessment & Treatment</h3>
+      return consultation.id;
 
-      <p>
-        <strong>Diagnosis:</strong><br>
-        ${patient.diagnosis || "-"}
-      </p>
-
-      <p>
-        <strong>🧪 Lab Reports:</strong><br>
-        ${patient.lab_reports || "-"}
-      </p>
-
-      <p>
-        <strong>💊 Treatment:</strong><br>
-        ${patient.treatment || "-"}
-      </p>
-
-      <p>
-        <strong>Advice:</strong><br>
-        ${patient.advice || "-"}
-      </p>
-
-      <p>
-        <strong>📅 Follow-up Date:</strong><br>
-        ${patient.follow_up_date || "-"}
-      </p>
-
-    </div>
-    <hr>
+    });
 
 
-    <div class="patient-profile-section">
+  const consultationImages =
+    await getConsultationImages(
+      consultationIds
+    );
 
-      <h3>📋 Consultation History</h3>
 
-      ${
-        consultations && consultations.length > 0
+  const consultationHTML =
+    consultations.length > 0
 
-          ? consultations.map(function (consultation, index) {
-
-              return `
-
-                <div class="consultation-history-card">
-
-                  <strong>
-                    📅 ${
-                      consultation.created_at
-                        ? new Date(
-                            consultation.created_at
-                          ).toLocaleDateString("en-IN")
-                        : "-"
-                    }
-                  </strong>
-
-                  <p>
-                    <strong>Chief Complaints:</strong><br>
-                    ${consultation.chief_complaints || "-"}
-                  </p>
-
-                  <p>
-                    <strong>Diagnosis:</strong><br>
-                    ${consultation.diagnosis || "-"}
-                  </p>
-
-                  <div
-                    id="consultation-details-${index}"
-                    style="display:none;">
-
-                    <p>
-                      <strong>Vitals:</strong><br>
-                      ${consultation.vitals || "-"}
-                    </p>
-
-                    <p>
-                      <strong>Examination:</strong><br>
-                      ${consultation.examination || "-"}
-                    </p>
-
-                    <p>
-                      <strong>Investigations:</strong><br>
-                      ${consultation.investigations || "-"}
-                    </p>
-
-                    <p>
-                      <strong>Prescription:</strong><br>
-                      ${consultation.prescription || "-"}
-                    </p>
-
-    ${
-  consultation.prescription_image_url
-    ? `
-      <p>
-        <strong>📷 Prescription Image:</strong><br>
-
-        <img
-          src="${consultation.prescription_image_url}"
-          alt="Prescription"
-          style="
-            max-width:100%;
-            width:500px;
-            border-radius:10px;
-            border:1px solid #ddd;
-            margin-top:10px;
-          ">
-      </p>
-    `
-    : ""
-}
-
-${
-  consultationImages.filter(function (image) {
-    return String(image.consultation_id) === String(consultation.id);
-  }).length > 0
-
-  ? `
-
-    <p>
-      <strong>📷 Additional Prescription Images:</strong>
-    </p>
-
-    <div
-      style="
-        display:flex;
-        flex-direction:column;
-        gap:15px;
-      ">
-
-      ${
-        consultationImages
-          .filter(function (image) {
-            return String(image.consultation_id) === String(consultation.id);
-          })
-          .map(function (image) {
+      ? consultations.map(
+          function (
+            consultation,
+            index
+          ) {
 
             return `
-              <img
-                src="${image.image_url}"
-                alt="Prescription Image"
-                style="
-                  max-width:100%;
-                  width:500px;
-                  border-radius:10px;
-                  border:1px solid #ddd;
-                  margin-top:10px;
-                ">
-            `;
 
-          })
-          .join("")
-      }
+              <div
+                class="consultation-history-card"
+              >
 
-    </div>
+                <strong>
+                  📅 ${formatDateTime(
+                    consultation.created_at
+                  )}
+                </strong>
 
-  `
-  : ""
-  }             
-  <p>
-                      <strong>Advice:</strong><br>
-                      ${consultation.advice || "-"}
-                    </p>
+                <p>
+                  <strong>
+                    Chief Complaints:
+                  </strong>
+                  <br>
+                  ${escapeHTML(
+                    consultation.chief_complaints ||
+                    "-"
+                  )}
+                </p>
 
-                    <p>
-                      <strong>Follow-up Date:</strong><br>
-                      ${
-                        consultation.follow_up_date
-                          ? new Date(
-                              consultation.follow_up_date + "T00:00:00"
-                            ).toLocaleDateString("en-IN")
-                          : "-"
-                      }
-                    </p>
-                    <button
-  type="button"
-  class="doctor-login-button"
-  onclick="editConsultation(${consultation.id})">
+                <p>
+                  <strong>
+                    Diagnosis:
+                  </strong>
+                  <br>
+                  ${escapeHTML(
+                    consultation.diagnosis ||
+                    "-"
+                  )}
+                </p>
 
-  ✏️ Edit Consultation
 
-</button>
+                <div
+                  id="consultation-details-${index}"
+                  style="display:none;"
+                >
 
-                  </div>
+                  <p>
+                    <strong>
+                      Vitals:
+                    </strong>
+                    <br>
+                    ${escapeHTML(
+                      consultation.vitals ||
+                      "-"
+                    )}
+                  </p>
+
+
+                  <p>
+                    <strong>
+                      Examination:
+                    </strong>
+                    <br>
+                    ${escapeHTML(
+                      consultation.examination ||
+                      "-"
+                    )}
+                  </p>
+
+
+                  <p>
+                    <strong>
+                      Investigations:
+                    </strong>
+                    <br>
+                    ${escapeHTML(
+                      consultation.investigations ||
+                      "-"
+                    )}
+                  </p>
+
+
+                  <p>
+                    <strong>
+                      Prescription:
+                    </strong>
+                    <br>
+                    ${escapeHTML(
+                      consultation.prescription ||
+                      "-"
+                    )}
+                  </p>
+
+
+                  ${renderPrescriptionImages(
+                    consultation,
+                    consultationImages
+                  )}
+
+
+                  <p>
+                    <strong>
+                      Advice:
+                    </strong>
+                    <br>
+                    ${escapeHTML(
+                      consultation.advice ||
+                      "-"
+                    )}
+                  </p>
+
+
+                  <p>
+                    <strong>
+                      Follow-up Date:
+                    </strong>
+                    <br>
+                    ${formatDate(
+                      consultation.follow_up_date
+                    )}
+                  </p>
+
 
                   <button
                     type="button"
                     class="doctor-login-button"
-                    onclick="showConsultationDetails(${index})">
-
-                    ▶️ View Full Consultation
-
+                    onclick="editConsultation(
+                      ${consultation.id}
+                    )"
+                  >
+                    ✏️ Edit Consultation
                   </button>
 
                 </div>
 
-                <hr>
 
-              `;
+                <button
+                  type="button"
+                  class="doctor-login-button"
+                  onclick="showConsultationDetails(
+                    ${index}
+                  )"
+                >
+                  ▶️ View Full Consultation
+                </button>
 
-            }).join("")
+              </div>
 
-          : `<p>No previous consultations found.</p>`
-      }
+              <hr>
 
-    </div>
+            `;
+          }
+        ).join("")
 
-    <br>
-<button
-  type="button"
-  class="doctor-login-button"
-  id="editPatientButton">
+      : "<p>No previous consultations found.</p>";
 
-  ✏️ Edit Patient
-
-</button>
-<button
-  type="button"
-  class="doctor-login-button"
-  id="startConsultationButton">
-
-  🩺 New Consultation
-
-</button>
-    <button
-      type="button"
-      class="doctor-login-button"
-      id="backToPatientSearchButton">
-
-      ← Back to Patient Search
-
-    </button>
-
-  `;
-
-document
-  .getElementById("editPatientButton")
-  .onclick = function () {
-
-    editPatient(patient);
-
-  };document
-  .getElementById("startConsultationButton")
-  .onclick = function () {
-
-    startConsultation(patient.id);
-
-  };
-      function startConsultation(patientId) {
-
-  const container =
-    document.getElementById("patientsContainer");
 
   container.innerHTML = `
 
     <div class="patient-profile-section">
 
-      <h2>🩺 New Consultation</h2>
+      <h2>
+        👤 Patient Profile
+      </h2>
 
       <p>
-        <strong>🆔 Patient ID:</strong>
-        ${patientId}
+        <strong>
+          🆔 Patient ID:
+        </strong>
+        ${escapeHTML(patient.id)}
       </p>
 
+      <p>
+        <strong>
+          👤 Name:
+        </strong>
+        ${escapeHTML(
+          patient.patient_name || "-"
+        )}
+      </p>
 
-      <label>Chief Complaints / Present Symptoms</label>
+      <p>
+        <strong>
+          📞 Phone:
+        </strong>
+        ${escapeHTML(
+          patient.patient_phone || "-"
+        )}
+      </p>
 
-      <textarea
-        id="consultChiefComplaints"
-        placeholder="Enter present symptoms / chief complaints"></textarea>
+      <p>
+        <strong>
+          🎂 Date of Birth:
+        </strong>
+        ${escapeHTML(
+          patient.date_of_birth || "-"
+        )}
+      </p>
 
+      <p>
+        <strong>
+          ⚧ Gender:
+        </strong>
+        ${escapeHTML(
+          patient.gender || "-"
+        )}
+      </p>
 
-      <label>Vitals</label>
+      <p>
+        <strong>
+          🏠 Address:
+        </strong>
+        ${escapeHTML(
+          patient.address || "-"
+        )}
+      </p>
 
-      <textarea
-        id="consultVitals"
-        placeholder="BP, Pulse, SpO₂, Weight, Height"></textarea>
-
-
-      <label>Examination</label>
-
-      <textarea
-        id="consultExamination"
-        placeholder="Enter examination findings"></textarea>
-
-
-      <label>Diagnosis / Assessment</label>
-
-      <textarea
-        id="consultDiagnosis"
-        placeholder="Enter diagnosis / assessment"></textarea>
-
-
-      <label>Investigations / Lab Reports</label>
-
-      <textarea
-        id="consultInvestigations"
-        placeholder="Enter investigations or lab reports"></textarea>
-
-
-      <label>Prescription / Treatment</label>
-
-      <textarea
-        id="consultPrescription"
-        placeholder="Enter medicines, dose and duration"></textarea>
-
-<label>📷 Prescription Images</label>
-
-<input
-  type="file"
-  id="consultPrescriptionImages"
-  accept="image/*"
-  multiple>
-
-<p
-  id="prescriptionImageNames"
-  style="font-size:14px;">
-</p>
-
-      <label>Advice</label>
-
-      <textarea
-        id="consultAdvice"
-        placeholder="Diet, lifestyle and other advice"></textarea>
-
-
-      <label>Follow-up Date</label>
-
-      <input
-        type="date"
-        id="consultFollowUpDate">
-
-
-      <br>
-
-      <button
-        type="button"
-        class="doctor-login-button"
-        id="saveConsultationButton">
-
-        💾 Save Consultation
-
-      </button>
-
-
-      <button
-        type="button"
-        class="doctor-login-button"
-        id="cancelConsultationButton">
-
-        ↩️ Cancel
-
-      </button>
+      <p>
+        <strong>
+          🩸 Blood Group:
+        </strong>
+        ${escapeHTML(
+          patient.blood_group || "-"
+        )}
+      </p>
 
     </div>
+
+
+    <hr>
+
+
+    <div class="patient-profile-section">
+
+      <h3>
+        🩺 Clinical Information
+      </h3>
+
+      <p>
+        <strong>
+          Chief Complaints:
+        </strong>
+        <br>
+        ${escapeHTML(
+          patient.chief_complaints || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          Pulse:
+        </strong>
+        ${escapeHTML(
+          patient.Pulse || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          Blood Pressure:
+        </strong>
+        ${escapeHTML(
+          patient.blood_pressure || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          SpO₂:
+        </strong>
+        ${escapeHTML(
+          patient.spo2 || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          Weight:
+        </strong>
+        ${escapeHTML(
+          patient.weight || "-"
+        )} kg
+      </p>
+
+      <p>
+        <strong>
+          Height:
+        </strong>
+        ${escapeHTML(
+          patient.height || "-"
+        )} cm
+      </p>
+
+      <p>
+        <strong>
+          Medical History:
+  </strong>
+        <br>
+        ${escapeHTML(
+          patient.medical_history || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          Surgical History:
+        </strong>
+        <br>
+        ${escapeHTML(
+          patient.surgical_history || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          ⚠️ Allergies:
+        </strong>
+        <br>
+        ${escapeHTML(
+          patient.allergies || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          💊 Current Medications:
+        </strong>
+        <br>
+        ${escapeHTML(
+          patient.current_medications || "-"
+        )}
+      </p>
+
+    </div>
+
+
+    <hr>
+
+
+    <div class="patient-profile-section">
+
+      <h3>
+        🩺 Assessment & Treatment
+      </h3>
+
+      <p>
+        <strong>
+          Diagnosis:
+        </strong>
+        <br>
+        ${escapeHTML(
+          patient.diagnosis || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          🧪 Lab Reports:
+        </strong>
+        <br>
+        ${escapeHTML(
+          patient.lab_reports || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          💊 Treatment:
+        </strong>
+        <br>
+        ${escapeHTML(
+          patient.treatment || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          Advice:
+        </strong>
+        <br>
+        ${escapeHTML(
+          patient.advice || "-"
+        )}
+      </p>
+
+      <p>
+        <strong>
+          📅 Follow-up Date:
+        </strong>
+        <br>
+        ${formatDate(
+          patient.follow_up_date
+        )}
+      </p>
+
+    </div>
+
+
+    <hr>
+
+
+    <div class="patient-profile-section">
+
+      <h3>
+        📋 Consultation History
+      </h3>
+
+      ${consultationHTML}
+
+    </div>
+
+
+    <br>
+
+
+    <button
+      type="button"
+      class="doctor-login-button"
+      id="editPatientButton"
+    >
+      ✏️ Edit Patient
+    </button>
+
+
+    <button
+      type="button"
+      class="doctor-login-button"
+      id="startConsultationButton"
+    >
+      🩺 New Consultation
+    </button>
+
+
+    <button
+      type="button"
+      class="doctor-login-button"
+      id="backToPatientSearchButton"
+    >
+      ← Back to Patient Search
+    </button>
 
   `;
 
 
   document
-    .getElementById("saveConsultationButton")
-    .onclick = function () {
+    .getElementById(
+      "editPatientButton"
+    )
+    .onclick =
+      function () {
 
-      saveConsultation(patientId);
+        editPatient(patient);
 
-    };
+      };
 
 
   document
-    .getElementById("cancelConsultationButton")
-    .onclick = function () {
+    .getElementById(
+      "startConsultationButton"
+    )
+    .onclick =
+      function () {
 
-      viewPatient(patientId);
-
-    };
-
-    } 
-      async function saveConsultation(patientId) {
-    let prescriptionImageUrl = null;
-
-  const prescriptionFiles =
-    document
-      .getElementById("consultPrescriptionImages")
-      .files;
-
-  const uploadedImageUrls = [];
-
-
-  for (
-    let i = 0;
-    i < prescriptionFiles.length;
-    i++
-  ) {
-
-    const imageFile =
-      prescriptionFiles[i];
-
-    const fileExtension =
-      imageFile.name.split(".").pop();
-
-    const fileName =
-      patientId +
-      "_" +
-      Date.now() +
-      "_" +
-      i +
-      "." +
-      fileExtension;
-
-    const filePath =
-      "patient-" +
-      patientId +
-      "/" +
-      fileName;
-
-
-    const { error: uploadError } =
-      await supabaseClient
-        .storage
-        .from("prescriptions")
-        .upload(
-          filePath,
-          imageFile,
-          {
-            upsert: false
-          }
+        startConsultation(
+          patient.id
         );
 
-
-    if (uploadError) {
-
-      console.error(
-        "Prescription image upload error:",
-        uploadError
-      );
-
-      alert(
-        "Unable to upload prescription image: " +
-        uploadError.message
-      );
-
-      return;
-    }
+      };
 
 
-    const { data: publicUrlData } =
-      supabaseClient
-        .storage
-        .from("prescriptions")
-        .getPublicUrl(filePath);
+  document
+    .getElementById(
+      "backToPatientSearchButton"
+    )
+    .onclick =
+      function () {
+
+        location.reload();
+
+      };
+}
 
 
-    uploadedImageUrls.push(
-      publicUrlData.publicUrl
+/* =========================================================
+   SHOW / HIDE CONSULTATION
+   ========================================================= */
+
+function showConsultationDetails(index) {
+
+  const details =
+    document.getElementById(
+      "consultation-details-" +
+      index
     );
 
-  }
 
-
-  if (uploadedImageUrls.length > 0) {
-
-    prescriptionImageUrl =
-      uploadedImageUrls[0];
-
-  }
-  const consultation = {
-
-    patient_id: patientId,
-    prescription_image_url:
-      prescriptionImageUrl,
-    chief_complaints:
-      document
-        .getElementById("consultChiefComplaints")
-        .value
-        .trim(),
-
-    vitals:
-      document
-        .getElementById("consultVitals")
-        .value
-        .trim(),
-
-    examination:
-      document
-        .getElementById("consultExamination")
-        .value
-        .trim(),
-
-    diagnosis:
-      document
-        .getElementById("consultDiagnosis")
-        .value
-        .trim(),
-
-    investigations:
-      document
-        .getElementById("consultInvestigations")
-        .value
-        .trim(),
-
-    prescription:
-      document
-        .getElementById("consultPrescription")
-        .value
-        .trim(),
-
-    advice:
-      document
-        .getElementById("consultAdvice")
-        .value
-        .trim(),
-
-    follow_up_date:
-      document
-        .getElementById("consultFollowUpDate")
-        .value || null
-
-  };
-
-
-  const { data, error } =
-    await supabaseClient
-      .from("consultations")
-      .insert([consultation])
-      .select()
-      .single();
-
-
-  if (error) {
-
-    console.error(
-      "Error saving consultation:",
-      error
-    );
-
-    alert(
-      "Unable to save consultation: " +
-      error.message
-    );
-
+  if (!details) {
     return;
   }
 
-  if (uploadedImageUrls.length > 0) {
 
-    const imageRecords =
-      uploadedImageUrls.map(function (imageUrl) {
+  if (
+    details.style.display ===
+    "none"
+  ) {
 
-        return {
-          consultation_id: data.id,
-          image_url: imageUrl
-        };
+    details.style.display =
+      "block";
 
-      });
+  } else {
 
-
-    const {
-      error: imageInsertError
-    } =
-      await supabaseClient
-        .from("consultation_images")
-        .insert(imageRecords);
-
-
-    if (imageInsertError) {
-
-      console.error(
-        "Error saving consultation images:",
-        imageInsertError
-      );
-
-      alert(
-        "Consultation saved, but prescription images could not be linked: " +
-        imageInsertError.message
-      );
-
-      return;
-    }
-
+    details.style.display =
+      "none";
   }
-  alert(
-    "Consultation saved successfully."
-  );
+}
 
 
-  console.log(
-    "New consultation:",
-    data
-  );
+/* =========================================================
+   NEW CONSULTATION
+   ========================================================= */
 
-
-  viewPatient(patientId);
-
-      }
-      function editPatient(patient) {
+function startConsultation(
+  patientId
+) {
 
   const container =
     document.getElementById(
       "patientsContainer"
     );
 
+
   container.innerHTML = `
 
     <div class="patient-profile-section">
 
-      <h2>✏️ Edit Patient</h2>
+      <h2>
+        🩺 New Consultation
+      </h2>
 
       <p>
-        <strong>🆔 Patient ID:</strong>
-        ${patient.id}
+        <strong>
+          🆔 Patient ID:
+        </strong>
+        ${escapeHTML(patientId)}
       </p>
 
 
-      <label>Patient Name</label>
+      <label>
+        Chief Complaints / Present Symptoms
+      </label>
+
+      <textarea
+        id="consultChiefComplaints"
+        placeholder="Enter present symptoms / chief complaints"
+      ></textarea>
+
+
+      <label>
+        Vitals
+      </label>
+
+      <textarea
+        id="consultVitals"
+        placeholder="BP, Pulse, SpO₂, Weight, Height"
+      ></textarea>
+
+
+      <label>
+        Examination
+      </label>
+
+      <textarea
+        id="consultExamination"
+        placeholder="Enter examination findings"
+      ></textarea>
+
+
+      <label>
+        Diagnosis / Assessment
+      </label>
+
+      <textarea
+        id="consultDiagnosis"
+        placeholder="Enter diagnosis / assessment"
+      ></textarea>
+
+
+      <label>
+        Investigations / Lab Reports
+      </label>
+
+      <textarea
+        id="consultInvestigations"
+        placeholder="Enter investigations or lab reports"
+      ></textarea>
+
+
+      <label>
+        Prescription / Treatment
+      </label>
+
+      <textarea
+        id="consultPrescription"
+        placeholder="Enter medicines, dose and duration"
+      ></textarea>
+
+
+      <label>
+        📷 Prescription Images
+      </label>
 
       <input
-        type="text"
-        id="editPatientName"
-        value="${patient.patient_name || ""}">
+        type="file"
+        id="consultPrescriptionImages"
+        accept="image/*"
+        multiple
+      >
 
 
-      <label>Phone Number</label>
-
-      <input
-        type="tel"
-        id="editPatientPhone"
-        value="${patient.patient_phone || ""}">
+      <p
+        id="prescriptionImageNames"
+        style="font-size:14px;"
+      ></p>
 
 
-      <label>Date of Birth</label>
-
-      <input
-        type="date"
-        id="editPatientDOB"
-        value="${patient.date_of_birth || ""}">
-
-
-      <label>Gender</label>
-
-      <select id="editPatientGender">
-
-        <option value="">
-          Select Gender
-        </option>
-
-        <option value="Male"
-          ${patient.gender === "Male" ? "selected" : ""}>
-          Male
-        </option>
-
-        <option value="Female"
-          ${patient.gender === "Female" ? "selected" : ""}>
-          Female
-        </option>
-
-        <option value="Other"
-          ${patient.gender === "Other" ? "selected" : ""}>
-          Other
-        </option>
-
-      </select>
-
-
-      <label>Address</label>
+      <label>
+        Advice
+      </label>
 
       <textarea
-        id="editPatientAddress">${patient.address || ""}</textarea>
+        id="consultAdvice"
+        placeholder="Diet, lifestyle and other advice"
+      ></textarea>
 
 
-      <label>Blood Group</label>
-
-      <input
-        type="text"
-        id="editPatientBloodGroup"
-        value="${patient.blood_group || ""}">
-
-
-      <h3>🩺 Clinical Information</h3>
-
-
-      <label>Chief Complaints</label>
-
-      <textarea
-        id="editPatientChiefComplaints">${patient.chief_complaints || ""}</textarea>
-
-
-      <label>Pulse</label>
-
-      <input
-        type="text"
-        id="editPatientPulse"
-        value="${patient.Pulse || ""}">
-
-
-      <label>Blood Pressure</label>
-
-      <input
-        type="text"
-        id="editPatientBP"
-        value="${patient.blood_pressure || ""}">
-
-
-      <label>SpO₂</label>
-
-      <input
-        type="text"
-        id="editPatientSpO2"
-        value="${patient.spo2 || ""}">
-
-
-      <label>Weight (kg)</label>
-
-      <input
-        type="number"
-        step="0.1"
-        id="editPatientWeight"
-        value="${patient.weight || ""}">
-
-
-      <label>Height (cm)</label>
-
-      <input
-        type="number"
-        step="0.1"
-        id="editPatientHeight"
-        value="${patient.height || ""}">
-
-
-      <h3>📋 Medical History</h3>
-
-
-      <label>Medical History</label>
-
-      <textarea
-        id="editPatientMedicalHistory">${patient.medical_history || ""}</textarea>
-
-
-      <label>Surgical History</label>
-
-      <textarea
-        id="editPatientSurgicalHistory">${patient.surgical_history || ""}</textarea>
-
-
-      <label>Allergies</label>
-
-      <textarea
-        id="editPatientAllergies">${patient.allergies || ""}</textarea>
-
-
-      <label>Current Medications</label>
-
-      <textarea
-        id="editPatientMedications">${patient.current_medications || ""}</textarea>
-
-
-      <h3>🩺 Assessment & Treatment</h3>
-
-
-      <label>Diagnosis</label>
-
-      <textarea
-        id="editPatientDiagnosis">${patient.diagnosis || ""}</textarea>
-
-
-      <label>Lab Reports / Investigations</label>
-
-      <textarea
-        id="editPatientLabReports">${patient.lab_reports || ""}</textarea>
-
-
-      <label>Treatment / Prescription</label>
-
-      <textarea
-        id="editPatientTreatment">${patient.treatment || ""}</textarea>
-
-
-      <label>Advice</label>
-
-      <textarea
-        id="editPatientAdvice">${patient.advice || ""}</textarea>
-
-
-      <label>Follow-up Date</label>
+      <label>
+        Follow-up Date
+      </label>
 
       <input
         type="date"
-        id="editPatientFollowUp"
-        value="${patient.follow_up_date || ""}">
+        id="consultFollowUpDate"
+      >
 
 
       <br>
@@ -1617,741 +1791,155 @@ document
       <button
         type="button"
         class="doctor-login-button"
-        id="savePatientChangesButton">
-
-        💾 Save Changes
-
+        id="saveConsultationButton"
+      >
+        💾 Save Consultation
       </button>
 
 
       <button
         type="button"
         class="doctor-login-button"
-        id="cancelPatientEditButton">
-
+        id="cancelConsultationButton"
+      >
         ↩️ Cancel
-
       </button>
 
     </div>
 
   `;
 
-
-  document
-    .getElementById("savePatientChangesButton")
-    .onclick = function () {
-
-      savePatientChanges(patient.id);
-
-    };
-
-
-  document
-    .getElementById("cancelPatientEditButton")
-    .onclick = function () {
-
-      viewPatient(patient.id);
-
-    };
-
-      }
-      async function savePatientChanges(patientId) {
-
-  const updatedPatient = {
-
-    patient_name:
-      document.getElementById("editPatientName").value.trim(),
-
-    patient_phone:
-      document.getElementById("editPatientPhone").value.trim(),
-
-    date_of_birth:
-      document.getElementById("editPatientDOB").value || null,
-
-    gender:
-      document.getElementById("editPatientGender").value || null,
-
-    address:
-      document.getElementById("editPatientAddress").value.trim(),
-
-    blood_group:
-      document.getElementById("editPatientBloodGroup").value.trim(),
-
-    chief_complaints:
-      document.getElementById("editPatientChiefComplaints").value.trim(),
-
-    Pulse:
-      document.getElementById("editPatientPulse").value.trim(),
-
-    blood_pressure:
-      document.getElementById("editPatientBP").value.trim(),
-
-    spo2:
-      document.getElementById("editPatientSpO2").value.trim(),
-
-    weight:
-      document.getElementById("editPatientWeight").value || null,
-
-    height:
-      document.getElementById("editPatientHeight").value || null,
-
-    medical_history:
-      document.getElementById("editPatientMedicalHistory").value.trim(),
-
-    surgical_history:
-      document.getElementById("editPatientSurgicalHistory").value.trim(),
-
-    allergies:
-      document.getElementById("editPatientAllergies").value.trim(),
-
-    current_medications:
-      document.getElementById("editPatientMedications").value.trim(),
-
-    diagnosis:
-      document.getElementById("editPatientDiagnosis").value.trim(),
-
-    lab_reports:
-      document.getElementById("editPatientLabReports").value.trim(),
-
-    treatment:
-      document.getElementById("editPatientTreatment").value.trim(),
-
-    advice:
-      document.getElementById("editPatientAdvice").value.trim(),
-
-    follow_up_date:
-      document.getElementById("editPatientFollowUp").value || null
-
-  };
-
-
-  const { data, error } =
-    await supabaseClient
-      .from("patients")
-      .update(updatedPatient)
-      .eq("id", patientId)
-      .select()
-      .single();
-
-
-  if (error) {
-
-    console.error(
-      "Error updating patient:",
-      error
-    );
-
-    alert(
-      "Unable to save changes: " +
-      error.message
-    );
-
-    return;
-  }
-
-
-  alert(
-    "Patient details updated successfully."
-  );
-
-
-  viewPatient(patientId);
-
-      }
-  document
-    .getElementById(
-      "backToPatientSearchButton"
-    )
-    .onclick = function () {
-
-      location.reload();
-
-    };
-
-      }
-    document
-  .getElementById("searchPatientButton")
-  .addEventListener(
-    "click",
-    searchPatients
-  );
-    function showConsultationDetails(index) {
-
-  const details =
-    document.getElementById(
-      "consultation-details-" + index
-    );
-
-  if (!details) {
-    console.error(
-      "Consultation details not found:",
-      index
-    );
-    return;
-  }
-
-  if (details.style.display === "none") {
-
-    details.style.display = "block";
-
-  } else {
-
-    details.style.display = "none";
-
-  }
-
-    }async function editPatient(patient) {
-
-  const container =
-    document.getElementById("patientsContainer");
-
-  container.innerHTML = `
-
-    <div class="patient-profile-section">
-
-      <h2>✏️ Edit Patient</h2>
-
-      <input
-        type="text"
-        id="editPatientName"
-        value="${patient.patient_name || ""}"
-        placeholder="Patient Name">
-
-      <input
-        type="tel"
-        id="editPatientPhone"
-        value="${patient.patient_phone || ""}"
-        placeholder="Phone Number">
-
-      <label>Date of Birth</label>
-
-      <input
-        type="date"
-        id="editPatientDOB"
-        value="${patient.date_of_birth || ""}">
-
-      <select id="editPatientGender">
-
-        <option value="">Select Gender</option>
-
-        <option value="Male"
-          ${patient.gender === "Male" ? "selected" : ""}>
-          Male
-        </option>
-
-        <option value="Female"
-          ${patient.gender === "Female" ? "selected" : ""}>
-          Female
-        </option>
-
-        <option value="Other"
-          ${patient.gender === "Other" ? "selected" : ""}>
-          Other
-        </option>
-
-      </select>
-
-      <input
-        type="text"
-        id="editPatientAddress"
-        value="${patient.address || ""}"
-        placeholder="Address">
-
-      <input
-        type="text"
-        id="editPatientBloodGroup"
-        value="${patient.blood_group || ""}"
-        placeholder="Blood Group">
-
-      <textarea
-        id="editPatientMedicalHistory"
-        placeholder="Medical History">${patient.medical_history || ""}</textarea>
-
-      <textarea
-        id="editPatientSurgicalHistory"
-        placeholder="Surgical History">${patient.surgical_history || ""}</textarea>
-
-      <textarea
-        id="editPatientAllergies"
-        placeholder="Allergies">${patient.allergies || ""}</textarea>
-
-      <textarea
-        id="editPatientCurrentMedications"
-        placeholder="Current Medications">${patient.current_medications || ""}</textarea>
-
-      <br>
-
-      <button
-        type="button"
-        class="doctor-login-button"
-        id="saveEditedPatientButton">
-
-        💾 Save Changes
-
-      </button>
-
-      <button
-        type="button"
-        class="doctor-login-button"
-        id="cancelEditPatientButton">
-
-        ↩️ Cancel
-
-      </button>
-
-    </div>
-
-  `;
-
-
-  document
-    .getElementById("saveEditedPatientButton")
-    .onclick = function () {
-
-      saveEditedPatient(patient.id);
-
-    };
-
-
-  document
-    .getElementById("cancelEditPatientButton")
-    .onclick = function () {
-
-      viewPatient(patient.id);
-
-    };
-
-    }async function saveEditedPatient(patientId) {
-
-  const updatedPatient = {
-
-    patient_name:
-      document.getElementById("editPatientName").value.trim(),
-
-    patient_phone:
-      document.getElementById("editPatientPhone").value.trim(),
-
-    date_of_birth:
-      document.getElementById("editPatientDOB").value || null,
-
-    gender:
-      document.getElementById("editPatientGender").value || null,
-
-    address:
-      document.getElementById("editPatientAddress").value.trim(),
-
-    blood_group:
-      document.getElementById("editPatientBloodGroup").value.trim(),
-
-    medical_history:
-      document.getElementById("editPatientMedicalHistory").value.trim(),
-
-    surgical_history:
-      document.getElementById("editPatientSurgicalHistory").value.trim(),
-
-    allergies:
-      document.getElementById("editPatientAllergies").value.trim(),
-
-    current_medications:
-      document
-        .getElementById("editPatientCurrentMedications")
-        .value
-        .trim()
-
-  };
-
-
-  if (
-    !updatedPatient.patient_name ||
-    !updatedPatient.patient_phone
-  ) {
-
-    alert(
-      "Patient name and phone number are required."
-    );
-
-    return;
-
-  }
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("patients")
-      .update(updatedPatient)
-      .eq("id", patientId)
-      .select()
-      .single();
-
-
-  if (error) {
-
-    console.error(
-      "Error updating patient:",
-      error
-    );
-
-    alert(
-      "Unable to save changes: " +
-      error.message
-    );
-
-    return;
-
-  }
-
-
-  alert(
-    "Patient details updated successfully."
-  );
-
-
-  viewPatient(patientId);
-
-    } async function editConsultation(consultationId) {
-
-  const {
-    data: consultation,
-    error
-  } = await supabaseClient
-    .from("consultations")
-    .select("*")
-    .eq("id", consultationId)
-    .single();
-
-  if (error) {
-
-    console.error(
-      "Error loading consultation:",
-      error
-    );
-
-    alert(
-      "Unable to load consultation."
-    );
-
-    return;
-  }
-
-
-  const container =
-    document.getElementById("patientsContainer");
-
-
-  container.innerHTML = `
-
-    <div class="patient-profile-section">
-
-      <h2>✏️ Edit Consultation</h2>
-
-      <p>
-        <strong>🆔 Consultation ID:</strong>
-        ${consultation.id}
-      </p>
-
-
-      <label>Chief Complaints / Present Symptoms</label>
-
-      <textarea
-        id="editConsultChiefComplaints"
-        placeholder="Chief Complaints">${consultation.chief_complaints || ""}</textarea>
-
-
-      <label>Vitals</label>
-
-      <textarea
-        id="editConsultVitals"
-        placeholder="BP, Pulse, SpO₂, Weight, Height">${consultation.vitals || ""}</textarea>
-
-
-      <label>Examination</label>
-
-      <textarea
-        id="editConsultExamination"
-        placeholder="Examination findings">${consultation.examination || ""}</textarea>
-
-
-      <label>Diagnosis / Assessment</label>
-
-      <textarea
-        id="editConsultDiagnosis"
-        placeholder="Diagnosis / Assessment">${consultation.diagnosis || ""}</textarea>
-
-
-      <label>Investigations / Lab Reports</label>
-
-      <textarea
-        id="editConsultInvestigations"
-        placeholder="Investigations / Lab Reports">${consultation.investigations || ""}</textarea>
-
-
-      <label>Prescription / Treatment</label>
-
-      <textarea
-        id="editConsultPrescription"
-        placeholder="Medicines, dose and duration">${consultation.prescription || ""}</textarea>
-
-
-<label>📷 Add Prescription Images</label>
-
-<input
-  type="file"
-  id="editConsultPrescriptionImages"
-  accept="image/*"
-  multiple>
-
-<p
-  id="editPrescriptionImageNames"
-  style="font-size:14px;">
-</p>
-
-${
-  consultation.prescription_image_url
-    ? `
-      <p>
-        <strong>Current Prescription Image:</strong><br>
-
-        <img
-          src="${consultation.prescription_image_url}"
-          alt="Current Prescription"
-          style="
-            max-width:100%;
-            width:300px;
-            border-radius:10px;
-            margin-top:10px;
-          ">
-      </p>
-    `
-    : ""
-}
-      <label>Advice</label>
-
-      <textarea
-        id="editConsultAdvice"
-        placeholder="Advice">${consultation.advice || ""}</textarea>
-
-
-      <label>Follow-up Date</label>
-
-      <input
-        type="date"
-        id="editConsultFollowUpDate"
-        value="${consultation.follow_up_date || ""}">
-
-
-      <br>
-
-      <button
-        type="button"
-        class="doctor-login-button"
-        id="saveEditedConsultationButton">
-
-        💾 Save Changes
-
-      </button>
-
-
-      <button
-        type="button"
-        class="doctor-login-button"
-        id="cancelEditConsultationButton">
-
-        ↩️ Cancel
-
-      </button>
-
-    </div>
-
-  `;
-
-document
-  .getElementById("editConsultPrescriptionImages")
-  .addEventListener("change", function () {
-
-    const files = this.files;
-
-    const names =
-      Array.from(files)
-        .map(function (file) {
-          return file.name;
-        })
-        .join("<br>");
-
-    document
-      .getElementById("editPrescriptionImageNames")
-      .innerHTML =
-        files.length > 0
-          ? "Selected images:<br>" + names
-          : "";
-
-  });
-  document
-    .getElementById("saveEditedConsultationButton")
-    .onclick = function () {
-
-      saveEditedConsultation(
-        consultation.id,
-        consultation.patient_id
-      );
-
-    };
-
-
-  document
-    .getElementById("cancelEditConsultationButton")
-    .onclick = function () {
-
-      viewPatient(
-        consultation.patient_id
-      );
-
-    };
-
-        
-
-  
-   
-
-async function saveEditedConsultation(
-  consultationId,
-  patientId
-) {
-
-  const updatedConsultation = {
-
-    chief_complaints:
-      document
-        .getElementById("editConsultChiefComplaints")
-        .value
-        .trim(),
-
-    vitals:
-      document
-        .getElementById("editConsultVitals")
-        .value
-        .trim(),
-
-    examination:
-      document
-        .getElementById("editConsultExamination")
-        .value
-        .trim(),
-
-    diagnosis:
-      document
-        .getElementById("editConsultDiagnosis")
-        .value
-        .trim(),
-
-    investigations:
-      document
-        .getElementById("editConsultInvestigations")
-        .value
-        .trim(),
-
-    prescription:
-      document
-        .getElementById("editConsultPrescription")
-        .value
-        .trim(),
-
-    advice:
-      document
-        .getElementById("editConsultAdvice")
-        .value
-        .trim(),
-
-    follow_up_date:
-      document
-        .getElementById("editConsultFollowUpDate")
-        .value || null
-
-  };
-
-
-  /* =========================
-     UPDATE CONSULTATION
-     ========================= */
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("consultations")
-      .update(updatedConsultation)
-      .eq("id", consultationId)
-      .select()
-      .single();
-
-
-  if (error) {
-
-    console.error(
-      "Error updating consultation:",
-      error
-    );
-
-    alert(
-      "Unable to save consultation changes: " +
-      error.message
-    );
-
-    return;
-  }
-
-
-  /* =========================
-     UPLOAD NEW IMAGES
-     ========================= */
 
   const imageInput =
     document.getElementById(
-      "editConsultPrescriptionImages"
+      "consultPrescriptionImages"
     );
 
 
-  const prescriptionFiles =
-    imageInput
-      ? imageInput.files
-      : [];
+  imageInput.addEventListener(
+    "change",
+    function () {
+
+      const files =
+        Array.from(
+          this.files || []
+        );
+
+
+      document.getElementById(
+        "prescriptionImageNames"
+      ).innerHTML =
+        files.length > 0
+
+          ? "Selected images:<br>" +
+            files
+              .map(function (file) {
+                return escapeHTML(
+                  file.name
+                );
+              })
+              .join("<br>")
+
+          : "";
+
+    }
+  );
+
+
+  document
+    .getElementById(
+      "saveConsultationButton"
+    )
+    .onclick =
+      function () {
+
+        saveConsultation(
+          patientId
+        );
+
+      };
+
+
+  document
+    .getElementById(
+      "cancelConsultationButton"
+    )
+    .onclick =
+      function () {
+
+        viewPatient(
+          patientId
+        );
+
+      };
+}
+
+
+/* =========================================================
+   UPLOAD PRESCRIPTION IMAGES 
+   ========================================================= */
+
+async function uploadPrescriptionImages(
+  patientId,
+  consultationId,
+  files
+) {
+
+  const uploadedImages = [];
 
 
   for (
     let i = 0;
-    i < prescriptionFiles.length;
+    i < files.length;
     i++
   ) {
 
     const imageFile =
-      prescriptionFiles[i];
+      files[i];
 
 
-    const fileExtension =
-      imageFile.name
+    if (
+      !imageFile.type.startsWith(
+        "image/"
+      )
+    ) {
+
+      continue;
+    }
+
+
+    const originalName =
+      imageFile.name;
+
+
+    const extension =
+      originalName
         .split(".")
-        .pop();
+        .pop()
+        .toLowerCase();
 
 
-    const fileName =
+    const uniqueName =
       patientId +
+      "_" +
+      consultationId +
       "_" +
       Date.now() +
       "_" +
+      Math.random()
+        .toString(36)
+        .substring(2, 8) +
+      "_" +
       i +
       "." +
-      fileExtension;
+      extension;
 
 
     const filePath =
       "patient-" +
       patientId +
       "/" +
-      fileName;
+      uniqueName;
 
 
     const {
@@ -2372,22 +1960,18 @@ async function saveEditedConsultation(
     if (uploadError) {
 
       console.error(
-        "Prescription image upload error:",
+        "Prescription upload error:",
         uploadError
       );
 
-      alert(
-        "Consultation updated, but image upload failed: " +
+      throw new Error(
+        "Unable to upload " +
+        originalName +
+        ": " +
         uploadError.message
       );
-
-      return;
     }
 
-
-    /* =========================
-       GET PUBLIC IMAGE URL
-       ========================= */
 
     const {
       data: publicUrlData
@@ -2400,53 +1984,1450 @@ async function saveEditedConsultation(
         );
 
 
-    const imageUrl =
-      publicUrlData.publicUrl;
+    uploadedImages.push({
 
+      image_url:
+        publicUrlData.publicUrl,
 
-    /* =========================
-       SAVE IMAGE RECORD
-       ========================= */
+      file_path:
+        filePath
 
-    const {
-      error: imageInsertError
-    } =
-      await supabaseClient
-        .from("consultation_images")
-        .insert([
-
-          {
-            consultation_id:
-              consultationId,
-
-            image_url:
-              imageUrl
-          }
-
-        ]);
-
-
-    if (imageInsertError) {
-
-      console.error(
-        "Error saving consultation image:",
-        imageInsertError
-      );
-
-      alert(
-        "Consultation updated, but image record could not be saved: " +
-        imageInsertError.message
-      );
-
-      return;
-    }
+    });
 
   }
 
 
-  /* =========================
-     FINISHED
-     ========================= */
+  return uploadedImages;
+}
+
+
+/* =========================================================
+   SAVE NEW CONSULTATION
+   ========================================================= */
+
+async function saveConsultation(
+  patientId
+) {
+
+  const imageInput =
+    document.getElementById(
+      "consultPrescriptionImages"
+    );
+
+
+  const files =
+    imageInput
+      ? Array.from(
+          imageInput.files || []
+        )
+      : [];
+
+
+  const consultation = {
+
+    patient_id:
+      patientId,
+
+    chief_complaints:
+      document
+        .getElementById(
+          "consultChiefComplaints"
+        )
+        .value
+        .trim(),
+
+    vitals:
+      document
+        .getElementById(
+          "consultVitals"
+        )
+        .value
+        .trim(),
+
+    examination:
+      document
+        .getElementById(
+          "consultExamination"
+        )
+        .value
+        .trim(),
+
+    diagnosis:
+      document
+        .getElementById(
+          "consultDiagnosis"
+        )
+        .value
+        .trim(),
+
+    investigations:
+      document
+        .getElementById(
+          "consultInvestigations"
+        )
+        .value
+        .trim(),
+
+    prescription:
+      document
+        .getElementById(
+          "consultPrescription"
+        )
+        .value
+        .trim(),
+
+    advice:
+      document
+        .getElementById(
+          "consultAdvice"
+        )
+        .value
+        .trim(),
+
+    follow_up_date:
+      document
+        .getElementById(
+          "consultFollowUpDate"
+        )
+        .value ||
+      null,
+
+    prescription_image_url:
+      null
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .insert([
+        consultation
+      ])
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Consultation save error:",
+      error
+    );
+
+    alert(
+      "Unable to save consultation: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  let uploadedImages = [];
+
+
+  try {
+
+    uploadedImages =
+      await uploadPrescriptionImages(
+        patientId,
+        data.id,
+        files
+      );
+
+  } catch (uploadError) {
+
+    console.error(
+      uploadError
+    );
+
+    alert(
+      "Consultation was saved, but prescription image upload failed:\n\n" +
+      uploadError.message
+    );
+
+    viewPatient(patientId);
+
+    return;
+  }
+
+
+  if (
+    uploadedImages.length > 0
+  ) {
+
+    const firstImage =
+      uploadedImages[0]
+        .image_url;
+
+
+    const {
+      error:
+        consultationUpdateError
+    } =
+      await supabaseClient
+        .from("consultations")
+        .update({
+
+          prescription_image_url:
+            firstImage
+
+        })
+        .eq(
+          "id",
+          data.id
+        );
+
+
+    if (
+      consultationUpdateError
+    ) {
+
+      console.error(
+        consultationUpdateError
+      );
+
+      alert(
+        "Consultation saved, but the main prescription image could not be linked."
+      );
+    }
+
+
+    const imageRecords =
+      uploadedImages.map(
+        function (image) {
+
+          return {
+
+            consultation_id:
+              data.id,
+
+            image_url:
+              image.image_url
+
+          };
+
+        }
+      );
+
+
+    const {
+      error:
+        imageInsertError
+    } =
+      await supabaseClient
+        .from("consultation_images")
+        .insert(
+          imageRecords
+        );
+
+
+    if (
+      imageInsertError
+    ) {
+
+      console.error(
+        imageInsertError
+      );
+
+      alert(
+        "Consultation saved, but image records could not be saved:\n\n" +
+        imageInsertError.message
+      );
+
+      viewPatient(patientId);
+
+      return;
+    }
+  }
+
+
+  alert(
+    "Consultation saved successfully."
+  );
+
+
+  viewPatient(
+    patientId
+  );
+}
+
+
+/* =========================================================
+   EDIT PATIENT
+   ========================================================= */
+
+function editPatient(
+  patient
+) {
+
+  const container =
+    document.getElementById(
+      "patientsContainer"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="patient-profile-section">
+
+      <h2>
+        ✏️ Edit Patient
+      </h2>
+
+      <p>
+        <strong>
+          🆔 Patient ID:
+        </strong>
+        ${escapeHTML(patient.id)}
+      </p>
+
+
+      <label>
+        Patient Name
+      </label>
+
+      <input
+        type="text"
+        id="editPatientName"
+        value="${escapeHTML(
+          patient.patient_name || ""
+        )}"
+      >
+
+
+      <label>
+        Phone Number
+      </label>
+
+      <input
+        type="tel"
+        id="editPatientPhone"
+        value="${escapeHTML(
+          patient.patient_phone || ""
+        )}"
+      >
+
+
+      <label>
+        Date of Birth
+      </label>
+
+      <input
+        type="date"
+        id="editPatientDOB"
+        value="${escapeHTML(
+          patient.date_of_birth || ""
+        )}"
+      >
+
+
+      <label>
+        Gender
+      </label>
+
+      <select
+        id="editPatientGender"
+      >
+
+        <option value="">
+          Select Gender
+        </option>
+
+        <option
+          value="Male"
+          ${patient.gender === "Male"
+            ? "selected"
+            : ""}
+        >
+          Male
+        </option>
+
+        <option
+          value="Female"
+          ${patient.gender === "Female"
+            ? "selected"
+            : ""}
+        >
+          Female
+        </option>
+
+        <option
+          value="Other"
+          ${patient.gender === "Other"
+            ? "selected"
+            : ""}
+        >
+          Other
+        </option>
+
+      </select>
+
+
+      <label>
+        Address
+      </label>
+
+      <textarea
+        id="editPatientAddress"
+      >${escapeHTML(
+        patient.address || ""
+      )}</textarea>
+
+
+      <label>
+        Blood Group
+      </label>
+
+      <input
+        type="text"
+        id="editPatientBloodGroup"
+        value="${escapeHTML(
+          patient.blood_group || ""
+        )}"
+      >
+
+
+      <h3>
+        🩺 Clinical Information
+      </h3>
+
+
+      <label>
+        Chief Complaints
+      </label>
+
+      <textarea
+        id="editPatientChiefComplaints"
+      >${escapeHTML(
+        patient.chief_complaints || ""
+      )}</textarea>
+
+
+      <label>
+        Pulse
+      </label>
+
+      <input
+        type="text"
+        id="editPatientPulse"
+        value="${escapeHTML(
+          patient.Pulse || ""
+        )}"
+      >
+
+
+      <label>
+        Blood Pressure
+      </label>
+
+      <input
+        type="text"
+        id="editPatientBP"
+        value="${escapeHTML(
+          patient.blood_pressure || ""
+        )}"
+      >
+
+
+      <label>
+        SpO₂
+      </label>
+
+      <input
+        type="text"
+        id="editPatientSpO2"
+        value="${escapeHTML(
+          patient.spo2 || ""
+        )}"
+      >
+
+
+      <label>
+        Weight (kg)
+      </label>
+
+      <input
+        type="number"
+        step="0.1"
+        id="editPatientWeight"
+        value="${escapeHTML(
+          patient.weight || ""
+        )}"
+      >
+
+
+      <label>
+        Height (cm)
+      </label>
+
+      <input
+        type="number"
+        step="0.1"
+        id="editPatientHeight"
+        value="${escapeHTML(
+          patient.height || ""
+        )}"
+      >
+
+
+      <h3>
+        📋 Medical History
+      </h3>
+
+
+      <label>
+        Medical History
+      </label>
+
+      <textarea
+        id="editPatientMedicalHistory"
+      >${escapeHTML(
+        patient.medical_history || ""
+      )}</textarea>
+
+
+      <label>
+        Surgical History
+      </label>
+
+      <textarea
+        id="editPatientSurgicalHistory"
+      >${escapeHTML(
+        patient.surgical_history || ""
+      )}</textarea>
+
+
+      <label>
+        Allergies
+      </label>
+
+      <textarea
+        id="editPatientAllergies"
+      >${escapeHTML(
+        patient.allergies || ""
+      )}</textarea>
+
+
+      <label>
+        Current Medications
+      </label>
+
+      <textarea
+        id="editPatientMedications"
+      >${escapeHTML(
+        patient.current_medications || ""
+      )}</textarea>
+
+
+      <h3>
+        🩺 Assessment & Treatment
+      </h3>
+
+
+      <label>
+        Diagnosis
+      </label>
+
+      <textarea
+        id="editPatientDiagnosis"
+      >${escapeHTML(
+        patient.diagnosis || ""
+      )}</textarea>
+
+
+      <label>
+        Lab Reports / Investigations
+      </label>
+
+      <textarea
+        id="editPatientLabReports"
+      >${escapeHTML(
+        patient.lab_reports || ""
+      )}</textarea>
+
+
+      <label>
+        Treatment / Prescription
+      </label>
+
+      <textarea
+        id="editPatientTreatment"
+      >${escapeHTML(
+        patient.treatment || ""
+      )}</textarea>
+
+
+      <label>
+        Advice
+      </label>
+
+      <textarea
+        id="editPatientAdvice"
+      >${escapeHTML(
+        patient.advice || ""
+      )}</textarea>
+
+
+      <label>
+        Follow-up Date
+      </label>
+
+      <input
+        type="date"
+        id="editPatientFollowUp"
+        value="${escapeHTML(
+          patient.follow_up_date || ""
+        )}"
+      >
+
+
+      <br>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="savePatientChangesButton"
+      >
+        💾 Save Changes
+      </button>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="cancelPatientEditButton"
+      >
+        ↩️ Cancel
+      </button>
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById(
+      "savePatientChangesButton"
+    )
+    .onclick =
+      function () {
+
+        savePatientChanges(
+          patient.id
+        );
+
+      };
+
+
+  document
+    .getElementById(
+      "cancelPatientEditButton"
+    )
+    .onclick =
+      function () {
+
+        viewPatient(
+          patient.id
+        );
+
+      };
+}
+
+
+/* =========================================================
+   SAVE PATIENT EDIT
+   ========================================================= */
+
+async function savePatientChanges(
+  patientId
+) {
+
+  const updatedPatient = {
+
+    patient_name:
+      document
+        .getElementById(
+          "editPatientName"
+        )
+        .value
+        .trim(),
+
+    patient_phone:
+      document
+        .getElementById(
+          "editPatientPhone"
+        )
+        .value
+        .trim(),
+
+    date_of_birth:
+      document
+        .getElementById(
+          "editPatientDOB"
+        )
+        .value ||
+      null,
+
+    gender:
+      document
+        .getElementById(
+          "editPatientGender"
+        )
+        .value ||
+      null,
+
+    address:
+      document
+        .getElementById(
+          "editPatientAddress"
+        )
+        .value
+        .trim(),
+
+    blood_group:
+      document
+        .getElementById(
+          "editPatientBloodGroup"
+        )
+        .value
+        .trim(),
+
+    chief_complaints:
+      document
+        .getElementById(
+          "editPatientChiefComplaints"
+        )
+        .value
+        .trim(),
+
+    Pulse:
+      document
+        .getElementById(
+          "editPatientPulse"
+        )
+        .value
+        .trim(),
+
+    blood_pressure:
+      document
+        .getElementById(
+          "editPatientBP"
+        )
+        .value
+        .trim(),
+
+    spo2:
+      document
+        .getElementById(
+          "editPatientSpO2"
+        )
+        .value
+        .trim(),
+
+    weight:
+      document
+        .getElementById(
+          "editPatientWeight"
+        )
+        .value ||
+      null,
+
+    height:
+      document
+        .getElementById(
+          "editPatientHeight"
+        )
+        .value ||
+      null,
+
+    medical_history:
+      document
+        .getElementById(
+          "editPatientMedicalHistory"
+        )
+        .value
+        .trim(),
+
+    surgical_history:
+      document
+        .getElementById(
+          "editPatientSurgicalHistory"
+        )
+        .value
+        .trim(),
+
+    allergies:
+      document
+        .getElementById(
+          "editPatientAllergies"
+        )
+        .value
+        .trim(),
+
+    current_medications:
+      document
+        .getElementById(
+          "editPatientMedications"
+        )
+        .value
+        .trim(),
+
+    diagnosis:
+      document
+        .getElementById(
+          "editPatientDiagnosis"
+        )
+        .value
+        .trim(),
+
+    lab_reports:
+      document
+        .getElementById(
+          "editPatientLabReports"
+        )
+        .value
+        .trim(),
+
+    treatment:
+      document
+        .getElementById(
+          "editPatientTreatment"
+        )
+        .value
+        .trim(),
+
+    advice:
+      document
+        .getElementById(
+          "editPatientAdvice"
+        )
+        .value
+        .trim(),
+
+    follow_up_date:
+      document
+        .getElementById(
+          "editPatientFollowUp"
+        )
+        .value ||
+      null
+  };
+
+
+  if (
+    !updatedPatient.patient_name ||
+    !updatedPatient.patient_phone
+  ) {
+
+    alert(
+      "Patient name and phone number are required."
+    );
+
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .update(
+        updatedPatient
+      )
+      .eq(
+        "id",
+        patientId
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Patient update error:",
+      error
+    );
+
+    alert(
+      "Unable to save changes: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Patient details updated successfully."
+  );
+
+
+  viewPatient(
+    patientId
+  );
+}
+
+
+/* =========================================================
+   EDIT CONSULTATION
+   ========================================================= */
+
+async function editConsultation(
+  consultationId
+) {
+
+  const {
+    data: consultation,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select("*")
+      .eq(
+        "id",
+        consultationId
+      )
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Consultation loading error:",
+      error
+    );
+
+    alert(
+      "Unable to load consultation."
+    );
+
+    return;
+  }
+
+
+  const {
+    data: existingImages,
+    error: imageError
+  } =
+    await supabaseClient
+      .from("consultation_images")
+      .select("*")
+      .eq(
+        "consultation_id",
+        consultationId
+      );
+
+
+  if (imageError) {
+
+    console.error(
+      "Image loading error:",
+      imageError
+    );
+  }
+
+
+  const images =
+    existingImages || [];
+
+
+  const container =
+    document.getElementById(
+      "patientsContainer"
+    );
+
+
+  const imageHTML =
+    getImagesForConsultation(
+      consultation,
+      images
+    )
+      .map(function (
+        image,
+        index
+      ) {
+
+        return `
+
+          <div
+            style="
+              margin-bottom:15px;
+              padding:10px;
+              border:1px solid #ddd;
+              border-radius:10px;
+            "
+          >
+
+            <p>
+              <strong>
+                📷 Existing Image ${index + 1}
+              </strong>
+            </p>
+
+            <img
+              src="${escapeHTML(
+                image.image_url
+              )}"
+              alt="Prescription Image"
+              style="
+                max-width:100%;
+                width:400px;
+                border-radius:10px;
+                border:1px solid #ddd;
+              "
+            >
+
+            <br><br>
+
+            <button
+              type="button"
+              class="doctor-login-button"
+              onclick="deleteConsultationImage(
+                ${consultation.id},
+                ${image.id === null ? "null" : image.id},
+                '${escapeHTML(image.image_url)}',
+                ${image.isMain ? "true" : "false"}
+              )"
+            >
+              🗑️ Delete Image
+            </button>
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+
+  container.innerHTML = `
+
+    <div class="patient-profile-section">
+
+      <h2>
+        ✏️ Edit Consultation
+      </h2>
+
+      <p>
+        <strong>
+          🆔 Consultation ID:
+        </strong>
+        ${escapeHTML(
+          consultation.id
+        )}
+      </p>
+
+
+      <label>
+        Chief Complaints / Present Symptoms
+      </label>
+
+      <textarea
+        id="editConsultChiefComplaints"
+      >${escapeHTML(
+        consultation.chief_complaints || ""
+      )}</textarea>
+
+
+      <label>
+        Vitals
+      </label>
+
+      <textarea
+        id="editConsultVitals"
+      >${escapeHTML(
+        consultation.vitals || ""
+      )}</textarea>
+
+
+      <label>
+        Examination
+      </label>
+
+      <textarea
+        id="editConsultExamination"
+      >${escapeHTML(
+        consultation.examination || ""
+      )}</textarea>
+
+
+      <label>
+        Diagnosis / Assessment
+      </label>
+
+      <textarea
+        id="editConsultDiagnosis"
+      >${escapeHTML(
+        consultation.diagnosis || ""
+      )}</textarea>
+
+
+      <label>
+        Investigations / Lab Reports
+      </label>
+
+      <textarea
+        id="editConsultInvestigations"
+      >${escapeHTML(
+        consultation.investigations || ""
+      )}</textarea>
+
+
+      <label>
+        Prescription / Treatment
+      </label>
+
+      <textarea
+        id="editConsultPrescription"
+      >${escapeHTML(
+        consultation.prescription || ""
+      )}</textarea>
+
+
+      <h3>
+        📷 Existing Prescription Images
+      </h3>
+
+      ${
+        imageHTML ||
+        "<p>No prescription images.</p>"
+      }
+
+
+      <hr>
+
+
+      <label>
+        📷 Add More Prescription Images
+      </label>
+
+      <input
+        type="file"
+        id="editConsultPrescriptionImages"
+        accept="image/*"
+        multiple
+      >
+
+
+      <p
+        id="editPrescriptionImageNames"
+        style="font-size:14px;"
+      ></p>
+
+
+      <label>
+        Advice
+      </label>
+
+      <textarea
+        id="editConsultAdvice"
+      >${escapeHTML(
+        consultation.advice || ""
+      )}</textarea>
+
+
+      <label>
+        Follow-up Date
+      </label>
+
+      <input
+        type="date"
+        id="editConsultFollowUpDate"
+        value="${escapeHTML(
+          consultation.follow_up_date || ""
+        )}"
+      >
+
+
+      <br>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="saveEditedConsultationButton"
+      >
+        💾 Save Changes
+      </button>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="cancelEditConsultationButton"
+      >
+        ↩️ Cancel
+      </button>
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById(
+      "editConsultPrescriptionImages"
+    )
+    .addEventListener(
+      "change",
+      function () {
+
+        const files =
+          Array.from(
+            this.files || []
+          );
+
+
+        document.getElementById(
+          "editPrescriptionImageNames"
+        ).innerHTML =
+          files.length > 0
+
+            ? "Selected images:<br>" +
+              files
+                .map(function (file) {
+
+                  return escapeHTML(
+                    file.name
+                  );
+
+                })
+                .join("<br>")
+
+            : "";
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "saveEditedConsultationButton"
+    )
+    .onclick =
+      function () {
+
+        saveEditedConsultation(
+          consultation.id,
+          consultation.patient_id
+        );
+
+      };
+
+
+  document
+    .getElementById(
+      "cancelEditConsultationButton"
+    )
+    .onclick =
+      function () {
+
+        viewPatient(
+          consultation.patient_id
+        );
+
+      };
+}
+
+
+/* =========================================================
+   SAVE EDITED CONSULTATION
+  ========================================================= */
+
+async function saveEditedConsultation(
+  consultationId,
+  patientId
+) {
+
+  const updatedConsultation = {
+
+    chief_complaints:
+      document
+        .getElementById(
+          "editConsultChiefComplaints"
+        )
+        .value
+        .trim(),
+
+    vitals:
+      document
+        .getElementById(
+          "editConsultVitals"
+        )
+        .value
+        .trim(),
+
+    examination:
+      document
+        .getElementById(
+          "editConsultExamination"
+        )
+        .value
+        .trim(),
+
+    diagnosis:
+      document
+        .getElementById(
+          "editConsultDiagnosis"
+        )
+        .value
+        .trim(),
+
+    investigations:
+      document
+        .getElementById(
+          "editConsultInvestigations"
+        )
+        .value
+        .trim(),
+
+    prescription:
+      document
+        .getElementById(
+          "editConsultPrescription"
+        )
+        .value
+        .trim(),
+
+    advice:
+      document
+        .getElementById(
+          "editConsultAdvice"
+        )
+        .value
+        .trim(),
+
+    follow_up_date:
+      document
+        .getElementById(
+          "editConsultFollowUpDate"
+        )
+        .value ||
+      null
+  };
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .update(
+        updatedConsultation
+      )
+      .eq(
+        "id",
+        consultationId
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Consultation update error:",
+      error
+    );
+
+    alert(
+      "Unable to save consultation changes: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  const imageInput =
+    document.getElementById(
+      "editConsultPrescriptionImages"
+    );
+
+
+  const files =
+    imageInput
+      ? Array.from(
+          imageInput.files || []
+        )
+      : [];
+
+
+  if (files.length > 0) {
+
+    try {
+
+      const uploadedImages =
+        await uploadPrescriptionImages(
+          patientId,
+          consultationId,
+          files
+        );
+
+
+      const imageRecords =
+        uploadedImages.map(
+          function (image) {
+
+            return {
+
+              consultation_id:
+                consultationId,
+
+              image_url:
+                image.image_url
+
+            };
+
+          }
+        );
+
+
+      const {
+        error:
+          imageInsertError
+      } =
+        await supabaseClient
+          .from("consultation_images")
+          .insert(
+            imageRecords
+          );
+
+
+      if (
+        imageInsertError
+      ) {
+
+        console.error(
+          imageInsertError
+        );
+
+        alert(
+          "Consultation updated, but new image records could not be saved:\n\n" +
+          imageInsertError.message
+        );
+
+        return;
+      }
+
+    } catch (uploadError) {
+
+      console.error(
+        uploadError
+      );
+
+      alert(
+        "Consultation updated, but prescription image upload failed:\n\n" +
+        uploadError.message
+      );
+
+      return;
+    }
+  }
+
 
   alert(
     "Consultation updated successfully."
@@ -2456,8 +3437,321 @@ async function saveEditedConsultation(
   viewPatient(
     patientId
   );
+}
+
+
+/* =========================================================
+   DELETE CONSULTATION IMAGE
+   ========================================================= */
+
+async function deleteConsultationImage(
+  consultationId,
+  imageRecordId,
+  imageUrl,
+  isMainImage
+) {
+
+  const confirmed =
+    confirm(
+      "Are you sure you want to permanently delete this prescription image?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  /*
+     If this image has a consultation_images
+     database record, delete that record.
+  */
+
+  if (
+    imageRecordId !== null &&
+    imageRecordId !== undefined
+  ) {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("consultation_images")
+        .delete()
+        .eq(
+          "id",
+          imageRecordId
+        );
+
+
+    if (error) {
+
+      console.error(
+        "Image database deletion error:",
+        error
+      );
+
+      alert(
+        "Unable to delete image record: " +
+        error.message
+      );
+
+      return;
+    }
+  }
+
+
+  /*
+     If this was the main prescription_image_url,
+     remove it from the consultation table.
+  */
+
+  if (isMainImage) {
+
+    /*
+       Find another remaining image if available.
+    */
+
+    const {
+      data: remainingImages
+    } =
+      await supabaseClient
+        .from("consultation_images")
+        .select("*")
+        .eq(
+          "consultation_id",
+          consultationId
+        )
+        .order(
+          "id",
+          {
+            ascending: true
+          }
+        );
+
+
+    const nextImage =
+      remainingImages &&
+      remainingImages.length > 0
+
+        ? remainingImages[0]
+            .image_url
+
+        : null;
+
+
+    const {
+      error:
+        consultationUpdateError
+    } =
+      await supabaseClient
+        .from("consultations")
+        .update({
+
+          prescription_image_url:
+            nextImage
+
+        })
+        .eq(
+          "id",
+          consultationId
+        );
+
+
+    if (
+      consultationUpdateError
+    ) {
+
+      console.error(
+        consultationUpdateError
+      );
+
+      alert(
+        "Image record deleted, but consultation image reference could not be updated."
+      );
+
+      return;
+    }
+  }
+
+
+  /*
+     Finally attempt to remove the physical
+     image file from Supabase Storage.
+  */
+
+  await deleteStorageFile(
+    imageUrl
+  );
+
+
+  /*
+     Get patient ID so the patient profile
+     can be refreshed.
+  */
+
+  const {
+    data: consultation,
+    error:
+      consultationError
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select(
+        "patient_id"
+      )
+      .eq(
+        "id",
+        consultationId
+      )
+      .single();
+
+
+  if (
+    consultationError
+  ) {
+
+    console.error(
+      consultationError
+    );
+
+    alert(
+      "Image deleted successfully."
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Prescription image deleted successfully."
+  );
+
+
+  viewPatient(
+    consultation.patient_id
+  );
+}
+
+
+/* =========================================================
+   EVENT LISTENERS
+   ========================================================= */
+
+document
+  .getElementById(
+    "patientsLogoutButton"
+  )
+  .addEventListener(
+    "click",
+    logoutDoctor
+  );
+
+
+document
+  .getElementById(
+    "addPatientButton"
+  )
+  .addEventListener(
+    "click",
+    openNewPatientForm
+  );
+
+
+document
+  .getElementById(
+    "cancelNewPatientButton"
+  )
+  .addEventListener(
+    "click",
+    closeNewPatientForm
+  );
+
+
+document
+  .getElementById(
+    "saveNewPatientButton"
+  )
+  .addEventListener(
+    "click",
+    saveNewPatient
+  );
+
+
+document
+  .getElementById(
+    "searchPatientButton"
+  )
+  .addEventListener(
+    "click",
+    searchPatients
+  );
+
+
+document
+  .getElementById(
+    "patientSearch"
+  )
+  .addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key ===
+        "Enter"
+      ) {
+
+        event.preventDefault();
+
+        searchPatients();
 
       }
+
+    }
+  );
+
+
+/* =========================================================
+   MAKE INLINE FUNCTIONS AVAILABLE
+   ========================================================= */
+
+window.viewPatient =
+  viewPatient;
+
+window.editPatient =
+  editPatient;
+
+window.editConsultation =
+  editConsultation;
+
+window.showConsultationDetails =
+  showConsultationDetails;
+
+window.deleteConsultationImage =
+  deleteConsultationImage;
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+(async function () {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+  if (!loggedIn) {
+    return;
+  }
+
+  console.log(
+    "PATIENT PAGE SCRIPT STARTED"
+  );
+
+})();
+</script>
+      
+   
   
   </script>
 
