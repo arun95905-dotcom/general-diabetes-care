@@ -990,7 +990,6 @@ function getImagesForConsultation(
 /* =========================================================
    RENDER PRESCRIPTION IMAGES
    ========================================================= */
-
 function renderPrescriptionImages(
   consultation,
   consultationImages
@@ -1034,6 +1033,7 @@ function renderPrescriptionImages(
             </strong>
           </p>
 
+
           <img
             src="${escapeHTML(image.image_url)}"
             alt="Prescription Image ${index + 1}"
@@ -1046,7 +1046,21 @@ function renderPrescriptionImages(
             "
           >
 
+
           <br>
+
+
+          <button
+            type="button"
+            class="doctor-login-button"
+            onclick="downloadPrescriptionImage(
+              '${escapeHTML(image.image_url)}',
+              ${index + 1}
+            )"
+          >
+            📥 Download Image
+          </button>
+
 
           <button
             type="button"
