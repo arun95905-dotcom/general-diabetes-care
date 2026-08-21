@@ -3966,8 +3966,6 @@ document
 
     }
   );
-
-
 /* =========================================================
    MAKE INLINE FUNCTIONS AVAILABLE
    ========================================================= */
@@ -3986,23 +3984,10 @@ window.showConsultationDetails =
 
 window.deleteConsultationImage =
   deleteConsultationImage;
+
 window.downloadPrescriptionImage =
   downloadPrescriptionImage;
-function openBillingForConsultation(
-  patientId,
-  consultationId
-) {
 
-  const url =
-    "doctor-billing.html" +
-    "?patient_id=" +
-    encodeURIComponent(patientId) +
-    "&consultation_id=" +
-    encodeURIComponent(consultationId);
-
-  window.location.href = url;
-
-}
 
 function openBillingForConsultation(
   patientId,
@@ -4042,7 +4027,10 @@ function openBillingForConsultation(
   window.location.href =
     url;
 
-} function openBillingForNewPatient(
+}
+
+
+function openBillingForNewPatient(
   patientId
 ) {
 
@@ -4057,7 +4045,9 @@ function openBillingForConsultation(
     url;
 
 }
-  function showNewPatientActions(
+
+
+function showNewPatientActions(
   patient
 ) {
 
@@ -4068,20 +4058,173 @@ function openBillingForConsultation(
     patient.patient_name ||
     "Patient";
 
+
   const existing =
     document.getElementById(
       "newPatientActions"
     );
 
+
   if (existing) {
+
     existing.remove();
-    }
+
+  }
+
+
+  const container =
+    document.createElement(
+      "div"
+    );
+
+
+  container.id =
+    "newPatientActions";
+
+
+  container.style =
+    "margin-top:20px;";
+
+
+  container.innerHTML = `
+
+    <div
+      class="patient-card"
+      style="
+        padding:20px;
+        border-radius:10px;
+      "
+    >
+
+      <h3>
+        ✅ Patient Registered Successfully
+      </h3>
+
+
+      <p>
+
+        <strong>
+          Patient:
+        </strong>
+
+        ${escapeHTML(
+          patientName
+        )}
+
+      </p>
+
+
+      <p>
+
+        <strong>
+          Patient ID:
+        </strong>
+
+        ${escapeHTML(
+          patientId
+        )}
+
+      </p>
+
+
+      <div
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:10px;
+          margin-top:15px;
+        "
+      >
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="startNewConsultationForPatient(
+            ${patientId}
+          )"
+        >
+          🩺 New Consultation
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="openBillingForNewPatient(
+            ${patientId}
+          )"
+        >
+          💰 Create Bill
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="uploadPrescriptionForPatient(
+            ${patientId}
+          )"
+        >
+          📷 Upload Prescription
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="viewPatient(
+            ${patientId}
+          )"
+        >
+          📋 View Patient
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="openBillingForNewPatient(
+            ${patientId}
+          )"
+        >
+          🧾 Billing History
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="viewPatient(
+            ${patientId}
+          )"
+        >
+          💊 Prescription History
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document.body.appendChild(
+    container
+  );
+
+}
+
+
 window.openBillingForConsultation =
   openBillingForConsultation;
-  window.openBillingForNewPatient =
+
+window.openBillingForNewPatient =
   openBillingForNewPatient;
-  window.uploadPrescriptionForPatient =
+
+window.uploadPrescriptionForPatient =
   uploadPrescriptionForPatient;
+
+
 /* =========================================================
    START
    ========================================================= */
