@@ -2747,7 +2747,6 @@ async function loadBillingHistory(
 
 </button>
 
-
 <button
   type="button"
   class="doctor-login-button"
@@ -2760,9 +2759,21 @@ async function loadBillingHistory(
   📥 Download Receipt
 
 </button>
-              🗑️ Delete Bill
 
-            </button>
+
+<button
+  type="button"
+  class="doctor-login-button"
+  onclick="deleteBill(
+    ${bill.id},
+    ${patientId}
+  )"
+>
+
+  🗑️ Delete Bill
+
+</button>
+
 
           </div>
 
