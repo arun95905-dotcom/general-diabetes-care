@@ -406,14 +406,89 @@ const viewPatientButton =
 viewPatientButton.textContent =
   "👤 View Patient";
 
-viewPatientButton.onclick = function () {
+viewPatientButton.onclick = async function () {
 
-  if (!appointment.patient_id) {
-    alert("Patient record is not linked to this appointment.");
+  // If appointment already has patient_id
+  if (appointment.patient_id) {
+
+    viewPatient(
+      appointment.patient_id
+    );
+
     return;
   }
 
-  viewPatient(appointment.patient_id);
+
+  // Find existing patient using phone number
+
+  const {
+    data: patient,
+    error
+  } = await supabaseClient
+    .from("patients")
+    .select("id")
+    .eq(
+      "patient_phone",
+      appointment.patient_phone
+    )
+    .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Unable to find patient:",
+      error
+    );
+
+    alert(
+      "Unable to find the patient record."
+    );
+
+    return;
+  }
+
+
+  if (!patient) {
+
+    alert(
+      "No patient record was found for this phone number."
+    );
+
+    return;
+  }
+
+
+  // Open existing patient profile
+
+  viewPatient(
+    patient.id
+  );
+
+
+  // Automatically link appointment to patient
+
+  const {
+    error: updateError
+  } = await supabaseClient
+    .from("appointments")
+    .update({
+      patient_id: patient.id
+    })
+    .eq(
+      "id",
+      appointment.id
+    );
+
+
+  if (updateError) {
+
+    console.error(
+      "Unable to link appointment:",
+      updateError
+    );
+
+  }
 
 };
 
