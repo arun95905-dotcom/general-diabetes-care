@@ -705,16 +705,17 @@ async function saveNewPatient() {
 
 
   alert(
-    "Patient registered successfully."
-  );
+  "Patient registered successfully."
+);
 
-  closeNewPatientForm();
+closeNewPatientForm();
 
-  console.log(
-    "New patient:",
-    data
-  );
-}
+showNewPatientActions(data);
+
+console.log(
+  "New patient:",
+  data
+);
 
 
 /* =========================================================
@@ -2085,9 +2086,7 @@ async function uploadPrescriptionImages(
         .getPublicUrl(
           filePath
         );
-
-
-    uploadedImages.push({
+uploadedImages.push({
 
       image_url:
         publicUrlData.publicUrl,
@@ -2102,6 +2101,165 @@ async function uploadPrescriptionImages(
 
   return uploadedImages;
 }
+async function uploadPrescriptionForPatient(
+  patientId
+) {
+
+  const input =
+    document.createElement("input");
+
+  input.type =
+    "file";
+
+  input.accept =
+    "image/*";
+
+  input.multiple =
+    true;
+
+
+  input.onchange =
+    async function () {
+
+      const files =
+        Array.from(
+          input.files || []
+        );
+
+
+      if (
+        files.length === 0
+      ) {
+
+        return;
+
+      }
+
+
+      try {
+
+        const uploadedImages = [];
+
+
+        for (
+          let i = 0;
+          i < files.length;
+          i++
+        ) {
+
+          const imageFile =
+            files[i];
+
+
+          if (
+            !imageFile.type.startsWith(
+              "image/"
+            )
+          ) {
+
+            continue;
+
+          }
+
+
+          const extension =
+            imageFile.name
+              .split(".")
+              .pop()
+              .toLowerCase();
+
+
+          const uniqueName =
+            patientId +
+            "_" +
+            Date.now() +
+            "_" +
+            Math.random()
+              .toString(36)
+              .substring(2, 8) +
+            "_" +
+            i +
+            "." +
+            extension;
+
+
+          const filePath =
+            "patient-" +
+            patientId +
+            "/" +
+            uniqueName;
+
+
+          const {
+            error:
+              uploadError
+          } =
+            await supabaseClient
+              .storage
+              .from("prescriptions")
+              .upload(
+                filePath,
+                imageFile,
+                {
+                  upsert: false
+                }
+              );
+
+
+          if (uploadError) {
+
+            throw uploadError;
+
+          }
+
+
+          const {
+            data:
+              publicUrlData
+          } =
+            supabaseClient
+              .storage
+              .from("prescriptions")
+              .getPublicUrl(
+                filePath
+              );
+
+
+          uploadedImages.push(
+            publicUrlData.publicUrl
+          );
+
+        }
+
+
+        alert(
+          uploadedImages.length +
+          " prescription image(s) uploaded successfully."
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Prescription upload error:",
+          error
+        );
+
+
+        alert(
+          "Unable to upload prescription: " +
+          error.message
+        );
+
+      }
+
+    };
+
+
+  input.click();
+
+              }
+    
 
 
 /* =========================================================
@@ -3853,6 +4011,10 @@ function openBillingForConsultation(
 
 window.openBillingForConsultation =
   openBillingForConsultation;
+  window.openBillingForNewPatient =
+  openBillingForNewPatient;
+  window.uploadPrescriptionForPatient =
+  uploadPrescriptionForPatient;
 /* =========================================================
    START
    ========================================================= */
@@ -3911,6 +4073,174 @@ window.openBillingForConsultation =
 
   window.location.href =
     url;
+
+} function openBillingForNewPatient(
+  patientId
+) {
+
+  const url =
+    "doctor-billing.html" +
+    "?patient_id=" +
+    encodeURIComponent(
+      patientId
+    );
+
+  window.location.href =
+    url;
+
+}
+  function showNewPatientActions(
+  patient
+) {
+
+  const patientId =
+    patient.id;
+
+  const patientName =
+    patient.patient_name ||
+    "Patient";
+
+  const existing =
+    document.getElementById(
+      "newPatientActions"
+    );
+
+  if (existing) {
+    existing.remove();
+  }
+
+
+  const container =
+    document.createElement(
+      "div"
+    );
+
+  container.id =
+    "newPatientActions";
+
+  container.style =
+    "margin-top:20px;";
+
+
+  container.innerHTML = `
+
+    <div
+      class="patient-card"
+      style="
+        padding:20px;
+        border-radius:10px;
+      "
+    >
+
+      <h3>
+        ✅ Patient Registered Successfully
+      </h3>
+
+      <p>
+        <strong>
+          Patient:
+        </strong>
+
+        ${escapeHTML(
+          patientName
+        )}
+      </p>
+
+      <p>
+        <strong>
+          Patient ID:
+        </strong>
+
+        ${escapeHTML(
+          patientId
+        )}
+      </p>
+
+
+      <div
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:10px;
+          margin-top:15px;
+        "
+      >
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="startNewConsultationForPatient(
+            ${patientId}
+          )"
+        >
+          🩺 New Consultation
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="openBillingForNewPatient(
+            ${patientId}
+          )"
+        >
+          💰 Create Bill
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="uploadPrescriptionForPatient(
+            ${patientId}
+          )"
+        >
+          📷 Upload Prescription
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="viewPatient(
+            ${patientId}
+          )"
+        >
+          📋 View Patient
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="openBillingForNewPatient(
+            ${patientId}
+          )"
+        >
+          🧾 Billing History
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          onclick="viewPatient(
+            ${patientId}
+          )"
+        >
+          💊 Prescription History
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document.body.appendChild(
+    container
+  );
 
 }
   </script>
