@@ -3834,7 +3834,25 @@ window.deleteConsultationImage =
   deleteConsultationImage;
 window.downloadPrescriptionImage =
   downloadPrescriptionImage;
+function openBillingForConsultation(
+  patientId,
+  consultationId
+) {
 
+  const url =
+    "doctor-billing.html" +
+    "?patient_id=" +
+    encodeURIComponent(patientId) +
+    "&consultation_id=" +
+    encodeURIComponent(consultationId);
+
+  window.location.href = url;
+
+}
+
+
+window.openBillingForConsultation =
+  openBillingForConsultation;
 /* =========================================================
    START
    ========================================================= */
