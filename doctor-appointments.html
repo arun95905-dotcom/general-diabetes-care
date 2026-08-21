@@ -319,17 +319,23 @@ if (count >= 5) {
   const container =
     document.getElementById("appointmentsContainer");
 
-  const { data, error } =
-    await supabaseClient
-      .from("appointments")
-      .select("*")
-      .order("appointment_date", {
-        ascending: true
-      })
-      .order("appointment_time", {
-        ascending: true
-      });
+  const today =
+  new Date()
+    .toISOString()
+    .split("T")[0];
 
+
+const { data, error } =
+  await supabaseClient
+    .from("appointments")
+    .select("*")
+    .gte("appointment_date", today)
+    .order("appointment_date", {
+      ascending: true
+    })
+    .order("appointment_time", {
+      ascending: true
+    });
 
   if (error) {
 
