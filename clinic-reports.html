@@ -1,0 +1,3036 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Clinic Reports | General & Diabetes Care
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css">
+
+  <style>
+
+    /* =====================================================
+       REPORT PAGE
+       ===================================================== */
+
+    .report-filter-card {
+
+      background: #ffffff;
+
+      padding: 20px;
+
+      border-radius: 12px;
+
+      margin-top: 20px;
+
+      box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+
+    }
+
+
+    .report-filter-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(180px, 1fr)
+        );
+
+      gap: 15px;
+
+      margin-top: 15px;
+
+    }
+
+
+    .report-filter-grid label {
+
+      display: block;
+
+      font-weight: bold;
+
+      margin-bottom: 6px;
+
+    }
+
+
+    .report-filter-grid input,
+    .report-filter-grid select {
+
+      width: 100%;
+
+      padding: 10px;
+
+      border: 1px solid #ccc;
+
+      border-radius: 8px;
+
+      box-sizing: border-box;
+
+    }
+
+
+    .report-buttons {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 18px;
+
+    }
+
+
+    .report-summary-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(180px, 1fr)
+        );
+
+      gap: 15px;
+
+      margin-top: 20px;
+
+    }
+
+
+    .report-stat-card {
+
+      background: #ffffff;
+
+      border-radius: 12px;
+
+      padding: 20px;
+
+      box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+
+      text-align: center;
+
+    }
+
+
+    .report-stat-icon {
+
+      font-size: 30px;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .report-stat-title {
+
+      font-size: 14px;
+
+      color: #666;
+
+    }
+
+
+    .report-stat-value {
+
+      font-size: 25px;
+
+      font-weight: bold;
+
+      margin-top: 5px;
+
+    }
+
+
+    .report-section {
+
+      background: #ffffff;
+
+      padding: 20px;
+
+      border-radius: 12px;
+
+      margin-top: 20px;
+
+      box-shadow:
+        0 2px 8px rgba(0,0,0,0.08);
+
+    }
+
+
+    .report-table-wrapper {
+
+      overflow-x: auto;
+
+      margin-top: 15px;
+
+    }
+
+
+    .report-table {
+
+      width: 100%;
+
+      border-collapse: collapse;
+
+      min-width: 700px;
+
+    }
+
+
+    .report-table th,
+    .report-table td {
+
+      border: 1px solid #ddd;
+
+      padding: 10px;
+
+      text-align: left;
+
+    }
+
+
+    .report-table th {
+
+      background: #f5f5f5;
+
+      font-weight: bold;
+
+    }
+
+
+    .report-table tr:nth-child(even) {
+
+      background: #fafafa;
+
+    }
+
+
+    .report-status-paid {
+
+      font-weight: bold;
+
+    }
+
+
+    .report-status-pending {
+
+      font-weight: bold;
+
+    }
+
+
+    .report-status-cancelled {
+
+      font-weight: bold;
+
+    }
+
+
+    .report-loading {
+
+      text-align: center;
+
+      padding: 20px;
+
+      color: #666;
+
+    }
+
+
+    .report-empty {
+
+      text-align: center;
+
+      padding: 20px;
+
+      color: #777;
+
+    }
+
+
+    .report-header {
+
+      margin-top: 20px;
+
+      text-align: center;
+
+    }
+
+
+    .report-header h2 {
+
+      margin-bottom: 5px;
+
+    }
+
+
+    .report-header p {
+
+      margin-top: 5px;
+
+      color: #666;
+
+    }
+
+
+    @media print {
+
+      body {
+
+        background: #ffffff !important;
+
+      }
+
+
+      .doctor-login-button,
+      .report-filter-card,
+      .dashboard-welcome {
+
+        display: none !important;
+
+      }
+
+
+      .doctor-dashboard {
+
+        padding: 0 !important;
+
+      }
+
+
+      .dashboard-card {
+
+        box-shadow: none !important;
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+      }
+
+
+      .report-section,
+      .report-stat-card {
+
+        box-shadow: none !important;
+
+        border: 1px solid #ddd;
+
+      }
+
+
+      .report-table {
+
+        min-width: 0;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<section class="doctor-dashboard">
+
+  <div class="dashboard-card">
+
+
+    <!-- =================================================
+         HEADER
+         ================================================= -->
+
+    <p class="section-label">
+
+      GENERAL &amp; DIABETES CARE
+
+    </p>
+
+
+    <h1>
+
+      📑 Clinic Reports
+
+    </h1>
+
+
+    <p class="dashboard-welcome">
+
+      Generate and review clinic performance,
+      appointment and billing reports.
+
+    </p>
+
+
+    <!-- =================================================
+         REPORT HEADER
+         ================================================= -->
+
+    <div class="report-header">
+
+      <h2>
+        Clinic Report
+      </h2>
+
+      <p id="reportPeriodText">
+        Select a date range
+      </p>
+
+    </div>
+
+
+    <!-- =================================================
+         FILTERS
+         ================================================= -->
+
+    <div class="report-filter-card">
+
+      <h2>
+        🔎 Report Filters
+      </h2>
+
+
+      <div class="report-filter-grid">
+
+
+        <div>
+
+          <label for="reportPreset">
+
+            Report Period
+
+          </label>
+
+
+          <select id="reportPreset">
+
+            <option value="today">
+              Today
+            </option>
+
+            <option value="yesterday">
+              Yesterday
+            </option>
+
+            <option value="this_week">
+              This Week
+            </option>
+
+            <option value="this_month" selected>
+              This Month
+            </option>
+
+            <option value="last_month">
+              Last Month
+            </option>
+
+            <option value="custom">
+              Custom Date Range
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label for="reportStartDate">
+
+            Start Date
+
+          </label>
+
+
+          <input
+            type="date"
+            id="reportStartDate">
+
+        </div>
+
+
+        <div>
+
+          <label for="reportEndDate">
+
+            End Date
+
+          </label>
+
+
+          <input
+            type="date"
+            id="reportEndDate">
+
+        </div>
+
+
+      </div>
+
+
+      <div class="report-buttons">
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          id="generateReportButton">
+
+          📊 Generate Report
+
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          id="printReportButton">
+
+          🖨️ Print Report
+
+        </button>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          id="downloadReportButton">
+
+          📥 Download CSV
+
+        </button>
+
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SUMMARY
+         ================================================= -->
+
+    <div
+      id="reportSummary"
+      class="report-summary-grid">
+
+
+      <div class="report-stat-card">
+
+        <div class="report-stat-icon">
+          👥
+        </div>
+
+        <div class="report-stat-title">
+          New Patients
+        </div>
+
+        <div
+          class="report-stat-value"
+          id="newPatientsCount">
+
+          0
+
+        </div>
+
+      </div>
+
+
+      <div class="report-stat-card">
+
+        <div class="report-stat-icon">
+          📅
+        </div>
+
+        <div class="report-stat-title">
+          Appointments
+        </div>
+
+        <div
+          class="report-stat-value"
+          id="appointmentsCount">
+
+          0
+
+        </div>
+
+      </div>
+
+
+      <div class="report-stat-card">
+
+        <div class="report-stat-icon">
+          ✅
+        </div>
+
+        <div class="report-stat-title">
+          Completed
+        </div>
+
+        <div
+          class="report-stat-value"
+          id="completedAppointmentsCount">
+
+          0
+
+        </div>
+
+      </div>
+
+
+      <div class="report-stat-card">
+
+        <div class="report-stat-icon">
+          ❌
+        </div>
+
+        <div class="report-stat-title">
+          Cancelled
+        </div>
+
+        <div
+          class="report-stat-value"
+          id="cancelledAppointmentsCount">
+
+          0
+
+        </div>
+
+      </div>
+
+
+      <div class="report-stat-card">
+
+        <div class="report-stat-icon">
+          🧾
+        </div>
+
+        <div class="report-stat-title">
+          Bills
+        </div>
+
+        <div
+          class="report-stat-value"
+          id="billsCount">
+
+          0
+
+        </div>
+
+      </div>
+
+
+      <div class="report-stat-card">
+
+        <div class="report-stat-icon">
+          💰
+        </div>
+
+        <div class="report-stat-title">
+          Total Billing
+        </div>
+
+        <div
+          class="report-stat-value"
+          id="totalBilling">
+
+          ₹0.00
+
+        </div>
+
+      </div>
+
+
+      <div class="report-stat-card">
+
+        <div class="report-stat-icon">
+          💵
+        </div>
+
+        <div class="report-stat-title">
+          Paid Amount
+        </div>
+
+        <div
+          class="report-stat-value"
+          id="paidAmount">
+
+          ₹0.00
+
+        </div>
+
+      </div>
+
+
+      <div class="report-stat-card">
+
+        <div class="report-stat-icon">
+          ⏳
+        </div>
+
+        <div class="report-stat-title">
+          Pending Amount
+        </div>
+
+        <div
+          class="report-stat-value"
+          id="pendingAmount">
+
+          ₹0.00
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- =================================================
+         APPOINTMENT REPORT
+         ================================================= -->
+
+    <div class="report-section">
+
+      <h2>
+
+        📅 Appointment Report
+
+      </h2>
+
+
+      <div
+        id="appointmentReportContainer"
+        class="report-table-wrapper">
+
+        <div class="report-loading">
+
+          Loading...
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         BILLING REPORT
+         ================================================= -->
+
+    <div class="report-section">
+
+      <h2>
+
+        💰 Billing Report
+
+      </h2>
+
+
+      <div
+        id="billingReportContainer"
+        class="report-table-wrapper">
+
+        <div class="report-loading">
+
+          Loading...
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         PATIENT REPORT
+         ================================================= -->
+
+    <div class="report-section">
+
+      <h2>
+
+        👥 New Patient Report
+
+      </h2>
+
+
+      <div
+        id="patientReportContainer"
+        class="report-table-wrapper">
+
+        <div class="report-loading">
+
+          Loading...
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <br>
+
+
+    <!-- =================================================
+         BACK
+         ================================================= -->
+
+    <a
+      href="doctor-dashboard.html"
+      class="doctor-login-button">
+
+      ← Back to Dashboard
+
+    </a>
+
+
+    <!-- =================================================
+         LOGOUT
+         ================================================= -->
+
+    <button
+      type="button"
+      class="doctor-login-button"
+      id="reportsLogoutButton">
+
+      🔒 Logout
+
+    </button>
+
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     SUPABASE
+     ===================================================== -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE CONFIGURATION
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================================================
+   GLOBAL REPORT DATA
+   ========================================================= */
+
+let currentReportData = {
+
+  patients: [],
+
+  appointments: [],
+
+  bills: []
+
+};
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHTML(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+
+  }
+
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   LOGIN CHECK
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+
+    data: {
+      session
+
+    }
+
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   DATE HELPERS
+   ========================================================= */
+
+function formatDateForInput(
+  date
+) {
+
+  const year =
+    date.getFullYear();
+
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  return (
+    year +
+    "-" +
+    month +
+    "-" +
+    day
+  );
+
+}
+
+
+/* =========================================================
+   START OF DAY
+   ========================================================= */
+
+function getStartOfDay(
+  date
+) {
+
+  const result =
+    new Date(date);
+
+  result.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+  return result;
+
+}
+
+
+/* =========================================================
+   END OF DAY
+   ========================================================= */
+
+function getEndOfDay(
+  date
+) {
+
+  const result =
+    new Date(date);
+
+  result.setHours(
+    23,
+    59,
+    59,
+    999
+  );
+
+  return result;
+
+}
+
+
+/* =========================================================
+   SET DEFAULT DATES
+   ========================================================= */
+
+function setDefaultDateRange() {
+
+  const today =
+    new Date();
+
+
+  const firstDay =
+    new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      1
+    );
+
+
+  document
+    .getElementById(
+      "reportStartDate"
+    )
+    .value =
+      formatDateForInput(
+        firstDay
+      );
+
+
+  document
+    .getElementById(
+      "reportEndDate"
+    )
+    .value =
+      formatDateForInput(
+        today
+      );
+
+}
+
+
+/* =========================================================
+   PRESET DATE RANGE
+   ========================================================= */
+
+function applyReportPreset() {
+
+  const preset =
+    document
+      .getElementById(
+        "reportPreset"
+      )
+      .value;
+
+
+  const today =
+    new Date();
+
+
+  let startDate =
+    new Date(today);
+
+
+  let endDate =
+    new Date(today);
+
+
+  if (
+    preset ===
+    "today"
+  ) {
+
+    startDate =
+      new Date(today);
+
+    endDate =
+      new Date(today);
+
+  }
+
+
+  else if (
+    preset ===
+    "yesterday"
+  ) {
+
+    startDate =
+      new Date(today);
+
+    startDate.setDate(
+      startDate.getDate() - 1
+    );
+
+
+    endDate =
+      new Date(startDate);
+
+  }
+
+
+  else if (
+    preset ===
+    "this_week"
+  ) {
+
+    const day =
+      today.getDay();
+
+
+    const difference =
+      day === 0
+        ? 6
+        : day - 1;
+
+
+    startDate =
+      new Date(today);
+
+
+    startDate.setDate(
+      today.getDate() -
+      difference
+    );
+
+
+    endDate =
+      new Date(today);
+
+  }
+
+
+  else if (
+    preset ===
+    "this_month"
+  ) {
+
+    startDate =
+      new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        1
+      );
+
+
+    endDate =
+      new Date(today);
+
+  }
+
+
+  else if (
+    preset ===
+    "last_month"
+  ) {
+
+    startDate =
+      new Date(
+        today.getFullYear(),
+        today.getMonth() - 1,
+        1
+      );
+
+
+    endDate =
+      new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        0
+      );
+
+  }
+
+
+  else if (
+    preset ===
+    "custom"
+  ) {
+
+    return;
+
+  }
+
+
+  document
+    .getElementById(
+      "reportStartDate"
+    )
+    .value =
+      formatDateForInput(
+        startDate
+      );
+
+
+  document
+    .getElementById(
+      "reportEndDate"
+    )
+    .value =
+      formatDateForInput(
+        endDate
+      );
+
+}
+
+
+/* =========================================================
+   GET REPORT DATES
+   ========================================================= */
+
+function getReportDates() {
+
+  const startValue =
+    document
+      .getElementById(
+        "reportStartDate"
+      )
+      .value;
+
+
+  const endValue =
+    document
+      .getElementById(
+        "reportEndDate"
+      )
+      .value;
+
+
+  if (
+    !startValue ||
+    !endValue
+  ) {
+
+    alert(
+      "Please select both start and end dates."
+    );
+
+    return null;
+
+  }
+
+
+  const startDate =
+    new Date(
+      startValue +
+      "T00:00:00"
+    );
+
+
+  const endDate =
+    new Date(
+      endValue +
+      "T23:59:59"
+    );
+
+
+  if (
+    startDate >
+    endDate
+  ) {
+
+    alert(
+      "Start date cannot be after end date."
+    );
+
+    return null;
+
+  }
+
+
+  return {
+
+    startValue,
+
+    endValue,
+
+    startDate,
+
+    endDate
+
+  };
+
+}
+
+
+/* =========================================================
+   UPDATE PERIOD TEXT
+   ========================================================= */
+
+function updatePeriodText(
+  startValue,
+  endValue
+) {
+
+  document
+    .getElementById(
+      "reportPeriodText"
+    )
+    .textContent =
+      "Report period: " +
+      startValue +
+      " to " +
+      endValue;
+
+}
+
+
+/* =========================================================
+   LOAD PATIENT REPORT
+   ========================================================= */
+
+async function loadPatientsReport(
+  startValue,
+  endValue
+) {
+
+  const container =
+    document
+      .getElementById(
+        "patientReportContainer"
+      );
+
+
+  container.innerHTML =
+    "<div class='report-loading'>Loading patients...</div>";
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select("*")
+      .gte(
+        "created_at",
+        startValue +
+        "T00:00:00"
+      )
+      .lte(
+        "created_at",
+        endValue +
+        "T23:59:59"
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Patient report error:",
+      error
+    );
+
+
+    container.innerHTML =
+      "<div class='report-empty'>Unable to load patient report.</div>";
+
+
+    return [];
+
+  }
+
+
+  currentReportData.patients =
+    data || [];
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    container.innerHTML =
+      "<div class='report-empty'>No new patients found for this period.</div>";
+
+
+    return [];
+
+  }
+
+
+  let html = `
+
+    <table class="report-table">
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Patient ID
+          </th>
+
+          <th>
+            Patient Name
+          </th>
+
+          <th>
+            Phone
+          </th>
+
+          <th>
+            Gender
+          </th>
+
+          <th>
+            Date of Birth
+          </th>
+
+          <th>
+            Registered
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+  `;
+
+
+  data.forEach(
+    function(patient) {
+
+      html += `
+
+        <tr>
+
+          <td>
+            ${escapeHTML(
+              patient.id
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              patient.patient_name ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              patient.patient_phone ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              patient.gender ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              patient.dob ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              patient.created_at
+                ? new Date(
+                    patient.created_at
+                  ).toLocaleString()
+                : "-"
+            )}
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+
+  html += `
+
+      </tbody>
+
+    </table>
+
+  `;
+
+
+  container.innerHTML =
+    html;
+
+
+  return data;
+
+}
+
+
+/* =========================================================
+   LOAD APPOINTMENT REPORT
+   ========================================================= */
+
+async function loadAppointmentReport(
+  startValue,
+  endValue
+) {
+
+  const container =
+    document
+      .getElementById(
+        "appointmentReportContainer"
+      );
+
+
+  container.innerHTML =
+    "<div class='report-loading'>Loading appointments...</div>";
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("appointments")
+      .select("*")
+      .gte(
+        "appointment_date",
+        startValue
+      )
+      .lte(
+        "appointment_date",
+        endValue
+      )
+      .order(
+        "appointment_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "appointment_time",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Appointment report error:",
+      error
+    );
+
+
+    container.innerHTML =
+      "<div class='report-empty'>Unable to load appointment report.</div>";
+
+
+    return [];
+
+  }
+
+
+  currentReportData.appointments =
+    data || [];
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    container.innerHTML =
+      "<div class='report-empty'>No appointments found for this period.</div>";
+
+
+    return [];
+
+  }
+
+
+  let html = `
+
+    <table class="report-table">
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Date
+          </th>
+
+          <th>
+            Time
+          </th>
+
+          <th>
+            Patient
+          </th>
+
+          <th>
+            Phone
+          </th>
+
+          <th>
+            Type
+          </th>
+
+          <th>
+            Status
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+  `;
+
+
+  data.forEach(
+    function(appointment) {
+
+      let statusClass =
+        "";
+
+
+      const status =
+        appointment.status ||
+        "-";
+
+
+      if (
+        status.toLowerCase() ===
+        "completed"
+      ) {
+
+        statusClass =
+          "report-status-paid";
+
+      }
+
+
+      else if (
+        status.toLowerCase() ===
+        "cancelled"
+      ) {
+
+        statusClass =
+          "report-status-cancelled";
+
+      }
+
+
+      html += `
+
+        <tr>
+
+          <td>
+            ${escapeHTML(
+              appointment.appointment_date ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              appointment.appointment_time ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              appointment.patient_name ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              appointment.patient_phone ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              appointment.appointment_type ||
+              "-"
+            )}
+          </td>
+
+          <td class="${statusClass}">
+            ${escapeHTML(
+              status
+            )}
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+
+  html += `
+
+      </tbody>
+
+    </table>
+
+  `;
+
+
+  container.innerHTML =
+    html;
+
+
+  return data;
+
+}
+
+
+/* =========================================================
+   LOAD BILLING REPORT
+   ========================================================= */
+
+async function loadBillingReport(
+  startValue,
+  endValue
+) {
+
+  const container =
+    document
+      .getElementById(
+        "billingReportContainer"
+      );
+
+
+  container.innerHTML =
+    "<div class='report-loading'>Loading billing records...</div>";
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("billing")
+      .select("*")
+      .gte(
+        "bill_date",
+        startValue
+      )
+      .lte(
+        "bill_date",
+        endValue
+      )
+      .order(
+        "bill_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Billing report error:",
+      error
+    );
+
+
+    container.innerHTML =
+      "<div class='report-empty'>Unable to load billing report.</div>";
+
+
+    return [];
+
+  }
+
+
+  currentReportData.bills =
+    data || [];
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    container.innerHTML =
+      "<div class='report-empty'>No billing records found for this period.</div>";
+
+
+    return [];
+
+  }
+
+
+  let html = `
+
+    <table class="report-table">
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Bill ID
+          </th>
+
+          <th>
+            Date
+          </th>
+
+          <th>
+            Patient ID
+          </th>
+
+          <th>
+            Receipt
+          </th>
+
+          <th>
+            Consultation
+          </th>
+
+          <th>
+            Medicine
+          </th>
+
+          <th>
+            Procedure
+          </th>
+
+          <th>
+            Total
+          </th>
+
+          <th>
+            Payment Status
+          </th>
+
+          <th>
+            Method
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+  `;
+
+
+  data.forEach(
+    function(bill) {
+
+      html += `
+
+        <tr>
+
+          <td>
+            ${escapeHTML(
+              bill.id
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              bill.bill_date ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              bill.patient_id ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              bill.receipt_number ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ₹${Number(
+              bill.consultation_fee ||
+              0
+            ).toFixed(2)}
+          </td>
+
+          <td>
+            ₹${Number(
+              bill.medicine_charges ||
+              0
+            ).toFixed(2)}
+          </td>
+
+          <td>
+            ₹${Number(
+              bill.procedure_charges ||
+              0
+            ).toFixed(2)}
+          </td>
+
+          <td>
+            ₹${Number(
+              bill.total_amount ||
+              0
+            ).toFixed(2)}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              bill.payment_status ||
+              "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              bill.payment_method ||
+              "-"
+            )}
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+
+  html += `
+
+      </tbody>
+
+    </table>
+
+  `;
+
+
+  container.innerHTML =
+    html;
+
+
+  return data;
+
+}
+
+
+/* =========================================================
+   CALCULATE SUMMARY
+   ========================================================= */
+
+function calculateSummary() {
+
+  const patients =
+    currentReportData.patients ||
+    [];
+
+
+  const appointments =
+    currentReportData.appointments ||
+    [];
+
+
+  const bills =
+    currentReportData.bills ||
+    [];
+
+
+  const completed =
+    appointments.filter(
+      function(appointment) {
+
+        return (
+          String(
+            appointment.status || ""
+          ).toLowerCase() ===
+          "completed"
+        );
+
+      }
+    ).length;
+
+
+  const cancelled =
+    appointments.filter(
+      function(appointment) {
+
+        return (
+          String(
+            appointment.status || ""
+          ).toLowerCase() ===
+          "cancelled"
+        );
+
+      }
+    ).length;
+
+
+  let totalBilling =
+    0;
+
+
+  let paidAmount =
+    0;
+
+
+  let pendingAmount =
+    0;
+
+
+  bills.forEach(
+    function(bill) {
+
+      const total =
+        Number(
+          bill.total_amount || 0
+        );
+
+
+      totalBilling +=
+        total;
+
+
+      const status =
+        String(
+          bill.payment_status ||
+          ""
+        ).toLowerCase();
+
+
+      if (
+        status ===
+        "paid"
+      ) {
+
+        paidAmount +=
+          total;
+
+      }
+
+
+      else if (
+        status ===
+        "pending"
+      ) {
+
+        pendingAmount +=
+          total;
+
+      }
+
+
+      else if (
+        status ===
+        "partially paid"
+      ) {
+
+        /*
+           The current billing table does not
+           contain a separate paid amount field.
+
+           Therefore partially paid bills are
+           treated as pending for reporting.
+        */
+
+        pendingAmount +=
+          total;
+
+      }
+
+      else {
+
+        pendingAmount +=
+          total;
+
+      }
+
+    }
+  );
+
+
+  document
+    .getElementById(
+      "newPatientsCount"
+    )
+    .textContent =
+      patients.length;
+
+
+  document
+    .getElementById(
+      "appointmentsCount"
+    )
+    .textContent =
+      appointments.length;
+
+
+  document
+    .getElementById(
+      "completedAppointmentsCount"
+    )
+    .textContent =
+      completed;
+
+
+  document
+    .getElementById(
+      "cancelledAppointmentsCount"
+    )
+    .textContent =
+      cancelled;
+
+
+  document
+    .getElementById(
+      "billsCount"
+    )
+    .textContent =
+      bills.length;
+
+
+  document
+    .getElementById(
+      "totalBilling"
+    )
+    .textContent =
+      "₹" +
+      totalBilling.toFixed(2);
+
+
+  document
+    .getElementById(
+      "paidAmount"
+    )
+    .textContent =
+      "₹" +
+      paidAmount.toFixed(2);
+
+
+  document
+    .getElementById(
+      "pendingAmount"
+    )
+    .textContent =
+      "₹" +
+      pendingAmount.toFixed(2);
+
+}
+
+
+/* =========================================================
+   GENERATE REPORT
+   ========================================================= */
+
+async function generateReport() {
+
+  const dates =
+    getReportDates();
+
+
+  if (!dates) {
+
+    return;
+
+  }
+
+
+  const {
+    startValue,
+    endValue
+  } =
+    dates;
+
+
+  updatePeriodText(
+    startValue,
+    endValue
+  );
+
+
+  currentReportData = {
+
+    patients: [],
+
+    appointments: [],
+
+    bills: []
+
+  };
+
+
+  document
+    .getElementById(
+      "newPatientsCount"
+    )
+    .textContent =
+      "...";
+
+
+  document
+    .getElementById(
+      "appointmentsCount"
+    )
+    .textContent =
+      "...";
+
+
+  document
+    .getElementById(
+      "completedAppointmentsCount"
+    )
+    .textContent =
+      "...";
+
+
+  document
+    .getElementById(
+      "cancelledAppointmentsCount"
+    )
+    .textContent =
+      "...";
+
+
+  document
+    .getElementById(
+      "billsCount"
+    )
+    .textContent =
+      "...";
+
+
+  document
+    .getElementById(
+      "totalBilling"
+    )
+    .textContent =
+      "...";
+
+
+  document
+    .getElementById(
+      "paidAmount"
+    )
+    .textContent =
+      "...";
+
+
+  document
+    .getElementById(
+      "pendingAmount"
+    )
+    .textContent =
+      "...";
+
+
+  await Promise.all([
+
+    loadPatientsReport(
+      startValue,
+      endValue
+    ),
+
+    loadAppointmentReport(
+      startValue,
+      endValue
+    ),
+
+    loadBillingReport(
+      startValue,
+      endValue
+    )
+
+  ]);
+
+
+  calculateSummary();
+
+}
+
+
+/* =========================================================
+   CSV ESCAPE
+   ========================================================= */
+
+function csvEscape(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+
+  }
+
+
+  const text =
+    String(value);
+
+
+  if (
+    text.includes(",") ||
+    text.includes('"') ||
+    text.includes("\n")
+  ) {
+
+    return (
+      '"' +
+      text.replace(
+        /"/g,
+        '""'
+      ) +
+      '"'
+    );
+
+  }
+
+
+  return text;
+
+}
+
+
+/* =========================================================
+   DOWNLOAD CSV
+   ========================================================= */
+
+function downloadCSV() {
+
+  const bills =
+    currentReportData.bills ||
+    [];
+
+
+  const appointments =
+    currentReportData.appointments ||
+    [];
+
+
+  const patients =
+    currentReportData.patients ||
+    [];
+
+
+  if (
+    bills.length === 0 &&
+    appointments.length === 0 &&
+    patients.length === 0
+  ) {
+
+    alert(
+      "Generate a report first."
+    );
+
+    return;
+
+  }
+
+
+  const dates =
+    getReportDates();
+
+
+  if (!dates) {
+
+    return;
+
+  }
+
+
+  let csv =
+    "";
+
+
+  /* =====================================================
+     SUMMARY
+     ===================================================== */
+
+  csv +=
+    "GENERAL & DIABETES CARE - CLINIC REPORT\n";
+
+
+  csv +=
+    "Report Period," +
+    csvEscape(
+      dates.startValue
+    ) +
+    " to " +
+    csvEscape(
+      dates.endValue
+    ) +
+    "\n";
+
+
+  csv += "\n";
+
+
+  csv +=
+    "SUMMARY\n";
+
+
+  csv +=
+    "New Patients," +
+    patients.length +
+    "\n";
+
+
+  csv +=
+    "Appointments," +
+    appointments.length +
+    "\n";
+
+
+  const completed =
+    appointments.filter(
+      function(item) {
+
+        return (
+          String(
+            item.status || ""
+          ).toLowerCase() ===
+          "completed"
+        );
+
+      }
+    ).length;
+
+
+  const cancelled =
+    appointments.filter(
+      function(item) {
+
+        return (
+          String(
+            item.status || ""
+          ).toLowerCase() ===
+          "cancelled"
+        );
+
+      }
+    ).length;
+
+
+  let total =
+    0;
+
+  let paid =
+    0;
+
+  let pending =
+    0;
+
+
+  bills.forEach(
+    function(bill) {
+
+      const amount =
+        Number(
+          bill.total_amount || 0
+        );
+
+
+      total +=
+        amount;
+
+
+      const status =
+        String(
+          bill.payment_status ||
+          ""
+        ).toLowerCase();
+
+
+      if (
+        status === "paid"
+      ) {
+
+        paid +=
+          amount;
+
+      }
+
+      else {
+
+        pending +=
+          amount;
+
+      }
+
+    }
+  );
+
+
+  csv +=
+    "Completed Appointments," +
+    completed +
+    "\n";
+
+
+  csv +=
+    "Cancelled Appointments," +
+    cancelled +
+    "\n";
+
+
+  csv +=
+    "Bills," +
+    bills.length +
+    "\n";
+
+
+  csv +=
+    "Total Billing,₹" +
+    total.toFixed(2) +
+    "\n";
+
+
+  csv +=
+    "Paid Amount,₹" +
+    paid.toFixed(2) +
+    "\n";
+
+
+  csv +=
+    "Pending Amount,₹" +
+    pending.toFixed(2) +
+    "\n";
+
+
+  csv += "\n";
+
+
+  /* =====================================================
+     BILLING DETAILS
+     ===================================================== */
+
+  csv +=
+    "BILLING DETAILS\n";
+
+
+  csv +=
+    "Bill ID,Bill Date,Patient ID,Receipt Number,Consultation Fee,Medicine Charges,Procedure Charges,Total Amount,Payment Status,Payment Method,Notes\n";
+
+
+  bills.forEach(
+    function(bill) {
+
+      csv += [
+
+        csvEscape(
+          bill.id
+        ),
+
+        csvEscape(
+          bill.bill_date
+        ),
+
+        csvEscape(
+          bill.patient_id
+        ),
+
+        csvEscape(
+          bill.receipt_number
+        ),
+
+        Number(
+          bill.consultation_fee || 0
+        ).toFixed(2),
+
+        Number(
+          bill.medicine_charges || 0
+        ).toFixed(2),
+
+        Number(
+          bill.procedure_charges || 0
+        ).toFixed(2),
+
+        Number(
+          bill.total_amount || 0
+        ).toFixed(2),
+
+        csvEscape(
+          bill.payment_status
+        ),
+
+        csvEscape(
+          bill.payment_method
+        ),
+
+        csvEscape(
+          bill.notes
+        )
+
+      ].join(",") +
+      "\n";
+
+    }
+  );
+
+
+  csv += "\n";
+
+
+  /* =====================================================
+     APPOINTMENTS
+     ===================================================== */
+
+  csv +=
+    "APPOINTMENT DETAILS\n";
+
+
+  csv +=
+    "Date,Time,Patient Name,Phone,Appointment Type,Status,Notes\n";
+
+
+  appointments.forEach(
+    function(appointment) {
+
+      csv += [
+
+        csvEscape(
+          appointment.appointment_date
+        ),
+
+        csvEscape(
+          appointment.appointment_time
+        ),
+
+        csvEscape(
+          appointment.patient_name
+        ),
+
+        csvEscape(
+          appointment.patient_phone
+        ),
+
+        csvEscape(
+          appointment.appointment_type
+        ),
+
+        csvEscape(
+          appointment.status
+        ),
+
+        csvEscape(
+          appointment.notes
+        )
+
+      ].join(",") +
+      "\n";
+
+    }
+  );
+
+
+  csv += "\n";
+
+
+  /* =====================================================
+     PATIENTS
+     ===================================================== */
+
+  csv +=
+    "NEW PATIENT DETAILS\n";
+
+
+  csv +=
+    "Patient ID,Patient Name,Phone,Gender,DOB,Created At\n";
+
+
+  patients.forEach(
+    function(patient) {
+
+      csv += [
+
+        csvEscape(
+          patient.id
+        ),
+
+        csvEscape(
+          patient.patient_name
+        ),
+
+        csvEscape(
+          patient.patient_phone
+        ),
+
+        csvEscape(
+          patient.gender
+        ),
+
+        csvEscape(
+          patient.dob
+        ),
+
+        csvEscape(
+          patient.created_at
+        )
+
+      ].join(",") +
+      "\n";
+
+    }
+  );
+
+
+  const blob =
+    new Blob(
+      [
+        csv
+      ],
+      {
+        type:
+          "text/csv;charset=utf-8;"
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+
+  link.href =
+    url;
+
+
+  link.download =
+    "Clinic-Report-" +
+    dates.startValue +
+    "-to-" +
+    dates.endValue +
+    ".csv";
+
+
+  document
+    .body
+    .appendChild(
+      link
+    );
+
+
+  link.click();
+
+
+  document
+    .body
+    .removeChild(
+      link
+    );
+
+
+  URL.revokeObjectURL(
+    url
+  );
+
+}
+
+
+/* =========================================================
+   PRINT REPORT
+   ========================================================= */
+
+function printReport() {
+
+  const dates =
+    getReportDates();
+
+
+  if (!dates) {
+
+    return;
+
+  }
+
+
+  if (
+    currentReportData.patients.length === 0 &&
+    currentReportData.appointments.length === 0 &&
+    currentReportData.bills.length === 0
+  ) {
+
+    alert(
+      "Generate a report first."
+    );
+
+    return;
+
+  }
+
+
+  window.print();
+
+}
+
+
+/* =========================================================
+   PRESET EVENT
+   ========================================================= */
+
+document
+  .getElementById(
+    "reportPreset"
+  )
+  .addEventListener(
+    "change",
+    function() {
+
+      applyReportPreset();
+
+    }
+  );
+
+
+/* =========================================================
+   CUSTOM DATE EVENT
+   ========================================================= */
+
+document
+  .getElementById(
+    "reportStartDate"
+  )
+  .addEventListener(
+    "change",
+    function() {
+
+      document
+        .getElementById(
+          "reportPreset"
+        )
+        .value =
+          "custom";
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "reportEndDate"
+  )
+  .addEventListener(
+    "change",
+    function() {
+
+      document
+        .getElementById(
+          "reportPreset"
+        )
+        .value =
+          "custom";
+
+    }
+  );
+
+
+/* =========================================================
+   GENERATE BUTTON
+   ========================================================= */
+
+document
+  .getElementById(
+    "generateReportButton"
+  )
+  .addEventListener(
+    "click",
+    generateReport
+  );
+
+
+/* =========================================================
+   PRINT BUTTON
+   ========================================================= */
+
+document
+  .getElementById(
+    "printReportButton"
+  )
+  .addEventListener(
+    "click",
+    printReport
+  );
+
+
+/* =========================================================
+   DOWNLOAD BUTTON
+   ========================================================= */
+
+document
+  .getElementById(
+    "downloadReportButton"
+  )
+  .addEventListener(
+    "click",
+    downloadCSV
+  );
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+document
+  .getElementById(
+    "reportsLogoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+
+      window.location.href =
+        "doctor-login.html";
+
+    }
+  );
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+async function initializeReports() {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+
+  if (!loggedIn) {
+
+    return;
+
+  }
+
+
+  setDefaultDateRange();
+
+
+  applyReportPreset();
+
+
+  await generateReport();
+
+}
+
+
+initializeReports();
+
+</script>
+
+
+</body>
+
+</html>
