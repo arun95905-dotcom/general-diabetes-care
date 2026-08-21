@@ -4072,50 +4072,15 @@ function showNewPatientActions(
   }
 
 
-
-
-
-window.openBillingForConsultation =
-  openBillingForConsultation;
-
-window.openBillingForNewPatient =
-  openBillingForNewPatient;
-
-window.uploadPrescriptionForPatient =
-  uploadPrescriptionForPatient;
-
-
-/* =========================================================
-   START
-   ========================================================= */
-
-(async function () {
-
-  const loggedIn =
-    await checkDoctorLogin();
-
-  if (!loggedIn) {
-    return;
-  }
-
-  console.log(
-    "PATIENT PAGE SCRIPT STARTED"
-  );
-
-})();
-</script>
-      
-   
-  
-
-
   const container =
     document.createElement(
       "div"
     );
 
+
   container.id =
     "newPatientActions";
+
 
   container.style =
     "margin-top:20px;";
@@ -4135,7 +4100,9 @@ window.uploadPrescriptionForPatient =
         ✅ Patient Registered Successfully
       </h3>
 
+
       <p>
+
         <strong>
           Patient:
         </strong>
@@ -4143,9 +4110,12 @@ window.uploadPrescriptionForPatient =
         ${escapeHTML(
           patientName
         )}
+
       </p>
 
+
       <p>
+
         <strong>
           Patient ID:
         </strong>
@@ -4153,6 +4123,7 @@ window.uploadPrescriptionForPatient =
         ${escapeHTML(
           patientId
         )}
+
       </p>
 
 
@@ -4242,8 +4213,42 @@ window.uploadPrescriptionForPatient =
   );
 
 }
-  </script>
+
+
+window.openBillingForConsultation =
+  openBillingForConsultation;
+
+window.openBillingForNewPatient =
+  openBillingForNewPatient;
+
+window.uploadPrescriptionForPatient =
+  uploadPrescriptionForPatient;
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+(async function () {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+  if (!loggedIn) {
+    return;
+  }
+
+  console.log(
+    "PATIENT PAGE SCRIPT STARTED"
+  );
+
+})();
+</script>
+      
+
 
 </body>
 
-</html>
+</html> 
+  
+
