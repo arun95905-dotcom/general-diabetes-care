@@ -984,6 +984,7 @@ async function getConsultationImages(
 }
 
 
+
 /* =========================================================
    GET ALL IMAGES FOR ONE CONSULTATION
    ========================================================= */
@@ -999,21 +1000,10 @@ function getImagesForConsultation(
     consultation.prescription_image_url;
 
 
-  if (mainUrl) {
-
-    images.push({
-
-      id: null,
-
-      image_url:
-        mainUrl,
-
-      isMain:
-        true
-
-    });
-  }
-
+  /*
+     First load all images that have a
+     consultation_images database record.
+  */
 
   consultationImages
     .filter(function (image) {
@@ -1027,33 +1017,52 @@ function getImagesForConsultation(
     })
     .forEach(function (image) {
 
-      const alreadyExists =
-        images.some(function (existing) {
+      images.push({
 
-          return existing.image_url ===
-            image.image_url;
+        id:
+          image.id,
 
-        });
+        image_url:
+          image.image_url,
 
+        isMain:
+          mainUrl &&
+          image.image_url === mainUrl
 
-      if (!alreadyExists) {
-
-        images.push({
-
-          id:
-            image.id,
-
-          image_url:
-            image.image_url,
-
-          isMain:
-            false
-
-        });
-
-      }
+      });
 
     });
+
+
+  /*
+     Legacy compatibility:
+     If the consultation still has a
+     prescription_image_url but there is
+     no matching consultation_images record,
+     show it as a legacy image.
+  */
+
+  if (
+    mainUrl &&
+    !images.some(function (image) {
+
+      return image.image_url === mainUrl;
+
+    })
+  ) {
+
+    images.unshift({
+
+      id: null,
+
+      image_url:
+        mainUrl,
+
+      isMain: true
+
+    });
+
+  }
 
 
   return images;
