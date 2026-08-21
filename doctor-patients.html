@@ -983,8 +983,6 @@ async function getConsultationImages(
   return data || [];
 }
 
-
-
 /* =========================================================
    GET ALL IMAGES FOR ONE CONSULTATION
    ========================================================= */
@@ -1001,8 +999,8 @@ function getImagesForConsultation(
 
 
   /*
-     First load all images that have a
-     consultation_images database record.
+     First load images from consultation_images.
+     These records have real database IDs.
   */
 
   consultationImages
@@ -1036,10 +1034,9 @@ function getImagesForConsultation(
 
   /*
      Legacy compatibility:
-     If the consultation still has a
-     prescription_image_url but there is
-     no matching consultation_images record,
-     show it as a legacy image.
+     If prescription_image_url exists but
+     there is no matching consultation_images
+     record, display it as a legacy image.
   */
 
   if (
@@ -1067,6 +1064,7 @@ function getImagesForConsultation(
 
   return images;
 }
+
 
 
 /* =========================================================
