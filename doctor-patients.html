@@ -144,6 +144,7 @@
   border-radius:10px;
   padding:10px;
   margin:10px 0;
+  background:#fff;
 }
 
 .image-box img {
@@ -186,6 +187,49 @@
   border-radius:12px;
   padding:16px;
   margin-top:12px;
+}
+
+/* =========================================================
+   PRESCRIPTION HISTORY
+   ========================================================= */
+
+.prescription-history-box {
+  background:#ffffff;
+  border:1px solid #dbe4ec;
+  border-radius:14px;
+  padding:16px;
+  margin-top:18px;
+}
+
+.prescription-history-card {
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:14px;
+  margin:12px 0;
+}
+
+.prescription-history-date {
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.prescription-history-image {
+  width:100%;
+  max-width:500px;
+  max-height:650px;
+  object-fit:contain;
+  border-radius:10px;
+  border:1px solid #ddd;
+  background:#fff;
+  display:block;
+}
+
+.prescription-history-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
 }
 
 @media(max-width:700px) {
@@ -276,8 +320,6 @@ information. The current consultation is entered separately.
 </h2>
 
 
-<!-- BASIC DETAILS -->
-
 <div class="form-section">
 
 <h3>
@@ -302,7 +344,6 @@ Patient Name *
 </div>
 
 
-
 <div class="form-field">
 
 <label>
@@ -317,7 +358,6 @@ Phone Number *
 </div>
 
 
-
 <div class="form-field">
 
 <label>
@@ -329,7 +369,6 @@ Date of Birth
   type="date">
 
 </div>
-
 
 
 <div class="form-field">
@@ -361,7 +400,6 @@ Other
 </div>
 
 
-
 <div class="form-field">
 
 <label>
@@ -373,7 +411,6 @@ Blood Group
   type="text">
 
 </div>
-
 
 
 <div class="form-field full">
@@ -393,8 +430,6 @@ Address
 </div>
 
 
-
-<!-- PAST MEDICAL INFORMATION -->
 
 <div class="form-section">
 
@@ -419,7 +454,6 @@ Past Medical History
 </div>
 
 
-
 <div class="form-field">
 
 <label>
@@ -432,7 +466,6 @@ Surgical History
 </div>
 
 
-
 <div class="form-field">
 
 <label>
@@ -443,7 +476,6 @@ Allergy History
   id="newPatientAllergies"></textarea>
 
 </div>
-
 
 
 <div class="form-field">
@@ -576,7 +608,6 @@ Search for a patient to view records.
 
 <div class="action-row">
 
-
 <a
   href="doctor-dashboard.html"
   class="doctor-login-button">
@@ -619,17 +650,14 @@ src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 const SUPABASE_URL =
   "https://twdmvdqqckcpwoccvtkj.supabase.co";
 
-
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
-
 
 const supabaseClient =
   supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
-
 
 
 /* =========================================================
@@ -642,14 +670,10 @@ function escapeHTML(value) {
     value === null ||
     value === undefined
   ) {
-
     return "";
-
   }
 
-
   return String(value)
-
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
@@ -659,30 +683,22 @@ function escapeHTML(value) {
 }
 
 
-
 function formatDate(value) {
 
   if (!value) {
-
     return "-";
-
   }
-
 
   const date =
     new Date(value);
-
 
   if (
     Number.isNaN(
       date.getTime()
     )
   ) {
-
     return escapeHTML(value);
-
   }
-
 
   return date.toLocaleDateString(
     "en-IN"
@@ -691,37 +707,28 @@ function formatDate(value) {
 }
 
 
-
 function formatDateTime(value) {
 
   if (!value) {
-
     return "-";
-
   }
-
 
   const date =
     new Date(value);
-
 
   if (
     Number.isNaN(
       date.getTime()
     )
   ) {
-
     return escapeHTML(value);
-
   }
-
 
   return date.toLocaleString(
     "en-IN"
   );
 
 }
-
 
 
 /* =========================================================
@@ -733,34 +740,25 @@ function getStoragePathFromUrl(
 ) {
 
   if (!imageUrl) {
-
     return null;
-
   }
-
 
   try {
 
     const url =
       new URL(imageUrl);
 
-
     const marker =
       "/storage/v1/object/public/prescriptions/";
-
 
     const index =
       url.pathname.indexOf(
         marker
       );
 
-
     if (index === -1) {
-
       return null;
-
     }
-
 
     return decodeURIComponent(
       url.pathname.substring(
@@ -776,11 +774,9 @@ function getStoragePathFromUrl(
     );
 
     return null;
-
   }
 
 }
-
 
 
 async function deleteStorageFile(
@@ -792,13 +788,9 @@ async function deleteStorageFile(
       imageUrl
     );
 
-
   if (!storagePath) {
-
     return;
-
   }
-
 
   const {
     error
@@ -809,7 +801,6 @@ async function deleteStorageFile(
       .remove([
         storagePath
       ]);
-
 
   if (error) {
 
@@ -823,7 +814,6 @@ async function deleteStorageFile(
 }
 
 
-
 async function downloadPrescriptionImage(
   imageUrl,
   imageNumber
@@ -834,35 +824,27 @@ async function downloadPrescriptionImage(
     const response =
       await fetch(imageUrl);
 
-
     if (!response.ok) {
-
       throw new Error(
         "Unable to download image."
       );
-
     }
-
 
     const blob =
       await response.blob();
-
 
     const blobUrl =
       URL.createObjectURL(
         blob
       );
 
-
     const link =
       document.createElement(
         "a"
       );
 
-
     link.href =
       blobUrl;
-
 
     link.download =
       "Prescription_Image_" +
@@ -871,31 +853,25 @@ async function downloadPrescriptionImage(
       Date.now() +
       ".jpg";
 
-
     document.body.appendChild(
       link
     );
 
-
     link.click();
-
 
     document.body.removeChild(
       link
     );
 
-
     URL.revokeObjectURL(
       blobUrl
     );
-
 
   } catch (error) {
 
     console.error(
       error
     );
-
 
     window.open(
       imageUrl,
@@ -905,7 +881,6 @@ async function downloadPrescriptionImage(
   }
 
 }
-
 
 
 /* =========================================================
@@ -921,21 +896,16 @@ async function checkDoctorLogin() {
   } =
     await supabaseClient.auth.getSession();
 
-
   if (!session) {
 
     window.location.href =
       "doctor-login.html";
 
     return false;
-
   }
 
-
   return true;
-
 }
-
 
 
 /* =========================================================
@@ -946,12 +916,10 @@ async function logoutDoctor() {
 
   await supabaseClient.auth.signOut();
 
-
   window.location.href =
     "doctor-login.html";
 
 }
-
 
 
 /* =========================================================
@@ -965,12 +933,10 @@ function openNewPatientForm() {
   ).style.display =
     "block";
 
-
   document.getElementById(
     "addPatientButton"
   ).style.display =
     "none";
-
 
   document.getElementById(
     "newPatientActions"
@@ -980,7 +946,6 @@ function openNewPatientForm() {
 }
 
 
-
 function closeNewPatientForm() {
 
   document.getElementById(
@@ -988,14 +953,12 @@ function closeNewPatientForm() {
   ).style.display =
     "none";
 
-
   document.getElementById(
     "addPatientButton"
   ).style.display =
     "block";
 
 }
-
 
 
 /* =========================================================
@@ -1018,30 +981,24 @@ function clearRegistrationForm() {
 
   ];
 
-
   fields.forEach(
     function(id) {
 
       const element =
         document.getElementById(id);
 
-
       if (element) {
-
         element.value = "";
-
       }
 
     }
   );
-
 
   document.getElementById(
     "newPatientGender"
   ).value = "";
 
 }
-
 
 
 /* =========================================================
@@ -1058,7 +1015,6 @@ async function saveNewPatient() {
       .value
       .trim();
 
-
   const patientPhone =
     document
       .getElementById(
@@ -1066,7 +1022,6 @@ async function saveNewPatient() {
       )
       .value
       .trim();
-
 
   if (
     !patientName ||
@@ -1078,9 +1033,7 @@ async function saveNewPatient() {
     );
 
     return;
-
   }
-
 
   const newPatient = {
 
@@ -1134,7 +1087,6 @@ async function saveNewPatient() {
 
   };
 
-
   const {
     data,
     error
@@ -1147,7 +1099,6 @@ async function saveNewPatient() {
       .select()
       .single();
 
-
   if (error) {
 
     console.error(
@@ -1155,17 +1106,13 @@ async function saveNewPatient() {
       error
     );
 
-
     alert(
       "Unable to save patient: " +
       error.message
     );
 
-
     return;
-
   }
-
 
   closeNewPatientForm();
 
@@ -1175,13 +1122,11 @@ async function saveNewPatient() {
     data
   );
 
-
   alert(
     "Patient registered successfully."
   );
 
 }
-
 
 
 /* =========================================================
@@ -1197,26 +1142,21 @@ function showNewPatientActions(
       "newPatientActions"
     );
 
-
   const patientId =
     patient.id;
-
 
   const patientName =
     patient.patient_name ||
     "Patient";
 
-
   container.style.display =
     "block";
-
 
   container.innerHTML = `
 
     <h3>
       ✅ Patient Registered Successfully
     </h3>
-
 
     <div class="notice">
 
@@ -1250,9 +1190,7 @@ function showNewPatientActions(
 
     </div>
 
-
     <div class="action-grid">
-
 
       <button
         type="button"
@@ -1265,8 +1203,6 @@ function showNewPatientActions(
 
       </button>
 
-
-
       <button
         type="button"
         class="doctor-login-button"
@@ -1277,8 +1213,6 @@ function showNewPatientActions(
         💰 Create Bill
 
       </button>
-
-
 
       <button
         type="button"
@@ -1291,8 +1225,6 @@ function showNewPatientActions(
 
       </button>
 
-
-
       <button
         type="button"
         class="doctor-login-button"
@@ -1304,13 +1236,11 @@ function showNewPatientActions(
 
       </button>
 
-
     </div>
 
   `;
 
 }
-
 
 
 /* =========================================================
@@ -1327,12 +1257,10 @@ async function searchPatients() {
       .value
       .trim();
 
-
   const container =
     document.getElementById(
       "patientsContainer"
     );
-
 
   if (!search) {
 
@@ -1340,15 +1268,12 @@ async function searchPatients() {
       "<p>Please enter Patient ID, name or phone number.</p>";
 
     return;
-
   }
-
 
   let query =
     supabaseClient
       .from("patients")
       .select("*");
-
 
   if (
     /^\d+$/.test(search)
@@ -1380,7 +1305,6 @@ async function searchPatients() {
 
   }
 
-
   const {
     data,
     error
@@ -1393,21 +1317,17 @@ async function searchPatients() {
         }
       );
 
-
   if (error) {
 
     console.error(
       error
     );
 
-
     container.innerHTML =
       "<p>Unable to search patients.</p>";
 
     return;
-
   }
-
 
   if (
     !data ||
@@ -1418,13 +1338,10 @@ async function searchPatients() {
       "<p>No patients found.</p>";
 
     return;
-
   }
-
 
   container.innerHTML =
     "";
-
 
   data.forEach(
     function(patient) {
@@ -1434,10 +1351,8 @@ async function searchPatients() {
           "div"
         );
 
-
       card.className =
         "patient-card";
-
 
       card.innerHTML = `
 
@@ -1486,24 +1401,19 @@ async function searchPatients() {
 
       `;
 
-
       const button =
         document.createElement(
           "button"
         );
 
-
       button.type =
         "button";
-
 
       button.className =
         "doctor-login-button";
 
-
       button.textContent =
         "👁️ View Patient";
-
 
       button.onclick =
         function() {
@@ -1514,11 +1424,9 @@ async function searchPatients() {
 
         };
 
-
       card.appendChild(
         button
       );
-
 
       container.appendChild(
         card
@@ -1528,7 +1436,6 @@ async function searchPatients() {
   );
 
 }
-
 
 
 /* =========================================================
@@ -1552,7 +1459,6 @@ async function getPatient(
       )
       .single();
 
-
   if (error) {
 
     console.error(
@@ -1560,16 +1466,11 @@ async function getPatient(
       error
     );
 
-
     return null;
-
   }
 
-
   return data;
-
 }
-
 
 
 /* =========================================================
@@ -1598,7 +1499,6 @@ async function getConsultations(
         }
       );
 
-
   if (error) {
 
     console.error(
@@ -1606,16 +1506,11 @@ async function getConsultations(
       error
     );
 
-
     return [];
-
   }
 
-
   return data || [];
-
 }
-
 
 
 /* =========================================================
@@ -1630,11 +1525,8 @@ async function getConsultationImages(
     !consultationIds ||
     consultationIds.length === 0
   ) {
-
     return [];
-
   }
-
 
   const {
     data,
@@ -1648,7 +1540,6 @@ async function getConsultationImages(
         consultationIds
       );
 
-
   if (error) {
 
     console.error(
@@ -1656,16 +1547,312 @@ async function getConsultationImages(
       error
     );
 
-
     return [];
+  }
+
+  return data || [];
+}
+
+
+/* =========================================================
+   GET ALL PRESCRIPTION HISTORY
+   ========================================================= */
+
+async function getPrescriptionHistory(
+  patientId
+) {
+
+  const consultations =
+    await getConsultations(
+      patientId
+    );
+
+  const consultationIds =
+    consultations.map(
+      function(c) {
+        return c.id;
+      }
+    );
+
+  if (
+    consultationIds.length === 0
+  ) {
+    return [];
+  }
+
+  const images =
+    await getConsultationImages(
+      consultationIds
+    );
+
+  const history = [];
+
+  consultations.forEach(
+    function(consultation) {
+
+      const mainUrl =
+        consultation.prescription_image_url;
+
+      const relatedImages =
+        images.filter(
+          function(image) {
+
+            return String(
+              image.consultation_id
+            ) === String(
+              consultation.id
+            );
+
+          }
+        );
+
+      relatedImages.forEach(
+        function(image) {
+
+          history.push({
+
+            id:
+              image.id,
+
+            consultation_id:
+              consultation.id,
+
+            patient_id:
+              patientId,
+
+            image_url:
+              image.image_url,
+
+            created_at:
+              consultation.created_at,
+
+            source:
+              "consultation"
+
+          });
+
+        }
+      );
+
+      if (
+        mainUrl &&
+        !relatedImages.some(
+          function(image) {
+
+            return image.image_url ===
+              mainUrl;
+
+          }
+        )
+      ) {
+
+        history.push({
+
+          id:null,
+
+          consultation_id:
+            consultation.id,
+
+          patient_id:
+            patientId,
+
+          image_url:
+            mainUrl,
+
+          created_at:
+            consultation.created_at,
+
+          source:
+            "consultation"
+
+        });
+
+      }
+
+    }
+  );
+
+  history.sort(
+    function(a,b) {
+
+      return new Date(
+        b.created_at
+      ) -
+      new Date(
+        a.created_at
+      );
+
+    }
+  );
+
+  return history;
+}
+
+
+/* =========================================================
+   RENDER PRESCRIPTION HISTORY
+   ========================================================= */
+
+function renderPrescriptionHistory(
+  history
+) {
+
+  if (
+    !history ||
+    history.length === 0
+  ) {
+
+    return `
+
+      <div class="prescription-history-box">
+
+        <h3>
+          📷 Prescription History
+        </h3>
+
+        <p>
+          No prescription images uploaded yet.
+        </p>
+
+      </div>
+
+    `;
 
   }
 
+  return `
 
-  return data || [];
+    <div class="prescription-history-box">
 
+      <h3>
+        📷 Prescription History
+      </h3>
+
+      <p>
+        Previous prescription images for this patient.
+      </p>
+
+      ${
+        history.map(
+          function(
+            item,
+            index
+          ) {
+
+            return `
+
+              <div
+                class="prescription-history-card"
+              >
+
+                <div
+                  class="prescription-history-date"
+                >
+
+                  📅
+                  ${formatDateTime(
+                    item.created_at
+                  )}
+
+                </div>
+
+
+                <img
+                  class="prescription-history-image"
+                  src="${escapeHTML(
+                    item.image_url
+                  )}"
+                  alt="Prescription Image ${index + 1}"
+                >
+
+
+                <div
+                  class="prescription-history-actions"
+                >
+
+                  <button
+                    type="button"
+                    class="doctor-login-button"
+                    onclick="viewPrescriptionImage(
+                      '${escapeHTML(
+                        item.image_url
+                      )}'
+                    )">
+
+                    👁️ View Image
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="doctor-login-button"
+                    onclick="downloadPrescriptionImage(
+                      '${escapeHTML(
+                        item.image_url
+                      )}',
+                      ${index + 1}
+                    )">
+
+                    📥 Download
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="doctor-login-button"
+                    onclick="deletePrescriptionHistoryImage(
+                      ${item.consultation_id},
+                      ${
+                        item.id === null
+                          ? "null"
+                          : item.id
+                      },
+                      '${escapeHTML(
+                        item.image_url
+                      )}',
+                      ${item.patient_id}
+                    )">
+
+                    🗑️ Delete
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        ).join("")
+      }
+
+    </div>
+
+  `;
 }
 
+
+/* =========================================================
+   VIEW PRESCRIPTION IMAGE
+   ========================================================= */
+
+function viewPrescriptionImage(
+  imageUrl
+) {
+
+  if (!imageUrl) {
+    return;
+  }
+
+  window.open(
+    imageUrl,
+    "_blank"
+  );
+
+}
 
 
 /* =========================================================
@@ -1679,10 +1866,8 @@ function getImagesForConsultation(
 
   const images = [];
 
-
   const mainUrl =
     consultation.prescription_image_url;
-
 
   consultationImages
     .filter(
@@ -1717,7 +1902,6 @@ function getImagesForConsultation(
       }
     );
 
-
   if (
     mainUrl &&
     !images.some(
@@ -1743,11 +1927,8 @@ function getImagesForConsultation(
 
   }
 
-
   return images;
-
 }
-
 
 
 /* =========================================================
@@ -1764,7 +1945,6 @@ function renderPrescriptionImages(
       consultation,
       consultationImages
     );
-
 
   if (
     images.length === 0
@@ -1786,15 +1966,16 @@ function renderPrescriptionImages(
 
   }
 
-
   return `
 
     <div>
 
       <p>
+
         <strong>
           📷 Prescription Images
         </strong>
+
       </p>
 
 
@@ -1830,6 +2011,20 @@ function renderPrescriptionImages(
 
 
                 <br>
+
+
+                <button
+                  type="button"
+                  class="doctor-login-button"
+                  onclick="viewPrescriptionImage(
+                    '${escapeHTML(
+                      image.image_url
+                    )}'
+                  )">
+
+                  👁️ View Image
+
+                </button>
 
 
                 <button
@@ -1886,7 +2081,6 @@ function renderPrescriptionImages(
 }
 
 
-
 /* =========================================================
    VIEW PATIENT
    ========================================================= */
@@ -1900,16 +2094,13 @@ async function viewPatient(
       "patientsContainer"
     );
 
-
   container.innerHTML =
     "<p>Loading patient record...</p>";
-
 
   const patient =
     await getPatient(
       patientId
     );
-
 
   if (!patient) {
 
@@ -1917,43 +2108,59 @@ async function viewPatient(
       "<p>Unable to load patient details.</p>";
 
     return;
-
   }
-
 
   const consultations =
     await getConsultations(
       patientId
     );
 
-
   const consultationIds =
     consultations.map(
       function(c) {
-
         return c.id;
-
       }
     );
-
 
   const consultationImages =
     await getConsultationImages(
       consultationIds
     );
 
+  const prescriptionHistory =
+    await getPrescriptionHistory(
+      patientId
+    );
 
 
   let consultationHTML =
     "<p>No previous consultations found.</p>";
 
 
+  /*
+     Direct prescription-only records are not displayed
+     as normal consultations.
+  */
+
+  const normalConsultations =
+    consultations.filter(
+      function(consultation) {
+
+        return !(
+          consultation.chief_complaints ===
+          "__DIRECT_PRESCRIPTION_UPLOAD__"
+        );
+
+      }
+    );
+
+
   if (
-    consultations.length > 0
+    normalConsultations.length > 0
   ) {
 
     consultationHTML =
-      consultations.map(
+      normalConsultations.map(
         function(
           consultation,
           index
@@ -2158,7 +2365,6 @@ async function viewPatient(
       ).join("");
 
   }
-
 
 
   container.innerHTML = `
@@ -2413,6 +2619,14 @@ async function viewPatient(
 
 
 
+    <!-- PRESCRIPTION HISTORY -->
+
+    ${renderPrescriptionHistory(
+      prescriptionHistory
+    )}
+
+
+
     <!-- CONSULTATION HISTORY -->
 
     <div class="patient-panel">
@@ -2430,7 +2644,6 @@ async function viewPatient(
 
     <div class="action-row">
 
-
       <button
         type="button"
         class="doctor-login-button"
@@ -2440,13 +2653,11 @@ async function viewPatient(
 
       </button>
 
-
     </div>
 
   `;
 
 }
-
 
 
 /* =========================================================
@@ -2463,13 +2674,9 @@ function showConsultationDetails(
       index
     );
 
-
   if (!details) {
-
     return;
-
   }
-
 
   if (
     details.style.display ===
@@ -2489,7 +2696,6 @@ function showConsultationDetails(
 }
 
 
-
 /* =========================================================
    NEW CONSULTATION
    ========================================================= */
@@ -2503,7 +2709,6 @@ function startConsultation(
       "patientsContainer"
     );
 
-
   container.innerHTML = `
 
     <div class="patient-panel">
@@ -2515,6 +2720,7 @@ function startConsultation(
         </h2>
 
         <p>
+
           <strong>
             Patient ID:
           </strong>
@@ -2522,6 +2728,7 @@ function startConsultation(
           ${escapeHTML(
             patientId
           )}
+
         </p>
 
         <p>
@@ -2533,8 +2740,6 @@ function startConsultation(
 
 
 
-      <!-- CURRENT VISIT -->
-
       <div class="form-section">
 
         <h3>
@@ -2543,7 +2748,6 @@ function startConsultation(
 
 
         <div class="form-grid one">
-
 
           <div class="form-field">
 
@@ -2557,14 +2761,11 @@ function startConsultation(
 
           </div>
 
-
         </div>
 
       </div>
 
 
-
-      <!-- VITALS -->
 
       <div class="vitals-box">
 
@@ -2666,8 +2867,6 @@ function startConsultation(
 
 
 
-      <!-- EXAMINATION -->
-
       <div class="form-section">
 
         <h3>
@@ -2690,8 +2889,6 @@ function startConsultation(
       </div>
 
 
-
-      <!-- ASSESSMENT -->
 
       <div class="form-section">
 
@@ -2716,8 +2913,6 @@ function startConsultation(
 
 
 
-      <!-- INVESTIGATIONS -->
-
       <div class="form-section">
 
         <h3>
@@ -2740,8 +2935,6 @@ function startConsultation(
       </div>
 
 
-
-      <!-- PRESCRIPTION -->
 
       <div class="form-section">
 
@@ -2787,8 +2980,6 @@ function startConsultation(
 
 
 
-      <!-- ADVICE -->
-
       <div class="form-section">
 
         <h3>
@@ -2811,8 +3002,6 @@ function startConsultation(
       </div>
 
 
-
-      <!-- FOLLOW UP -->
 
       <div class="form-section">
 
@@ -2867,7 +3056,6 @@ function startConsultation(
   `;
 
 
-
   const imageInput =
     document.getElementById(
       "consultPrescriptionImages"
@@ -2883,7 +3071,6 @@ function startConsultation(
           this.files || []
         );
 
-
       document.getElementById(
         "prescriptionImageNames"
       ).innerHTML =
@@ -2893,11 +3080,9 @@ function startConsultation(
             files
               .map(
                 function(file) {
-
                   return escapeHTML(
                     file.name
                   );
-
                 }
               )
               .join("<br>")
@@ -2906,7 +3091,6 @@ function startConsultation(
 
     }
   );
-
 
 
   document.getElementById(
@@ -2919,7 +3103,6 @@ function startConsultation(
       );
 
     };
-
 
 
   document.getElementById(
@@ -2936,7 +3119,6 @@ function startConsultation(
 }
 
 
-
 /* =========================================================
    UPLOAD PRESCRIPTION IMAGES
    ========================================================= */
@@ -2949,7 +3131,6 @@ async function uploadPrescriptionImages(
 
   const uploadedImages = [];
 
-
   for (
     let i = 0;
     i < files.length;
@@ -2959,24 +3140,19 @@ async function uploadPrescriptionImages(
     const imageFile =
       files[i];
 
-
     if (
       !imageFile.type.startsWith(
         "image/"
       )
     ) {
-
       continue;
-
     }
-
 
     const extension =
       imageFile.name
         .split(".")
         .pop()
         .toLowerCase();
-
 
     const uniqueName =
       patientId +
@@ -2993,13 +3169,11 @@ async function uploadPrescriptionImages(
       "." +
       extension;
 
-
     const filePath =
       "patient-" +
       patientId +
       "/" +
       uniqueName;
-
 
     const {
       error:
@@ -3016,7 +3190,6 @@ async function uploadPrescriptionImages(
           }
         );
 
-
     if (uploadError) {
 
       throw new Error(
@@ -3028,7 +3201,6 @@ async function uploadPrescriptionImages(
 
     }
 
-
     const {
       data:
         publicUrlData
@@ -3039,7 +3211,6 @@ async function uploadPrescriptionImages(
         .getPublicUrl(
           filePath
         );
-
 
     uploadedImages.push({
 
@@ -3053,15 +3224,13 @@ async function uploadPrescriptionImages(
 
   }
 
-
   return uploadedImages;
 
 }
 
 
-
 /* =========================================================
-   UPLOAD PRESCRIPTION DIRECTLY FOR PATIENT
+   DIRECT UPLOAD PRESCRIPTION FOR PATIENT
    ========================================================= */
 
 async function uploadPrescriptionForPatient(
@@ -3073,14 +3242,11 @@ async function uploadPrescriptionForPatient(
       "input"
     );
 
-
   input.type =
     "file";
 
-
   input.accept =
     "image/*";
-
 
   input.multiple =
     true;
@@ -3094,24 +3260,150 @@ async function uploadPrescriptionForPatient(
           input.files || []
         );
 
-
       if (
         files.length === 0
       ) {
-
         return;
-
       }
 
 
       try {
 
+        /*
+          Create a special prescription-only
+          consultation record.
+
+          It is hidden from normal consultation
+          history and displayed under Prescription
+          History instead.
+        */
+
+        const {
+          data: prescriptionRecord,
+          error: prescriptionRecordError
+        } =
+          await supabaseClient
+            .from("consultations")
+            .insert([{
+
+              patient_id:
+                patientId,
+
+              chief_complaints:
+                "__DIRECT_PRESCRIPTION_UPLOAD__",
+
+              vitals:
+                "",
+
+              examination:
+                "",
+
+              diagnosis:
+                "",
+
+              investigations:
+                "",
+
+              prescription:
+                "",
+
+              advice:
+                "",
+
+              follow_up_date:
+                null,
+
+              prescription_image_url:
+                null
+
+            }])
+            .select()
+            .single();
+
+
+        if (
+          prescriptionRecordError
+        ) {
+
+          throw new Error(
+            "Unable to create prescription history record: " +
+            prescriptionRecordError.message
+          );
+
+        }
+
+
         const uploaded =
           await uploadPrescriptionImages(
             patientId,
-            "direct",
+            prescriptionRecord.id,
             files
           );
+
+
+        if (
+          uploaded.length === 0
+        ) {
+
+          throw new Error(
+            "No valid prescription images were selected."
+          );
+
+        }
+
+
+        await supabaseClient
+          .from("consultations")
+          .update({
+
+            prescription_image_url:
+              uploaded[0].image_url
+
+          })
+          .eq(
+            "id",
+            prescriptionRecord.id
+          );
+
+
+        const imageRecords =
+          uploaded.map(
+            function(image) {
+
+              return {
+
+                consultation_id:
+                  prescriptionRecord.id,
+
+                image_url:
+                  image.image_url
+
+              };
+
+            }
+          );
+
+
+        const {
+          error:
+            imageInsertError
+        } =
+          await supabaseClient
+            .from(
+              "consultation_images"
+            )
+            .insert(
+              imageRecords
+            );
+
+
+        if (
+          imageInsertError
+        ) {
+
+          throw imageInsertError;
+
+        }
 
 
         alert(
@@ -3120,15 +3412,21 @@ async function uploadPrescriptionForPatient(
         );
 
 
+        viewPatient(
+          patientId
+        );
+
+
       } catch (error) {
 
         console.error(
+          "Prescription upload error:",
           error
         );
 
 
         alert(
-          "Unable to upload prescription: " +
+          "Unable to upload prescription:\n\n" +
           error.message
         );
 
@@ -3140,7 +3438,6 @@ async function uploadPrescriptionForPatient(
   input.click();
 
 }
-
 
 
 /* =========================================================
@@ -3156,7 +3453,6 @@ async function saveConsultation(
       "consultPrescriptionImages"
     );
 
-
   const files =
     imageInput
       ? Array.from(
@@ -3170,30 +3466,25 @@ async function saveConsultation(
       "consultBP"
     ).value.trim();
 
-
   const pulse =
     document.getElementById(
       "consultPulse"
     ).value.trim();
-
 
   const spo2 =
     document.getElementById(
       "consultSpO2"
     ).value.trim();
 
-
   const temperature =
     document.getElementById(
       "consultTemperature"
     ).value.trim();
 
-
   const weight =
     document.getElementById(
       "consultWeight"
     ).value;
-
 
   const height =
     document.getElementById(
@@ -3201,67 +3492,49 @@ async function saveConsultation(
     ).value;
 
 
-
   const vitalsParts = [];
 
 
   if (bp) {
-
     vitalsParts.push(
       "BP: " + bp
     );
-
   }
 
-
   if (pulse) {
-
     vitalsParts.push(
       "Pulse: " + pulse
     );
-
   }
 
-
   if (spo2) {
-
     vitalsParts.push(
       "SpO₂: " + spo2 + "%"
     );
-
   }
 
-
   if (temperature) {
-
     vitalsParts.push(
       "Temperature: " +
       temperature +
       " °F"
     );
-
   }
 
-
   if (weight) {
-
     vitalsParts.push(
       "Weight: " +
       weight +
       " kg"
     );
-
   }
 
-
   if (height) {
-
     vitalsParts.push(
       "Height: " +
       height +
       " cm"
     );
-
   }
 
 
@@ -3337,15 +3610,12 @@ async function saveConsultation(
       error
     );
 
-
     alert(
       "Unable to save consultation: " +
       error.message
     );
 
-
     return;
-
   }
 
 
@@ -3426,7 +3696,6 @@ async function saveConsultation(
       uploadError
     );
 
-
     alert(
       "Consultation saved, but prescription image upload failed:\n\n" +
       uploadError.message
@@ -3447,7 +3716,6 @@ async function saveConsultation(
 }
 
 
-
 /* =========================================================
    EDIT PATIENT BY ID
    ========================================================= */
@@ -3461,7 +3729,6 @@ async function editPatientById(
       patientId
     );
 
-
   if (patient) {
 
     editPatient(
@@ -3471,7 +3738,6 @@ async function editPatientById(
   }
 
 }
-
 
 
 /* =========================================================
@@ -3486,7 +3752,6 @@ function editPatient(
     document.getElementById(
       "patientsContainer"
     );
-
 
   container.innerHTML = `
 
@@ -3762,7 +4027,6 @@ function editPatient(
 }
 
 
-
 /* =========================================================
    SAVE PATIENT CHANGES
    ========================================================= */
@@ -3838,7 +4102,6 @@ async function savePatientChanges(
     );
 
     return;
-
   }
 
 
@@ -3863,15 +4126,12 @@ async function savePatientChanges(
       error
     );
 
-
     alert(
       "Unable to save changes: " +
       error.message
     );
 
-
     return;
-
   }
 
 
@@ -3885,7 +4145,6 @@ async function savePatientChanges(
   );
 
 }
-
 
 
 /* =========================================================
@@ -3917,7 +4176,6 @@ async function editConsultation(
     );
 
     return;
-
   }
 
 
@@ -3957,6 +4215,7 @@ async function editConsultation(
         </h2>
 
         <p>
+
           <strong>
             Consultation ID:
           </strong>
@@ -3964,6 +4223,7 @@ async function editConsultation(
           ${escapeHTML(
             consultation.id
           )}
+
         </p>
 
       </div>
@@ -4143,6 +4403,20 @@ async function editConsultation(
                       <button
                         type="button"
                         class="doctor-login-button"
+                        onclick="viewPrescriptionImage(
+                          '${escapeHTML(
+                            image.image_url
+                          )}'
+                        )">
+
+                        👁️ View Image
+
+                      </button>
+
+
+                      <button
+                        type="button"
+                        class="doctor-login-button"
                         onclick="deleteConsultationImage(
                           ${consultation.id},
                           ${
@@ -4188,7 +4462,6 @@ async function editConsultation(
           id="editConsultPrescriptionImages"
           accept="image/*"
           multiple>
-
 
       </div>
 
@@ -4271,7 +4544,6 @@ async function editConsultation(
 }
 
 
-
 /* =========================================================
    SAVE EDITED CONSULTATION
    ========================================================= */
@@ -4349,7 +4621,6 @@ async function saveEditedConsultation(
     );
 
     return;
-
   }
 
 
@@ -4413,9 +4684,7 @@ async function saveEditedConsultation(
 
 
       if (imageError) {
-
         throw imageError;
-
       }
 
 
@@ -4443,7 +4712,6 @@ async function saveEditedConsultation(
 }
 
 
-
 /* =========================================================
    DELETE CONSULTATION IMAGE
    ========================================================= */
@@ -4462,9 +4730,7 @@ async function deleteConsultationImage(
 
 
   if (!confirmed) {
-
     return;
-
   }
 
 
@@ -4495,7 +4761,6 @@ async function deleteConsultationImage(
       );
 
       return;
-
     }
 
   }
@@ -4583,6 +4848,167 @@ async function deleteConsultationImage(
 }
 
 
+/* =========================================================
+   DELETE PRESCRIPTION FROM HISTORY
+   ========================================================= */
+
+async function deletePrescriptionHistoryImage(
+  consultationId,
+  imageRecordId,
+  imageUrl,
+  patientId
+) {
+
+  const confirmed =
+    confirm(
+      "Are you sure you want to permanently delete this prescription image?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  if (
+    imageRecordId !== null &&
+    imageRecordId !== undefined
+  ) {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(
+          "consultation_images"
+        )
+        .delete()
+        .eq(
+          "id",
+          imageRecordId
+        );
+
+
+    if (error) {
+
+      alert(
+        "Unable to delete image record: " +
+        error.message
+      );
+
+      return;
+    }
+
+  }
+
+
+  const {
+    data: remainingImages
+  } =
+    await supabaseClient
+      .from(
+        "consultation_images"
+      )
+      .select("*")
+      .eq(
+        "consultation_id",
+        consultationId
+      )
+      .order(
+        "id",
+        {
+          ascending:true
+        }
+      );
+
+
+  let nextImage =
+    null;
+
+
+  if (
+    remainingImages &&
+    remainingImages.length > 0
+  ) {
+
+    nextImage =
+      remainingImages[0]
+        .image_url;
+
+  }
+
+
+  await supabaseClient
+    .from("consultations")
+    .update({
+
+      prescription_image_url:
+        nextImage
+
+    })
+    .eq(
+      "id",
+      consultationId
+    );
+
+
+  await deleteStorageFile(
+    imageUrl
+  );
+
+
+  /*
+     If this was a prescription-only record
+     and no images remain, remove the record too.
+  */
+
+  const {
+    data: record
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select(
+        "chief_complaints"
+      )
+      .eq(
+        "id",
+        consultationId
+      )
+      .single();
+
+
+  if (
+    record &&
+    record.chief_complaints ===
+      "__DIRECT_PRESCRIPTION_UPLOAD__" &&
+    (
+      !remainingImages ||
+      remainingImages.length === 0
+    )
+  ) {
+
+    await supabaseClient
+      .from("consultations")
+      .delete()
+      .eq(
+        "id",
+        consultationId
+      );
+
+  }
+
+
+  alert(
+    "Prescription image deleted successfully."
+  );
+
+
+  viewPatient(
+    patientId
+  );
+
+}
+
 
 /* =========================================================
    BILLING
@@ -4600,7 +5026,6 @@ function openBillingForNewPatient(
     );
 
 }
-
 
 
 function openBillingForConsultation(
@@ -4633,7 +5058,6 @@ function openBillingForConsultation(
 }
 
 
-
 /* =========================================================
    INLINE FUNCTIONS
    ========================================================= */
@@ -4641,50 +5065,44 @@ function openBillingForConsultation(
 window.viewPatient =
   viewPatient;
 
-
 window.startConsultation =
   startConsultation;
-
 
 window.editPatient =
   editPatient;
 
-
 window.editPatientById =
   editPatientById;
-
 
 window.savePatientChanges =
   savePatientChanges;
 
-
 window.editConsultation =
   editConsultation;
-
 
 window.showConsultationDetails =
   showConsultationDetails;
 
-
 window.deleteConsultationImage =
   deleteConsultationImage;
 
+window.deletePrescriptionHistoryImage =
+  deletePrescriptionHistoryImage;
 
 window.downloadPrescriptionImage =
   downloadPrescriptionImage;
 
+window.viewPrescriptionImage =
+  viewPrescriptionImage;
 
 window.openBillingForNewPatient =
   openBillingForNewPatient;
 
-
 window.openBillingForConsultation =
   openBillingForConsultation;
 
-
 window.uploadPrescriptionForPatient =
   uploadPrescriptionForPatient;
-
 
 
 /* =========================================================
@@ -4764,7 +5182,6 @@ document
   );
 
 
-
 /* =========================================================
    START
    ========================================================= */
@@ -4776,9 +5193,7 @@ document
 
 
   if (!loggedIn) {
-
     return;
-
   }
 
 
