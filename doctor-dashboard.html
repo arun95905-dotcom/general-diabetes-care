@@ -9,11 +9,16 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0">
 
-  <title>Doctor Dashboard | General & Diabetes Care</title>
+  <title>
+    Doctor Dashboard | General & Diabetes Care
+  </title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css">
 
 </head>
+
 
 <body>
 
@@ -25,69 +30,132 @@
         🩺
       </div>
 
+
       <p class="section-label">
         GENERAL &amp; DIABETES CARE
       </p>
 
+
       <h1>
         Doctor Dashboard
       </h1>
+
 
       <p class="dashboard-welcome">
         Welcome to the secure Doctor Portal.
       </p>
 
 
+      <!-- =================================================
+           DASHBOARD MENU
+           ================================================= -->
+
       <div class="dashboard-grid">
 
-        <a href="doctor-appointments.html" class="dashboard-item dashboard-link">
-  📅
-  <strong>Appointments</strong>
-  <span>Manage appointments</span>
+
+        <!-- APPOINTMENTS -->
+
+        <a
+          href="doctor-appointments.html"
+          class="dashboard-item dashboard-link">
+
+          📅
+
+          <strong>
+            Appointments
+          </strong>
+
+          <span>
+            Manage appointments
+          </span>
+
         </a>
 
- <a
-  href="doctor-patients.html"
-  class="dashboard-item dashboard-link">
 
-  👤
+        <!-- PATIENTS -->
 
-  <strong>
-    Patients
-  </strong>
+        <a
+          href="doctor-patients.html"
+          class="dashboard-item dashboard-link">
 
-  <span>
-    Patient management
-  </span>
+          👤
 
- </a>
+          <strong>
+            Patients
+          </strong>
 
-   <a
-  href="doctor-consultations.html"
-  class="dashboard-item">
+          <span>
+            Patient management
+          </span>
 
-  🩺
+        </a>
 
-  <strong>
-    Consultation History
-  </strong>
 
-  <span>
-    Search and view previous consultations
-  </span>
+        <!-- CONSULTATIONS -->
 
-</a>  
+        <a
+          href="doctor-consultations.html"
+          class="dashboard-item dashboard-link">
 
-        <div class="dashboard-item">
+          🩺
+
+          <strong>
+            Consultation History
+          </strong>
+
+          <span>
+            Search and view previous consultations
+          </span>
+
+        </a>
+
+
+        <!-- REPORTS -->
+
+        <div
+          class="dashboard-item">
+
           🧪
-          <strong>Reports</strong>
-          <span>View laboratory reports</span>
+
+          <strong>
+            Reports
+          </strong>
+
+          <span>
+            View laboratory reports
+          </span>
+
         </div>
+
+
+        <!-- CLINIC ANALYTICS -->
+
+        <a
+          href="clinic-analytics.html"
+          class="dashboard-item dashboard-link">
+
+          📊
+
+          <strong>
+            Clinic Analytics
+          </strong>
+
+          <span>
+            View clinic statistics and performance
+          </span>
+
+        </a>
+
 
       </div>
 
 
+      <!-- =================================================
+           LOGOUT
+           ================================================= -->
+
       <button
+        type="button"
         id="logoutButton"
         class="doctor-login-button">
 
@@ -95,6 +163,10 @@
 
       </button>
 
+
+      <!-- =================================================
+           BACK TO CLINIC WEBSITE
+           ================================================= -->
 
       <a
         href="index.html"
@@ -104,37 +176,67 @@
 
       </a>
 
+
     </div>
 
   </section>
 
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- =====================================================
+       SUPABASE
+       ===================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
+
 
   <script>
 
-    const SUPABASE_URL = "https://twdmvdqqckcpwoccvtkj.supabase.co/rest/v1/";
+    /* =====================================================
+       SUPABASE CONFIGURATION
+       ===================================================== */
+
+    const SUPABASE_URL =
+      "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
 
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
 
-    const supabaseClient = supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
 
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    /* =====================================================
+       DOCTOR LOGIN PROTECTION
+       ===================================================== */
 
     async function checkDoctorLogin() {
 
-      const { data: { session } } =
+      const {
+        data: {
+          session
+        }
+      } =
         await supabaseClient.auth.getSession();
+
 
       if (!session) {
 
         window.location.href =
           "doctor-login.html";
 
+        return false;
+
       }
+
+
+      return true;
 
     }
 
@@ -142,40 +244,31 @@
     checkDoctorLogin();
 
 
+    /* =====================================================
+       LOGOUT
+       ===================================================== */
+
     document
-      .getElementById("logoutButton")
-      .addEventListener("click", async function() {
+      .getElementById(
+        "logoutButton"
+      )
+      .addEventListener(
+        "click",
+        async function() {
 
-        await supabaseClient.auth.signOut();
+          await supabaseClient
+            .auth
+            .signOut();
 
-        window.location.href =
-          "doctor-login.html";
 
-      });
-document
-  .getElementById("logoutButton")
-  .addEventListener("click", async function () {
+          window.location.href =
+            "doctor-login.html";
 
-    await supabaseClient.auth.signOut();
+        }
+      );
 
-    window.location.href = "doctor-login.html";
-
-  });
-  async function protectDashboard() {
-
-  const { data: { session } } =
-    await supabaseClient.auth.getSession();
-
-  if (!session) {
-
-    window.location.href = "doctor-login.html";
-
-  }
-
-}
-
-protectDashboard();  
   </script>
+
 
 </body>
 
