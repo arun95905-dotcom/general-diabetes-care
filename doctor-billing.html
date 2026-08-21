@@ -915,6 +915,9 @@ async function saveBill() {
         patient_id:
           selectedPatient.id,
 
+        consultation_id:
+  window.selectedConsultationId || null,
+       
         bill_date:
           billDate,
 
@@ -2821,7 +2824,126 @@ document
 
     }
   );
+/* =========================================================
+   LOAD PATIENT FROM CONSULTATION
+   ========================================================= */
 
+async function loadPatientFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const patientId =
+    params.get("patient_id");
+
+  const consultationId =
+    params.get("consultation_id");
+
+
+  if (!patientId) {
+    return;
+  }
+
+
+  const {
+    data: patient,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select("*")
+      .eq("id", patientId)
+      .single();
+
+
+  if (error || !patient) {
+
+    console.error(
+      "Unable to load patient:",
+      error
+    );
+
+    alert(
+      "Unable to find this patient."
+    );
+
+    return;
+  }
+
+
+  window.selectedConsultationId =
+    consultationId;
+
+
+  const resultsContainer =
+    document.getElementById(
+      "billingPatientResults"
+    );
+
+
+  if (!resultsContainer) {
+    return;
+  }
+
+
+  resultsContainer.innerHTML = `
+
+    <div
+      class="appointment-card"
+      data-patient-id="${patient.id}"
+    >
+
+      <strong>
+        👤 ${escapeHTML(
+          patient.patient_name || "-"
+        )}
+      </strong>
+
+      <span>
+        🆔 Patient ID:
+        ${escapeHTML(patient.id)}
+      </span>
+
+      <span>
+        📞 Contact:
+        ${escapeHTML(
+          patient.patient_phone || "-"
+        )}
+      </span>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        onclick="selectPatientForBilling(
+          ${patient.id}
+        )"
+      >
+        💰 Create Bill
+      </button>
+
+
+      <div
+        id="billing-history-${patient.id}"
+        style="margin-top:15px;"
+      >
+
+        🧾 Loading previous bills...
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  await loadBillingHistory(
+    patient.id
+  );
+
+} loadPatientFromURL();
 </script>
 
 </body>
