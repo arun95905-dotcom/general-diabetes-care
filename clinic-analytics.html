@@ -1093,29 +1093,142 @@
 
 
       <!-- =================================================
-           MONTHLY REVENUE CHART
-           ================================================= -->
+     MONTHLY REVENUE CHART
+     ================================================= -->
 
-      <div class="analytics-section">
+<div class="analytics-section">
 
-        <h2>
-          📈 Monthly Revenue
-        </h2>
+  <h2>
+    📈 Monthly Revenue
+  </h2>
+
+  <p
+    style="
+      margin-top:-10px;
+      margin-bottom:20px;
+      color:#666;
+      font-size:14px;
+    "
+  >
+    Paid revenue for the last 12 months
+  </p>
 
 
-        <div class="chart-container">
+  <!-- REVENUE SUMMARY -->
 
-          <div class="chart-wrapper">
+  <div
+    class="analytics-grid"
+    style="margin-bottom:20px;"
+  >
 
-            <canvas
-              id="monthlyRevenueChart">
-            </canvas>
+    <div class="analytics-card">
 
-          </div>
-
-        </div>
-
+      <div class="analytics-card-title">
+        💰 This Month
       </div>
+
+      <div
+        class="analytics-card-value"
+        id="monthlyRevenueCurrent"
+      >
+        ₹0
+      </div>
+
+      <div
+        class="analytics-card-subtitle"
+        id="monthlyRevenueCurrentBills"
+      >
+        0 paid bills
+      </div>
+
+    </div>
+
+
+    <div class="analytics-card">
+
+      <div class="analytics-card-title">
+        📅 Last Month
+      </div>
+
+      <div
+        class="analytics-card-value"
+        id="monthlyRevenuePrevious"
+      >
+        ₹0
+      </div>
+
+      <div
+        class="analytics-card-subtitle"
+        id="monthlyRevenuePreviousBills"
+      >
+        0 paid bills
+      </div>
+
+    </div>
+
+
+    <div class="analytics-card">
+
+      <div class="analytics-card-title">
+        📊 12-Month Revenue
+      </div>
+
+      <div
+        class="analytics-card-value"
+        id="monthlyRevenueYearTotal"
+      >
+        ₹0
+      </div>
+
+      <div
+        class="analytics-card-subtitle"
+        id="monthlyRevenueGrowth"
+      >
+        —
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- CHART -->
+
+  <div class="chart-container">
+
+    <div
+      class="chart-wrapper"
+      style="height:350px;"
+    >
+
+      <canvas
+        id="monthlyRevenueChart">
+      </canvas>
+
+    </div>
+
+  </div>
+
+
+  <!-- CHART INFORMATION -->
+
+  <div
+    style="
+      margin-top:15px;
+      padding:12px;
+      background:#f8f9fa;
+      border-radius:10px;
+      font-size:13px;
+      color:#666;
+    "
+  >
+
+    💡 Revenue is calculated from bills marked
+    <strong>Paid</strong> in the billing system.
+
+  </div>
+
+</div>
 
 
       <!-- =================================================
@@ -2411,6 +2524,7 @@ function getMonthLabels() {
 }
 
 
+
 /* =========================================================
    MONTHLY REVENUE
    ========================================================= */
@@ -2423,11 +2537,14 @@ function createMonthlyRevenueChart(
     getMonthLabels();
 
 
-  const values =
+  const monthlyData =
     months.map(
       function(month) {
 
-        let total =
+        let revenue =
+          0;
+
+        let paidBills =
           0;
 
 
@@ -2443,7 +2560,7 @@ function createMonthlyRevenueChart(
             }
 
 
-            const date =
+            const billDate =
               new Date(
                 bill.bill_date +
                 "T00:00:00"
@@ -2451,9 +2568,9 @@ function createMonthlyRevenueChart(
 
 
             if (
-              date.getFullYear() ===
+              billDate.getFullYear() ===
                 month.year &&
-              date.getMonth() ===
+              billDate.getMonth() ===
                 month.month
             ) {
 
@@ -2461,7 +2578,9 @@ function createMonthlyRevenueChart(
                 String(
                   bill.payment_status ||
                   ""
-                ).toLowerCase();
+                )
+                .trim()
+                .toLowerCase();
 
 
               if (
@@ -2469,10 +2588,13 @@ function createMonthlyRevenueChart(
                 "paid"
               ) {
 
-                total +=
+                revenue +=
                   Number(
                     bill.total_amount
                   ) || 0;
+
+
+                paidBills++;
 
               }
 
@@ -2482,16 +2604,229 @@ function createMonthlyRevenueChart(
         );
 
 
-        return total;
+        return {
+
+          revenue:
+            revenue,
+
+          paidBills:
+            paidBills
+
+        };
 
       }
     );
 
 
+  const revenueValues =
+    monthlyData.map(
+      function(item) {
+
+        return item.revenue;
+
+      }
+    );
+
+
+  const currentMonth =
+    monthlyData[
+      monthlyData.length - 1
+    ];
+
+
+  const previousMonth =
+    monthlyData[
+      monthlyData.length - 2
+    ];
+
+
+  const yearlyRevenue =
+    revenueValues.reduce(
+      function(total, value) {
+
+        return total + value;
+
+      },
+      0
+    );
+
+
+  let growthText =
+    "—";
+
+
+  if (
+    previousMonth &&
+    previousMonth.revenue > 0
+  ) {
+
+    const growth =
+      (
+        (
+          currentMonth.revenue -
+          previousMonth.revenue
+        ) /
+        previousMonth.revenue
+      ) *
+      100;
+
+
+    if (
+      growth > 0
+    ) {
+
+      growthText =
+        "↑ " +
+        growth.toFixed(1) +
+        "% vs last month";
+
+    }
+
+    else if (
+      growth < 0
+    ) {
+
+      growthText =
+        "↓ " +
+        Math.abs(
+          growth
+        ).toFixed(1) +
+        "% vs last month";
+
+    }
+
+    else {
+
+      growthText =
+        "No change vs last month";
+
+    }
+
+  }
+
+
+  const currentRevenueElement =
+    document.getElementById(
+      "monthlyRevenueCurrent"
+    );
+
+
+  if (
+    currentRevenueElement
+  ) {
+
+    currentRevenueElement.textContent =
+      formatCurrency(
+        currentMonth.revenue
+      );
+
+  }
+
+
+  const currentBillsElement =
+    document.getElementById(
+      "monthlyRevenueCurrentBills"
+    );
+
+
+  if (
+    currentBillsElement
+  ) {
+
+    currentBillsElement.textContent =
+      currentMonth.paidBills +
+      (
+        currentMonth.paidBills === 1
+          ? " paid bill"
+          : " paid bills"
+      );
+
+  }
+
+
+  const previousRevenueElement =
+    document.getElementById(
+      "monthlyRevenuePrevious"
+    );
+
+
+  if (
+    previousRevenueElement
+  ) {
+
+    previousRevenueElement.textContent =
+      formatCurrency(
+        previousMonth.revenue
+      );
+
+  }
+
+
+  const previousBillsElement =
+    document.getElementById(
+      "monthlyRevenuePreviousBills"
+    );
+
+
+  if (
+    previousBillsElement
+  ) {
+
+    previousBillsElement.textContent =
+      previousMonth.paidBills +
+      (
+        previousMonth.paidBills === 1
+          ? " paid bill"
+          : " paid bills"
+      );
+
+  }
+
+
+  const yearlyRevenueElement =
+    document.getElementById(
+      "monthlyRevenueYearTotal"
+    );
+
+
+  if (
+    yearlyRevenueElement
+  ) {
+
+    yearlyRevenueElement.textContent =
+      formatCurrency(
+        yearlyRevenue
+      );
+
+  }
+
+
+  const growthElement =
+    document.getElementById(
+      "monthlyRevenueGrowth"
+    );
+
+
+  if (
+    growthElement
+  ) {
+
+    growthElement.textContent =
+      growthText;
+
+  }
+
   const canvas =
     document.getElementById(
       "monthlyRevenueChart"
     );
+
+
+  if (!canvas) {
+
+    return;
+
+  }
 
 
   if (
@@ -2511,6 +2846,7 @@ function createMonthlyRevenueChart(
         type:
           "line",
 
+
         data:
           {
 
@@ -2523,6 +2859,7 @@ function createMonthlyRevenueChart(
                 }
               ),
 
+
             datasets:
               [
 
@@ -2532,19 +2869,29 @@ function createMonthlyRevenueChart(
                     "Paid Revenue",
 
                   data:
-                    values,
+                    revenueValues,
 
                   tension:
-                    0.3,
+                    0.35,
 
                   fill:
-                    false
+                    true,
+
+                  pointRadius:
+                    5,
+
+                  pointHoverRadius:
+                    8,
+
+                  pointHitRadius:
+                    20
 
                 }
 
               ]
 
           },
+
 
         options:
           {
@@ -2555,6 +2902,19 @@ function createMonthlyRevenueChart(
             maintainAspectRatio:
               false,
 
+
+            interaction:
+              {
+
+                mode:
+                  "index",
+
+                intersect:
+                  false
+
+              },
+
+
             plugins:
               {
 
@@ -2564,9 +2924,82 @@ function createMonthlyRevenueChart(
                     display:
                       true
 
+                  },
+
+
+                tooltip:
+                  {
+
+                    displayColors:
+                      false,
+
+                    callbacks:
+                      {
+
+                        title:
+                          function(
+                            tooltipItems
+                          ) {
+
+                            if (
+                              !tooltipItems ||
+                              !tooltipItems.length
+                            ) {
+
+                              return "";
+
+                            }
+
+
+                            return (
+                              tooltipItems[0]
+                                .label
+                            );
+
+                          },
+
+
+                        label:
+                          function(
+                            context
+                          ) {
+
+                            const index =
+                              context.dataIndex;
+
+
+                            const revenue =
+                              monthlyData[
+                                index
+                              ].revenue;
+
+
+                            const paidBills =
+                              monthlyData[
+                                index
+                              ].paidBills;
+
+
+                            return [
+
+                              "Revenue: " +
+                              formatCurrency(
+                                revenue
+                              ),
+
+                              "Paid Bills: " +
+                              paidBills
+
+                            ];
+
+                          }
+
+                      }
+
                   }
 
               },
+
 
             scales:
               {
@@ -2581,7 +3014,9 @@ function createMonthlyRevenueChart(
                       {
 
                         callback:
-                          function(value) {
+                          function(
+                            value
+                          ) {
 
                             return "₹" +
                               Number(
@@ -2594,6 +3029,23 @@ function createMonthlyRevenueChart(
 
                       }
 
+                  },
+
+
+                x:
+                  {
+
+                    ticks:
+                      {
+
+                        maxRotation:
+                          45,
+
+                        minRotation:
+                          0
+
+                      }
+
                   }
 
               }
@@ -2603,7 +3055,18 @@ function createMonthlyRevenueChart(
       }
     );
 
-}
+      }
+  
+            
+
+
+
+
+
+            
+        
+
+        
 
 
 /* =========================================================
