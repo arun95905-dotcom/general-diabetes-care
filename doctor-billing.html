@@ -3,955 +3,673 @@
 
 <head>
 
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
-
-  <title>
-    Billing | General & Diabetes Care
-  </title>
-
-  <!-- PDF LIBRARY -->
-
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
-  </script>
-
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js">
-  </script>
-
-
-  <style>
-
-    /* =====================================================
-       BASIC PAGE
-       ===================================================== */
-
-    * {
-      box-sizing: border-box;
-    }
-
-
-    body {
-      margin: 0;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-      background: #f5f7fa;
-      color: #1f2937;
-    }
-
-
-    button,
-    input,
-    select,
-    textarea {
-      font-family: inherit;
-    }
-
-
-    .doctor-dashboard {
-      min-height: 100vh;
-      padding: 20px 12px 40px;
-    }
-
-
-    .dashboard-card {
-      max-width: 1050px;
-      margin: 0 auto;
-    }
-
-
-    /* =====================================================
-       MAIN PAGE
-       ===================================================== */
-
-    .billing-page {
-      width: 100%;
-    }
-
-
-    .billing-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-
-    .section-label {
-      margin: 0 0 5px;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      color: #2563eb;
-    }
-
-
-    .billing-header h1 {
-      margin: 4px 0;
-      font-size: 28px;
-    }
-
-
-    .billing-subtitle {
-      margin: 6px 0 0;
-      color: #6b7280;
-      font-size: 15px;
-    }
-
-
-    /* =====================================================
-       DASHBOARD MENU
-       ===================================================== */
-
-    .billing-dashboard-grid {
-      display: grid;
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 22px;
-    }
-
-
-    .billing-dashboard-card {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 22px;
-      min-height: 175px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow:
-        0 5px 18px rgba(0, 0, 0, 0.06);
-    }
-
-
-    .billing-dashboard-icon {
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-
-
-    .billing-dashboard-card h2 {
-      margin: 0 0 6px;
-      font-size: 20px;
-    }
-
-
-    .billing-dashboard-card p {
-      margin: 0;
-      color: #6b7280;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-
-    .billing-dashboard-open {
-      margin-top: 18px;
-      align-self: flex-start;
-    }
-
-
-    /* =====================================================
-       COMMON CARD
-       ===================================================== */
-
-    .billing-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 22px;
-      margin-bottom: 20px;
-      border: 1px solid #e5e7eb;
-      box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.06);
-    }
-
-
-    .billing-card h2 {
-      margin: 0 0 8px;
-      font-size: 21px;
-    }
-
-
-    .billing-card h3 {
-      margin: 0 0 12px;
-    }
-
-
-    .billing-description {
-      color: #6b7280;
-      margin: 0 0 18px;
-      line-height: 1.5;
-    }
-
-
-    /* =====================================================
-       BUTTONS
-       ===================================================== */
-
-    .billing-button {
-      border: none;
-      border-radius: 10px;
-      padding: 11px 17px;
-      min-height: 42px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 700;
-      background: #2563eb;
-      color: #ffffff;
-      transition: 0.2s ease;
-    }
-
-
-    .billing-button:hover {
-      opacity: 0.92;
-      transform: translateY(-1px);
-    }
-
-
-    .billing-button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-
-    .billing-button.secondary {
-      background: #f3f4f6;
-      color: #374151;
-      border: 1px solid #d1d5db;
-    }
-
-
-    .billing-button.success {
-      background: #15803d;
-    }
-
-
-    .billing-button.danger {
-      background: #fff1f2;
-      color: #be123c;
-      border: 1px solid #fecdd3;
-    }
-
-
-    .billing-button.small {
-      padding: 8px 12px;
-      min-height: 36px;
-      font-size: 13px;
-    }
-
-
-    /* =====================================================
-       SEARCH
-       ===================================================== */
-
-    .billing-search-row {
-      display: flex;
-      width: 100%;
-      gap: 10px;
-      align-items: stretch;
-    }
-
-
-    .billing-search-input {
-      flex: 1;
-      min-width: 0;
-      height: 50px;
-      padding: 0 16px;
-      border: 1px solid #d1d5db;
-      border-radius: 11px;
-      outline: none;
-      font-size: 16px;
-      background: #ffffff;
-    }
-
-
-    .billing-search-input:focus {
-      border-color: #2563eb;
-      box-shadow:
-        0 0 0 3px rgba(37, 99, 235, 0.10);
-    }
-
-
-    .billing-search-button {
-      width: 125px;
-      flex: 0 0 125px;
-      height: 50px;
-      white-space: nowrap;
-    }
-
-
-    /* =====================================================
-       PATIENT RESULT
-       ===================================================== */
-
-    .billing-patient-card {
-      margin-top: 16px;
-      border: 1px solid #dbe3ec;
-      border-radius: 15px;
-      padding: 18px;
-      background:
-        linear-gradient(
-          135deg,
-          #f8fbff,
-          #ffffff
-        );
-    }
-
-
-    .billing-patient-name {
-      font-size: 19px;
-      font-weight: 800;
-      margin-bottom: 14px;
-    }
-
-
-    .billing-patient-details {
-      display: grid;
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-
-    .billing-detail-box {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 11px;
-    }
-
-
-    .billing-detail-label {
-      display: block;
-      color: #6b7280;
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-
-
-    .billing-detail-value {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-
-    /* =====================================================
-       SELECTED PATIENT
-       ===================================================== */
-
-    .selected-patient {
-      border: 1px solid #bfdbfe;
-      background:
-        linear-gradient(
-          135deg,
-          #eff6ff,
-          #ffffff
-        );
-    }
-
-
-    .selected-patient-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-
-
-    .selected-patient-top h3 {
-      margin: 0;
-    }
-
-
-    /* =====================================================
-       PREVIOUS BILL BUTTON
-       ===================================================== */
-
-    .previous-bills-toggle {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid #dbe3ec;
-      background: #ffffff;
-      color: #1f2937;
-      border-radius: 11px;
-      padding: 12px 14px;
-      cursor: pointer;
-      font-weight: 700;
-      margin-top: 12px;
-    }
-
-
-    .previous-bills-toggle:hover {
-      background: #f8fafc;
-    }
-
-
-    .previous-bills-toggle-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-
-    .previous-bills-count {
-      background: #eef2ff;
-      color: #3730a3;
-      border-radius: 999px;
-      padding: 3px 9px;
-      font-size: 12px;
-    }
-
-
-    .previous-bills-content {
-      margin-top: 10px;
-    }
-
-
-    /* =====================================================
-       COMPACT BILL LIST
-       ===================================================== */
-
-    .compact-bill {
-      border: 1px solid #e5e7eb;
-      border-radius: 11px;
-      margin-bottom: 8px;
-      overflow: hidden;
-      background: #ffffff;
-    }
-
-
-    .compact-bill-header {
-      width: 100%;
-      border: none;
-      background: #ffffff;
-      padding: 13px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      text-align: left;
-    }
-
-
-    .compact-bill-header:hover {
-      background: #f8fafc;
-    }
-
-
-    .compact-bill-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-
-    .compact-bill-date {
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-
-    .compact-bill-number {
-      color: #6b7280;
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-
-    .compact-bill-arrow {
-      font-size: 15px;
-      transition: transform 0.2s ease;
-    }
-
-
-    .compact-bill-arrow.open {
-      transform: rotate(90deg);
-    }
-
-
-    /* =====================================================
-       FULL BILL
-       ===================================================== */
-
-    .full-bill {
-      border-top: 1px solid #e5e7eb;
-      padding: 17px;
-      background: #fafafa;
-    }
-
-
-    .full-bill-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 15px;
-      margin-bottom: 16px;
-    }
-
-
-    .full-bill-title {
-      font-weight: 800;
-      font-size: 17px;
-    }
-
-
-    .full-bill-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-
-
-    .full-bill-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 8px 0;
-      border-bottom: 1px dotted #d1d5db;
-    }
-
-
-    .full-bill-row:last-child {
-      border-bottom: none;
-    }
-
-
-    .full-bill-total {
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-
-    /* =====================================================
-       BILL FORM
-       ===================================================== */
-
-    .billing-form-grid {
-      display: grid;
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-      gap: 15px;
-      margin-top: 18px;
-    }
-
-
-    .billing-form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-
-    .billing-form-group.full-width {
-      grid-column: 1 / -1;
-    }
-
-
-    .billing-form-group label {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-
-    .billing-form-group input,
-    .billing-form-group select,
-    .billing-form-group textarea {
-      width: 100%;
-      padding: 11px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 9px;
-      background: #ffffff;
-      outline: none;
-      font-size: 14px;
-    }
-
-
-    .billing-form-group input:focus,
-    .billing-form-group select:focus,
-    .billing-form-group textarea:focus {
-      border-color: #2563eb;
-      box-shadow:
-        0 0 0 3px rgba(37, 99, 235, 0.08);
-    }
-
-
-    /* =====================================================
-       BILL ITEMS
-       ===================================================== */
-
-    .bill-items {
-      border: 1px solid #e5e7eb;
-      border-radius: 13px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-
-
-    .bill-item {
-      display: grid;
-      grid-template-columns: 1fr 180px;
-      align-items: center;
-      gap: 15px;
-      padding: 14px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-
-    .bill-item:last-child {
-      border-bottom: none;
-    }
-
-
-    .bill-item-label {
-      font-weight: 700;
-    }
-
-
-    .bill-item input {
-      text-align: right;
-      padding: 10px;
-      border: 1px solid #d1d5db;
-      border-radius: 9px;
-    }
-
-
-    /* =====================================================
-       TOTAL
-       ===================================================== */
-
-    .bill-total-box {
-      margin-top: 16px;
-      padding: 16px;
-      border-radius: 13px;
-      background: #f3f4f6;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-
-    .bill-total-label {
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-
-    .bill-total-value {
-      font-size: 24px;
-      font-weight: 900;
-    }
-
-
-    /* =====================================================
-       ACTIONS
-       ===================================================== */
-
-    .billing-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px;
-      margin-top: 20px;
-    }
-
-
-    .billing-actions .billing-button {
-      flex: 1;
-      min-width: 150px;
-    }
-
-
-    /* =====================================================
-       TODAY'S BILLING
-       ===================================================== */
-
-    .today-summary-grid {
-      display: grid;
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin: 18px 0 24px;
-    }
-
-
-    .today-summary-card {
-      background: #f8fafc;
-      border: 1px solid #e5e7eb;
-      border-radius: 13px;
-      padding: 15px;
-    }
-
-
-    .today-summary-label {
-      color: #6b7280;
-      font-size: 12px;
-      margin-bottom: 5px;
-    }
-
-
-    .today-summary-value {
-      font-size: 21px;
-      font-weight: 900;
-    }
-
-
-    .today-bill-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 0;
-      border-bottom: 1px solid #edf0f3;
-    }
-
-
-    .today-bill-row:last-child {
-      border-bottom: none;
-    }
-
-
-    .today-bill-name {
-      font-weight: 700;
-    }
-
-
-    .today-bill-meta {
-      color: #6b7280;
-      font-size: 13px;
-      margin-top: 3px;
-    }
-
-
-    .today-bill-amount {
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-
-    /* =====================================================
-       STATUS
-       ===================================================== */
-
-    .payment-paid {
-      color: #15803d;
-      font-weight: 800;
-    }
-
-
-    .payment-pending {
-      color: #b45309;
-      font-weight: 800;
-    }
-
-
-    .payment-partial {
-      color: #0369a1;
-      font-weight: 800;
-    }
-
-
-    /* =====================================================
-       MESSAGES
-       ===================================================== */
-
-    .billing-message {
-      text-align: center;
-      padding: 24px 10px;
-      color: #6b7280;
-    }
-
-
-    .billing-error {
-      color: #b91c1c;
-      background: #fff1f2;
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-    }
-
-
-    /* =====================================================
-       DESKTOP / MOBILE
-       ===================================================== */
-
-    @media (max-width: 850px) {
-
-      .billing-dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-
-
-      .today-summary-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-    }
-
-
-    @media (max-width: 650px) {
-
-      .doctor-dashboard {
-        padding:
-          12px 8px 30px;
-      }
-
-
-      .billing-card {
-        padding: 16px;
-        border-radius: 15px;
-      }
-
-
-      .billing-header h1 {
-        font-size: 24px;
-      }
-
-
-      /*
-         Keep search input and button
-         on the same row on mobile.
-      */
-
-      .billing-search-row {
-        display: grid;
-        grid-template-columns:
-          minmax(0, 1fr) 105px;
-        gap: 8px;
-      }
-
-
-      .billing-search-input {
-        width: 100%;
-        font-size: 15px;
-      }
-
-
-      .billing-search-button {
-        width: 105px;
-        min-width: 0;
-        flex: none;
-        padding: 8px;
-      }
-
-
-      .billing-patient-details {
-        grid-template-columns: 1fr;
-      }
-
-
-      .billing-form-grid {
-        grid-template-columns: 1fr;
-      }
-
-
-      .billing-form-group.full-width {
-        grid-column: auto;
-      }
-
-
-      .bill-item {
-        grid-template-columns: 1fr;
-      }
-
-
-      .bill-item input {
-        text-align: left;
-      }
-
-
-      .bill-total-box {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-      }
-
-
-      .selected-patient-top {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-
-      .compact-bill-left {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2px;
-      }
-
-
-      .compact-bill-header {
-        padding: 12px;
-      }
-
-
-      .full-bill-header {
-        flex-direction: column;
-      }
-
-
-      .full-bill-actions {
-        width: 100%;
-      }
-
-
-      .full-bill-actions .billing-button {
-        flex: 1;
-      }
-
-
-      .full-bill-row {
-        flex-direction: column;
-        gap: 3px;
-      }
-
-
-      .today-summary-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-
-      .today-bill-row {
-        align-items: flex-start;
-      }
-
-    }
-
-
-    @media (max-width: 400px) {
-
-      .billing-search-row {
-        grid-template-columns:
-          minmax(0, 1fr) 95px;
-      }
-
-
-      .billing-search-button {
-        width: 95px;
-        font-size: 13px;
-      }
-
-
-      .today-summary-grid {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-  </style>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>
+Billing | General & Diabetes Care
+</title>
+
+
+<!-- PDF -->
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>
+
+
+<style>
+
+/* =========================================================
+   BASIC
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+  background: #f5f7fb;
+  color: #172033;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+.doctor-dashboard {
+  min-height: 100vh;
+  padding: 18px 10px 45px;
+}
+
+.billing-page {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.billing-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.section-label {
+  margin: 0 0 5px;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 1.3px;
+  color: #2563eb;
+}
+
+.billing-header h1 {
+  margin: 4px 0;
+  font-size: 28px;
+}
+
+.billing-subtitle {
+  margin: 5px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   VIEWS
+   ========================================================= */
+
+.billing-view {
+  display: none;
+}
+
+.billing-view.active {
+  display: block;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.billing-card {
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow:
+    0 5px 20px rgba(20, 31, 56, 0.06);
+}
+
+.billing-card h2,
+.billing-card h3 {
+  margin-top: 0;
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+.billing-dashboard-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.dashboard-option {
+  min-height: 145px;
+  border: 1px solid #e1e7ef;
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fafc
+    );
+  padding: 18px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.dashboard-option:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 24px rgba(20, 31, 56, 0.08);
+}
+
+.dashboard-icon {
+  display: block;
+  font-size: 30px;
+  margin-bottom: 9px;
+}
+
+.dashboard-title {
+  display: block;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.dashboard-description {
+  display: block;
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.billing-button {
+  border: none;
+  border-radius: 11px;
+  padding: 11px 15px;
+  min-height: 42px;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.success {
+  background: #15803d;
+  color: #ffffff;
+}
+
+.warning {
+  background: #e99a15;
+  color: #ffffff;
+}
+
+.danger {
+  background: #dc3545;
+  color: #ffffff;
+}
+
+.secondary {
+  background: #64748b;
+  color: #ffffff;
+}
+
+.light {
+  background: #f1f5f9;
+  color: #172033;
+  border: 1px solid #dbe2ea;
+}
+
+.small {
+  min-height: 36px;
+  padding: 8px 11px;
+  font-size: 13px;
+}
+
+.billing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+
+/* =========================================================
+   VIEW HEADER
+   ========================================================= */
+
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.view-header h2 {
+  margin: 0;
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.billing-search-row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr) 120px;
+  gap: 8px;
+}
+
+.billing-search-input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 13px;
+  font-size: 15px;
+  outline: none;
+}
+
+.billing-search-input:focus {
+  border-color: #2563eb;
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   PATIENT
+   ========================================================= */
+
+.patient-card {
+  border: 1px solid #e0e6ee;
+  border-radius: 14px;
+  padding: 15px;
+  margin-top: 11px;
+  background: #ffffff;
+}
+
+.patient-name {
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.patient-meta {
+  margin-top: 5px;
+  color: #657084;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.selected-patient {
+  background:
+    linear-gradient(
+      135deg,
+      #eef6ff,
+      #ffffff
+    );
+  border: 1px solid #cfe2fb;
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 14px;
+}
+
+.selected-patient-name {
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.selected-patient-meta {
+  margin-top: 5px;
+  color: #5d697c;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-section {
+  background: #f8fafc;
+  border: 1px solid #e4e9ef;
+  border-radius: 14px;
+  padding: 15px;
+  margin-top: 13px;
+}
+
+.form-section h3 {
+  margin: 0 0 13px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 11px 12px;
+  background: #ffffff;
+  font: inherit;
+  outline: none;
+}
+
+.form-group textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+
+
+/* =========================================================
+   CHARGES
+   ========================================================= */
+
+.charge-list {
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.charge-row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr) 170px;
+  gap: 12px;
+  align-items: center;
+  padding: 13px;
+  border-bottom: 1px solid #e7ebf0;
+}
+
+.charge-row:last-child {
+  border-bottom: none;
+}
+
+.charge-label {
+  font-weight: 750;
+}
+
+.charge-row input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  padding: 10px;
+  text-align: right;
+}
+
+
+/* =========================================================
+   TOTAL
+   ========================================================= */
+
+.total-box {
+  margin-top: 14px;
+  border-radius: 13px;
+  background: #eef6ff;
+  border: 1px solid #d4e5fb;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.total-amount {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   BILL CARD
+   ========================================================= */
+
+.bill-card {
+  border: 1px solid #e1e7ee;
+  border-radius: 14px;
+  margin-top: 10px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.bill-summary {
+  width: 100%;
+  border: none;
+  background: #ffffff;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.bill-summary:hover {
+  background: #f8fafc;
+}
+
+.bill-summary-main {
+  min-width: 0;
+}
+
+.bill-number {
+  font-weight: 850;
+}
+
+.bill-meta {
+  margin-top: 4px;
+  color: #667085;
+  font-size: 12px;
+}
+
+.bill-amount {
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.bill-details {
+  display: none;
+  border-top: 1px solid #e5e7eb;
+  padding: 14px;
+  background: #fafafa;
+}
+
+.bill-details.open {
+  display: block;
+}
+
+.bill-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 8px 0;
+  border-bottom: 1px dotted #d6dbe1;
+}
+
+.bill-row:last-child {
+  border-bottom: none;
+}
+
+
+/* =========================================================
+   TODAY SUMMARY
+   ========================================================= */
+
+.today-summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.summary-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 13px;
+}
+
+.summary-label {
+  color: #6b7280;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.summary-value {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.paid {
+  color: #15803d;
+  font-weight: 800;
+}
+
+.pending {
+  color: #b45309;
+  font-weight: 800;
+}
+
+.partial {
+  color: #0369a1;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+.billing-message {
+  text-align: center;
+  padding: 20px;
+  color: #697386;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.billing-error {
+  text-align: center;
+  padding: 13px;
+  color: #b91c1c;
+  background: #fff1f2;
+  border-radius: 11px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .billing-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .today-summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .doctor-dashboard {
+    padding: 12px 8px 35px;
+  }
+
+  .billing-card {
+    padding: 14px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full {
+    grid-column: auto;
+  }
+
+  .charge-row {
+    grid-template-columns: 1fr;
+  }
+
+  .charge-row input {
+    text-align: left;
+  }
+
+  .total-box {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .view-header {
+    align-items: flex-start;
+  }
+
+}
+
+@media (max-width: 400px) {
+
+  .billing-search-row {
+    grid-template-columns:
+      minmax(0, 1fr) 100px;
+  }
+
+  .today-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
 
 </head>
 
@@ -961,795 +679,655 @@
 
 <section class="doctor-dashboard">
 
-<div class="dashboard-card billing-page">
+<div class="billing-page">
 
 
-  <!-- ===================================================
-       HEADER
-       =================================================== -->
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
 
-  <div class="billing-header">
+<div class="billing-header">
 
-    <p class="section-label">
-      GENERAL &amp; DIABETES CARE
-    </p>
+<p class="section-label">
+GENERAL &amp; DIABETES CARE
+</p>
 
-    <h1>
-      💰 Billing &amp; Receipts
-    </h1>
+<h1>
+💰 Billing &amp; Receipts
+</h1>
 
-    <p class="billing-subtitle">
-      Create, view and manage patient bills
-    </p>
+<p class="billing-subtitle">
+Create, view and manage patient bills
+</p>
 
-  </div>
+</div>
 
 
-  <!-- ===================================================
-       BILLING DASHBOARD
-       =================================================== -->
 
-  <div
-    id="billingDashboard"
-    class="billing-dashboard-grid">
+<!-- =====================================================
+     DASHBOARD VIEW
+     ===================================================== -->
 
+<div
+  id="dashboardView"
+  class="billing-view active">
 
-    <!-- CREATE BILL -->
 
-    <div class="billing-dashboard-card">
+<div class="billing-card">
 
-      <div>
+<div class="billing-dashboard-grid">
 
-        <div class="billing-dashboard-icon">
-          💰
-        </div>
 
-        <h2>
-          Create Bill
-        </h2>
+<button
+  type="button"
+  class="dashboard-option"
+  id="openCreateBillButton">
 
-        <p>
-          Create a new patient bill
-        </p>
+<span class="dashboard-icon">
+💰
+</span>
 
-      </div>
+<span class="dashboard-title">
+Create Bill
+</span>
 
-      <button
-        type="button"
-        class="billing-button billing-dashboard-open"
-        id="openCreateBillButton">
+<span class="dashboard-description">
+Create a new patient bill
+</span>
 
-        Open →
+</button>
 
-      </button>
 
-    </div>
+<button
+  type="button"
+  class="dashboard-option"
+  id="openPreviousBillsButton">
 
+<span class="dashboard-icon">
+🧾
+</span>
 
-    <!-- PREVIOUS BILLS -->
+<span class="dashboard-title">
+Previous Bills
+</span>
 
-    <div class="billing-dashboard-card">
+<span class="dashboard-description">
+Search and review previous bills
+</span>
 
-      <div>
+</button>
 
-        <div class="billing-dashboard-icon">
-          🧾
-        </div>
 
-        <h2>
-          Previous Bills
-        </h2>
+<button
+  type="button"
+  class="dashboard-option"
+  id="openTodayBillsButton">
 
-        <p>
-          Search and view previous bills
-        </p>
+<span class="dashboard-icon">
+📊
+</span>
 
-      </div>
+<span class="dashboard-title">
+Today's Bill Summary
+</span>
 
-      <button
-        type="button"
-        class="billing-button billing-dashboard-open"
-        id="openPreviousBillsButton">
+<span class="dashboard-description">
+View today's billing and payment summary
+</span>
 
-        Search →
+</button>
 
-      </button>
 
-    </div>
+</div>
 
+</div>
 
-    <!-- TODAY'S BILLS -->
 
-    <div class="billing-dashboard-card">
+<div class="billing-actions">
 
-      <div>
+<button
+  type="button"
+  class="billing-button light"
+  id="billingBackButton">
 
-        <div class="billing-dashboard-icon">
-          📊
-        </div>
+← Back to Dashboard
 
-        <h2>
-          Today's Bills
-        </h2>
+</button>
 
-        <p>
-          View today's billing summary
-        </p>
 
-      </div>
+<button
+  type="button"
+  class="billing-button secondary"
+  id="logoutButton">
 
-      <button
-        type="button"
-        class="billing-button billing-dashboard-open"
-        id="openTodayBillsButton">
+🔒 Logout
 
-        View →
+</button>
 
-      </button>
+</div>
 
-    </div>
+</div>
 
 
-  </div>
 
+<!-- =====================================================
+     CREATE BILL VIEW
+     ===================================================== -->
 
-  <!-- ===================================================
-       CREATE BILL SECTION
-       =================================================== -->
+<div
+  id="createBillView"
+  class="billing-view">
 
-  <div
-    id="createBillSection"
-    style="display:none;">
 
+<div class="billing-card">
 
-    <div class="billing-card">
+<div class="view-header">
 
-      <h2>
-        💰 Create Bill
-      </h2>
+<h2>
+💰 Create Bill
+</h2>
 
-      <p class="billing-description">
-        Find a patient and create a new bill.
-      </p>
+<button
+  type="button"
+  class="billing-button light"
+  onclick="returnFromCreateBill()">
 
+← Back
 
-      <!-- SEARCH -->
+</button>
 
-      <h3>
-        🔎 Find Patient
-      </h3>
+</div>
 
-      <p class="billing-description">
-        Search using Patient ID, patient name or phone number.
-      </p>
 
+<div
+  id="linkedConsultationNotice"
+  style="display:none;"
+  class="selected-patient">
 
-      <div class="billing-search-row">
+<strong>
+🩺 Linked Consultation
+</strong>
 
-        <input
-          type="text"
-          id="billingPatientSearch"
-          class="billing-search-input"
-          placeholder="Patient ID / Name / Phone Number"
-          autocomplete="off">
+<div
+  id="linkedConsultationDetails"
+  class="selected-patient-meta">
+</div>
 
+</div>
 
-        <button
-          type="button"
-          class="billing-button billing-search-button"
-          id="searchBillingPatientButton">
 
-          🔎 Search
+<div id="patientSearchArea">
 
-        </button>
+<h3>
+🔎 Find Patient
+</h3>
 
-      </div>
 
+<div class="billing-search-row">
 
-      <div
-        id="billingPatientResults">
+<input
+  type="search"
+  id="patientSearch"
+  class="billing-search-input"
+  placeholder="Patient ID / Name / Phone Number">
 
-      </div>
+<button
+  type="button"
+  class="billing-button primary"
+  id="patientSearchButton">
 
-    </div>
+🔎 Search
 
+</button>
 
-    <!-- SELECTED PATIENT + BILL FORM -->
+</div>
 
-    <div
-      id="billingFormContainer"
-      style="display:none;">
 
+<div
+  id="patientSearchResults"
+  style="margin-top:12px;">
 
-      <div class="billing-card selected-patient">
+<div class="billing-message">
+Search for a patient to create a bill.
+</div>
 
+</div>
 
-        <div class="selected-patient-top">
+</div>
 
-          <h3>
-            👤 Patient Details
-          </h3>
 
-          <button
-            type="button"
-            class="billing-button secondary small"
-            id="changePatientButton">
+<div
+  id="selectedPatientArea"
+  style="display:none;">
 
-            Change Patient
 
-          </button>
+<div class="selected-patient">
 
-        </div>
+<div
+  id="selectedPatientName"
+  class="selected-patient-name">
+-
+</div>
 
+<div
+  id="selectedPatientMeta"
+  class="selected-patient-meta">
+</div>
 
-        <div class="billing-patient-details">
+</div>
 
-          <div class="billing-detail-box">
 
-            <span class="billing-detail-label">
-              Patient Name
-            </span>
+<div class="form-section">
 
-            <span
-              class="billing-detail-value"
-              id="billingPatientName">
-              -
-            </span>
+<h3>
+🧾 Bill Details
+</h3>
 
-          </div>
 
+<div class="form-grid">
 
-          <div class="billing-detail-box">
 
-            <span class="billing-detail-label">
-              Patient ID
-            </span>
+<div class="form-group">
 
-            <span
-              class="billing-detail-value"
-              id="billingPatientId">
-              -
-            </span>
+<label for="billDate">
+Bill Date
+</label>
 
-          </div>
+<input
+  type="date"
+  id="billDate">
 
+</div>
 
-          <div class="billing-detail-box">
 
-            <span class="billing-detail-label">
-              Contact Number
-            </span>
+<div class="form-group">
 
-            <span
-              class="billing-detail-value"
-              id="billingPatientPhone">
-              -
-            </span>
+<label for="paymentStatus">
+Payment Status
+</label>
 
-          </div>
+<select id="paymentStatus">
 
-        </div>
+<option value="Paid">
+Paid
+</option>
 
+<option value="Pending">
+Pending
+</option>
 
-        <!-- PREVIOUS BILLS COLLAPSIBLE -->
+<option value="Partially Paid">
+Partially Paid
+</option>
 
-        <button
-          type="button"
-          class="previous-bills-toggle"
-          id="previousBillsToggle">
+</select>
 
-          <span class="previous-bills-toggle-left">
+</div>
 
-            🧾 Previous Bills
 
-            <span
-              class="previous-bills-count"
-              id="previousBillsCount">
-              0
-            </span>
+<div class="form-group">
 
-          </span>
+<label for="paymentMethod">
+Payment Method
+</label>
 
-          <span id="previousBillsArrow">
-            ▼
-          </span>
+<select id="paymentMethod">
 
-        </button>
+<option value="">
+Select Payment Method
+</option>
 
+<option value="Cash">
+Cash
+</option>
 
-        <div
-          id="previousBillsContent"
-          class="previous-bills-content"
-          style="display:none;">
+<option value="UPI">
+UPI
+</option>
 
-          <div
-            id="patientPreviousBillsList">
+<option value="Card">
+Card
+</option>
 
-            <div class="billing-message">
-              Loading previous bills...
-            </div>
+<option value="Bank Transfer">
+Bank Transfer
+</option>
 
-          </div>
+<option value="Other">
+Other
+</option>
 
-        </div>
+</select>
 
+</div>
 
-      </div>
 
+</div>
 
-      <!-- =================================================
-           BILL FORM
-           ================================================= -->
+</div>
 
-      <div class="billing-card">
 
-        <h2>
-          🧾 New Bill
-        </h2>
+<div class="form-section">
 
+<h3>
+💵 Charges
+</h3>
 
-        <div class="billing-form-grid">
 
+<div class="charge-list">
 
-          <!-- DATE -->
 
-          <div class="billing-form-group">
+<div class="charge-row">
 
-            <label for="billDate">
-              📅 Bill Date
-            </label>
+<div class="charge-label">
+Consultation Fee
+</div>
 
-            <input
-              type="date"
-              id="billDate">
+<input
+  type="number"
+  id="consultationFee"
+  min="0"
+  step="1"
+  value="0">
 
-          </div>
+</div>
 
 
-          <!-- NUMBER -->
+<div class="charge-row">
 
-          <div class="billing-form-group">
+<div class="charge-label">
+Medicine Charges
+</div>
 
-            <label for="displayBillNumber">
-              🧾 Bill Number
-            </label>
+<input
+  type="number"
+  id="medicineCharges"
+  min="0"
+  step="1"
+  value="0">
 
-            <input
-              type="text"
-              id="displayBillNumber"
-              value="Automatically generated"
-              readonly>
+</div>
 
-          </div>
 
-        </div>
+<div class="charge-row">
 
+<div class="charge-label">
+Procedure / Other Charges
+</div>
 
-        <h3 style="margin-top:25px;">
-          💰 Bill Items
-        </h3>
+<input
+  type="number"
+  id="procedureCharges"
+  min="0"
+  step="1"
+  value="0">
 
+</div>
 
-        <div class="bill-items">
 
+</div>
 
-          <!-- CONSULTATION -->
 
-          <div class="bill-item">
+<div class="total-box">
 
-            <div class="bill-item-label">
-              Consultation Fee
-            </div>
+<div class="total-label">
+Total Amount
+</div>
 
-            <input
-              type="number"
-              id="consultationFee"
-              min="0"
-              step="0.01"
-              placeholder="₹ 0.00">
+<div
+  class="total-amount"
+  id="totalAmount">
 
-          </div>
+₹0.00
 
+</div>
 
-          <!-- MEDICINE -->
+</div>
 
-          <div class="bill-item">
+</div>
 
-            <div class="bill-item-label">
-              Medicine Charges
-            </div>
 
-            <input
-              type="number"
-              id="medicineCharges"
-              min="0"
-              step="0.01"
-              placeholder="₹ 0.00">
+<div class="form-section">
 
-          </div>
+<h3>
+📝 Notes
+</h3>
 
+<div class="form-group">
 
-          <!-- PROCEDURE -->
+<textarea
+  id="billingNotes"
+  placeholder="Optional billing notes"></textarea>
 
-          <div class="bill-item">
+</div>
 
-            <div class="bill-item-label">
-              Procedure Charges
-            </div>
+</div>
 
-            <input
-              type="number"
-              id="procedureCharges"
-              min="0"
-              step="0.01"
-              placeholder="₹ 0.00">
 
-          </div>
+<div class="billing-actions">
 
+<button
+  type="button"
+  class="billing-button success"
+  id="saveBillButton">
 
-        </div>
+💾 Save Bill
 
+</button>
 
-        <!-- TOTAL -->
 
-        <div class="bill-total-box">
+<button
+  type="button"
+  class="billing-button light"
+  onclick="clearSelectedPatient()">
 
-          <span class="bill-total-label">
-            Total Amount
-          </span>
+Change Patient
 
-          <span class="bill-total-value">
-            ₹<span id="totalAmount">0.00</span>
-          </span>
+</button>
 
-        </div>
+</div>
 
 
-        <!-- PAYMENT -->
+<div
+  id="billSaveMessage"
+  style="margin-top:14px;">
+</div>
 
-        <div
-          class="billing-form-grid"
-          style="margin-top:20px;">
 
+</div>
 
-          <div class="billing-form-group">
+</div>
 
-            <label for="paymentStatus">
-              💳 Payment Status
-            </label>
+</div>
 
-            <select id="paymentStatus">
 
-              <option value="Pending">
-                Pending
-              </option>
 
-              <option value="Paid">
-                Paid
-              </option>
+<!-- =====================================================
+     PREVIOUS BILLS VIEW
+     ===================================================== -->
 
-              <option value="Partially Paid">
-                Partially Paid
-              </option>
+<div
+  id="previousBillsView"
+  class="billing-view">
 
-            </select>
+<div class="billing-card">
 
-          </div>
+<div class="view-header">
 
+<h2>
+🧾 Previous Bills
+</h2>
 
-          <div class="billing-form-group">
+<button
+  type="button"
+  class="billing-button light"
+  onclick="showDashboard()">
 
-            <label for="paymentMethod">
-              💵 Payment Method
-            </label>
+← Billing Home
 
-            <select id="paymentMethod">
+</button>
 
-              <option value="">
-                Select payment method
-              </option>
+</div>
 
-              <option value="Cash">
-                Cash
-              </option>
 
-              <option value="UPI">
-                UPI
-              </option>
+<div class="billing-search-row">
 
-              <option value="Card">
-                Card
-              </option>
+<input
+  type="search"
+  id="billSearch"
+  class="billing-search-input"
+  placeholder="Bill ID / Patient ID / Name / Phone">
 
-              <option value="Bank Transfer">
-                Bank Transfer
-              </option>
+<button
+  type="button"
+  class="billing-button primary"
+  id="billSearchButton">
 
-            </select>
+🔎 Search
 
-          </div>
+</button>
 
+</div>
 
-          <div class="billing-form-group full-width">
 
-            <label for="billingNotes">
-              📝 Notes
-            </label>
+<div
+  id="previousBillsResults"
+  style="margin-top:14px;">
 
-            <textarea
-              id="billingNotes"
-              rows="3"
-              placeholder="Optional notes"></textarea>
+<div class="billing-message">
+Search for previous bills.
+</div>
 
-          </div>
+</div>
 
-        </div>
+</div>
 
+</div>
 
-        <!-- ACTIONS -->
 
-        <div class="billing-actions">
 
-          <button
-            type="button"
-            class="billing-button success"
-            id="saveBillButton">
+<!-- =====================================================
+     TODAY VIEW
+     ===================================================== -->
 
-            💾 Save Bill
+<div
+  id="todayBillsView"
+  class="billing-view">
 
-          </button>
+<div class="billing-card">
 
+<div class="view-header">
 
-          <button
-            type="button"
-            class="billing-button secondary"
-            id="cancelBillingButton">
+<h2>
+📊 Today's Bill Summary
+</h2>
 
-            ✖ Cancel
+<button
+  type="button"
+  class="billing-button light"
+  onclick="showDashboard()">
 
-          </button>
+← Billing Home
 
-        </div>
+</button>
 
+</div>
 
-      </div>
 
-    </div>
+<div class="today-summary-grid">
 
 
-    <button
-      type="button"
-      class="billing-button secondary"
-      id="backFromCreateButton">
+<div class="summary-box">
 
-      ← Back to Billing
+<div class="summary-label">
+Bills
+</div>
 
-    </button>
+<div
+  id="todayBillsCount"
+  class="summary-value">
+0
+</div>
 
+</div>
 
-  </div>
 
+<div class="summary-box">
 
-  <!-- ===================================================
-       PREVIOUS BILLS SECTION
-       =================================================== -->
+<div class="summary-label">
+Total Billing
+</div>
 
-  <div
-    id="previousBillsSection"
-    style="display:none;">
+<div
+  id="todayTotalBilling"
+  class="summary-value">
+₹0
+</div>
 
+</div>
 
-    <div class="billing-card">
 
-      <h2>
-        🧾 Previous Bills
-      </h2>
+<div class="summary-box">
 
-      <p class="billing-description">
-        Search previous bills by Patient ID, patient name, phone number or bill number.
-      </p>
+<div class="summary-label">
+Paid
+</div>
 
+<div
+  id="todayPaidAmount"
+  class="summary-value">
+₹0
+</div>
 
-      <div class="billing-search-row">
+</div>
 
-        <input
-          type="text"
-          id="previousBillsSearch"
-          class="billing-search-input"
-          placeholder="Patient ID / Name / Phone / Bill Number"
-          autocomplete="off">
 
+<div class="summary-box">
 
-        <button
-          type="button"
-          class="billing-button billing-search-button"
-          id="searchPreviousBillsButton">
+<div class="summary-label">
+Pending
+</div>
 
-          🔎 Search
+<div
+  id="todayPendingAmount"
+  class="summary-value">
+₹0
+</div>
 
-        </button>
+</div>
 
-      </div>
 
+</div>
 
-      <div
-        id="previousBillsResults"
-        style="margin-top:15px;">
 
-        <div class="billing-message">
+<div id="todayBillsList">
 
-          Search for previous bills.
+<div class="billing-message">
+Loading today's bills...
+</div>
 
-        </div>
+</div>
 
-      </div>
+</div>
 
-    </div>
+</div>
 
 
-    <button
-      type="button"
-      class="billing-button secondary"
-      id="backFromPreviousButton">
 
-      ← Back to Billing
+<!-- =====================================================
+     SAVED BILL VIEW
+     ===================================================== -->
 
-    </button>
+<div
+  id="savedBillView"
+  class="billing-view">
 
+<div
+  id="savedBillContent"
+  class="billing-card">
+</div>
 
-  </div>
-
-
-  <!-- ===================================================
-       TODAY'S BILLS SECTION
-       =================================================== -->
-
-  <div
-    id="todayBillsSection"
-    style="display:none;">
-
-
-    <div class="billing-card">
-
-      <h2>
-        📊 Today's Billing
-      </h2>
-
-      <p
-        class="billing-description"
-        id="todayBillingDate">
-      </p>
-
-
-      <!-- SUMMARY -->
-
-      <div class="today-summary-grid">
-
-
-        <div class="today-summary-card">
-
-          <div class="today-summary-label">
-            🧾 Bills Generated
-          </div>
-
-          <div
-            class="today-summary-value"
-            id="todayBillsCount">
-            0
-          </div>
-
-        </div>
-
-
-        <div class="today-summary-card">
-
-          <div class="today-summary-label">
-            💰 Total Billing
-          </div>
-
-          <div
-            class="today-summary-value"
-            id="todayTotalBilling">
-            ₹0.00
-          </div>
-
-        </div>
-
-
-        <div class="today-summary-card">
-
-          <div class="today-summary-label">
-            ✅ Paid
-          </div>
-
-          <div
-            class="today-summary-value"
-            id="todayPaidAmount">
-            ₹0.00
-          </div>
-
-        </div>
-
-
-        <div class="today-summary-card">
-
-          <div class="today-summary-label">
-            ⏳ Pending
-          </div>
-
-          <div
-            class="today-summary-value"
-            id="todayPendingAmount">
-            ₹0.00
-          </div>
-
-        </div>
-
-
-      </div>
-
-
-      <h3>
-        Today's Bills
-      </h3>
-
-
-      <div
-        id="todayBillsList">
-
-        <div class="billing-message">
-          Loading today's bills...
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <button
-      type="button"
-      class="billing-button secondary"
-      id="backFromTodayButton">
-
-      ← Back to Billing
-
-    </button>
-
-
-  </div>
-
-
-  <!-- ===================================================
-       NAVIGATION
-       =================================================== -->
-
-  <div
-    id="billingNavigation"
-    class="billing-actions"
-    style="margin-top:22px;">
-
-
-    <a
-      href="doctor-dashboard.html"
-      class="billing-button"
-      style="text-align:center;text-decoration:none;">
-
-      ← Back to Dashboard
-
-    </a>
-
-
-    <button
-      type="button"
-      class="billing-button secondary"
-      id="billingLogoutButton">
-
-      🔒 Logout
-
-    </button>
-
-
-  </div>
+</div>
 
 
 </div>
@@ -1757,9 +1335,10 @@
 </section>
 
 
-<!-- =======================================================
+
+<!-- =====================================================
      SUPABASE
-     ======================================================= -->
+     ===================================================== -->
 
 <script
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
@@ -1769,7 +1348,7 @@
 <script>
 
 /* =========================================================
-   SUPABASE
+   CONFIG
    ========================================================= */
 
 const SUPABASE_URL =
@@ -1787,17 +1366,20 @@ const supabaseClient =
   );
 
 
+let selectedPatient =
+  null;
+
+
+let selectedConsultationId =
+  null;
+
+
+let billingReturnURL =
+  null;
+
+
 /* =========================================================
-   GLOBAL VARIABLES
-   ========================================================= */
-
-let selectedPatient = null;
-
-window.selectedConsultationId = null;
-
-
-/* =========================================================
-   ESCAPE HTML
+   HELPERS
    ========================================================= */
 
 function escapeHTML(value) {
@@ -1806,39 +1388,146 @@ function escapeHTML(value) {
     value === null ||
     value === undefined
   ) {
-
     return "";
+  }
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+function getTodayString() {
+
+  const date =
+    new Date();
+
+
+  return (
+    date.getFullYear() +
+    "-" +
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    ) +
+    "-" +
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    )
+  );
+
+}
+
+
+function formatDate(value) {
+
+  if (!value) {
+    return "-";
+  }
+
+
+  const date =
+    new Date(
+      String(value).length === 10
+        ? value + "T00:00:00"
+        : value
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return value;
 
   }
 
 
-  return String(value)
-    .replace(
-      /&/g,
-      "&amp;"
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function currency(value) {
+
+  return (
+    "₹" +
+    Number(
+      value || 0
+    ).toFixed(2)
+  );
+
+}
+
+
+function showView(id) {
+
+  document
+    .querySelectorAll(
+      ".billing-view"
     )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
+    .forEach(
+      function(view) {
+
+        view.classList.remove(
+          "active"
+        );
+
+      }
     );
+
+
+  const view =
+    document.getElementById(
+      id
+    );
+
+
+  if (view) {
+
+    view.classList.add(
+      "active"
+    );
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+function showDashboard() {
+
+  showView(
+    "dashboardView"
+  );
 
 }
 
 
 /* =========================================================
-   LOGIN CHECK
+   LOGIN
    ========================================================= */
 
 async function checkDoctorLogin() {
@@ -1868,101 +1557,138 @@ async function checkDoctorLogin() {
 }
 
 
-/* =========================================================
-   TODAY DATE
-   ========================================================= */
+async function logoutDoctor() {
 
-function getTodayDateString() {
+  await supabaseClient
+    .auth
+    .signOut();
 
-  const today =
-    new Date();
 
-  const year =
-    today.getFullYear();
-
-  const month =
-    String(
-      today.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
-
-  const day =
-    String(
-      today.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
-
-  return (
-    year +
-    "-" +
-    month +
-    "-" +
-    day
-  );
+  window.location.href =
+    "doctor-login.html";
 
 }
 
 
 /* =========================================================
-   SET BILL DATE
+   RETURN URL
    ========================================================= */
 
-function setToday() {
+function readReturnURL() {
 
-  document
-    .getElementById(
-      "billDate"
-    )
-    .value =
-      getTodayDateString();
-
-}
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
 
 
-/* =========================================================
-   FORMAT DATE
-   ========================================================= */
-
-function formatBillDate(dateValue) {
-
-  if (!dateValue) {
-
-    return "-";
-
-  }
-
-
-  const parts =
-    String(dateValue)
-      .split("-");
+  billingReturnURL =
+    params.get(
+      "return_to"
+    );
 
 
   if (
-    parts.length !== 3
+    billingReturnURL
   ) {
 
-    return dateValue;
+    try {
+
+      billingReturnURL =
+        decodeURIComponent(
+          billingReturnURL
+        );
+
+    } catch (error) {
+
+      console.warn(
+        error
+      );
+
+    }
+
+  }
+
+}
+
+
+function updateBackButton() {
+
+  const button =
+    document.getElementById(
+      "billingBackButton"
+    );
+
+
+  if (!button) {
+    return;
+  }
+
+
+  if (
+    billingReturnURL
+  ) {
+
+    button.textContent =
+      "← Back to Consultation";
+
+  } else {
+
+    button.textContent =
+      "← Back to Dashboard";
+
+  }
+
+}
+
+
+function goBackFromBilling() {
+
+  if (
+    billingReturnURL
+  ) {
+
+    window.location.href =
+      billingReturnURL;
+
+    return;
 
   }
 
 
-  return (
-    parts[2] +
-    "/" +
-    parts[1] +
-    "/" +
-    parts[0]
-  );
+  window.location.href =
+    "doctor-dashboard.html";
+
+}
+
+
+function returnFromCreateBill() {
+
+  /*
+     When billing was opened
+     directly from consultation,
+     Back returns directly there.
+  */
+
+  if (
+    billingReturnURL &&
+    selectedPatient
+  ) {
+
+    goBackFromBilling();
+
+    return;
+
+  }
+
+
+  showDashboard();
 
 }
 
 
 /* =========================================================
-   CALCULATE TOTAL
+   TOTAL
    ========================================================= */
 
 function calculateTotal() {
@@ -1973,8 +1699,8 @@ function calculateTotal() {
         .getElementById(
           "consultationFee"
         )
-        .value
-    ) || 0;
+        ?.value || 0
+    );
 
 
   const medicineCharges =
@@ -1983,8 +1709,8 @@ function calculateTotal() {
         .getElementById(
           "medicineCharges"
         )
-        .value
-    ) || 0;
+        ?.value || 0
+    );
 
 
   const procedureCharges =
@@ -1993,25 +1719,30 @@ function calculateTotal() {
         .getElementById(
           "procedureCharges"
         )
-        .value
-    ) || 0;
-
-
-  const total =
-    Math.max(
-      0,
-      consultationFee +
-      medicineCharges +
-      procedureCharges
+        ?.value || 0
     );
 
 
-  document
-    .getElementById(
+  const total =
+    consultationFee +
+    medicineCharges +
+    procedureCharges;
+
+
+  const totalElement =
+    document.getElementById(
       "totalAmount"
-    )
-    .textContent =
-      total.toFixed(2);
+    );
+
+
+  if (totalElement) {
+
+    totalElement.textContent =
+      currency(
+        total
+      );
+
+  }
 
 
   return total;
@@ -2020,110 +1751,68 @@ function calculateTotal() {
 
 
 /* =========================================================
-   SHOW ONLY ONE MAIN SECTION
+   CREATE BILL SCREEN
    ========================================================= */
 
-function showBillingSection(
-  section
-) {
+function openCreateBill() {
 
-  document
-    .getElementById(
-      "billingDashboard"
-    )
-    .style.display =
-      section ===
-      "dashboard"
-        ? "grid"
-        : "none";
+  showView(
+    "createBillView"
+  );
 
 
   document
     .getElementById(
-      "createBillSection"
+      "billDate"
     )
-    .style.display =
-      section ===
-      "create"
-        ? "block"
-        : "none";
+    .value =
+      getTodayString();
 
 
-  document
-    .getElementById(
-      "previousBillsSection"
-    )
-    .style.display =
-      section ===
-      "previous"
-        ? "block"
-        : "none";
-
-
-  document
-    .getElementById(
-      "todayBillsSection"
-    )
-    .style.display =
-      section ===
-      "today"
-        ? "block"
-        : "none";
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  calculateTotal();
 
 }
 
 
 /* =========================================================
-   SEARCH PATIENTS
+   SEARCH PATIENT
    ========================================================= */
 
-async function searchBillingPatients() {
+async function searchPatients() {
 
   const search =
     document
       .getElementById(
-        "billingPatientSearch"
+        "patientSearch"
       )
       .value
       .trim();
 
 
-  const resultsContainer =
-    document
-      .getElementById(
-        "billingPatientResults"
-      );
+  const container =
+    document.getElementById(
+      "patientSearchResults"
+    );
 
 
   if (!search) {
 
-    resultsContainer.innerHTML = `
+    container.innerHTML = `
 
       <div class="billing-message">
-
-        Please enter Patient ID, name or phone number.
-
+        Enter Patient ID, name or phone number.
       </div>
 
     `;
 
     return;
-
   }
 
 
-  resultsContainer.innerHTML = `
+  container.innerHTML = `
 
     <div class="billing-message">
-
-      🔎 Searching patients...
-
+      🔎 Searching...
     </div>
 
   `;
@@ -2135,27 +1824,32 @@ async function searchBillingPatients() {
       .select("*");
 
 
-  /*
-     Numeric search:
-     patient ID + phone + name
-  */
-
   if (
-    /^\d+$/.test(search)
+    /^\d+$/.test(
+      search
+    )
   ) {
 
     query =
       query.or(
-        `id.eq.${search},patient_phone.ilike.%${search}%,patient_name.ilike.%${search}%`
+        "id.eq." +
+        search +
+        ",patient_phone.ilike.%" +
+        search +
+        "%,patient_name.ilike.%" +
+        search +
+        "%"
       );
 
-  }
-
-  else {
+  } else {
 
     query =
       query.or(
-        `patient_name.ilike.%${search}%,patient_phone.ilike.%${search}%`
+        "patient_name.ilike.%" +
+        search +
+        "%,patient_phone.ilike.%" +
+        search +
+        "%"
       );
 
   }
@@ -2177,23 +1871,19 @@ async function searchBillingPatients() {
   if (error) {
 
     console.error(
-      "Patient search error:",
       error
     );
 
 
-    resultsContainer.innerHTML = `
+    container.innerHTML = `
 
       <div class="billing-error">
-
-        ❌ Unable to search patients.
-
+        Unable to search patients.
       </div>
 
     `;
 
     return;
-
   }
 
 
@@ -2202,114 +1892,75 @@ async function searchBillingPatients() {
     data.length === 0
   ) {
 
-    resultsContainer.innerHTML = `
+    container.innerHTML = `
 
       <div class="billing-message">
-
         No patients found.
-
       </div>
 
     `;
 
     return;
-
   }
 
 
-  resultsContainer.innerHTML = "";
+  container.innerHTML =
+    data.map(
+      function(patient) {
 
+        return `
 
-  data.forEach(
-    function(patient) {
+          <div class="patient-card">
 
-      const card =
-        document.createElement(
-          "div"
-        );
+            <div class="patient-name">
 
+              👤
+              ${escapeHTML(
+                patient.patient_name
+              )}
 
-      card.className =
-        "billing-patient-card";
+            </div>
 
+            <div class="patient-meta">
 
-      card.dataset.patientId =
-        patient.id;
-
-
-      card.dataset.patientName =
-        patient.patient_name || "";
-
-
-      card.dataset.patientPhone =
-        patient.patient_phone || "";
-
-
-      card.innerHTML = `
-
-        <div class="billing-patient-name">
-
-          👤 ${escapeHTML(
-            patient.patient_name || "-"
-          )}
-
-        </div>
-
-
-        <div class="billing-patient-details">
-
-          <div class="billing-detail-box">
-
-            <span class="billing-detail-label">
-              Patient ID
-            </span>
-
-            <span class="billing-detail-value">
+              🆔 Patient ID:
               ${escapeHTML(
                 patient.id
               )}
-            </span>
 
-          </div>
+              <br>
 
-
-          <div class="billing-detail-box">
-
-            <span class="billing-detail-label">
-              Phone
-            </span>
-
-            <span class="billing-detail-value">
+              📞
               ${escapeHTML(
                 patient.patient_phone || "-"
               )}
-            </span>
+
+            </div>
+
+
+            <div class="billing-actions">
+
+              <button
+                type="button"
+                class="billing-button primary small"
+                onclick="selectPatient(
+                  ${Number(
+                    patient.id
+                  )}
+                )">
+
+                💰 Create Bill
+
+              </button>
+
+            </div>
 
           </div>
 
-        </div>
+        `;
 
-
-        <button
-          type="button"
-          class="billing-button"
-          onclick="selectPatientForBilling(${Number(
-            patient.id
-          )})">
-
-          💰 Create Bill
-
-        </button>
-
-      `;
-
-
-      resultsContainer.appendChild(
-        card
-      );
-
-    }
-  );
+      }
+    ).join("");
 
 }
 
@@ -2318,727 +1969,309 @@ async function searchBillingPatients() {
    SELECT PATIENT
    ========================================================= */
 
-async function selectPatientForBilling(
+async function selectPatient(
   patientId
 ) {
-
-  const patientElement =
-    document.querySelector(
-      `[data-patient-id="${patientId}"]`
-    );
-
-
-  if (!patientElement) {
-
-    alert(
-      "Unable to select patient."
-    );
-
-    return;
-
-  }
-
-
-  selectedPatient = {
-
-    id:
-      patientId,
-
-    patient_name:
-      patientElement.dataset.patientName,
-
-    patient_phone:
-      patientElement.dataset.patientPhone
-
-  };
-
-
-  document
-    .getElementById(
-      "billingPatientName"
-    )
-    .textContent =
-      selectedPatient.patient_name ||
-      "-";
-
-
-  document
-    .getElementById(
-      "billingPatientId"
-    )
-    .textContent =
-      selectedPatient.id;
-
-
-  document
-    .getElementById(
-      "billingPatientPhone"
-    )
-    .textContent =
-      selectedPatient.patient_phone ||
-      "-";
-
-
-  document
-    .getElementById(
-      "billingFormContainer"
-    )
-    .style.display =
-      "block";
-
-
-  setToday();
-
-  clearBillFields();
-
-
-  /*
-     Previous bills remain collapsed.
-  */
-
-  document
-    .getElementById(
-      "previousBillsContent"
-    )
-    .style.display =
-      "none";
-
-
-  document
-    .getElementById(
-      "previousBillsArrow"
-    )
-    .textContent =
-      "▼";
-
-
-  await loadPatientPreviousBills(
-    selectedPatient.id
-  );
-
-
-  document
-    .getElementById(
-      "billingFormContainer"
-    )
-    .scrollIntoView({
-      behavior:
-        "smooth",
-      block:
-        "start"
-    });
-
-}
-
-
-/* =========================================================
-   LOAD PATIENT PREVIOUS BILLS
-   ========================================================= */
-
-async function loadPatientPreviousBills(
-  patientId
-) {
-
-  const container =
-    document
-      .getElementById(
-        "patientPreviousBillsList"
-      );
-
-
-  const countElement =
-    document
-      .getElementById(
-        "previousBillsCount"
-      );
-
-
-  container.innerHTML = `
-
-    <div class="billing-message">
-
-      🧾 Loading previous bills...
-
-    </div>
-
-  `;
-
 
   const {
     data,
     error
   } =
     await supabaseClient
-      .from("billing")
+      .from("patients")
       .select("*")
       .eq(
-        "patient_id",
+        "id",
         patientId
       )
-      .order(
-        "bill_date",
-        {
-          ascending: false
-        }
-      )
-      .order(
-        "id",
-        {
-          ascending: false
-        }
+      .single();
+
+
+  if (
+    error ||
+    !data
+  ) {
+
+    alert(
+      "Unable to load patient."
+    );
+
+    return;
+  }
+
+
+  selectedPatient =
+    data;
+
+
+  document
+    .getElementById(
+      "selectedPatientArea"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "patientSearchArea"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "selectedPatientName"
+    )
+    .textContent =
+      "👤 " +
+      (
+        data.patient_name ||
+        "-"
       );
 
 
-  if (error) {
-
-    console.error(
-      "Previous bills error:",
-      error
-    );
-
-
-    countElement.textContent =
-      "0";
-
-
-    container.innerHTML = `
-
-      <div class="billing-error">
-
-        ❌ Unable to load previous bills.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  const bills =
-    data || [];
-
-
-  countElement.textContent =
-    bills.length;
-
-
-  if (
-    bills.length === 0
-  ) {
-
-    container.innerHTML = `
-
-      <div class="billing-message">
-
-        No previous bills found.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  renderCompactBills(
-    bills,
-    patientId,
-    container
-  );
-
-}
-
-
-/* =========================================================
-   RENDER COMPACT BILLS
-   ========================================================= */
-
-function renderCompactBills(
-  bills,
-  patientId,
-  container
-) {
-
-  let html = "";
-
-
-  bills.forEach(
-    function(bill) {
-
-      const billId =
-        Number(
-          bill.id
-        );
-
-
-      html += `
-
-        <div class="compact-bill">
-
-
-          <button
-            type="button"
-            class="compact-bill-header"
-            onclick="toggleCompactBill(${billId})">
-
-
-            <span class="compact-bill-left">
-
-              <span class="compact-bill-date">
-
-                📅 ${escapeHTML(
-                  formatBillDate(
-                    bill.bill_date
-                  )
-                )}
-
-              </span>
-
-
-              <span class="compact-bill-number">
-
-                Bill #${escapeHTML(
-                  bill.id
-                )}
-
-              </span>
-
-            </span>
-
-
-            <span
-              id="bill-arrow-${billId}"
-              class="compact-bill-arrow">
-
-              ▶
-
-            </span>
-
-
-          </button>
-
-
-          <div
-            id="compact-full-bill-${billId}"
-            style="display:none;">
-
-            ${buildFullBillHTML(
-              bill,
-              patientId
-            )}
-
-          </div>
-
-
-        </div>
-
-      `;
-
-    }
-  );
-
-
-  container.innerHTML =
-    html;
-
-}
-
-
-/* =========================================================
-   BUILD FULL BILL HTML
-   ========================================================= */
-
-function buildFullBillHTML(
-  bill,
-  patientId
-) {
-
-  const status =
-    bill.payment_status ||
-    "-";
-
-
-  let statusClass =
-    "payment-pending";
-
-
-  if (
-    status ===
-    "Paid"
-  ) {
-
-    statusClass =
-      "payment-paid";
-
-  }
-
-  else if (
-    status ===
-    "Partially Paid"
-  ) {
-
-    statusClass =
-      "payment-partial";
-
-  }
-
-
-  return `
-
-    <div class="full-bill">
-
-
-      <div class="full-bill-header">
-
-
-        <div>
-
-          <div class="full-bill-title">
-
-            🧾 Bill #${escapeHTML(
-              bill.id
-            )}
-
-          </div>
-
-          <div
-            style="color:#6b7280;font-size:13px;margin-top:4px;">
-
-            ${escapeHTML(
-              formatBillDate(
-                bill.bill_date
-              )
-            )}
-
-          </div>
-
-        </div>
-
-
-        <div class="full-bill-actions">
-
-
-          <button
-            type="button"
-            class="billing-button small"
-            onclick="printBillReceipt(
-              ${Number(bill.id)},
-              ${Number(patientId)}
-            )">
-
-            🖨️ Print
-
-          </button>
-
-
-          <button
-            type="button"
-            class="billing-button small"
-            onclick="downloadBillPDF(
-              ${Number(bill.id)},
-              ${Number(patientId)}
-            )">
-
-            📄 Download PDF
-
-          </button>
-
-
-          <button
-            type="button"
-            class="billing-button danger small"
-            onclick="deleteBill(
-              ${Number(bill.id)},
-              ${Number(patientId)}
-            )">
-
-            🗑️ Delete
-
-          </button>
-
-
-        </div>
-
-      </div>
-
-
-      <div class="full-bill-row">
-
-        <strong>
-          Bill Number
-        </strong>
-
-        <span>
-          ${escapeHTML(
-            bill.id
-          )}
-        </span>
-
-      </div>
-
-
-      <div class="full-bill-row">
-
-        <strong>
-          Bill Date
-        </strong>
-
-        <span>
-          ${escapeHTML(
-            formatBillDate(
-              bill.bill_date
-            )
-          )}
-        </span>
-
-      </div>
-
-
-      <div class="full-bill-row">
-
-        <strong>
-          Consultation Fee
-        </strong>
-
-        <span>
-          ₹${Number(
-            bill.consultation_fee || 0
-          ).toFixed(2)}
-        </span>
-
-      </div>
-
-
-      <div class="full-bill-row">
-
-        <strong>
-          Medicine Charges
-        </strong>
-
-        <span>
-          ₹${Number(
-            bill.medicine_charges || 0
-          ).toFixed(2)}
-        </span>
-
-      </div>
-
-
-      <div class="full-bill-row">
-
-        <strong>
-          Procedure Charges
-        </strong>
-
-        <span>
-          ₹${Number(
-            bill.procedure_charges || 0
-          ).toFixed(2)}
-        </span>
-
-      </div>
-
-
-      <div class="full-bill-row">
-
-        <strong class="full-bill-total">
-          Total Amount
-        </strong>
-
-        <strong class="full-bill-total">
-          ₹${Number(
-            bill.total_amount || 0
-          ).toFixed(2)}
-        </strong>
-
-      </div>
-
-
-      <div class="full-bill-row">
-
-        <strong>
-          Payment Status
-        </strong>
-
-        <span class="${statusClass}">
-
-          ${escapeHTML(
-            status
-          )}
-
-        </span>
-
-      </div>
-
-
-      <div class="full-bill-row">
-
-        <strong>
-          Payment Method
-        </strong>
-
-        <span>
-          ${escapeHTML(
-            bill.payment_method || "-"
-          )}
-        </span>
-
-      </div>
-
-
-      <div class="full-bill-row">
-
-        <strong>
-          Notes
-        </strong>
-
-        <span>
-          ${escapeHTML(
-            bill.notes || "-"
-          )}
-        </span>
-
-      </div>
-
-
-    </div>
+  document
+    .getElementById(
+      "selectedPatientMeta"
+    )
+    .innerHTML = `
+
+      Patient ID:
+      <strong>
+        ${escapeHTML(
+          data.id
+        )}
+      </strong>
+
+      <br>
+
+      Phone:
+      <strong>
+        ${escapeHTML(
+          data.patient_phone || "-"
+        )}
+      </strong>
 
   `;
 
+
+  await loadPreviousBillsForPatient(
+    patientId
+  );
+
 }
 
 
 /* =========================================================
-   TOGGLE COMPACT BILL
+   CLEAR PATIENT
    ========================================================= */
 
-function toggleCompactBill(
-  billId
+function clearSelectedPatient() {
+
+  /*
+     Do not clear consultation-linked
+     patient accidentally.
+  */
+
+  if (
+    selectedConsultationId &&
+    billingReturnURL
+  ) {
+
+    if (
+      !confirm(
+        "This bill is linked to a consultation. Change patient?"
+      )
+    ) {
+
+      return;
+
+    }
+
+  }
+
+
+  selectedPatient =
+    null;
+
+  selectedConsultationId =
+    null;
+
+
+  document
+    .getElementById(
+      "selectedPatientArea"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "patientSearchArea"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "linkedConsultationNotice"
+    )
+    .style.display =
+      "none";
+
+}
+
+
+/* =========================================================
+   LOAD URL PATIENT
+   ========================================================= */
+
+async function loadPatientFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const patientId =
+    params.get(
+      "patient_id"
+    );
+
+
+  const consultationId =
+    params.get(
+      "consultation_id"
+    );
+
+
+  if (!patientId) {
+    return false;
+  }
+
+
+  if (
+    consultationId
+  ) {
+
+    selectedConsultationId =
+      Number(
+        consultationId
+      );
+
+  }
+
+
+  openCreateBill();
+
+
+  await selectPatient(
+    Number(
+      patientId
+    )
+  );
+
+
+  if (
+    selectedConsultationId
+  ) {
+
+    await showLinkedConsultation(
+      selectedConsultationId
+    );
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   CONSULTATION NOTICE
+   ========================================================= */
+
+async function showLinkedConsultation(
+  consultationId
 ) {
 
-  const bill =
-    document
-      .getElementById(
-        "compact-full-bill-" +
-        billId
-      );
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select(
+        "id,created_at,chief_complaints,diagnosis"
+      )
+      .eq(
+        "id",
+        consultationId
+      )
+      .single();
 
 
-  const arrow =
-    document
-      .getElementById(
-        "bill-arrow-" +
-        billId
-      );
-
-
-  if (!bill) {
+  if (
+    error ||
+    !data
+  ) {
 
     return;
 
   }
 
 
-  const isHidden =
-    bill.style.display ===
-    "none";
-
-
-  if (isHidden) {
-
-    bill.style.display =
+  document
+    .getElementById(
+      "linkedConsultationNotice"
+    )
+    .style.display =
       "block";
 
-    if (arrow) {
-
-      arrow.classList.add(
-        "open"
-      );
-
-    }
-
-  }
-
-  else {
-
-    bill.style.display =
-      "none";
-
-    if (arrow) {
-
-      arrow.classList.remove(
-        "open"
-      );
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   CLEAR BILL FIELDS
-   ========================================================= */
-
-function clearBillFields() {
 
   document
     .getElementById(
-      "consultationFee"
+      "linkedConsultationDetails"
     )
-    .value = "";
+    .innerHTML = `
 
+      Consultation ID:
+      <strong>
+        ${escapeHTML(
+          data.id
+        )}
+      </strong>
 
-  document
-    .getElementById(
-      "medicineCharges"
-    )
-    .value = "";
+      <br>
 
+      Date:
+      <strong>
+        ${formatDate(
+          data.created_at
+        )}
+      </strong>
 
-  document
-    .getElementById(
-      "procedureCharges"
-    )
-    .value = "";
+      ${
+        data.diagnosis
+          ? `
+            <br>
+            Diagnosis:
+            <strong>
+              ${escapeHTML(
+                data.diagnosis
+              )}
+            </strong>
+          `
+          : ""
+      }
 
-
-  document
-    .getElementById(
-      "paymentStatus"
-    )
-    .value =
-      "Pending";
-
-
-  document
-    .getElementById(
-      "paymentMethod"
-    )
-    .value =
-      "";
-
-
-  document
-    .getElementById(
-      "billingNotes"
-    )
-    .value = "";
-
-
-  document
-    .getElementById(
-      "displayBillNumber"
-    )
-    .value =
-      "Automatically generated";
-
-
-  calculateTotal();
+  `;
 
 }
 
@@ -3049,10 +2282,12 @@ function clearBillFields() {
 
 async function saveBill() {
 
-  if (!selectedPatient) {
+  if (
+    !selectedPatient
+  ) {
 
     alert(
-      "Please select a patient first."
+      "Please select a patient."
     );
 
     return;
@@ -3080,48 +2315,37 @@ async function saveBill() {
 
 
   const consultationFee =
-    Math.max(
-      0,
-      Number(
-        document
-          .getElementById(
-            "consultationFee"
-          )
-          .value
-      ) || 0
+    Number(
+      document
+        .getElementById(
+          "consultationFee"
+        )
+        .value || 0
     );
 
 
   const medicineCharges =
-    Math.max(
-      0,
-      Number(
-        document
-          .getElementById(
-            "medicineCharges"
-          )
-          .value
-      ) || 0
+    Number(
+      document
+        .getElementById(
+          "medicineCharges"
+        )
+        .value || 0
     );
 
 
   const procedureCharges =
-    Math.max(
-      0,
-      Number(
-        document
-          .getElementById(
-            "procedureCharges"
-          )
-          .value
-      ) || 0
+    Number(
+      document
+        .getElementById(
+          "procedureCharges"
+        )
+        .value || 0
     );
 
 
   const total =
-    consultationFee +
-    medicineCharges +
-    procedureCharges;
+    calculateTotal();
 
 
   const paymentStatus =
@@ -3149,18 +2373,16 @@ async function saveBill() {
       .trim();
 
 
-  const saveButton =
-    document
-      .getElementById(
-        "saveBillButton"
-      );
+  const button =
+    document.getElementById(
+      "saveBillButton"
+    );
 
 
-  saveButton.disabled =
+  button.disabled =
     true;
 
-
-  saveButton.textContent =
+  button.textContent =
     "⏳ Saving...";
 
 
@@ -3176,7 +2398,7 @@ async function saveBill() {
           selectedPatient.id,
 
         consultation_id:
-          window.selectedConsultationId ||
+          selectedConsultationId ||
           null,
 
         bill_date:
@@ -3210,25 +2432,222 @@ async function saveBill() {
       .single();
 
 
-  saveButton.disabled =
+  button.disabled =
     false;
 
-
-  saveButton.textContent =
+  button.textContent =
     "💾 Save Bill";
 
 
   if (error) {
 
     console.error(
-      "Billing save error:",
       error
     );
 
 
     alert(
-      "Unable to save bill:\n" +
+      "Unable to save bill:\n\n" +
       error.message
+    );
+
+    return;
+  }
+
+
+  await showSavedBill(
+    data.id
+  );
+
+}
+
+
+/* =========================================================
+   SAVED BILL
+   ========================================================= */
+
+async function showSavedBill(
+  billId
+) {
+
+  const result =
+    await getBillAndPatient(
+      billId
+    );
+
+
+  if (!result) {
+    return;
+  }
+
+
+  const bill =
+    result.bill;
+
+
+  const patient =
+    result.patient;
+
+
+  const container =
+    document.getElementById(
+      "savedBillContent"
+    );
+
+
+  container.innerHTML = `
+
+    <h2 style="color:#15803d;">
+      ✅ Bill Saved Successfully
+    </h2>
+
+
+    <div class="selected-patient">
+
+      <div class="selected-patient-name">
+
+        👤
+        ${escapeHTML(
+          patient.patient_name || "-"
+        )}
+
+      </div>
+
+      <div class="selected-patient-meta">
+
+        Patient ID:
+        ${escapeHTML(
+          patient.id
+        )}
+
+        <br>
+
+        Bill #:
+        ${escapeHTML(
+          bill.id
+        )}
+
+        <br>
+
+        Bill Date:
+        ${formatDate(
+          bill.bill_date
+        )}
+
+      </div>
+
+    </div>
+
+
+    ${renderBillDetails(
+      bill,
+      patient
+    )}
+
+
+    <div class="billing-actions">
+
+      <button
+        type="button"
+        class="billing-button primary"
+        onclick="printBill(
+          ${Number(
+            bill.id
+          )}
+        )">
+
+        🖨️ Print
+
+      </button>
+
+
+      <button
+        type="button"
+        class="billing-button success"
+        onclick="downloadBillPDF(
+          ${Number(
+            bill.id
+          )}
+        )">
+
+        📥 Download PDF
+
+      </button>
+
+
+      ${
+        billingReturnURL
+          ? `
+            <button
+              type="button"
+              class="billing-button light"
+              onclick="goBackFromBilling()">
+
+              ← Back to Consultation
+
+            </button>
+          `
+          : `
+            <button
+              type="button"
+              class="billing-button light"
+              onclick="showDashboard()">
+
+              ← Billing Home
+
+            </button>
+          `
+      }
+
+    </div>
+
+  `;
+
+
+  showView(
+    "savedBillView"
+  );
+
+}
+
+
+/* =========================================================
+   PATIENT PREVIOUS BILLS
+   ========================================================= */
+
+async function loadPreviousBillsForPatient(
+  patientId
+) {
+
+  /*
+     Kept lightweight here.
+     Previous-bills screen remains
+     available separately.
+  */
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("billing")
+      .select("*")
+      .eq(
+        "patient_id",
+        patientId
+      )
+      .order(
+        "bill_date",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.warn(
+      error
     );
 
     return;
@@ -3236,160 +2655,28 @@ async function saveBill() {
   }
 
 
-  document
-    .getElementById(
-      "displayBillNumber"
-    )
-    .value =
-      data.id;
-
-
-  alert(
-    "Bill saved successfully.\n\nBill Number: " +
-    data.id
-  );
-
-
-  clearBillFields();
-
-
-  await loadPatientPreviousBills(
-    selectedPatient.id
-  );
-
-
-  /*
-     Automatically open previous bills
-     after saving so the newly created
-     bill can be seen.
-  */
-
-  document
-    .getElementById(
-      "previousBillsContent"
-    )
-    .style.display =
-      "block";
-
-
-  document
-    .getElementById(
-      "previousBillsArrow"
-    )
-    .textContent =
-      "▲";
-
-}
-
-
-/* =========================================================
-   CANCEL BILL
-   ========================================================= */
-
-function cancelBilling() {
-
-  selectedPatient =
-    null;
-
-
-  document
-    .getElementById(
-      "billingFormContainer"
-    )
-    .style.display =
-      "none";
-
-
-  clearBillFields();
-
-
-  document
-    .getElementById(
-      "billingPatientSearch"
-    )
-    .value = "";
-
-
-  document
-    .getElementById(
-      "billingPatientResults"
-    )
-    .innerHTML = "";
-
-
-  window.selectedConsultationId =
-    null;
-
-}
-
-
-/* =========================================================
-   CHANGE PATIENT
-   ========================================================= */
-
-function changePatient() {
-
-  selectedPatient =
-    null;
-
-
-  document
-    .getElementById(
-      "billingFormContainer"
-    )
-    .style.display =
-      "none";
-
-
-  document
-    .getElementById(
-      "billingPatientSearch"
-    )
-    .focus();
-
-}
-
-
-/* =========================================================
-   PREVIOUS BILL TOGGLE
-   ========================================================= */
-
-function togglePreviousBills() {
-
-  const content =
-    document
-      .getElementById(
-        "previousBillsContent"
-      );
-
-
-  const arrow =
-    document
-      .getElementById(
-        "previousBillsArrow"
-      );
-
-
   if (
-    content.style.display ===
-    "none"
+    data &&
+    data.length > 0
   ) {
 
-    content.style.display =
-      "block";
+    document
+      .getElementById(
+        "billSaveMessage"
+      )
+      .innerHTML = `
 
-    arrow.textContent =
-      "▲";
+        <div class="billing-message">
 
-  }
+          This patient has
+          <strong>
+            ${data.length}
+          </strong>
+          previous bill(s).
 
-  else {
+        </div>
 
-    content.style.display =
-      "none";
-
-    arrow.textContent =
-      "▼";
+    `;
 
   }
 
@@ -3405,17 +2692,16 @@ async function searchPreviousBills() {
   const search =
     document
       .getElementById(
-        "previousBillsSearch"
+        "billSearch"
       )
       .value
       .trim();
 
 
   const container =
-    document
-      .getElementById(
-        "previousBillsResults"
-      );
+    document.getElementById(
+      "previousBillsResults"
+    );
 
 
   if (!search) {
@@ -3423,165 +2709,135 @@ async function searchPreviousBills() {
     container.innerHTML = `
 
       <div class="billing-message">
-
-        Please enter Patient ID, name, phone or bill number.
-
+        Enter Bill ID, Patient ID, name or phone number.
       </div>
 
     `;
 
     return;
-
   }
 
 
   container.innerHTML = `
 
     <div class="billing-message">
-
-      🔎 Searching bills...
-
+      🔎 Searching...
     </div>
 
   `;
 
 
-  /*
-     First try exact bill ID
-     if numeric.
-  */
-
   let bills = [];
 
 
-  let billError = null;
-
+  /*
+     First try Bill ID.
+  */
 
   if (
-    /^\d+$/.test(search)
+    /^\d+$/.test(
+      search
+    )
   ) {
 
-    const result =
+    const {
+      data
+    } =
       await supabaseClient
         .from("billing")
         .select("*")
         .eq(
           "id",
-          Number(search)
-        )
-        .order(
-          "bill_date",
-          {
-            ascending: false
-          }
+          Number(
+            search
+          )
         );
 
 
     bills =
-      result.data || [];
-
-
-    billError =
-      result.error;
+      data || [];
 
   }
 
 
   /*
-     If bill number did not match,
-     search patients and then their bills.
+     Search patients when no direct bill found.
   */
 
   if (
-    !billError &&
     bills.length === 0
   ) {
 
     let patientQuery =
       supabaseClient
         .from("patients")
-        .select("*");
+        .select("id");
 
 
     if (
-      /^\d+$/.test(search)
+      /^\d+$/.test(
+        search
+      )
     ) {
 
       patientQuery =
         patientQuery.or(
-          `id.eq.${search},patient_phone.ilike.%${search}%,patient_name.ilike.%${search}%`
+          "id.eq." +
+          search +
+          ",patient_phone.ilike.%" +
+          search +
+          "%,patient_name.ilike.%" +
+          search +
+          "%"
         );
 
-    }
-
-    else {
+    } else {
 
       patientQuery =
         patientQuery.or(
-          `patient_name.ilike.%${search}%,patient_phone.ilike.%${search}%`
+          "patient_name.ilike.%" +
+          search +
+          "%,patient_phone.ilike.%" +
+          search +
+          "%"
         );
 
     }
 
 
     const {
-      data: patients,
-      error: patientError
+      data:
+        patients
     } =
-      await patientQuery
-        .order(
-          "patient_name",
-          {
-            ascending: true
-          }
-        );
+      await patientQuery;
 
 
-    if (patientError) {
+    const ids =
+      (
+        patients || []
+      )
+      .map(
+        function(patient) {
 
-      console.error(
-        patientError
+          return patient.id;
+
+        }
       );
 
 
-      container.innerHTML = `
-
-        <div class="billing-error">
-
-          ❌ Unable to search patients.
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
     if (
-      patients &&
-      patients.length > 0
+      ids.length
     ) {
 
-      const patientIds =
-        patients.map(
-          function(patient) {
-            return patient.id;
-          }
-        );
-
-
       const {
-        data: patientBills,
-        error: patientBillsError
+        data
       } =
         await supabaseClient
           .from("billing")
           .select("*")
           .in(
             "patient_id",
-            patientIds
+            ids
           )
           .order(
             "bill_date",
@@ -3597,113 +2853,84 @@ async function searchPreviousBills() {
           );
 
 
-      if (patientBillsError) {
-
-        console.error(
-          patientBillsError
-        );
-
-
-        container.innerHTML = `
-
-          <div class="billing-error">
-
-            ❌ Unable to load bills.
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
       bills =
-        patientBills || [];
+        data || [];
 
     }
 
   }
 
 
-  if (billError) {
-
-    console.error(
-      billError
-    );
-
-
-    container.innerHTML = `
-
-      <div class="billing-error">
-
-        ❌ Unable to search bills.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
   if (
-    !bills ||
     bills.length === 0
   ) {
 
     container.innerHTML = `
 
       <div class="billing-message">
-
-        No previous bills found.
-
+        No bills found.
       </div>
 
     `;
 
     return;
-
   }
 
 
-  /*
-     Get patient information
-     for bills.
-  */
+  await renderBillsList(
+    bills,
+    container
+  );
+
+}
+
+
+/* =========================================================
+   RENDER BILLS
+   ========================================================= */
+
+async function renderBillsList(
+  bills,
+  container
+) {
 
   const patientIds =
     [
       ...new Set(
         bills.map(
           function(bill) {
+
             return bill.patient_id;
+
           }
         )
       )
     ];
 
 
-  const {
-    data: patients,
-    error: patientsError
-  } =
-    await supabaseClient
-      .from("patients")
-      .select("*")
-      .in(
-        "id",
-        patientIds
-      );
+  let patients = [];
 
 
-  if (patientsError) {
+  if (
+    patientIds.length
+  ) {
 
-    console.error(
-      patientsError
-    );
+    const {
+      data
+    } =
+      await supabaseClient
+        .from("patients")
+        .select(
+          "id,patient_name,patient_phone"
+        )
+        .in(
+          "id",
+          patientIds
+        );
+
+
+    patients =
+      data || [];
 
   }
 
@@ -3712,9 +2939,7 @@ async function searchPreviousBills() {
     {};
 
 
-  (
-    patients || []
-  ).forEach(
+  patients.forEach(
     function(patient) {
 
       patientMap[
@@ -3728,186 +2953,384 @@ async function searchPreviousBills() {
   );
 
 
-  /*
-     If searching a patient,
-     limit displayed bills to
-     matching patient results.
+  container.innerHTML =
+    bills.map(
+      function(bill) {
 
-     If bill number matched,
-     only that bill remains.
-  */
-
-  let html = "";
-
-
-  bills.forEach(
-    function(bill) {
-
-      const patient =
-        patientMap[
-          String(
-            bill.patient_id
-          )
-        ] ||
-        null;
+        const patient =
+          patientMap[
+            String(
+              bill.patient_id
+            )
+          ] ||
+          {};
 
 
-      html += `
+        return `
 
-        <div class="compact-bill">
+          <div class="bill-card">
 
-
-          <button
-            type="button"
-            class="compact-bill-header"
-            onclick="toggleSearchBill(${Number(
-              bill.id
-            )})">
-
-
-            <span class="compact-bill-left">
-
-              <span class="compact-bill-date">
-
-                📅 ${escapeHTML(
-                  formatBillDate(
-                    bill.bill_date
-                  )
-                )}
-
-              </span>
-
-
-              <span class="compact-bill-number">
-
-                Bill #${escapeHTML(
+            <button
+              type="button"
+              class="bill-summary"
+              onclick="toggleBillDetails(
+                ${Number(
                   bill.id
                 )}
+              )">
 
-              </span>
+              <div class="bill-summary-main">
+
+                <div class="bill-number">
+
+                  Bill #
+                  ${escapeHTML(
+                    bill.id
+                  )}
+
+                  —
+                  ${escapeHTML(
+                    patient.patient_name || "-"
+                  )}
+
+                </div>
+
+                <div class="bill-meta">
+
+                  ${formatDate(
+                    bill.bill_date
+                  )}
+
+                  •
+                  ${escapeHTML(
+                    bill.payment_status || "-"
+                  )}
+
+                </div>
+
+              </div>
 
 
-              <span class="compact-bill-number">
+              <div class="bill-amount">
 
-                ${
-                  patient
-                    ? escapeHTML(
-                        patient.patient_name ||
-                        "-"
-                      )
-                    : ""
-                }
+                ${currency(
+                  bill.total_amount
+                )}
 
-              </span>
+              </div>
 
-            </span>
+            </button>
 
 
-            <span
-              id="search-bill-arrow-${Number(
+            <div
+              id="billDetails-${Number(
                 bill.id
               )}"
-              class="compact-bill-arrow">
+              class="bill-details">
 
-              ▶
+              ${
+                renderBillDetails(
+                  bill,
+                  patient
+                )
+              }
 
-            </span>
+
+              <div class="billing-actions">
+
+                <button
+                  type="button"
+                  class="billing-button primary small"
+                  onclick="printBill(
+                    ${Number(
+                      bill.id
+                    )}
+                  )">
+
+                  🖨️ Print
+
+                </button>
 
 
-          </button>
+                <button
+                  type="button"
+                  class="billing-button success small"
+                  onclick="downloadBillPDF(
+                    ${Number(
+                      bill.id
+                    )}
+                  )">
+
+                  📥 PDF
+
+                </button>
 
 
-          <div
-            id="search-full-bill-${Number(
-              bill.id
-            )}"
-            style="display:none;">
+                <button
+                  type="button"
+                  class="billing-button danger small"
+                  onclick="deleteBill(
+                    ${Number(
+                      bill.id
+                    )}
+                  )">
 
-            ${buildFullBillHTML(
-              bill,
-              bill.patient_id
-            )}
+                  🗑️ Delete
+
+                </button>
+
+              </div>
+
+            </div>
 
           </div>
 
+        `;
 
-        </div>
-
-      `;
-
-    }
-  );
-
-
-  container.innerHTML =
-    html;
+      }
+    ).join("");
 
 }
 
 
 /* =========================================================
-   TOGGLE SEARCH BILL
+   BILL DETAILS
    ========================================================= */
 
-function toggleSearchBill(
-  billId
+function renderBillDetails(
+  bill,
+  patient
 ) {
 
-  const bill =
-    document
-      .getElementById(
-        "search-full-bill-" +
-        billId
-      );
-
-
-  const arrow =
-    document
-      .getElementById(
-        "search-bill-arrow-" +
-        billId
-      );
-
-
-  if (!bill) {
-
-    return;
-
-  }
+  let statusClass =
+    "pending";
 
 
   if (
-    bill.style.display ===
-    "none"
+    bill.payment_status ===
+    "Paid"
   ) {
 
-    bill.style.display =
-      "block";
+    statusClass =
+      "paid";
 
-    if (arrow) {
+  } else if (
+    bill.payment_status ===
+    "Partially Paid"
+  ) {
 
-      arrow.classList.add(
-        "open"
-      );
-
-    }
-
-  }
-
-  else {
-
-    bill.style.display =
-      "none";
-
-    if (arrow) {
-
-      arrow.classList.remove(
-        "open"
-      );
-
-    }
+    statusClass =
+      "partial";
 
   }
+
+
+  return `
+
+    <div class="bill-row">
+
+      <strong>
+        Patient
+      </strong>
+
+      <span>
+        ${escapeHTML(
+          patient.patient_name || "-"
+        )}
+      </span>
+
+    </div>
+
+
+    <div class="bill-row">
+
+      <strong>
+        Patient ID
+      </strong>
+
+      <span>
+        ${escapeHTML(
+          bill.patient_id
+        )}
+      </span>
+
+    </div>
+
+
+    <div class="bill-row">
+
+      <strong>
+        Bill Date
+      </strong>
+
+      <span>
+        ${formatDate(
+          bill.bill_date
+        )}
+      </span>
+
+    </div>
+
+
+    ${
+      bill.consultation_id
+        ? `
+          <div class="bill-row">
+
+            <strong>
+              Consultation ID
+            </strong>
+
+            <span>
+              ${escapeHTML(
+                bill.consultation_id
+              )}
+            </span>
+
+          </div>
+        `
+        : ""
+    }
+
+
+    <div class="bill-row">
+
+      <strong>
+        Consultation Fee
+      </strong>
+
+      <span>
+        ${currency(
+          bill.consultation_fee
+        )}
+      </span>
+
+    </div>
+
+
+    <div class="bill-row">
+
+      <strong>
+        Medicine Charges
+      </strong>
+
+      <span>
+        ${currency(
+          bill.medicine_charges
+        )}
+      </span>
+
+    </div>
+
+
+    <div class="bill-row">
+
+      <strong>
+        Procedure / Other
+      </strong>
+
+      <span>
+        ${currency(
+          bill.procedure_charges
+        )}
+      </span>
+
+    </div>
+
+
+    <div class="bill-row">
+
+      <strong>
+        Total
+      </strong>
+
+      <strong>
+        ${currency(
+          bill.total_amount
+        )}
+      </strong>
+
+    </div>
+
+
+    <div class="bill-row">
+
+      <strong>
+        Payment Status
+      </strong>
+
+      <span class="${statusClass}">
+        ${escapeHTML(
+          bill.payment_status || "-"
+        )}
+      </span>
+
+    </div>
+
+
+    <div class="bill-row">
+
+      <strong>
+        Payment Method
+      </strong>
+
+      <span>
+        ${escapeHTML(
+          bill.payment_method || "-"
+        )}
+      </span>
+
+    </div>
+
+
+    ${
+      bill.notes
+        ? `
+          <div class="bill-row">
+
+            <strong>
+              Notes
+            </strong>
+
+            <span>
+              ${escapeHTML(
+                bill.notes
+              )}
+            </span>
+
+          </div>
+        `
+        : ""
+    }
+
+  `;
+
+}
+
+
+/* =========================================================
+   TOGGLE BILL
+   ========================================================= */
+
+function toggleBillDetails(
+  billId
+) {
+
+  const element =
+    document.getElementById(
+      "billDetails-" +
+      billId
+    );
+
+
+  if (!element) {
+    return;
+  }
+
+
+  element.classList.toggle(
+    "open"
+  );
 
 }
 
@@ -3918,36 +3341,13 @@ function toggleSearchBill(
 
 async function loadTodayBills() {
 
+  showView(
+    "todayBillsView"
+  );
+
+
   const today =
-    getTodayDateString();
-
-
-  document
-    .getElementById(
-      "todayBillingDate"
-    )
-    .textContent =
-      formatBillDate(
-        today
-      );
-
-
-  const list =
-    document
-      .getElementById(
-        "todayBillsList"
-      );
-
-
-  list.innerHTML = `
-
-    <div class="billing-message">
-
-      📊 Loading today's bills...
-
-    </div>
-
-  `;
+    getTodayString();
 
 
   const {
@@ -3971,19 +3371,15 @@ async function loadTodayBills() {
 
   if (error) {
 
-    console.error(
-      "Today's billing error:",
-      error
-    );
+    document
+      .getElementById(
+        "todayBillsList"
+      )
+      .innerHTML = `
 
-
-    list.innerHTML = `
-
-      <div class="billing-error">
-
-        ❌ Unable to load today's bills.
-
-      </div>
+        <div class="billing-error">
+          Unable to load today's bills.
+        </div>
 
     `;
 
@@ -3996,15 +3392,13 @@ async function loadTodayBills() {
     data || [];
 
 
-  let totalBilling =
+  let total =
     0;
 
-
-  let paidAmount =
+  let paid =
     0;
 
-
-  let pendingAmount =
+  let pending =
     0;
 
 
@@ -4017,7 +3411,7 @@ async function loadTodayBills() {
         );
 
 
-      totalBilling +=
+      total +=
         amount;
 
 
@@ -4026,34 +3420,12 @@ async function loadTodayBills() {
         "Paid"
       ) {
 
-        paidAmount +=
+        paid +=
           amount;
 
-      }
+      } else {
 
-      else if (
-        bill.payment_status ===
-        "Pending"
-      ) {
-
-        pendingAmount +=
-          amount;
-
-      }
-
-      else if (
-        bill.payment_status ===
-        "Partially Paid"
-      ) {
-
-        /*
-           For partially paid bills,
-           the amount is kept under
-           pending until a separate
-           paid-amount field exists.
-        */
-
-        pendingAmount +=
+        pending +=
           amount;
 
       }
@@ -4075,8 +3447,9 @@ async function loadTodayBills() {
       "todayTotalBilling"
     )
     .textContent =
-      "₹" +
-      totalBilling.toFixed(2);
+      currency(
+        total
+      );
 
 
   document
@@ -4084,8 +3457,9 @@ async function loadTodayBills() {
       "todayPaidAmount"
     )
     .textContent =
-      "₹" +
-      paidAmount.toFixed(2);
+      currency(
+        paid
+      );
 
 
   document
@@ -4093,20 +3467,25 @@ async function loadTodayBills() {
       "todayPendingAmount"
     )
     .textContent =
-      "₹" +
-      pendingAmount.toFixed(2);
+      currency(
+        pending
+      );
+
+
+  const container =
+    document.getElementById(
+      "todayBillsList"
+    );
 
 
   if (
     bills.length === 0
   ) {
 
-    list.innerHTML = `
+    container.innerHTML = `
 
       <div class="billing-message">
-
-        🧾 No bills generated today.
-
+        No bills created today.
       </div>
 
     `;
@@ -4116,209 +3495,27 @@ async function loadTodayBills() {
   }
 
 
-  /*
-     Get patient names.
-  */
-
-  const patientIds =
-    [
-      ...new Set(
-        bills.map(
-          function(bill) {
-            return bill.patient_id;
-          }
-        )
-      )
-    ];
-
-
-  const {
-    data: patients
-  } =
-    await supabaseClient
-      .from("patients")
-      .select(
-        "id, patient_name, patient_phone"
-      )
-      .in(
-        "id",
-        patientIds
-      );
-
-
-  const patientMap =
-    {};
-
-
-  (
-    patients || []
-  ).forEach(
-    function(patient) {
-
-      patientMap[
-        String(
-          patient.id
-        )
-      ] =
-        patient;
-
-    }
+  await renderBillsList(
+    bills,
+    container
   );
-
-
-  let html = "";
-
-
-  bills.forEach(
-    function(bill) {
-
-      const patient =
-        patientMap[
-          String(
-            bill.patient_id
-          )
-        ] ||
-        {};
-
-
-      let statusClass =
-        "payment-pending";
-
-
-      if (
-        bill.payment_status ===
-        "Paid"
-      ) {
-
-        statusClass =
-          "payment-paid";
-
-      }
-
-      else if (
-        bill.payment_status ===
-        "Partially Paid"
-      ) {
-
-        statusClass =
-          "payment-partial";
-
-      }
-
-
-      html += `
-
-        <div class="today-bill-row">
-
-
-          <div>
-
-            <div class="today-bill-name">
-
-              Bill #${escapeHTML(
-                bill.id
-              )}
-              —
-              ${escapeHTML(
-                patient.patient_name ||
-                "-"
-              )}
-
-            </div>
-
-
-            <div class="today-bill-meta">
-
-              <span class="${statusClass}">
-
-                ${escapeHTML(
-                  bill.payment_status ||
-                  "-"
-                )}
-
-              </span>
-
-              · Patient ID:
-              ${escapeHTML(
-                bill.patient_id
-              )}
-
-            </div>
-
-          </div>
-
-
-          <div
-            style="text-align:right;">
-
-            <div class="today-bill-amount">
-
-              ₹${Number(
-                bill.total_amount || 0
-              ).toFixed(2)}
-
-            </div>
-
-
-            <div
-              style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;">
-
-              <button
-                type="button"
-                class="billing-button small"
-                onclick="printBillReceipt(
-                  ${Number(bill.id)},
-                  ${Number(bill.patient_id)}
-                )">
-
-                🖨️
-
-              </button>
-
-
-              <button
-                type="button"
-                class="billing-button small"
-                onclick="downloadBillPDF(
-                  ${Number(bill.id)},
-                  ${Number(bill.patient_id)}
-                )">
-
-                📄
-
-              </button>
-
-            </div>
-
-          </div>
-
-
-        </div>
-
-      `;
-
-    }
-  );
-
-
-  list.innerHTML =
-    html;
 
 }
 
 
 /* =========================================================
-   GET BILL + PATIENT
+   GET BILL AND PATIENT
    ========================================================= */
 
 async function getBillAndPatient(
-  billId,
-  patientId
+  billId
 ) {
 
   const {
-    data: bill,
-    error: billError
+    data:
+      bill,
+    error:
+      billError
   } =
     await supabaseClient
       .from("billing")
@@ -4335,83 +3532,57 @@ async function getBillAndPatient(
     !bill
   ) {
 
-    console.error(
-      billError
-    );
-
-
     alert(
-      "Unable to load bill details."
+      "Unable to load bill."
     );
-
 
     return null;
-
   }
 
 
   const {
-    data: patient,
-    error: patientError
+    data:
+      patient
   } =
     await supabaseClient
       .from("patients")
       .select("*")
       .eq(
         "id",
-        patientId
+        bill.patient_id
       )
       .single();
 
 
-  if (
-    patientError ||
-    !patient
-  ) {
-
-    console.error(
-      patientError
-    );
-
-
-    alert(
-      "Unable to load patient details."
-    );
-
-
-    return null;
-
-  }
-
-
   return {
-    bill,
-    patient
+
+    bill:
+      bill,
+
+    patient:
+      patient || {}
+
   };
 
 }
 
 
 /* =========================================================
-   PRINT BILL
+   PRINT
    ========================================================= */
 
-async function printBillReceipt(
-  billId,
-  patientId
+async function printBill(
+  billId
 ) {
 
   const result =
     await getBillAndPatient(
-      billId,
-      patientId
+      billId
     );
 
 
   if (!result) {
-
     return;
-
   }
 
 
@@ -4434,530 +3605,224 @@ async function printBillReceipt(
   if (!printWindow) {
 
     alert(
-      "Please allow pop-ups to print the bill."
+      "Please allow pop-ups to print."
     );
 
     return;
-
   }
-
-
-  const consultationFee =
-    Number(
-      bill.consultation_fee || 0
-    );
-
-
-  const medicineCharges =
-    Number(
-      bill.medicine_charges || 0
-    );
-
-
-  const procedureCharges =
-    Number(
-      bill.procedure_charges || 0
-    );
-
-
-  const totalAmount =
-    Number(
-      bill.total_amount || 0
-    );
 
 
   printWindow.document.write(`
 
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
-<html>
+    <html>
 
-<head>
+    <head>
 
-<meta charset="UTF-8">
+      <title>
+        Bill #${escapeHTML(
+          bill.id
+        )}
+      </title>
 
-<title>
-Bill #${escapeHTML(
-  bill.id
-)}
-</title>
+      <style>
 
-<style>
+        body {
+          font-family: Arial, sans-serif;
+          padding: 35px;
+          color: #111;
+        }
 
-body {
+        .header {
+          text-align: center;
+          margin-bottom: 28px;
+        }
 
-  font-family:
-    Arial,
-    sans-serif;
+        h1 {
+          margin-bottom: 5px;
+        }
 
-  margin:
-    0;
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
 
-  padding:
-    25px;
+        td {
+          padding: 10px;
+          border-bottom: 1px solid #ddd;
+        }
 
-  color:
-    #111;
+        td:last-child {
+          text-align: right;
+        }
 
-  background:
-    #fff;
+        .total {
+          font-size: 19px;
+          font-weight: bold;
+        }
 
-}
+      </style>
 
+    </head>
 
-.bill {
 
-  max-width:
-    750px;
+    <body>
 
-  margin:
-    auto;
 
-  border:
-    1px solid #222;
+      <div class="header">
 
-  padding:
-    30px;
+        <strong>
+          GENERAL &amp; DIABETES CARE
+        </strong>
 
-}
+        <h1>
+          Receipt
+        </h1>
 
+      </div>
 
-.header {
 
-  text-align:
-    center;
+      <p>
+        <strong>
+          Bill #:
+        </strong>
+        ${escapeHTML(
+          bill.id
+        )}
+      </p>
 
-  border-bottom:
-    2px solid #111;
 
-  padding-bottom:
-    18px;
+      <p>
+        <strong>
+          Date:
+        </strong>
+        ${formatDate(
+          bill.bill_date
+        )}
+      </p>
 
-}
 
+      <p>
+        <strong>
+          Patient:
+        </strong>
+        ${escapeHTML(
+          patient.patient_name || "-"
+        )}
+      </p>
 
-.clinic-name {
 
-  font-size:
-    25px;
+      <p>
+        <strong>
+          Patient ID:
+        </strong>
+        ${escapeHTML(
+          bill.patient_id
+        )}
+      </p>
 
-  font-weight:
-    bold;
 
-}
+      <table>
 
+        <tr>
 
-.address {
+          <td>
+            Consultation Fee
+          </td>
 
-  margin-top:
-    8px;
+          <td>
+            ${currency(
+              bill.consultation_fee
+            )}
+          </td>
 
-  line-height:
-    1.6;
+        </tr>
 
-}
 
+        <tr>
 
-.title {
+          <td>
+            Medicine Charges
+          </td>
 
-  text-align:
-    center;
+          <td>
+            ${currency(
+              bill.medicine_charges
+            )}
+          </td>
 
-  font-size:
-    21px;
+        </tr>
 
-  font-weight:
-    bold;
 
-  margin:
-    22px 0;
+        <tr>
 
-}
+          <td>
+            Procedure / Other
+          </td>
 
+          <td>
+            ${currency(
+              bill.procedure_charges
+            )}
+          </td>
 
-.bill-info {
+        </tr>
 
-  line-height:
-    1.8;
 
-  margin-bottom:
-    20px;
+        <tr class="total">
 
-}
+          <td>
+            Total
+          </td>
 
+          <td>
+            ${currency(
+              bill.total_amount
+            )}
+          </td>
 
-table {
+        </tr>
 
-  width:
-    100%;
+      </table>
 
-  border-collapse:
-    collapse;
 
-}
+      <p>
+        <strong>
+          Payment Status:
+        </strong>
+        ${escapeHTML(
+          bill.payment_status || "-"
+        )}
+      </p>
 
 
-th,
-td {
+      <p>
+        <strong>
+          Payment Method:
+        </strong>
+        ${escapeHTML(
+          bill.payment_method || "-"
+        )}
+      </p>
 
-  border:
-    1px solid #999;
 
-  padding:
-    11px;
+      <script>
 
-}
+        window.onload =
+          function() {
 
+            window.print();
 
-th {
+          };
 
-  text-align:
-    left;
+      <\/script>
 
-}
 
+    </body>
 
-.amount {
-
-  text-align:
-    right;
-
-}
-
-
-.total {
-
-  font-size:
-    18px;
-
-  font-weight:
-    bold;
-
-}
-
-
-.payment {
-
-  margin-top:
-    20px;
-
-  line-height:
-    1.8;
-
-}
-
-
-.notes {
-
-  margin-top:
-    20px;
-
-  padding-top:
-    12px;
-
-  border-top:
-    1px solid #aaa;
-
-}
-
-
-.footer {
-
-  text-align:
-    center;
-
-  margin-top:
-    40px;
-
-  font-size:
-    13px;
-
-  color:
-    #555;
-
-}
-
-
-@media print {
-
-  body {
-
-    padding:
-      0;
-
-  }
-
-
-  .bill {
-
-    border:
-      none;
-
-    max-width:
-      none;
-
-  }
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<div class="bill">
-
-
-<div class="header">
-
-  <div class="clinic-name">
-
-    GENERAL &amp; DIABETES CARE
-
-  </div>
-
-
-  <div class="address">
-
-    No. 78, VV Kovil Street,<br>
-
-    Thiruvalleswarar Nagar,<br>
-
-    Thirumangalam,
-    Anna Nagar West,<br>
-
-    Chennai - 40
-
-  </div>
-
-</div>
-
-
-<div class="title">
-
-  BILL
-
-</div>
-
-
-<div class="bill-info">
-
-  <strong>
-    Bill Number:
-  </strong>
-
-  ${escapeHTML(
-    bill.id
-  )}
-
-  <br>
-
-
-  <strong>
-    Bill Date:
-  </strong>
-
-  ${escapeHTML(
-    formatBillDate(
-      bill.bill_date
-    )
-  )}
-
-  <br>
-
-
-  <strong>
-    Patient Name:
-  </strong>
-
-  ${escapeHTML(
-    patient.patient_name || "-"
-  )}
-
-  <br>
-
-
-  <strong>
-    Patient ID:
-  </strong>
-
-  ${escapeHTML(
-    patient.id
-  )}
-
-  <br>
-
-
-  <strong>
-    Contact Number:
-  </strong>
-
-  ${escapeHTML(
-    patient.patient_phone || "-"
-  )}
-
-</div>
-
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-  Particular
-</th>
-
-<th>
-  Amount
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody>
-
-
-<tr>
-
-<td>
-  Consultation Fee
-</td>
-
-<td class="amount">
-
-  ₹${consultationFee.toFixed(2)}
-
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>
-  Medicine Charges
-</td>
-
-<td class="amount">
-
-  ₹${medicineCharges.toFixed(2)}
-
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>
-  Procedure Charges
-</td>
-
-<td class="amount">
-
-  ₹${procedureCharges.toFixed(2)}
-
-</td>
-
-</tr>
-
-
-<tr class="total">
-
-<td>
-  TOTAL
-</td>
-
-<td class="amount">
-
-  ₹${totalAmount.toFixed(2)}
-
-</td>
-
-</tr>
-
-
-</tbody>
-
-</table>
-
-
-<div class="payment">
-
-  <strong>
-    Payment Status:
-  </strong>
-
-  ${escapeHTML(
-    bill.payment_status || "-"
-  )}
-
-  <br>
-
-
-  <strong>
-    Payment Method:
-  </strong>
-
-  ${escapeHTML(
-    bill.payment_method || "-"
-  )}
-
-</div>
-
-
-<div class="notes">
-
-  <strong>
-    Notes:
-  </strong>
-
-  ${escapeHTML(
-    bill.notes || "-"
-  )}
-
-</div>
-
-
-<div class="footer">
-
-  Thank you for visiting
-  <strong>
-    GENERAL &amp; DIABETES CARE
-  </strong>
-
-  <br><br>
-
-  Computer-generated bill — no signature required.
-
-</div>
-
-
-</div>
-
-
-<script>
-
-window.onload =
-  function() {
-
-    window.print();
-
-  };
-
-<\/script>
-
-
-</body>
-
-</html>
+    </html>
 
   `);
 
@@ -4968,25 +3833,21 @@ window.onload =
 
 
 /* =========================================================
-   DOWNLOAD PDF
+   PDF
    ========================================================= */
 
 async function downloadBillPDF(
-  billId,
-  patientId
+  billId
 ) {
 
   const result =
     await getBillAndPatient(
-      billId,
-      patientId
+      billId
     );
 
 
   if (!result) {
-
     return;
-
   }
 
 
@@ -4998,20 +3859,6 @@ async function downloadBillPDF(
     result.patient;
 
 
-  if (
-    !window.jspdf ||
-    !window.jspdf.jsPDF
-  ) {
-
-    alert(
-      "PDF library could not be loaded. Please check your internet connection."
-    );
-
-    return;
-
-  }
-
-
   const {
     jsPDF
   } =
@@ -5019,27 +3866,20 @@ async function downloadBillPDF(
 
 
   const doc =
-    new jsPDF({
-      orientation:
-        "portrait",
-      unit:
-        "mm",
-      format:
-        "a4"
-    });
+    new jsPDF();
 
 
-  const pageWidth =
-    doc.internal.pageSize.getWidth();
+  doc.setFontSize(
+    14
+  );
 
-
-  const margin =
-    15;
-
-
-  doc.setFont(
-    "helvetica",
-    "bold"
+  doc.text(
+    "GENERAL & DIABETES CARE",
+    105,
+    18,
+    {
+      align: "center"
+    }
   );
 
 
@@ -5047,383 +3887,147 @@ async function downloadBillPDF(
     18
   );
 
-
   doc.text(
-    "GENERAL & DIABETES CARE",
-    pageWidth / 2,
-    20,
+    "RECEIPT",
+    105,
+    30,
     {
-      align:
-        "center"
+      align: "center"
     }
-  );
-
-
-  doc.setFont(
-    "helvetica",
-    "normal"
   );
 
 
   doc.setFontSize(
-    10
+    11
   );
 
 
-  doc.text(
-    "No. 78, VV Kovil Street,",
-    pageWidth / 2,
-    27,
-    {
-      align:
-        "center"
-    }
-  );
+  let y =
+    47;
 
 
-  doc.text(
-    "Thiruvalleswarar Nagar,",
-    pageWidth / 2,
-    32,
-    {
-      align:
-        "center"
-    }
-  );
+  function line(
+    label,
+    value
+  ) {
 
-
-  doc.text(
-    "Thirumangalam, Anna Nagar West,",
-    pageWidth / 2,
-    37,
-    {
-      align:
-        "center"
-    }
-  );
-
-
-  doc.text(
-    "Chennai - 40",
-    pageWidth / 2,
-    42,
-    {
-      align:
-        "center"
-    }
-  );
-
-
-  doc.line(
-    margin,
-    48,
-    pageWidth - margin,
-    48
-  );
-
-
-  doc.setFont(
-    "helvetica",
-    "bold"
-  );
-
-
-  doc.setFontSize(
-    15
-  );
-
-
-  doc.text(
-    "BILL",
-    pageWidth / 2,
-    59,
-    {
-      align:
-        "center"
-    }
-  );
-
-
-  doc.setFont(
-    "helvetica",
-    "normal"
-  );
-
-
-  doc.setFontSize(
-    10
-  );
-
-
-  let infoY =
-    70;
-
-
-  const infoRows = [
-
-    [
-      "Bill Number:",
-      bill.id
-    ],
-
-    [
-      "Bill Date:",
-      formatBillDate(
-        bill.bill_date
-      )
-    ],
-
-    [
-      "Patient Name:",
-      patient.patient_name || "-"
-    ],
-
-    [
-      "Patient ID:",
-      patient.id
-    ],
-
-    [
-      "Contact:",
-      patient.patient_phone || "-"
-    ]
-
-  ];
-
-
-  infoRows.forEach(
-    function(row) {
-
-      doc.setFont(
-        "helvetica",
-        "bold"
-      );
-
-
-      doc.text(
-        row[0],
-        margin,
-        infoY
-      );
-
-
-      doc.setFont(
-        "helvetica",
-        "normal"
-      );
-
-
-      doc.text(
-        String(
-          row[1]
-        ),
-        48,
-        infoY
-      );
-
-
-      infoY += 6;
-
-    }
-  );
-
-
-  const consultationFee =
-    Number(
-      bill.consultation_fee || 0
+    doc.text(
+      label,
+      20,
+      y
     );
 
 
-  const medicineCharges =
-    Number(
-      bill.medicine_charges || 0
-    );
-
-
-  const procedureCharges =
-    Number(
-      bill.procedure_charges || 0
-    );
-
-
-  const totalAmount =
-    Number(
-      bill.total_amount || 0
-    );
-
-
-  const tableData = [
-
-    [
-      "Consultation Fee",
-      "Rs. " +
-      consultationFee.toFixed(2)
-    ],
-
-    [
-      "Medicine Charges",
-      "Rs. " +
-      medicineCharges.toFixed(2)
-    ],
-
-    [
-      "Procedure Charges",
-      "Rs. " +
-      procedureCharges.toFixed(2)
-    ],
-
-    [
-      "TOTAL",
-      "Rs. " +
-      totalAmount.toFixed(2)
-    ]
-
-  ];
-
-
-  doc.autoTable({
-
-    startY:
-      infoY + 10,
-
-    head: [
-      [
-        "Particular",
-        "Amount"
-      ]
-    ],
-
-    body:
-      tableData,
-
-    margin: {
-
-      left:
-        margin,
-
-      right:
-        margin
-
-    },
-
-    styles: {
-
-      font:
-        "helvetica",
-
-      fontSize:
-        10,
-
-      cellPadding:
-        4
-
-    },
-
-    headStyles: {
-
-      fontStyle:
-        "bold"
-
-    },
-
-    columnStyles: {
-
-      0: {
-        halign:
-          "left"
-      },
-
-      1: {
-        halign:
-          "right"
+    doc.text(
+      String(
+        value
+      ),
+      190,
+      y,
+      {
+        align: "right"
       }
-
-    },
-
-    didParseCell:
-      function(data) {
-
-        if (
-          data.row.index ===
-          3 &&
-          data.section ===
-          "body"
-        ) {
-
-          data.cell.styles.fontStyle =
-            "bold";
-
-          data.cell.styles.fontSize =
-            11;
-
-        }
-
-      }
-
-  });
+    );
 
 
-  let finalY =
-    doc.lastAutoTable.finalY +
-    12;
+    y +=
+      10;
+
+  }
 
 
-  doc.setFont(
-    "helvetica",
-    "bold"
+  line(
+    "Bill #",
+    bill.id
   );
 
 
-  doc.text(
-    "Payment Status:",
-    margin,
-    finalY
+  line(
+    "Date",
+    formatDate(
+      bill.bill_date
+    )
   );
 
 
-  doc.setFont(
-    "helvetica",
-    "normal"
+  line(
+    "Patient",
+    patient.patient_name ||
+    "-"
   );
 
 
-  doc.text(
-    String(
-      bill.payment_status || "-"
-    ),
-    52,
-    finalY
+  line(
+    "Patient ID",
+    bill.patient_id
   );
 
 
-  finalY += 6;
+  y +=
+    5;
 
 
-  doc.setFont(
-    "helvetica",
-    "bold"
+  line(
+    "Consultation Fee",
+    currency(
+      bill.consultation_fee
+    )
   );
 
 
-  doc.text(
-    "Payment Method:",
-    margin,
-    finalY
+  line(
+    "Medicine Charges",
+    currency(
+      bill.medicine_charges
+    )
   );
 
 
-  doc.setFont(
-    "helvetica",
-    "normal"
+  line(
+    "Procedure / Other",
+    currency(
+      bill.procedure_charges
+    )
   );
 
 
-  doc.text(
-    String(
-      bill.payment_method || "-"
-    ),
-    52,
-    finalY
+  y +=
+    4;
+
+
+  doc.setFontSize(
+    14
+  );
+
+
+  line(
+    "TOTAL",
+    currency(
+      bill.total_amount
+    )
+  );
+
+
+  doc.setFontSize(
+    11
+  );
+
+
+  y +=
+    4;
+
+
+  line(
+    "Payment Status",
+    bill.payment_status ||
+    "-"
+  );
+
+
+  line(
+    "Payment Method",
+    bill.payment_method ||
+    "-"
   );
 
 
@@ -5431,90 +4035,40 @@ async function downloadBillPDF(
     bill.notes
   ) {
 
-    finalY += 10;
-
-
-    doc.setFont(
-      "helvetica",
-      "bold"
-    );
+    y +=
+      4;
 
 
     doc.text(
       "Notes:",
-      margin,
-      finalY
+      20,
+      y
     );
 
 
-    doc.setFont(
-      "helvetica",
-      "normal"
-    );
+    y +=
+      7;
 
 
-    const notes =
+    const lines =
       doc.splitTextToSize(
-        String(
-          bill.notes
-        ),
-        pageWidth -
-        margin * 2
+        bill.notes,
+        170
       );
 
 
     doc.text(
-      notes,
-      margin,
-      finalY + 6
+      lines,
+      20,
+      y
     );
 
   }
 
 
-  const footerY =
-    275;
-
-
-  doc.setFontSize(
-    9
-  );
-
-
-  doc.text(
-    "Thank you for visiting GENERAL & DIABETES CARE",
-    pageWidth / 2,
-    footerY,
-    {
-      align:
-        "center"
-    }
-  );
-
-
-  doc.text(
-    "Computer-generated bill — no signature required.",
-    pageWidth / 2,
-    footerY + 5,
-    {
-      align:
-        "center"
-    }
-  );
-
-
-  const safeBillNumber =
-    String(
-      bill.id
-    ).replace(
-      /[^a-zA-Z0-9_-]/g,
-      "_"
-    );
-
-
   doc.save(
     "Bill-" +
-    safeBillNumber +
+    bill.id +
     ".pdf"
   );
 
@@ -5522,23 +4076,18 @@ async function downloadBillPDF(
 
 
 /* =========================================================
-   DELETE BILL
+   DELETE
    ========================================================= */
 
 async function deleteBill(
-  billId,
-  patientId
+  billId
 ) {
 
-  const confirmed =
-    confirm(
-      "Are you sure you want to permanently delete Bill #" +
-      billId +
-      "?"
-    );
-
-
-  if (!confirmed) {
+  if (
+    !confirm(
+      "Delete this bill permanently?"
+    )
+  ) {
 
     return;
 
@@ -5559,17 +4108,10 @@ async function deleteBill(
 
   if (error) {
 
-    console.error(
-      "Billing deletion error:",
-      error
-    );
-
-
     alert(
-      "Unable to delete bill:\n" +
+      "Unable to delete bill:\n\n" +
       error.message
     );
-
 
     return;
 
@@ -5582,37 +4124,21 @@ async function deleteBill(
 
 
   if (
-    selectedPatient &&
-    Number(
-      selectedPatient.id
-    ) ===
-    Number(
-      patientId
-    )
-  ) {
-
-    await loadPatientPreviousBills(
-      patientId
-    );
-
-  }
-
-
-  /*
-     Refresh today's bills if
-     today's section is visible.
-  */
-
-  if (
     document
       .getElementById(
-        "todayBillsSection"
+        "todayBillsView"
       )
-      .style.display !==
-      "none"
+      .classList
+      .contains(
+        "active"
+      )
   ) {
 
-    await loadTodayBills();
+    loadTodayBills();
+
+  } else {
+
+    searchPreviousBills();
 
   }
 
@@ -5620,186 +4146,67 @@ async function deleteBill(
 
 
 /* =========================================================
-   LOAD PATIENT FROM URL
+   RESET BILL FORM
    ========================================================= */
 
-async function loadPatientFromURL() {
+function resetBillForm() {
 
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
-
-
-  const patientId =
-    params.get(
-      "patient_id"
-    );
+  document
+    .getElementById(
+      "consultationFee"
+    )
+    .value =
+      "0";
 
 
-  const consultationId =
-    params.get(
-      "consultation_id"
-    );
+  document
+    .getElementById(
+      "medicineCharges"
+    )
+    .value =
+      "0";
 
 
-  if (!patientId) {
-
-    return;
-
-  }
-
-
-  window.selectedConsultationId =
-    consultationId ||
-    null;
+  document
+    .getElementById(
+      "procedureCharges"
+    )
+    .value =
+      "0";
 
 
-  showBillingSection(
-    "create"
-  );
+  document
+    .getElementById(
+      "paymentStatus"
+    )
+    .value =
+      "Paid";
 
 
-  const {
-    data: patient,
-    error
-  } =
-    await supabaseClient
-      .from("patients")
-      .select("*")
-      .eq(
-        "id",
-        patientId
-      )
-      .single();
+  document
+    .getElementById(
+      "paymentMethod"
+    )
+    .value =
+      "";
 
 
-  if (
-    error ||
-    !patient
-  ) {
-
-    console.error(
-      "Unable to load patient:",
-      error
-    );
+  document
+    .getElementById(
+      "billingNotes"
+    )
+    .value =
+      "";
 
 
-    alert(
-      "Unable to find this patient."
-    );
-
-
-    return;
-
-  }
-
-
-  /*
-     Build a clean patient result
-     without automatically showing
-     billing history.
-  */
-
-  const resultsContainer =
-    document.getElementById(
-      "billingPatientResults"
-    );
-
-
-  resultsContainer.innerHTML = `
-
-    <div
-      class="billing-patient-card"
-      data-patient-id="${Number(
-        patient.id
-      )}"
-      data-patient-name="${escapeHTML(
-        patient.patient_name || ""
-      )}"
-      data-patient-phone="${escapeHTML(
-        patient.patient_phone || ""
-      )}">
-
-      <div class="billing-patient-name">
-
-        👤 ${escapeHTML(
-          patient.patient_name || "-"
-        )}
-
-      </div>
-
-
-      <div class="billing-patient-details">
-
-        <div class="billing-detail-box">
-
-          <span class="billing-detail-label">
-            Patient ID
-          </span>
-
-          <span class="billing-detail-value">
-            ${escapeHTML(
-              patient.id
-            )}
-          </span>
-
-        </div>
-
-
-        <div class="billing-detail-box">
-
-          <span class="billing-detail-label">
-            Phone
-          </span>
-
-          <span class="billing-detail-value">
-            ${escapeHTML(
-              patient.patient_phone || "-"
-            )}
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="billing-button"
-        onclick="selectPatientForBilling(${Number(
-          patient.id
-        )})">
-
-        💰 Create Bill
-
-      </button>
-
-    </div>
-
-  `;
-
-
-  /*
-     Automatically select patient
-     when coming from consultation.
-  */
-
-  await selectPatientForBilling(
-    patient.id
-  );
+  calculateTotal();
 
 }
 
 
 /* =========================================================
-   EVENT LISTENERS
+   EVENTS
    ========================================================= */
-
-
-/*
-   Dashboard navigation
-*/
 
 document
   .getElementById(
@@ -5809,15 +4216,17 @@ document
     "click",
     function() {
 
-      showBillingSection(
-        "create"
-      );
+      selectedConsultationId =
+        null;
 
-      document
-        .getElementById(
-          "billingPatientSearch"
-        )
-        .focus();
+      selectedPatient =
+        null;
+
+      resetBillForm();
+
+      clearSelectedPatient();
+
+      openCreateBill();
 
     }
   );
@@ -5831,15 +4240,9 @@ document
     "click",
     function() {
 
-      showBillingSection(
-        "previous"
+      showView(
+        "previousBillsView"
       );
-
-      document
-        .getElementById(
-          "previousBillsSearch"
-        )
-        .focus();
 
     }
   );
@@ -5851,35 +4254,23 @@ document
   )
   .addEventListener(
     "click",
-    async function() {
-
-      showBillingSection(
-        "today"
-      );
-
-      await loadTodayBills();
-
-    }
+    loadTodayBills
   );
 
 
-/*
-   Create bill search
-*/
-
 document
   .getElementById(
-    "searchBillingPatientButton"
+    "patientSearchButton"
   )
   .addEventListener(
     "click",
-    searchBillingPatients
+    searchPatients
   );
 
 
 document
   .getElementById(
-    "billingPatientSearch"
+    "patientSearch"
   )
   .addEventListener(
     "keydown",
@@ -5892,7 +4283,7 @@ document
 
         event.preventDefault();
 
-        searchBillingPatients();
+        searchPatients();
 
       }
 
@@ -5900,13 +4291,9 @@ document
   );
 
 
-/*
-   Previous bill search
-*/
-
 document
   .getElementById(
-    "searchPreviousBillsButton"
+    "billSearchButton"
   )
   .addEventListener(
     "click",
@@ -5916,7 +4303,7 @@ document
 
 document
   .getElementById(
-    "previousBillsSearch"
+    "billSearch"
   )
   .addEventListener(
     "keydown",
@@ -5937,43 +4324,12 @@ document
   );
 
 
-/*
-   Previous bills collapsible
-*/
-
-document
-  .getElementById(
-    "previousBillsToggle"
-  )
-  .addEventListener(
-    "click",
-    togglePreviousBills
-  );
-
-
-/*
-   Change patient
-*/
-
-document
-  .getElementById(
-    "changePatientButton"
-  )
-  .addEventListener(
-    "click",
-    changePatient
-  );
-
-
-/*
-   Bill calculation
-*/
-
 [
   "consultationFee",
   "medicineCharges",
   "procedureCharges"
-].forEach(
+]
+.forEach(
   function(id) {
 
     document
@@ -5989,10 +4345,6 @@ document
 );
 
 
-/*
-   Save
-*/
-
 document
   .getElementById(
     "saveBillButton"
@@ -6003,93 +4355,23 @@ document
   );
 
 
-/*
-   Cancel
-*/
-
 document
   .getElementById(
-    "cancelBillingButton"
+    "billingBackButton"
   )
   .addEventListener(
     "click",
-    cancelBilling
-  );
-
-
-/*
-   Back buttons
-*/
-
-document
-  .getElementById(
-    "backFromCreateButton"
-  )
-  .addEventListener(
-    "click",
-    function() {
-
-      showBillingSection(
-        "dashboard"
-      );
-
-    }
+    goBackFromBilling
   );
 
 
 document
   .getElementById(
-    "backFromPreviousButton"
+    "logoutButton"
   )
   .addEventListener(
     "click",
-    function() {
-
-      showBillingSection(
-        "dashboard"
-      );
-
-    }
-  );
-
-
-document
-  .getElementById(
-    "backFromTodayButton"
-  )
-  .addEventListener(
-    "click",
-    function() {
-
-      showBillingSection(
-        "dashboard"
-      );
-
-    }
-  );
-
-
-/*
-   Logout
-*/
-
-document
-  .getElementById(
-    "billingLogoutButton"
-  )
-  .addEventListener(
-    "click",
-    async function() {
-
-      await supabaseClient
-        .auth
-        .signOut();
-
-
-      window.location.href =
-        "doctor-login.html";
-
-    }
+    logoutDoctor
   );
 
 
@@ -6097,25 +4379,46 @@ document
    INITIALIZE
    ========================================================= */
 
-setToday();
+(async function initializeBilling() {
 
-calculateTotal();
+  const loggedIn =
+    await checkDoctorLogin();
 
 
-checkDoctorLogin()
-  .then(
-    function(loggedIn) {
+  if (!loggedIn) {
+    return;
+  }
 
-      if (
-        loggedIn
-      ) {
 
-        loadPatientFromURL();
+  readReturnURL();
 
-      }
+  updateBackButton();
 
-    }
-  );
+
+  document
+    .getElementById(
+      "billDate"
+    )
+    .value =
+      getTodayString();
+
+
+  calculateTotal();
+
+
+  const loadedFromURL =
+    await loadPatientFromURL();
+
+
+  if (
+    !loadedFromURL
+  ) {
+
+    showDashboard();
+
+  }
+
+})();
 
 </script>
 
