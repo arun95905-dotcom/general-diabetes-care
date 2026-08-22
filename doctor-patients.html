@@ -1,507 +1,755 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Patients | General & Diabetes Care</title>
-<link rel="stylesheet" href="styles.css">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>
+Patients | General & Diabetes Care
+</title>
+
+<link
+  rel="stylesheet"
+  href="styles.css">
+
 
 <style>
-*{
-  box-sizing:border-box;
+
+/* =========================================================
+   GENERAL
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+  background: #f5f7fb;
+  color: #172033;
+}
+
+.doctor-dashboard {
+  min-height: 100vh;
+  padding: 18px 10px 45px;
+}
+
+.patient-page {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.portal-header {
+  margin-bottom: 18px;
+}
+
+.portal-header h1 {
+  margin: 3px 0 5px;
+  font-size: 28px;
+}
+
+.section-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.portal-subtitle {
+  margin: 0;
+  color: #697386;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   VIEW / PAGE
+   ========================================================= */
+
+.portal-view {
+  display: none;
+}
+
+.portal-view.active {
+  display: block;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.portal-card {
+  background: #ffffff;
+  border: 1px solid #e4e9f0;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow:
+    0 5px 20px rgba(20, 31, 56, 0.06);
+}
+
+.portal-card h2,
+.portal-card h3 {
+  margin-top: 0;
+}
+
+
+/* =========================================================
+   HOME ACTIONS
+   ========================================================= */
+
+.home-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid #dfe6ef;
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fafc
+    );
+  padding: 20px;
+  cursor: pointer;
+  min-height: 125px;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.home-button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 22px rgba(20, 31, 56, 0.08);
+}
+
+.home-icon {
+  display: block;
+  font-size: 31px;
+  margin-bottom: 8px;
 }
 
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+.home-title {
+  display: block;
+  font-size: 17px;
+  font-weight: 800;
 }
 
-.doctor-dashboard{
-  min-height:100vh;
-  padding:18px 10px 50px;
+.home-description {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  color: #6b7280;
 }
 
-.dashboard-card{
-  width:100%;
-  max-width:1050px;
-  margin:auto;
+.today-button {
+  margin-top: 12px;
+  min-height: auto;
 }
 
-.section-label{
-  font-size:12px;
-  font-weight:800;
-  letter-spacing:1.4px;
-  margin:4px 0;
+.today-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-h1{
-  margin:0;
-  font-size:27px;
+.patient-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 28px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
 }
+
 
-.welcome{
-  margin:5px 0 18px;
-  opacity:.65;
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
 }
 
-.panel{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:18px;
-  padding:16px;
-  margin:14px 0;
-  box-shadow:0 5px 18px rgba(15,23,42,.06);
+.portal-button {
+  border: none;
+  border-radius: 11px;
+  padding: 11px 15px;
+  min-height: 42px;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.main-actions{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
+.primary-button {
+  background: #2563eb;
+  color: #ffffff;
 }
 
-.main-action{
-  border:1px solid #e2e8f0;
-  background:#f8fafc;
-  border-radius:16px;
-  padding:18px;
-  text-align:left;
-  cursor:pointer;
-  min-height:105px;
+.success-button {
+  background: #159447;
+  color: #ffffff;
 }
 
-.main-action:hover{
-  transform:translateY(-1px);
-  box-shadow:0 6px 18px rgba(15,23,42,.08);
+.warning-button {
+  background: #e89a13;
+  color: #ffffff;
 }
 
-.main-action .icon{
-  font-size:28px;
-  margin-bottom:8px;
+.purple-button {
+  background: #7447d8;
+  color: #ffffff;
 }
 
-.main-action strong{
-  display:block;
-  font-size:16px;
+.danger-button {
+  background: #dc3545;
+  color: #ffffff;
 }
 
-.main-action span{
-  display:block;
-  margin-top:5px;
-  font-size:13px;
-  opacity:.62;
+.secondary-button {
+  background: #64748b;
+  color: #ffffff;
 }
 
-.today-button{
-  width:100%;
-  border:1px solid #dbeafe;
-  background:linear-gradient(135deg,#eff6ff,#f8fafc);
-  border-radius:16px;
-  padding:17px;
-  text-align:left;
-  cursor:pointer;
+.light-button {
+  background: #f1f5f9;
+  color: #172033;
+  border: 1px solid #dce3ec;
 }
 
-.today-button-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
+.small-button {
+  min-height: 37px;
+  padding: 8px 11px;
+  font-size: 13px;
 }
+
 
-.today-button-title{
-  font-weight:800;
-  font-size:17px;
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
-.count{
-  background:#2563eb;
-  color:#fff;
-  border-radius:999px;
-  padding:5px 11px;
-  font-weight:800;
-  font-size:13px;
+.view-header h2 {
+  margin: 0;
 }
+
 
-.today-note{
-  font-size:13px;
-  color:#64748b;
-  margin-top:5px;
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.search-row {
+  display: flex;
+  gap: 9px;
 }
 
-.section-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
+.search-row input {
+  flex: 1;
+  min-width: 0;
 }
+
 
-.section-head h2{
-  margin:0;
-  font-size:19px;
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.form-section {
+  background: #f8fafc;
+  border: 1px solid #e4e9ef;
+  border-radius: 14px;
+  padding: 15px;
+  margin: 13px 0;
 }
 
-.search-box{
-  display:flex;
-  gap:9px;
-  margin-top:12px;
+.form-section h3 {
+  margin: 0 0 14px;
+  font-size: 17px;
 }
 
-.search-box input{
-  flex:1;
+.form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 13px;
 }
 
-input,
-select,
-textarea{
-  width:100%;
-  border:1px solid #cbd5e1;
-  border-radius:11px;
-  padding:11px 12px;
-  font:inherit;
-  background:#fff;
-  outline:none;
+.form-grid.one-column {
+  grid-template-columns: 1fr;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-  border-color:#2563eb;
-  box-shadow:0 0 0 3px rgba(37,99,235,.08);
+.form-group {
+  display: flex;
+  flex-direction: column;
 }
 
-textarea{
-  min-height:95px;
-  resize:vertical;
+.form-group.full-width {
+  grid-column: 1 / -1;
 }
 
-.form-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
+.form-group label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 750;
 }
 
-.one{
-  grid-template-columns:1fr;
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 11px 12px;
+  background: #ffffff;
+  font: inherit;
+  outline: none;
 }
 
-.full{
-  grid-column:1/-1;
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #2563eb;
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.08);
 }
 
-label{
-  display:block;
-  font-size:13px;
-  font-weight:750;
-  margin-bottom:6px;
+.form-group textarea {
+  min-height: 95px;
+  resize: vertical;
 }
+
 
-.form-section{
-  background:#f8fafc;
-  border:1px solid #e5e7eb;
-  border-radius:14px;
-  padding:14px;
-  margin:12px 0;
+/* =========================================================
+   PATIENT RESULT
+   ========================================================= */
+
+.patient-result-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 15px;
+  padding: 15px;
+  margin-top: 11px;
+  background: #ffffff;
 }
 
-.form-section h3{
-  margin:0 0 12px;
-  font-size:16px;
+.patient-name {
+  font-size: 18px;
+  font-weight: 800;
 }
 
-.btn{
-  border:0;
-  border-radius:11px;
-  padding:10px 14px;
-  min-height:42px;
-  font-size:14px;
-  font-weight:750;
-  cursor:pointer;
+.patient-meta {
+  margin-top: 6px;
+  color: #657084;
+  font-size: 13px;
+  line-height: 1.75;
 }
+
 
-.btn-primary{
-  background:#2563eb;
-  color:#fff;
+/* =========================================================
+   PATIENT BASIC DETAILS
+   ========================================================= */
+
+.patient-header-box {
+  background:
+    linear-gradient(
+      135deg,
+      #eef6ff,
+      #ffffff
+    );
+  border: 1px solid #d8e7fa;
+  border-radius: 16px;
+  padding: 17px;
+  margin-bottom: 13px;
 }
 
-.btn-success{
-  background:#16a34a;
-  color:#fff;
+.patient-header-name {
+  font-size: 23px;
+  font-weight: 850;
 }
 
-.btn-purple{
-  background:#7c3aed;
-  color:#fff;
+.patient-header-meta {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #5d697c;
 }
 
-.btn-warning{
-  background:#f59e0b;
-  color:#fff;
+.patient-details-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.btn-danger{
-  background:#dc2626;
-  color:#fff;
+.patient-detail {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 11px;
+  padding: 11px;
 }
 
-.btn-secondary{
-  background:#64748b;
-  color:#fff;
+.patient-detail-label {
+  display: block;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 800;
+  color: #6b7280;
 }
 
-.btn-light{
-  background:#f1f5f9;
-  color:#0f172a;
-  border:1px solid #dbe2ea;
+.patient-detail-value {
+  white-space: pre-wrap;
+  line-height: 1.5;
 }
+
+
+/* =========================================================
+   SUCCESS
+   ========================================================= */
 
-.btn-small{
-  min-height:37px;
-  padding:8px 11px;
-  font-size:13px;
+.success-card {
+  background:
+    linear-gradient(
+      135deg,
+      #f0fdf4,
+      #ffffff
+    );
+  border-color: #bbf7d0;
 }
 
-.actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:12px;
+.success-title {
+  margin: 0 0 10px;
+  color: #15803d;
 }
 
-.results{
-  margin-top:14px;
+
+/* =========================================================
+   CONSULTATION
+   ========================================================= */
+
+.consultation-patient-bar {
+  background:
+    linear-gradient(
+      135deg,
+      #eef6ff,
+      #ffffff
+    );
+  border: 1px solid #d8e7fa;
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 14px;
 }
 
-.patient-card,
-.consult-card,
-.file-card{
-  border:1px solid #e2e8f0;
-  border-radius:15px;
-  padding:14px;
-  margin:10px 0;
-  background:#fff;
+.consultation-patient-name {
+  font-size: 20px;
+  font-weight: 850;
 }
 
-.patient-name{
-  font-size:17px;
-  font-weight:800;
+.consultation-patient-meta {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #5d697c;
 }
 
-.meta{
-  font-size:13px;
-  color:#64748b;
-  line-height:1.7;
-  margin-top:4px;
+.saved-consultation-card {
+  background: #ffffff;
+  border: 1px solid #dce4ee;
+  border-radius: 16px;
+  padding: 17px;
 }
 
-.profile-header{
-  background:linear-gradient(135deg,#eff6ff,#f8fafc);
-  border:1px solid #dbeafe;
-  border-radius:16px;
-  padding:16px;
+.saved-date {
+  font-size: 15px;
+  font-weight: 800;
 }
 
-.profile-name{
-  font-size:23px;
-  font-weight:850;
+.saved-summary {
+  margin-top: 10px;
+  color: #556174;
+  line-height: 1.65;
 }
 
-.profile-id{
-  font-size:13px;
-  color:#475569;
-  margin-top:4px;
+.full-consultation {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #e2e8f0;
 }
 
-.profile-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:12px;
+.full-consultation.open {
+  display: block;
 }
 
-.profile-item{
-  border:1px solid #e2e8f0;
-  border-radius:11px;
-  padding:11px;
-  background:#fff;
+.consultation-detail {
+  background: #f8fafc;
+  border: 1px solid #e4e8ed;
+  border-radius: 12px;
+  padding: 13px;
+  margin: 9px 0;
 }
 
-.profile-label{
-  display:block;
-  font-size:11px;
-  text-transform:uppercase;
-  font-weight:800;
-  color:#64748b;
-  margin-bottom:4px;
+.consultation-detail h4 {
+  margin: 0 0 7px;
 }
 
-.profile-value{
-  white-space:pre-wrap;
+.preformatted {
+  white-space: pre-wrap;
+  line-height: 1.6;
 }
+
+
+/* =========================================================
+   UPLOAD
+   ========================================================= */
 
-.detail{
-  background:#f8fafc;
-  border:1px solid #e5e7eb;
-  border-radius:13px;
-  padding:13px;
-  margin:11px 0;
+.upload-box {
+  background: #ffffff;
+  border: 1px dashed #9aa8b9;
+  border-radius: 13px;
+  padding: 14px;
 }
 
-.detail h3,
-.detail h4{
-  margin:0 0 8px;
+.upload-note {
+  margin-top: 7px;
+  font-size: 12px;
+  color: #6b7280;
 }
 
-.pre{
-  white-space:pre-wrap;
-  line-height:1.55;
-  font-size:14px;
+.selected-files {
+  margin-top: 12px;
 }
 
-.consult-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:flex-start;
+.selected-file {
+  border: 1px solid #e1e7ef;
+  border-radius: 12px;
+  padding: 11px;
+  margin-top: 8px;
+  background: #ffffff;
 }
 
-.consult-date{
-  font-weight:800;
+.selected-file-name {
+  font-weight: 750;
+  word-break: break-word;
 }
 
-.consult-summary{
-  font-size:14px;
-  color:#475569;
-  margin-top:7px;
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
+.history-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.consult-details{
-  display:none;
-  border-top:1px solid #e2e8f0;
-  margin-top:12px;
-  padding-top:10px;
+.history-button {
+  min-height: 105px;
+  flex-direction: column;
+  gap: 7px;
+  text-align: center;
 }
 
-.file-preview{
-  display:none;
-  margin-top:9px;
+.history-icon {
+  font-size: 25px;
 }
 
-.file-preview img{
-  width:100%;
-  max-width:560px;
-  max-height:650px;
-  object-fit:contain;
-  border:1px solid #dbe4ec;
-  border-radius:10px;
+
+/* =========================================================
+   FILE CARD
+   ========================================================= */
+
+.file-card {
+  background: #ffffff;
+  border: 1px solid #e0e6ee;
+  border-radius: 13px;
+  padding: 13px;
+  margin-top: 10px;
 }
 
-.file-title{
-  font-weight:800;
-  font-size:14px;
+.file-title {
+  font-weight: 800;
 }
 
-.file-meta{
-  font-size:12px;
-  color:#64748b;
-  margin-top:4px;
+.file-meta {
+  margin-top: 5px;
+  color: #667085;
+  font-size: 12px;
+  line-height: 1.6;
 }
 
-.upload-box{
-  border:1px dashed #94a3b8;
-  background:#f8fafc;
-  border-radius:13px;
-  padding:13px;
+.file-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
 }
+
 
-.note{
-  font-size:12px;
-  color:#64748b;
-  margin-top:6px;
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.portal-message {
+  padding: 18px;
+  text-align: center;
+  color: #697386;
+  background: #f8fafc;
+  border-radius: 12px;
 }
+
 
-.empty,
-.loading{
-  text-align:center;
-  padding:18px;
-  color:#64748b;
-  background:#f8fafc;
-  border-radius:12px;
+/* =========================================================
+   IMAGE MODAL
+   ========================================================= */
+
+.image-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  background: rgba(10, 17, 30, 0.88);
 }
 
-.hidden{
-  display:none!important;
+.image-modal.active {
+  display: flex;
 }
 
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(15,23,42,.72);
-  z-index:9999;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:12px;
+.image-modal-box {
+  width: 100%;
+  max-width: 900px;
+  max-height: 94vh;
+  overflow: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 13px;
 }
 
-.modal-box{
-  background:#fff;
-  border-radius:16px;
-  width:100%;
-  max-width:900px;
-  max-height:92vh;
-  overflow:auto;
-  padding:14px;
+.image-modal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-.modal-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:10px;
+.image-modal-box img {
+  width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
 }
+
 
-.modal-box img{
-  width:100%;
-  max-height:80vh;
-  object-fit:contain;
+/* =========================================================
+   PDF MODAL
+   ========================================================= */
+
+.pdf-frame {
+  width: 100%;
+  height: 75vh;
+  border: none;
 }
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .doctor-dashboard {
+    padding: 12px 8px 40px;
+  }
 
-@media(max-width:700px){
+  .portal-card {
+    padding: 14px;
+  }
 
-  .main-actions,
+  .home-grid,
   .form-grid,
-  .profile-grid{
-    grid-template-columns:1fr;
+  .patient-details-grid,
+  .history-grid {
+    grid-template-columns: 1fr;
   }
 
-  .full{
-    grid-column:auto;
+  .form-group.full-width {
+    grid-column: auto;
   }
 
-  .search-box{
-    flex-direction:column;
+  .search-row {
+    flex-direction: column;
   }
 
-  .consult-top{
-    flex-direction:column;
+  .view-header {
+    align-items: flex-start;
   }
 
-  .btn{
-    min-height:44px;
+  .portal-button {
+    min-height: 44px;
   }
 
-  .panel{
-    padding:13px;
-  }
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <section class="doctor-dashboard">
 
-<div class="dashboard-card">
+<div class="patient-page">
+
+
+<!-- =====================================================
+     GLOBAL HEADER
+     ===================================================== -->
+
+<div class="portal-header">
 
 <p class="section-label">
 GENERAL &amp; DIABETES CARE
@@ -511,31 +759,42 @@ GENERAL &amp; DIABETES CARE
 Patient Management
 </h1>
 
-<p class="welcome">
-Simple patient registration, consultation and records
+<p class="portal-subtitle">
+Patient registration and consultation records
 </p>
 
-
-<!-- MAIN PATIENT ACTIONS -->
-
-<div class="panel">
-
-<div class="main-actions">
-
-<button
-class="main-action"
-id="addPatientButton"
->
-
-<div class="icon">
-➕
 </div>
 
-<strong>
-Register New Patient
-</strong>
 
-<span>
+
+<!-- =====================================================
+     HOME VIEW
+     ===================================================== -->
+
+<div
+  id="homeView"
+  class="portal-view active">
+
+
+<div class="portal-card">
+
+<div class="home-grid">
+
+
+<button
+  type="button"
+  class="home-button"
+  id="openRegistrationButton">
+
+<span class="home-icon">
+➕
+</span>
+
+<span class="home-title">
+Register New Patient
+</span>
+
+<span class="home-description">
 Basic patient details and medical history
 </span>
 
@@ -543,87 +802,114 @@ Basic patient details and medical history
 
 
 <button
-class="main-action"
-id="openSearchButton"
->
+  type="button"
+  class="home-button"
+  id="openSearchButton">
 
-<div class="icon">
+<span class="home-icon">
 🔎
-</div>
+</span>
 
-<strong>
+<span class="home-title">
 Search Patients
-</strong>
+</span>
 
-<span>
+<span class="home-description">
 Search by Patient ID, name or phone
 </span>
 
 </button>
 
-</div>
 
 </div>
 
-
-<!-- TODAY'S PATIENTS -->
-
-<div class="panel">
 
 <button
-class="today-button"
-id="todayButton"
->
+  type="button"
+  class="home-button today-button"
+  id="openTodayButton">
 
-<div class="today-button-row">
+<div class="today-row">
 
-<div class="today-button-title">
-📅 Today's Registered Patients
+<div>
+
+<span class="home-icon">
+📅
+</span>
+
+<span class="home-title">
+Today's Registered Patients
+</span>
+
 </div>
 
 <span
-class="count"
-id="todayCount"
->
+  id="todayPatientCount"
+  class="patient-count">
 0
 </span>
 
 </div>
 
-<div class="today-note">
-Tap to view today's registered patients
-</div>
+<span class="home-description">
+Tap to view today's registrations
+</span>
 
 </button>
 
+</div>
 
-<div
-id="todayPatientsContainer"
-class="hidden"
->
+
+<div class="action-row">
+
+<a
+  href="doctor-dashboard.html"
+  class="portal-button light-button">
+
+← Back to Dashboard
+
+</a>
+
+
+<button
+  type="button"
+  class="portal-button secondary-button"
+  id="logoutButton">
+
+🔒 Logout
+
+</button>
+
 </div>
 
 </div>
 
 
-<!-- NEW PATIENT REGISTRATION -->
+
+<!-- =====================================================
+     REGISTRATION VIEW
+     ===================================================== -->
 
 <div
-id="patientFormContainer"
-class="panel hidden"
->
+  id="registrationView"
+  class="portal-view">
 
-<div class="section-head">
+
+<div class="portal-card">
+
+<div class="view-header">
 
 <h2>
 👤 New Patient Registration
 </h2>
 
 <button
-class="btn btn-light"
-onclick="hidePanel('patientFormContainer')"
->
-✕
+  type="button"
+  class="portal-button light-button"
+  onclick="showHomeView()">
+
+← Back
+
 </button>
 
 </div>
@@ -635,46 +921,70 @@ onclick="hidePanel('patientFormContainer')"
 👤 Basic Patient Details
 </h3>
 
+
 <div class="form-grid">
 
-<div>
-<label>
+
+<div class="form-group">
+
+<label for="newPatientName">
 Patient Name *
 </label>
 
 <input
-id="newPatientName"
-type="text"
->
+  type="text"
+  id="newPatientName"
+  autocomplete="name">
+
 </div>
 
 
-<div>
-<label>
+<div class="form-group">
+
+<label for="newPatientPhone">
 Phone Number *
 </label>
 
 <input
-id="newPatientPhone"
-type="tel"
->
+  type="tel"
+  id="newPatientPhone"
+  autocomplete="tel">
+
 </div>
 
 
-<div>
-<label>
+<div class="form-group">
+
+<label for="newPatientDOB">
 Date of Birth
 </label>
 
 <input
-id="newPatientDOB"
-type="date"
->
+  type="date"
+  id="newPatientDOB">
+
 </div>
 
 
-<div>
-<label>
+<div class="form-group">
+
+<label for="newPatientAge">
+Age
+</label>
+
+<input
+  type="number"
+  id="newPatientAge"
+  min="0"
+  max="120"
+  placeholder="Age in years">
+
+</div>
+
+
+<div class="form-group">
+
+<label for="newPatientGender">
 Gender
 </label>
 
@@ -684,15 +994,15 @@ Gender
 Select Gender
 </option>
 
-<option>
+<option value="Male">
 Male
 </option>
 
-<option>
+<option value="Female">
 Female
 </option>
 
-<option>
+<option value="Other">
 Other
 </option>
 
@@ -701,29 +1011,32 @@ Other
 </div>
 
 
-<div>
-<label>
+<div class="form-group">
+
+<label for="newPatientBloodGroup">
 Blood Group
 </label>
 
 <input
-id="newPatientBloodGroup"
-placeholder="e.g. O+"
->
+  type="text"
+  id="newPatientBloodGroup"
+  placeholder="e.g. O+">
 
 </div>
 
 
-<div>
-<label>
+<div class="form-group full-width">
+
+<label for="newPatientAddress">
 Address
 </label>
 
-<input
-id="newPatientAddress"
->
+<textarea
+  id="newPatientAddress"
+  rows="3"></textarea>
 
 </div>
+
 
 </div>
 
@@ -736,3818 +1049,6728 @@ id="newPatientAddress"
 📋 Past Medical Information
 </h3>
 
-<div class="form-grid one">
 
-<div>
+<div class="form-grid one-column">
 
-<label>
+
+<div class="form-group">
+
+<label for="newPatientMedicalHistory">
 Past Medical History
 </label>
 
 <textarea
-id="newPatientMedicalHistory"
-placeholder="Diabetes, hypertension, thyroid disease, asthma, CKD, cardiac disease, etc."
-></textarea>
+  id="newPatientMedicalHistory"
+  placeholder="Diabetes, hypertension, thyroid disease, asthma, CKD, cardiac disease, etc."></textarea>
 
 </div>
 
 
-<div>
+<div class="form-group">
 
-<label>
+<label for="newPatientSurgicalHistory">
 Surgical History
 </label>
 
 <textarea
-id="newPatientSurgicalHistory"
-></textarea>
+  id="newPatientSurgicalHistory"></textarea>
 
 </div>
 
 
-<div>
+<div class="form-group">
 
-<label>
+<label for="newPatientAllergies">
 Allergy History
 </label>
 
 <textarea
-id="newPatientAllergies"
-></textarea>
+  id="newPatientAllergies"></textarea>
 
 </div>
 
 
-<div>
+<div class="form-group">
 
-<label>
+<label for="newPatientCurrentMedications">
 Current Medications
 </label>
 
 <textarea
-id="newPatientCurrentMedication"
-></textarea>
+  id="newPatientCurrentMedications"></textarea>
+
+</div>
+
 
 </div>
 
 </div>
 
-</div>
 
-
-<div class="actions">
+<div class="action-row">
 
 <button
-class="btn btn-primary"
-onclick="saveNewPatient()"
->
+  type="button"
+  class="portal-button primary-button"
+  id="saveNewPatientButton">
+
 💾 Register Patient
+
 </button>
+
 
 <button
-class="btn btn-light"
-onclick="hidePanel('patientFormContainer')"
->
-↩️ Cancel
+  type="button"
+  class="portal-button light-button"
+  onclick="showHomeView()">
+
+↩ Cancel
+
 </button>
 
 </div>
 
 </div>
 
-
-<!-- AFTER REGISTRATION -->
-
-<div
-id="newPatientActions"
-class="panel hidden"
->
 </div>
 
 
-<!-- SEARCH -->
+
+<!-- =====================================================
+     REGISTRATION SUCCESS VIEW
+     ===================================================== -->
 
 <div
-id="searchSection"
-class="panel hidden"
->
+  id="registrationSuccessView"
+  class="portal-view">
 
-<div class="section-head">
+<div
+  id="registrationSuccessContent"
+  class="portal-card success-card">
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     TODAY VIEW
+     ===================================================== -->
+
+<div
+  id="todayView"
+  class="portal-view">
+
+<div class="portal-card">
+
+<div class="view-header">
+
+<h2>
+📅 Today's Registered Patients
+</h2>
+
+<button
+  type="button"
+  class="portal-button light-button"
+  onclick="showHomeView()">
+
+← Patient Management
+
+</button>
+
+</div>
+
+
+<div id="todayPatientsList">
+
+<div class="portal-message">
+Loading...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     SEARCH VIEW
+     ===================================================== -->
+
+<div
+  id="searchView"
+  class="portal-view">
+
+<div class="portal-card">
+
+<div class="view-header">
 
 <h2>
 🔎 Search Patients
 </h2>
 
 <button
-class="btn btn-light"
-onclick="hidePanel('searchSection');clearResults()"
->
-✕
+  type="button"
+  class="portal-button light-button"
+  onclick="showHomeView()">
+
+← Patient Management
+
 </button>
 
 </div>
 
 
-<div class="search-box">
+<div class="search-row">
 
 <input
-id="patientSearch"
-type="search"
-placeholder="Patient ID, Name or Phone Number"
->
+  type="search"
+  id="patientSearch"
+  placeholder="Patient ID / Name / Phone Number">
 
 <button
-class="btn btn-primary"
-onclick="searchPatients()"
->
+  type="button"
+  class="portal-button primary-button"
+  id="searchPatientButton">
+
 🔎 Search
+
 </button>
 
 </div>
 
 
 <div
-id="searchResults"
-class="results hidden"
->
+  id="patientSearchResults"
+  style="margin-top:14px;">
+
+<div class="portal-message">
+Enter Patient ID, name or phone number.
+</div>
+
+</div>
+
 </div>
 
 </div>
 
 
-<!-- MAIN RESULT AREA -->
+
+<!-- =====================================================
+     BASIC DETAILS VIEW
+     ===================================================== -->
 
 <div
-id="mainResults"
-class="panel hidden"
->
+  id="basicDetailsView"
+  class="portal-view">
+
+<div
+  id="basicDetailsContent"
+  class="portal-card">
+</div>
+
 </div>
 
 
-<!-- FOOTER -->
 
-<div class="actions">
+<!-- =====================================================
+     EDIT PATIENT VIEW
+     ===================================================== -->
 
-<a
-href="doctor-dashboard.html"
-class="btn btn-light"
->
-← Back to Dashboard
-</a>
+<div
+  id="editPatientView"
+  class="portal-view">
 
-<button
-class="btn btn-secondary"
-onclick="logoutDoctor()"
->
-🔒 Logout
-</button>
+<div
+  id="editPatientContent"
+  class="portal-card">
+</div>
 
 </div>
+
+
+
+<!-- =====================================================
+     CONSULTATION VIEW
+     ===================================================== -->
+
+<div
+  id="consultationView"
+  class="portal-view">
+
+<div
+  id="consultationContent"
+  class="portal-card">
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     SAVED CONSULTATION VIEW
+     ===================================================== -->
+
+<div
+  id="savedConsultationView"
+  class="portal-view">
+
+<div
+  id="savedConsultationContent"
+  class="portal-card">
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     EDIT CONSULTATION VIEW
+     ===================================================== -->
+
+<div
+  id="editConsultationView"
+  class="portal-view">
+
+<div
+  id="editConsultationContent"
+  class="portal-card">
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     HISTORY HUB
+     ===================================================== -->
+
+<div
+  id="historyHubView"
+  class="portal-view">
+
+<div
+  id="historyHubContent"
+  class="portal-card">
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     PRESCRIPTION HISTORY
+     ===================================================== -->
+
+<div
+  id="prescriptionHistoryView"
+  class="portal-view">
+
+<div
+  id="prescriptionHistoryContent"
+  class="portal-card">
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     LAB HISTORY
+     ===================================================== -->
+
+<div
+  id="labHistoryView"
+  class="portal-view">
+
+<div
+  id="labHistoryContent"
+  class="portal-card">
+</div>
+
+</div>
+
 
 </div>
 
 </section>
 
 
-<!-- IMAGE MODAL -->
+
+<!-- =====================================================
+     IMAGE / PDF MODAL
+     ===================================================== -->
 
 <div
-id="imageModal"
-class="modal"
->
+  id="fileModal"
+  class="image-modal">
 
-<div class="modal-box">
+<div class="image-modal-box">
 
-<div class="modal-head">
+<div class="image-modal-header">
 
-<strong id="modalTitle">
-Image
+<strong id="fileModalTitle">
+File
 </strong>
 
 <button
-class="btn btn-light"
-onclick="closeImageModal()"
->
+  type="button"
+  class="portal-button light-button"
+  onclick="closeFileModal()">
+
 ✕ Close
+
 </button>
 
 </div>
 
-<img
-id="modalImage"
-src=""
-alt=""
->
+
+<div id="fileModalContent"></div>
 
 </div>
 
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- =====================================================
+     SUPABASE
+     ===================================================== -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
 
 <script>
 
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
 const SUPABASE_URL =
-"https://twdmvdqqckcpwoccvtkj.supabase.co";
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
 
 const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
 
 const supabaseClient =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
-);
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
+
+/* =========================================================
+   STATE
+   ========================================================= */
 
 let currentPatient = null;
 
+let currentConsultationId = null;
 
-const $ = id =>
-document.getElementById(id);
+let selectedPrescriptionFiles = [];
 
+let selectedLabFiles = [];
 
-const esc = value =>
-value == null
-? ""
-: String(value)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+let registrationReturnView =
+  "searchView";
 
 
-const dateTime = value =>
-value
-? new Date(value).toLocaleString("en-IN")
-: "-";
+/* =========================================================
+   HELPERS
+   ========================================================= */
 
+function escapeHTML(value) {
 
-const dateOnly = value =>
-value
-? new Date(value).toLocaleDateString("en-IN")
-: "-";
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
 
-
-function todayString(){
-
-const d = new Date();
-
-return d.getFullYear()
-+"-"
-+String(d.getMonth()+1).padStart(2,"0")
-+"-"
-+String(d.getDate()).padStart(2,"0");
-
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 
-function hidePanel(id){
+function showView(viewId) {
 
-$(id)?.classList.add("hidden");
+  document
+    .querySelectorAll(
+      ".portal-view"
+    )
+    .forEach(
+      function(view) {
 
-}
-
+        view.classList.remove(
+          "active"
+        );
 
-function showPanel(id){
+      }
+    );
 
-$(id)?.classList.remove("hidden");
 
-}
+  const target =
+    document.getElementById(
+      viewId
+    );
 
 
-function clearResults(){
+  if (target) {
 
-$("mainResults").innerHTML = "";
+    target.classList.add(
+      "active"
+    );
 
-$("mainResults")
-.classList.add("hidden");
+  }
 
-$("searchResults").innerHTML = "";
 
-$("searchResults")
-.classList.add("hidden");
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 
 }
-
 
-async function checkLogin(){
 
-const {
-data:{
-session
-}
-} =
-await supabaseClient.auth.getSession();
-
-if(!session){
+function showHomeView() {
 
-location.href =
-"doctor-login.html";
+  currentPatient =
+    null;
 
-return false;
+  currentConsultationId =
+    null;
 
-}
+  showView(
+    "homeView"
+  );
 
-return true;
+  loadTodayCount();
 
 }
-
 
-async function logoutDoctor(){
 
-await supabaseClient.auth.signOut();
+function getTodayString() {
 
-location.href =
-"doctor-login.html";
+  const date =
+    new Date();
 
+  return (
+    date.getFullYear() +
+    "-" +
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    ) +
+    "-" +
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    )
+  );
 }
-
-
-function openSearch(){
-
-showPanel("searchSection");
-
-hidePanel("patientFormContainer");
 
-$("patientSearch").focus();
 
-$("searchSection").scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
+function formatDate(value) {
 
-}
-
+  if (!value) {
+    return "-";
+  }
 
-function openRegistration(){
+  const date =
+    new Date(
+      String(value).length === 10
+        ? value + "T00:00:00"
+        : value
+    );
 
-showPanel("patientFormContainer");
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
 
-hidePanel("searchSection");
+    return value;
 
-$("patientFormContainer").scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
+  }
 
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
 }
-
-
-/* =========================
-   REGISTER PATIENT
-========================= */
-
-async function saveNewPatient(){
-
-const patient = {
-
-patient_name:
-$("newPatientName").value.trim(),
-
-patient_phone:
-$("newPatientPhone").value.trim(),
-
-date_of_birth:
-$("newPatientDOB").value || null,
-
-gender:
-$("newPatientGender").value || null,
-
-blood_group:
-$("newPatientBloodGroup").value.trim(),
-
-address:
-$("newPatientAddress").value.trim(),
-
-medical_history:
-$("newPatientMedicalHistory").value.trim(),
-
-surgical_history:
-$("newPatientSurgicalHistory").value.trim(),
-
-allergies:
-$("newPatientAllergies").value.trim(),
-
-current_medications:
-$("newPatientCurrentMedication").value.trim()
 
-};
 
+function formatTime(value) {
 
-if(
-!patient.patient_name ||
-!patient.patient_phone
-){
+  if (!value) {
+    return "-";
+  }
 
-alert(
-"Patient name and phone number are required."
-);
+  const date =
+    new Date(value);
 
-return;
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
 
-}
-
-
-const {
-data,
-error
-} =
-await supabaseClient
-.from("patients")
-.insert(patient)
-.select()
-.single();
-
+    return "-";
 
-if(error){
+  }
 
-alert(
-"Unable to register patient:\n\n"
-+ error.message
-);
-
-return;
-
+  return date.toLocaleTimeString(
+    "en-IN",
+    {
+      hour: "numeric",
+      minute: "2-digit"
+    }
+  );
 }
-
-
-hidePanel("patientFormContainer");
-
-
-$("newPatientActions")
-.classList.remove("hidden");
-
-
-$("newPatientActions").innerHTML = `
-
-<div class="profile-header">
-
-<div class="profile-name">
-✅ Patient Registered Successfully
-</div>
-
-<div class="profile-id">
-
-Patient:
-<strong>
-${esc(data.patient_name)}
-</strong>
-
-<br>
-
-Patient ID:
-<strong>
-${esc(data.id)}
-</strong>
-
-<br>
-
-Phone:
-<strong>
-${esc(data.patient_phone)}
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="actions">
-
-<button
-class="btn btn-primary"
-onclick="startConsultation(${Number(data.id)})"
->
-🩺 New Consultation
-</button>
-
-
-<button
-class="btn btn-success"
-onclick="openBilling(${Number(data.id)})"
->
-💰 Create Bill
-</button>
-
-
-<button
-class="btn btn-purple"
-onclick="uploadPrescriptionForPatient(${Number(data.id)})"
->
-📷 Upload Prescription
-</button>
-
-
-<button
-class="btn btn-primary"
-onclick="uploadLabForPatient(${Number(data.id)})"
->
-🧪 Upload Lab Report
-</button>
-
 
-<button
-class="btn btn-warning"
-onclick="editPatient(${Number(data.id)})"
->
-✏️ Edit Patient
-</button>
 
-</div>
+function calculateAgeFromDOB(
+  dob
+) {
 
-`;
+  if (!dob) {
+    return "";
+  }
 
+  const birth =
+    new Date(
+      dob + "T00:00:00"
+    );
 
-await loadTodayCount();
+  const today =
+    new Date();
 
-}
-
+  let age =
+    today.getFullYear() -
+    birth.getFullYear();
 
-/* =========================
-   TODAY PATIENTS
-========================= */
+  const monthDifference =
+    today.getMonth() -
+    birth.getMonth();
 
-async function loadTodayCount(){
+  if (
+    monthDifference < 0 ||
+    (
+      monthDifference === 0 &&
+      today.getDate() <
+      birth.getDate()
+    )
+  ) {
 
-const start =
-todayString()+"T00:00:00";
+    age--;
 
-const end =
-todayString()+"T23:59:59";
+  }
 
+  if (
+    age < 0 ||
+    age > 120
+  ) {
 
-const {
-data,
-error
-} =
-await supabaseClient
-.from("patients")
-.select("id")
-.gte("created_at",start)
-.lte("created_at",end);
+    return "";
 
+  }
 
-$("todayCount").textContent =
-error
-? "-"
-: (data?.length || 0);
-
+  return age;
 }
-
 
-async function toggleTodayPatients(){
 
-const c =
-$("todayPatientsContainer");
+function patientAge(patient) {
 
+  if (
+    patient.age !== null &&
+    patient.age !== undefined &&
+    patient.age !== ""
+  ) {
 
-if(
-!c.classList.contains("hidden")
-){
+    return patient.age;
 
-c.classList.add("hidden");
+  }
 
-return;
+  const calculated =
+    calculateAgeFromDOB(
+      patient.date_of_birth
+    );
 
+  return calculated === ""
+    ? "-"
+    : calculated;
 }
-
-
-c.classList.remove("hidden");
-
-c.innerHTML = `
-<div class="loading">
-Loading today's patients...
-</div>
-`;
-
 
-const start =
-todayString()+"T00:00:00";
 
-const end =
-todayString()+"T23:59:59";
+/* =========================================================
+   LOGIN
+   ========================================================= */
 
+async function checkDoctorLogin() {
 
-const {
-data,
-error
-} =
-await supabaseClient
-.from("patients")
-.select("*")
-.gte("created_at",start)
-.lte("created_at",end)
-.order("created_at",{ascending:false});
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
 
 
-if(error){
+  if (!session) {
 
-c.innerHTML = `
-<div class="empty">
-Unable to load today's patients.
-</div>
-`;
+    window.location.href =
+      "doctor-login.html";
 
-return;
+    return false;
 
-}
-
-
-if(!data?.length){
-
-c.innerHTML = `
-<div class="empty">
-No patients registered today.
-</div>
-`;
+  }
 
-return;
-
+  return true;
 }
-
-
-c.innerHTML =
-data.map(p => `
-
-<div class="patient-card">
 
-<div class="patient-name">
-👤 ${esc(p.patient_name)}
-</div>
 
-<div class="meta">
+async function logoutDoctor() {
 
-🆔 Patient ID:
-${esc(p.id)}
+  await supabaseClient
+    .auth
+    .signOut();
 
-<br>
-
-📞
-${esc(p.patient_phone || "-")}
-
-<br>
-
-🕒
-${dateTime(p.created_at)}
-
-</div>
-
-
-<div class="actions">
-
-<button
-class="btn btn-primary btn-small"
-onclick="viewPatient(${Number(p.id)})"
->
-👁️ View
-</button>
-
-
-<button
-class="btn btn-light btn-small"
-onclick="startConsultation(${Number(p.id)})"
->
-🩺 Consultation
-</button>
-
-</div>
-
-</div>
-
-`).join("");
-
+  window.location.href =
+    "doctor-login.html";
 }
-
 
-/* =========================
-   SEARCH PATIENTS
-========================= */
 
-async function searchPatients(){
+/* =========================================================
+   PATIENT DATABASE
+   ========================================================= */
 
-const q =
-$("patientSearch").value.trim();
+async function getPatient(
+  patientId
+) {
 
-const box =
-$("searchResults");
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select("*")
+      .eq(
+        "id",
+        patientId
+      )
+      .single();
 
 
-box.classList.remove("hidden");
+  if (error) {
 
+    console.error(
+      "Patient loading error:",
+      error
+    );
 
-if(!q){
+    alert(
+      "Unable to load patient."
+    );
 
-box.innerHTML = `
-<div class="empty">
-Enter Patient ID, name or phone number.
-</div>
-`;
+    return null;
 
-return;
+  }
 
+  return data;
 }
-
-
-box.innerHTML = `
-<div class="loading">
-🔎 Searching...
-</div>
-`;
 
 
-let query =
-supabaseClient
-.from("patients")
-.select("*");
+/* =========================================================
+   HOME → REGISTRATION
+   ========================================================= */
 
+function openRegistration() {
 
-if(/^\d+$/.test(q)){
+  clearRegistrationForm();
 
-query =
-query.or(
-`id.eq.${q},patient_phone.ilike.%${q}%,patient_name.ilike.%${q}%`
-);
-
-}
-else{
-
-query =
-query.or(
-`patient_name.ilike.%${q}%,patient_phone.ilike.%${q}%`
-);
-
+  showView(
+    "registrationView"
+  );
 }
-
-
-const {
-data,
-error
-} =
-await query
-.order(
-"patient_name",
-{
-ascending:true
-}
-);
-
 
-if(error){
 
-box.innerHTML = `
-<div class="empty">
-Unable to search patients.
-</div>
-`;
+function clearRegistrationForm() {
 
-return;
+  [
+    "newPatientName",
+    "newPatientPhone",
+    "newPatientDOB",
+    "newPatientAge",
+    "newPatientBloodGroup",
+    "newPatientAddress",
+    "newPatientMedicalHistory",
+    "newPatientSurgicalHistory",
+    "newPatientAllergies",
+    "newPatientCurrentMedications"
+  ].forEach(
+    function(id) {
 
-}
-
+      const element =
+        document.getElementById(
+          id
+        );
 
-if(!data?.length){
+      if (element) {
+        element.value = "";
+      }
 
-box.innerHTML = `
-<div class="empty">
-No patients found.
-</div>
-`;
+    }
+  );
 
-return;
 
+  document
+    .getElementById(
+      "newPatientGender"
+    )
+    .value = "";
 }
-
-
-box.innerHTML =
-data.map(p => `
-
-<div class="patient-card">
-
-<div class="patient-name">
-👤 ${esc(p.patient_name)}
-</div>
-
-
-<div class="meta">
 
-🆔 Patient ID:
-${esc(p.id)}
 
-<br>
+/* =========================================================
+   SAVE NEW PATIENT
+   ========================================================= */
 
-📞
-${esc(p.patient_phone || "-")}
+async function saveNewPatient() {
 
-<br>
+  const name =
+    document
+      .getElementById(
+        "newPatientName"
+      )
+      .value
+      .trim();
 
-🎂
-${esc(p.date_of_birth || "-")}
 
-&nbsp;
+  const phone =
+    document
+      .getElementById(
+        "newPatientPhone"
+      )
+      .value
+      .trim();
 
-⚧
-${esc(p.gender || "-")}
 
-</div>
+  if (
+    !name ||
+    !phone
+  ) {
 
+    alert(
+      "Patient name and phone number are required."
+    );
 
-<div class="actions">
+    return;
+  }
 
-<button
-class="btn btn-primary btn-small"
-onclick="viewPatient(${Number(p.id)})"
->
-👁️ View Patient
-</button>
 
+  let age =
+    document
+      .getElementById(
+        "newPatientAge"
+      )
+      .value;
 
-<button
-class="btn btn-warning btn-small"
-onclick="editPatient(${Number(p.id)})"
->
-✏️ Edit
-</button>
 
-</div>
+  age =
+    age === ""
+      ? null
+      : Number(age);
 
-</div>
 
-`).join("");
+  const patient = {
 
-}
-
+    patient_name:
+      name,
 
-/* =========================
-   GET PATIENT
-========================= */
+    patient_phone:
+      phone,
 
-async function getPatient(id){
+    date_of_birth:
+      document
+        .getElementById(
+          "newPatientDOB"
+        )
+        .value ||
+      null,
 
-const {
-data,
-error
-} =
-await supabaseClient
-.from("patients")
-.select("*")
-.eq("id",id)
-.single();
+    age:
+      age,
 
+    gender:
+      document
+        .getElementById(
+          "newPatientGender"
+        )
+        .value ||
+      null,
 
-if(error){
+    blood_group:
+      document
+        .getElementById(
+          "newPatientBloodGroup"
+        )
+        .value
+        .trim(),
 
-alert(
-"Unable to load patient."
-);
+    address:
+      document
+        .getElementById(
+          "newPatientAddress"
+        )
+        .value
+        .trim(),
 
-return null;
+    medical_history:
+      document
+        .getElementById(
+          "newPatientMedicalHistory"
+        )
+        .value
+        .trim(),
 
-}
+    surgical_history:
+      document
+        .getElementById(
+          "newPatientSurgicalHistory"
+        )
+        .value
+        .trim(),
 
+    allergies:
+      document
+        .getElementById(
+          "newPatientAllergies"
+        )
+        .value
+        .trim(),
 
-return data;
+    current_medications:
+      document
+        .getElementById(
+          "newPatientCurrentMedications"
+        )
+        .value
+        .trim()
 
-}
+  };
 
 
-/* =========================
-   VIEW PATIENT
-========================= */
+  const saveButton =
+    document.getElementById(
+      "saveNewPatientButton"
+    );
 
-async function viewPatient(id){
 
-const p =
-await getPatient(id);
+  saveButton.disabled =
+    true;
 
-if(!p)
-return;
+  saveButton.textContent =
+    "⏳ Registering...";
 
 
-currentPatient =
-p;
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .insert(
+        patient
+      )
+      .select()
+      .single();
 
 
-const [
-consultationResult,
-prescriptionResult,
-labResult
-] =
-await Promise.all([
+  saveButton.disabled =
+    false;
 
-supabaseClient
-.from("consultations")
-.select("*")
-.eq("patient_id",id)
-.order("created_at",{ascending:false}),
+  saveButton.textContent =
+    "💾 Register Patient";
 
-supabaseClient
-.from("consultation_images")
-.select("*")
-.eq("patient_id",id)
-.order("created_at",{ascending:false}),
 
-supabaseClient
-.from("investigation_reports")
-.select("*")
-.eq("patient_id",id)
-.order("report_date",{ascending:false})
-.order("id",{ascending:false})
+  if (error) {
 
-]);
+    console.error(
+      "Registration error:",
+      error
+    );
 
+    alert(
+      "Unable to register patient:\n\n" +
+      error.message
+    );
 
-const consultations =
-consultationResult.data || [];
+    return;
+  }
 
 
-const prescriptions =
-prescriptionResult.data || [];
+  currentPatient =
+    data;
 
 
-const labs =
-labResult.data || [];
+  renderRegistrationSuccess(
+    data
+  );
 
 
-renderPatientProfile(
-p,
-consultations,
-prescriptions,
-labs
-);
+  loadTodayCount();
 
 }
-
-
-/* =========================
-   PATIENT PROFILE
-========================= */
-
-function renderPatientProfile(
-p,
-consultations,
-prescriptions,
-labs
-){
-
-$("mainResults")
-.classList.remove("hidden");
-
-
-window.allPrescriptionCache =
-prescriptions;
-
-
-$("mainResults").innerHTML = `
-
-<div class="section-head">
-
-<h2>
-👥 Patient Profile
-</h2>
-
-<button
-class="btn btn-light"
-onclick="clearResults()"
->
-← Back
-</button>
-
-</div>
 
 
-<div class="profile-header">
+/* =========================================================
+   REGISTRATION SUCCESS
+   ========================================================= */
 
-<div class="profile-name">
-👤 ${esc(p.patient_name)}
-</div>
+function renderRegistrationSuccess(
+  patient
+) {
 
-<div class="profile-id">
+  const container =
+    document.getElementById(
+      "registrationSuccessContent"
+    );
 
-🆔 Patient ID:
-<strong>
-${esc(p.id)}
-</strong>
 
-</div>
+  container.innerHTML = `
 
-</div>
+    <h2 class="success-title">
+      ✅ Patient Registered Successfully
+    </h2>
 
+    <div class="patient-header-box">
 
-<div class="profile-grid">
+      <div class="patient-header-name">
 
-<div class="profile-item">
+        👤
+        ${escapeHTML(
+          patient.patient_name
+        )}
 
-<span class="profile-label">
-Phone
-</span>
+      </div>
 
-<span class="profile-value">
-${esc(p.patient_phone || "-")}
-</span>
+      <div class="patient-header-meta">
 
-</div>
+        Patient ID:
+        <strong>
+          ${escapeHTML(
+            patient.id
+          )}
+        </strong>
 
+        <br>
 
-<div class="profile-item">
+        Phone:
+        <strong>
+          ${escapeHTML(
+            patient.patient_phone
+          )}
+        </strong>
 
-<span class="profile-label">
-Date of Birth
-</span>
+        <br>
 
-<span class="profile-value">
-${esc(p.date_of_birth || "-")}
-</span>
+        Age:
+        <strong>
+          ${escapeHTML(
+            patientAge(
+              patient
+            )
+          )}
+        </strong>
 
-</div>
+      </div>
 
+    </div>
 
-<div class="profile-item">
 
-<span class="profile-label">
-Gender
-</span>
+    <div class="action-row">
 
-<span class="profile-value">
-${esc(p.gender || "-")}
-</span>
+      <button
+        type="button"
+        class="portal-button primary-button"
+        onclick="startNewConsultation(
+          ${Number(patient.id)}
+        )">
 
-</div>
+        🩺 New Consultation
 
+      </button>
 
-<div class="profile-item">
 
-<span class="profile-label">
-Blood Group
-</span>
+      <button
+        type="button"
+        class="portal-button warning-button"
+        onclick="openEditPatient(
+          ${Number(patient.id)},
+          'registrationSuccessView'
+        )">
 
-<span class="profile-value">
-${esc(p.blood_group || "-")}
-</span>
+        ✏️ Edit Patient
 
-</div>
+      </button>
 
+    </div>
 
-<div class="profile-item full">
 
-<span class="profile-label">
-Address
-</span>
+    <div class="action-row">
 
-<span class="profile-value">
-${esc(p.address || "-")}
-</span>
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="showHomeView()">
 
-</div>
+        ← Patient Management
 
-</div>
+      </button>
 
+    </div>
 
-<div class="detail">
+  `;
 
-<h3>
-📋 Past Medical Information
-</h3>
 
-<div class="pre">
+  showView(
+    "registrationSuccessView"
+  );
 
-<strong>Medical History:</strong>
-${esc(p.medical_history || "-")}
-
-<br><br>
-
-<strong>Surgical History:</strong>
-${esc(p.surgical_history || "-")}
-
-<br><br>
-
-<strong>Allergies:</strong>
-${esc(p.allergies || "-")}
-
-<br><br>
-
-<strong>Current Medications:</strong>
-${esc(p.current_medications || "-")}
-
-</div>
-
-</div>
-
-
-<!-- PATIENT ACTIONS -->
-
-<div class="actions">
-
-<button
-class="btn btn-primary"
-onclick="startConsultation(${Number(p.id)})"
->
-🩺 New Consultation
-</button>
-
-
-<button
-class="btn btn-success"
-onclick="openBilling(${Number(p.id)})"
->
-💰 Create Bill
-</button>
-
-
-<button
-class="btn btn-purple"
-onclick="uploadPrescriptionForPatient(${Number(p.id)})"
->
-📷 Upload Prescription
-</button>
-
-
-<button
-class="btn btn-primary"
-onclick="uploadLabForPatient(${Number(p.id)})"
->
-🧪 Upload Lab Report
-</button>
-
-
-<button
-class="btn btn-warning"
-onclick="editPatient(${Number(p.id)})"
->
-✏️ Edit Patient
-</button>
-
-</div>
-
-
-<!-- PRESCRIPTION HISTORY -->
-
-<div class="detail">
-
-<h3>
-📷 Prescription History
-</h3>
-
-${renderPrescriptionHistory(prescriptions)}
-
-</div>
-
-
-<!-- LAB HISTORY -->
-
-<div class="detail">
-
-<h3>
-🧪 Lab Report History
-</h3>
-
-${renderLabHistory(labs)}
-
-</div>
-
-
-<!-- CONSULTATION HISTORY -->
-
-<div class="detail">
-
-<h3>
-📋 Consultation History
-</h3>
-
-${
-consultations.length
-?
-consultations
-.map(
-(c,i) =>
-renderConsultation(
-c,
-i,
-labs
-)
-)
-.join("")
-:
-`
-<div class="empty">
-No consultation history yet.
-</div>
-`
-}
-
-</div>
-
-`;
-
-
-$("mainResults")
-.scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
-
 }
-
-
-/* =========================
-   CONSULTATION HISTORY CARD
-========================= */
-
-function renderConsultation(
-c,
-index,
-labs
-){
-
-const id =
-Number(c.id);
-
-
-const related =
-(labs || [])
-.filter(
-x =>
-Number(x.consultation_id) === id
-);
-
-
-return `
-
-<div class="consult-card">
-
-
-<div class="consult-top">
-
-<div>
-
-<div class="consult-date">
-
-📅
-${dateTime(c.created_at)}
-
-</div>
-
-
-<div class="consult-summary">
-
-<strong>
-Chief Complaints:
-</strong>
-
-${esc(c.chief_complaints || "-")}
-
-<br>
 
-<strong>
-Diagnosis:
-</strong>
 
-${esc(c.diagnosis || "-")}
+/* =========================================================
+   TODAY COUNT
+   ========================================================= */
 
-</div>
+async function loadTodayCount() {
 
-</div>
+  const today =
+    getTodayString();
 
-</div>
 
+  const {
+    count,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select(
+        "*",
+        {
+          count: "exact",
+          head: true
+        }
+      )
+      .gte(
+        "created_at",
+        today + "T00:00:00"
+      )
+      .lte(
+        "created_at",
+        today + "T23:59:59"
+      );
 
-<div class="actions">
 
-<button
-class="btn btn-light btn-small"
-onclick="toggleConsultation(${id})"
->
-▶️ View Full Consultation
-</button>
-
-
-<button
-class="btn btn-warning btn-small"
-onclick="editConsultation(${id})"
->
-✏️ Edit Consultation
-</button>
-
-
-<button
-class="btn btn-success btn-small"
-onclick="openBilling(${Number(c.patient_id)})"
->
-💰 Create Bill
-</button>
-
-</div>
-
-
-<div
-class="consult-details"
-id="consult-${id}"
->
-
-
-<div class="detail">
-
-<h4>
-❤️ Vitals
-</h4>
-
-<div class="pre">
-${esc(c.vitals || "-")}
-</div>
-
-</div>
-
-
-<div class="detail">
+  document
+    .getElementById(
+      "todayPatientCount"
+    )
+    .textContent =
+      error
+        ? "-"
+        : count || 0;
+}
 
-<h4>
-🔍 Examination
-</h4>
 
-<div class="pre">
-${esc(c.examination || "-")}
-</div>
+/* =========================================================
+   TODAY PATIENTS — SEPARATE VIEW
+   ========================================================= */
 
-</div>
+async function openTodayPatients() {
 
+  showView(
+    "todayView"
+  );
 
-<div class="detail">
 
-<h4>
-🩺 Diagnosis
-</h4>
+  const container =
+    document.getElementById(
+      "todayPatientsList"
+    );
 
-<div class="pre">
-${esc(c.diagnosis || "-")}
-</div>
 
-</div>
+  container.innerHTML = `
 
+    <div class="portal-message">
+      Loading today's patients...
+    </div>
 
-<div class="detail">
+  `;
 
-<h4>
-🧪 Investigations
-</h4>
 
-<div class="pre">
-${esc(c.investigations || "-")}
-</div>
+  const today =
+    getTodayString();
 
-</div>
 
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select("*")
+      .gte(
+        "created_at",
+        today + "T00:00:00"
+      )
+      .lte(
+        "created_at",
+        today + "T23:59:59"
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
-<div class="detail">
 
-<h4>
-💊 Prescription / Treatment
-</h4>
+  if (error) {
 
-<div class="pre">
-${esc(c.prescription || "-")}
-</div>
+    container.innerHTML = `
 
-</div>
+      <div class="portal-message">
+        Unable to load today's patients.
+      </div>
 
+    `;
 
-<div class="detail">
+    return;
+  }
 
-<h4>
-📷 Prescription Images
-</h4>
 
-${renderPrescriptionHistory(
-(window.allPrescriptionCache || [])
-.filter(
-x =>
-Number(x.consultation_id) === id
-)
-)}
+  if (
+    !data ||
+    data.length === 0
+  ) {
 
-</div>
+    container.innerHTML = `
 
+      <div class="portal-message">
+        No patients registered today.
+      </div>
 
-<div class="detail">
+    `;
 
-<h4>
-🧪 Lab Reports
-</h4>
+    return;
+  }
 
-${
-related.length
-?
-renderLabHistory(related)
-:
-`
-<div class="empty">
-No lab reports attached to this consultation.
-</div>
-`
-}
 
-</div>
+  container.innerHTML =
+    data.map(
+      function(patient) {
 
+        return `
 
-<div class="detail">
+          <div class="patient-result-card">
 
-<h4>
-📝 Advice
-</h4>
+            <div class="patient-name">
 
-<div class="pre">
-${esc(c.advice || "-")}
-</div>
+              👤
+              ${escapeHTML(
+                patient.patient_name
+              )}
 
-</div>
+            </div>
 
+            <div class="patient-meta">
 
-<div class="detail">
+              🆔 Patient ID:
+              ${escapeHTML(
+                patient.id
+              )}
 
-<h4>
-📅 Follow-up Date
-</h4>
+              <br>
 
-<div>
-${esc(c.follow_up_date || "-")}
-</div>
+              📞
+              ${escapeHTML(
+                patient.patient_phone || "-"
+              )}
 
-</div>
+              <br>
 
+              🎂 Age:
+              ${escapeHTML(
+                patientAge(
+                  patient
+                )
+              )}
 
-</div>
+              <br>
 
-</div>
+              🕒
+              ${formatTime(
+                patient.created_at
+              )}
 
-`;
+            </div>
 
-}
 
+            <div class="action-row">
 
-/* =========================
-   COLLAPSE / EXPAND
-========================= */
+              <button
+                type="button"
+                class="portal-button primary-button small-button"
+                onclick="openBasicDetails(
+                  ${Number(patient.id)},
+                  'todayView'
+                )">
 
-function toggleConsultation(id){
+                👁️ Basic Details
 
-const e =
-$("consult-"+id);
+              </button>
 
-if(!e)
-return;
 
+              <button
+                type="button"
+                class="portal-button light-button small-button"
+                onclick="startNewConsultation(
+                  ${Number(patient.id)}
+                )">
 
-e.style.display =
-e.style.display === "block"
-? "none"
-: "block";
+                🩺 New Consultation
 
-}
+              </button>
 
+            </div>
 
-/* =========================
-   FILE HELPERS
-========================= */
+          </div>
 
-function fileUrl(
-path,
-bucket
-){
+        `;
 
-return supabaseClient
-.storage
-.from(bucket)
-.getPublicUrl(path)
-.data
-.publicUrl;
+      }
+    ).join("");
 
 }
-
-
-function renderPrescriptionHistory(files){
 
-if(!files?.length){
 
-return `
-<div class="empty">
-No prescription images uploaded yet.
-</div>
-`;
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
-}
-
+function openSearchView() {
 
-window.allPrescriptionCache =
-window.allPrescriptionCache || [];
+  showView(
+    "searchView"
+  );
 
 
-files.forEach(x => {
+  setTimeout(
+    function() {
 
-if(
-!window.allPrescriptionCache
-.some(
-y => y.id === x.id
-)
-){
+      document
+        .getElementById(
+          "patientSearch"
+        )
+        .focus();
 
-window.allPrescriptionCache.push(x);
-
+    },
+    100
+  );
 }
-
-});
 
 
-return files.map(
-(f,i) => {
+async function searchPatients() {
 
-const url =
-f.image_url ||
-f.file_url ||
-"";
+  const search =
+    document
+      .getElementById(
+        "patientSearch"
+      )
+      .value
+      .trim();
 
 
-return `
+  const container =
+    document.getElementById(
+      "patientSearchResults"
+    );
 
-<div class="file-card">
 
-<div class="file-title">
+  if (!search) {
 
-📷 Prescription ${i+1}
+    container.innerHTML = `
 
-</div>
+      <div class="portal-message">
+        Enter Patient ID, name or phone number.
+      </div>
 
+    `;
 
-<div class="file-meta">
+    return;
+  }
 
-${dateTime(f.created_at)}
 
-</div>
+  container.innerHTML = `
 
+    <div class="portal-message">
+      🔎 Searching...
+    </div>
 
-<div
-class="file-preview"
-id="rx-${f.id}"
->
+  `;
 
-<img
-src="${esc(url)}"
-alt="Prescription"
->
 
-</div>
+  let query =
+    supabaseClient
+      .from("patients")
+      .select("*");
 
 
-<div class="actions">
+  if (
+    /^\d+$/.test(
+      search
+    )
+  ) {
 
-<button
-class="btn btn-primary btn-small"
-onclick="togglePreview('rx-${f.id}')"
->
-👁️ View
-</button>
+    query =
+      query.or(
+        "id.eq." +
+        search +
+        ",patient_phone.ilike.%" +
+        search +
+        "%,patient_name.ilike.%" +
+        search +
+        "%"
+      );
 
+  } else {
 
-<button
-class="btn btn-light btn-small"
-onclick="downloadFile(
-'${encodeURIComponent(url)}',
-'prescription-${f.id}'
-)"
->
-⬇️ Download
-</button>
+    query =
+      query.or(
+        "patient_name.ilike.%" +
+        search +
+        "%,patient_phone.ilike.%" +
+        search +
+        "%"
+      );
 
+  }
 
-<button
-class="btn btn-danger btn-small"
-onclick="deletePrescription(${Number(f.id)})"
->
-🗑️ Delete
-</button>
 
-</div>
+  const {
+    data,
+    error
+  } =
+    await query
+      .order(
+        "patient_name",
+        {
+          ascending: true
+        }
+      );
 
-</div>
 
-`;
+  if (error) {
 
-}
-).join("");
-
-}
-
+    console.error(
+      "Search error:",
+      error
+    );
 
-function renderLabHistory(files){
+    container.innerHTML = `
 
-if(!files?.length){
+      <div class="portal-message">
+        Unable to search patients.
+      </div>
 
-return `
-<div class="empty">
-No lab reports uploaded yet.
-</div>
-`;
+    `;
 
-}
-
+    return;
+  }
 
-return files.map(
-f => {
 
-const url =
-fileUrl(
-f.file_path,
-"investigation-reports"
-);
+  if (
+    !data ||
+    data.length === 0
+  ) {
 
+    container.innerHTML = `
 
-const ext =
-(f.file_name || "")
-.split(".")
-.pop()
-.toLowerCase();
+      <div class="portal-message">
+        No patients found.
+      </div>
 
+    `;
 
-const image =
-[
-"jpg",
-"jpeg",
-"png",
-"webp"
-].includes(ext);
+    return;
+  }
 
 
-return `
+  container.innerHTML =
+    data.map(
+      function(patient) {
 
-<div class="file-card">
+        return `
 
-<div class="file-title">
+          <div class="patient-result-card">
 
-🧪
-${esc(f.report_type || "Lab Report")}
+            <div class="patient-name">
 
-</div>
+              👤
+              ${escapeHTML(
+                patient.patient_name
+              )}
 
+            </div>
 
-<div class="file-meta">
 
-📅
-${esc(f.report_date || "-")}
+            <div class="patient-meta">
 
-<br>
+              🆔 Patient ID:
+              ${escapeHTML(
+                patient.id
+              )}
 
-📄
-${esc(f.file_name || "-")}
+              <br>
 
-</div>
+              📞
+              ${escapeHTML(
+                patient.patient_phone || "-"
+              )}
 
+              <br>
 
-${
-image
-?
-`
+              🎂 Age:
+              ${escapeHTML(
+                patientAge(
+                  patient
+                )
+              )}
 
-<div
-class="file-preview"
-id="lab-${f.id}"
->
+              &nbsp;&nbsp;
 
-<img
-src="${esc(url)}"
-alt="Lab report"
->
+              ⚧
+              ${escapeHTML(
+                patient.gender || "-"
+              )}
 
-</div>
-
-`
-:
-""
-}
+            </div>
 
 
-<div class="actions">
+            <div class="action-row">
 
-<button
-class="btn btn-primary btn-small"
-onclick="${
-image
-?
-`togglePreview('lab-${f.id}')`
-:
-`viewFile('${encodeURIComponent(url)}')`
-}"
->
-👁️ View
-</button>
+              <button
+                type="button"
+                class="portal-button primary-button small-button"
+                onclick="openBasicDetails(
+                  ${Number(patient.id)},
+                  'searchView'
+                )">
 
+                👁️ Basic Details
 
-<button
-class="btn btn-light btn-small"
-onclick="downloadFile(
-'${encodeURIComponent(url)}',
-'lab-report-${f.id}'
-)"
->
-⬇️ Download
-</button>
+              </button>
 
 
-<button
-class="btn btn-danger btn-small"
-onclick="deleteLab(${Number(f.id)})"
->
-🗑️ Delete
-</button>
+              <button
+                type="button"
+                class="portal-button warning-button small-button"
+                onclick="openEditPatient(
+                  ${Number(patient.id)},
+                  'searchView'
+                )">
 
-</div>
+                ✏️ Edit
 
-</div>
+              </button>
 
-`;
 
-}
-).join("");
+              <button
+                type="button"
+                class="portal-button success-button small-button"
+                onclick="startNewConsultation(
+                  ${Number(patient.id)}
+                )">
 
-}
+                🩺 New Consultation
 
+              </button>
 
-/* =========================
-   UPLOAD PRESCRIPTION
-========================= */
-
-async function uploadPrescriptionForPatient(
-patientId
-){
-
-const {
-data:latest
-} =
-await supabaseClient
-.from("consultations")
-.select("id")
-.eq("patient_id",patientId)
-.order(
-"created_at",
-{
-ascending:false
-}
-)
-.limit(1)
-.maybeSingle();
 
+              <button
+                type="button"
+                class="portal-button light-button small-button"
+                onclick="openHistoryHub(
+                  ${Number(patient.id)}
+                )">
 
-if(!latest){
+                📋 History
 
-alert(
-"Please create a consultation first so the prescription can be linked to a visit."
-);
+              </button>
 
-return;
+            </div>
 
-}
+          </div>
 
+        `;
 
-uploadPrescriptionForConsultation(
-latest.id,
-patientId
-);
+      }
+    ).join("");
 
 }
-
-
-function uploadPrescriptionForConsultation(
-consultationId,
-patientId
-){
-
-const input =
-document.createElement("input");
-
-
-input.type =
-"file";
-
-input.accept =
-"image/jpeg,image/png,image/webp";
-
-input.multiple =
-true;
-
-
-input.onchange =
-async () => {
-
-const files =
-[...input.files];
-
-
-for(
-let i=0;
-i<files.length;
-i++
-){
 
-const f =
-files[i];
 
+/* =========================================================
+   BASIC DETAILS
+   ========================================================= */
 
-const safe =
-f.name.replace(
-/[^a-zA-Z0-9._-]/g,
-"_"
-);
+async function openBasicDetails(
+  patientId,
+  returnView
+) {
 
+  const patient =
+    await getPatient(
+      patientId
+    );
 
-const path =
-`patient-${patientId}/${consultationId}/${Date.now()}-${i}-${safe}`;
 
+  if (!patient) {
+    return;
+  }
 
-const up =
-await supabaseClient
-.storage
-.from("prescriptions")
-.upload(
-path,
-f,
-{
-upsert:false,
-contentType:f.type
-}
-);
-
-
-if(up.error){
-
-alert(
-up.error.message
-);
 
-continue;
+  currentPatient =
+    patient;
 
-}
 
+  const container =
+    document.getElementById(
+      "basicDetailsContent"
+    );
 
-const url =
-supabaseClient
-.storage
-.from("prescriptions")
-.getPublicUrl(path)
-.data
-.publicUrl;
 
+  container.innerHTML = `
 
-const {
-error
-} =
-await supabaseClient
-.from("consultation_images")
-.insert({
+    <div class="view-header">
 
-consultation_id:
-consultationId,
+      <h2>
+        👤 Patient Basic Details
+      </h2>
 
-image_url:
-url,
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="showView(
+          '${returnView || "searchView"}'
+        )">
 
-patient_id:
-patientId
+        ← Return
 
-});
+      </button>
 
+    </div>
 
-if(error){
 
-alert(
-error.message
-);
+    <div class="patient-header-box">
 
-}
+      <div class="patient-header-name">
 
-}
+        ${escapeHTML(
+          patient.patient_name
+        )}
 
+      </div>
 
-alert(
-"Prescription image(s) uploaded."
-);
+      <div class="patient-header-meta">
 
+        Patient ID:
+        <strong>
+          ${escapeHTML(
+            patient.id
+          )}
+        </strong>
 
-viewPatient(patientId);
+      </div>
 
-};
+    </div>
 
 
-input.click();
+    <div class="patient-details-grid">
 
-}
 
+      <div class="patient-detail">
 
-/* =========================
-   UPLOAD LAB
-========================= */
-
-async function uploadLabForPatient(
-patientId
-){
-
-const {
-data:latest
-} =
-await supabaseClient
-.from("consultations")
-.select("id")
-.eq("patient_id",patientId)
-.order(
-"created_at",
-{
-ascending:false
-}
-)
-.limit(1)
-.maybeSingle();
+        <span class="patient-detail-label">
+          Phone
+        </span>
 
+        <span class="patient-detail-value">
+          ${escapeHTML(
+            patient.patient_phone || "-"
+          )}
+        </span>
 
-if(!latest){
+      </div>
 
-alert(
-"Please create a consultation first so the lab report can be linked to a visit."
-);
 
-return;
+      <div class="patient-detail">
 
-}
+        <span class="patient-detail-label">
+          Age
+        </span>
 
+        <span class="patient-detail-value">
 
-uploadLabForConsultation(
-latest.id,
-patientId
-);
+          ${escapeHTML(
+            patientAge(
+              patient
+            )
+          )}
 
-}
+          ${
+            patientAge(patient) !== "-"
+              ? " years"
+              : ""
+          }
 
+        </span>
 
-function uploadLabForConsultation(
-consultationId,
-patientId
-){
+      </div>
 
-const input =
-document.createElement("input");
 
+      <div class="patient-detail">
 
-input.type =
-"file";
+        <span class="patient-detail-label">
+          Date of Birth
+        </span>
 
-input.accept =
-"image/jpeg,image/png,image/webp,application/pdf";
+        <span class="patient-detail-value">
+          ${escapeHTML(
+            patient.date_of_birth || "-"
+          )}
+        </span>
 
-input.multiple =
-true;
+      </div>
 
 
-input.onchange =
-async () => {
+      <div class="patient-detail">
 
-const files =
-[...input.files];
+        <span class="patient-detail-label">
+          Gender
+        </span>
 
+        <span class="patient-detail-value">
+          ${escapeHTML(
+            patient.gender || "-"
+          )}
+        </span>
 
-const type =
-prompt(
-"Enter lab report type:",
-"Laboratory Report"
-);
+      </div>
 
 
-if(!type)
-return;
+      <div class="patient-detail">
 
+        <span class="patient-detail-label">
+          Blood Group
+        </span>
 
-let ok = 0;
+        <span class="patient-detail-value">
+          ${escapeHTML(
+            patient.blood_group || "-"
+          )}
+        </span>
 
+      </div>
 
-for(
-let i=0;
-i<files.length;
-i++
-){
 
-const f =
-files[i];
+      <div class="patient-detail">
 
+        <span class="patient-detail-label">
+          Address
+        </span>
 
-if(
-f.size >
-20 * 1024 * 1024
-){
+        <span class="patient-detail-value">
+          ${escapeHTML(
+            patient.address || "-"
+          )}
+        </span>
 
-continue;
+      </div>
 
-}
 
+    </div>
 
-const safe =
-f.name.replace(
-/[^a-zA-Z0-9._-]/g,
-"_"
-);
 
+    <div
+      class="form-section"
+      style="margin-top:15px;">
 
-const path =
-`patient-${patientId}/${todayString()}/${consultationId}-${Date.now()}-${i}-${safe}`;
+      <h3>
+        📋 Past Medical Information
+      </h3>
 
 
-const up =
-await supabaseClient
-.storage
-.from("investigation-reports")
-.upload(
-path,
-f,
-{
-upsert:false,
-contentType:f.type
-}
-);
+      <div class="patient-details-grid">
 
 
-if(up.error){
+        <div class="patient-detail">
 
-alert(
-up.error.message
-);
+          <span class="patient-detail-label">
+            Medical History
+          </span>
 
-continue;
+          <span class="patient-detail-value">
+            ${escapeHTML(
+              patient.medical_history || "-"
+            )}
+          </span>
 
-}
+        </div>
 
 
-const {
-error
-} =
-await supabaseClient
-.from("investigation_reports")
-.insert({
+        <div class="patient-detail">
 
-patient_id:
-patientId,
+          <span class="patient-detail-label">
+            Surgical History
+          </span>
 
-consultation_id:
-consultationId,
+          <span class="patient-detail-value">
+            ${escapeHTML(
+              patient.surgical_history || "-"
+            )}
+          </span>
 
-report_date:
-todayString(),
+        </div>
 
-report_type:
-type,
 
-file_name:
-f.name,
+        <div class="patient-detail">
 
-file_path:
-path,
+          <span class="patient-detail-label">
+            Allergies
+          </span>
 
-file_type:
-f.type,
+          <span class="patient-detail-value">
+            ${escapeHTML(
+              patient.allergies || "-"
+            )}
+          </span>
 
-file_size:
-f.size
+        </div>
 
-});
 
+        <div class="patient-detail">
 
-if(error){
+          <span class="patient-detail-label">
+            Current Medications
+          </span>
 
-await supabaseClient
-.storage
-.from("investigation-reports")
-.remove([path]);
+          <span class="patient-detail-value">
+            ${escapeHTML(
+              patient.current_medications || "-"
+            )}
+          </span>
 
+        </div>
 
-alert(
-"Lab report database error:\n\n"
-+ error.message
-);
 
-continue;
+      </div>
 
-}
+    </div>
 
 
-ok++;
+    <div class="action-row">
 
-}
+      <button
+        type="button"
+        class="portal-button warning-button"
+        onclick="openEditPatient(
+          ${Number(patient.id)},
+          'basicDetailsView'
+        )">
 
+        ✏️ Edit Patient
 
-alert(
-ok +
-" lab report(s) uploaded successfully."
-);
+      </button>
 
 
-viewPatient(patientId);
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="showView(
+          '${returnView || "searchView"}'
+        )">
 
-};
+        ← Return
 
+      </button>
 
-input.click();
+    </div>
 
-}
+  `;
 
 
-/* =========================
-   DELETE PRESCRIPTION
-========================= */
-
-async function deletePrescription(id){
-
-if(
-!confirm(
-"Delete this prescription image?"
-)
-)
-return;
-
-
-const {
-data
-} =
-await supabaseClient
-.from("consultation_images")
-.select("image_url")
-.eq("id",id)
-.single();
-
-
-if(
-data?.image_url
-){
-
-const path =
-getStoragePath(
-data.image_url,
-"prescriptions"
-);
-
-
-if(path){
-
-await supabaseClient
-.storage
-.from("prescriptions")
-.remove([path]);
-
-}
-
-}
-
-
-const {
-error
-} =
-await supabaseClient
-.from("consultation_images")
-.delete()
-.eq("id",id);
-
-
-if(error){
-
-alert(
-error.message
-);
-
-return;
-
-}
-
-
-if(currentPatient){
-
-viewPatient(
-currentPatient.id
-);
-
-}
-
-}
-
-
-/* =========================
-   DELETE LAB
-========================= */
-
-async function deleteLab(id){
-
-if(
-!confirm(
-"Delete this lab report?"
-)
-)
-return;
-
-
-const {
-data
-} =
-await supabaseClient
-.from("investigation_reports")
-.select(
-"file_path,patient_id"
-)
-.eq("id",id)
-.single();
-
-
-if(data?.file_path){
-
-await supabaseClient
-.storage
-.from("investigation-reports")
-.remove(
-[data.file_path]
-);
-
-}
-
-
-const {
-error
-} =
-await supabaseClient
-.from("investigation_reports")
-.delete()
-.eq("id",id);
-
-
-if(error){
-
-alert(
-error.message
-);
-
-return;
-
-}
-
-
-if(currentPatient){
-
-viewPatient(
-currentPatient.id
-);
-
-}
-
-}
-
-
-/* =========================
-   NEW CONSULTATION
-========================= */
-
-async function startConsultation(
-patientId
-){
-
-const p =
-await getPatient(patientId);
-
-
-if(!p)
-return;
-
-
-currentPatient =
-p;
-
-
-$("mainResults")
-.classList.remove("hidden");
-
-
-$("mainResults").innerHTML = `
-
-<div class="section-head">
-
-<h2>
-🩺 New Consultation
-</h2>
-
-<button
-class="btn btn-light"
-onclick="viewPatient(${Number(patientId)})"
->
-↩️ Cancel
-</button>
-
-</div>
-
-
-<div class="profile-header">
-
-<div class="profile-name">
-
-👤
-${esc(p.patient_name)}
-
-</div>
-
-<div class="profile-id">
-
-Patient ID:
-<strong>
-${esc(p.id)}
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-🩺 Current Visit
-</h3>
-
-<label>
-Chief Complaints / Present Symptoms
-</label>
-
-<textarea
-id="cChief"
-placeholder="Enter present symptoms / chief complaints"
-></textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-❤️ Vitals
-</h3>
-
-<div class="form-grid">
-
-
-<div>
-
-<label>
-Blood Pressure (mmHg)
-</label>
-
-<input
-id="cBP"
-placeholder="120/80"
->
-
-</div>
-
-
-<div>
-
-<label>
-Pulse (bpm)
-</label>
-
-<input
-id="cPulse"
-type="number"
-placeholder="72"
->
-
-</div>
-
-
-<div>
-
-<label>
-SpO₂ (%)
-</label>
-
-<input
-id="cSpO2"
-type="number"
-placeholder="98"
->
-
-</div>
-
-
-<div>
-
-<label>
-Temperature (°F)
-</label>
-
-<input
-id="cTemp"
-type="number"
-step=".1"
-placeholder="98.6"
->
-
-</div>
-
-
-<div>
-
-<label>
-Weight (kg)
-</label>
-
-<input
-id="cWeight"
-type="number"
-step=".1"
->
-
-</div>
-
-
-<div>
-
-<label>
-Height (cm)
-</label>
-
-<input
-id="cHeight"
-type="number"
-step=".1"
->
-
-</div>
-
-
-</div>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-🔍 Examination
-</h3>
-
-<textarea
-id="cExam"
-placeholder="Enter examination findings"
-></textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-🩺 Diagnosis
-</h3>
-
-<textarea
-id="cDiagnosis"
-placeholder="Enter diagnosis"
-></textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-🧪 Investigations
-</h3>
-
-<textarea
-id="cInvestigations"
-placeholder="Enter investigations or laboratory findings"
-></textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-💊 Prescription / Treatment
-</h3>
-
-<textarea
-id="cPrescription"
-placeholder="Enter medicines, dose and duration"
-></textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-📷 Prescription Images
-</h3>
-
-<div class="upload-box">
-
-<input
-id="cRxFiles"
-type="file"
-accept="image/jpeg,image/png,image/webp"
-multiple
->
-
-<div class="note">
-
-JPG, PNG or WEBP.
-Multiple images allowed.
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-🧪 Lab Reports
-</h3>
-
-<div class="upload-box">
-
-<label>
-Report Type
-</label>
-
-<select id="cLabType">
-
-<option>
-Laboratory Report
-</option>
-
-<option>
-Blood Test
-</option>
-
-<option>
-Urine Test
-</option>
-
-<option>
-Imaging Report
-</option>
-
-<option>
-Other
-</option>
-
-</select>
-
-
-<input
-id="cLabFiles"
-type="file"
-accept="image/jpeg,image/png,image/webp,application/pdf"
-multiple
->
-
-
-<div class="note">
-
-Images or PDF.
-These will appear in the Lab Investigation portal too.
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-📝 Advice
-</h3>
-
-<textarea
-id="cAdvice"
-placeholder="Diet, lifestyle and other advice"
-></textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-📅 Follow-up
-</h3>
-
-<input
-id="cFollow"
-type="date"
->
-
-</div>
-
-
-<div class="actions">
-
-<button
-class="btn btn-primary"
-onclick="saveConsultation(${Number(patientId)})"
->
-💾 Save Consultation
-</button>
-
-
-<button
-class="btn btn-light"
-onclick="viewPatient(${Number(patientId)})"
->
-↩️ Cancel
-</button>
-
-</div>
-
-`;
-
-
-$("mainResults")
-.scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
-
-}
-
-
-/* =========================
-   SAVE CONSULTATION
-========================= */
-
-async function saveConsultation(
-patientId
-){
-
-const vitals = [
-
-[
-$("cBP").value.trim(),
-"BP"
-],
-
-[
-$("cPulse").value.trim(),
-"Pulse"
-],
-
-[
-$("cSpO2").value.trim(),
-"SpO₂"
-],
-
-[
-$("cTemp").value.trim(),
-"Temperature"
-],
-
-[
-$("cWeight").value.trim(),
-"Weight"
-],
-
-[
-$("cHeight").value.trim(),
-"Height"
-]
-
-]
-.filter(
-x => x[0]
-)
-.map(
-x => x[1]+": "+x[0]
-)
-.join(" | ");
-
-
-const row = {
-
-patient_id:
-patientId,
-
-chief_complaints:
-$("cChief").value.trim(),
-
-vitals:
-vitals,
-
-examination:
-$("cExam").value.trim(),
-
-diagnosis:
-$("cDiagnosis").value.trim(),
-
-investigations:
-$("cInvestigations").value.trim(),
-
-prescription:
-$("cPrescription").value.trim(),
-
-advice:
-$("cAdvice").value.trim(),
-
-follow_up_date:
-$("cFollow").value || null
-
-};
-
-
-const {
-data,
-error
-} =
-await supabaseClient
-.from("consultations")
-.insert(row)
-.select()
-.single();
-
-
-if(error){
-
-alert(
-"Unable to save consultation:\n\n"
-+ error.message
-);
-
-return;
-
-}
-
-
-await uploadSelectedPrescriptionFiles(
-data.id,
-patientId,
-$("cRxFiles").files
-);
-
-
-await uploadSelectedLabFiles(
-data.id,
-patientId,
-$("cLabFiles").files,
-$("cLabType").value
-);
-
-
-alert(
-"Consultation saved successfully."
-);
-
-
-viewPatient(
-patientId
-);
-
-}
-
-
-/* =========================
-   SAVE PRESCRIPTION FILES
-========================= */
-
-async function uploadSelectedPrescriptionFiles(
-cid,
-pid,
-list
-){
-
-for(
-let i=0;
-i<list.length;
-i++
-){
-
-const f =
-list[i];
-
-
-const safe =
-f.name.replace(
-/[^a-zA-Z0-9._-]/g,
-"_"
-);
-
-
-const path =
-`patient-${pid}/${cid}/${Date.now()}-${i}-${safe}`;
-
-
-const up =
-await supabaseClient
-.storage
-.from("prescriptions")
-.upload(
-path,
-f,
-{
-upsert:false,
-contentType:f.type
-}
-);
-
-
-if(up.error)
-continue;
-
-
-const url =
-supabaseClient
-.storage
-.from("prescriptions")
-.getPublicUrl(path)
-.data
-.publicUrl;
-
-
-await supabaseClient
-.from("consultation_images")
-.insert({
-
-consultation_id:
-cid,
-
-patient_id:
-pid,
-
-image_url:
-url
-
-});
-
-}
-
-}
-
-
-/* =========================
-   SAVE LAB FILES
-========================= */
-
-async function uploadSelectedLabFiles(
-cid,
-pid,
-list,
-type
-){
-
-for(
-let i=0;
-i<list.length;
-i++
-){
-
-const f =
-list[i];
-
-
-if(
-f.size >
-20*1024*1024
-){
-
-continue;
-
-}
-
-
-const safe =
-f.name.replace(
-/[^a-zA-Z0-9._-]/g,
-"_"
-);
-
-
-const path =
-`patient-${pid}/${todayString()}/${cid}-${Date.now()}-${i}-${safe}`;
-
-
-const up =
-await supabaseClient
-.storage
-.from("investigation-reports")
-.upload(
-path,
-f,
-{
-upsert:false,
-contentType:f.type
-}
-);
-
-
-if(up.error)
-continue;
-
-
-const {
-error
-} =
-await supabaseClient
-.from("investigation_reports")
-.insert({
-
-patient_id:
-pid,
-
-consultation_id:
-cid,
-
-report_date:
-todayString(),
-
-report_type:
-type,
-
-file_name:
-f.name,
-
-file_path:
-path,
-
-file_type:
-f.type,
-
-file_size:
-f.size
-
-});
-
-
-if(error){
-
-await supabaseClient
-.storage
-.from("investigation-reports")
-.remove(
-[path]
-);
-
-}
-
-}
+  showView(
+    "basicDetailsView"
+  );
 
 }
 
 
-/* =========================
+/* =========================================================
    EDIT PATIENT
-========================= */
+   ========================================================= */
 
-async function editPatient(id){
+async function openEditPatient(
+  patientId,
+  returnView
+) {
 
-const p =
-await getPatient(id);
+  const patient =
+    await getPatient(
+      patientId
+    );
 
 
-if(!p)
-return;
+  if (!patient) {
+    return;
+  }
 
 
-currentPatient =
-p;
+  currentPatient =
+    patient;
 
+  registrationReturnView =
+    returnView || "searchView";
 
-$("mainResults")
-.classList.remove("hidden");
 
+  const container =
+    document.getElementById(
+      "editPatientContent"
+    );
 
-$("mainResults").innerHTML = `
 
-<div class="section-head">
+  container.innerHTML = `
 
-<h2>
-✏️ Edit Patient
-</h2>
+    <div class="view-header">
 
-<button
-class="btn btn-light"
-onclick="viewPatient(${Number(id)})"
->
-↩️ Cancel
-</button>
+      <h2>
+        ✏️ Edit Patient
+      </h2>
 
-</div>
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="returnFromPatientEdit()">
 
+        ↩ Cancel
 
-<div class="form-section">
+      </button>
 
-<h3>
-👤 Basic Patient Details
-</h3>
+    </div>
 
-<div class="form-grid">
 
+    <div class="form-section">
 
-<div>
+      <h3>
+        👤 Basic Patient Details
+      </h3>
 
-<label>
-Patient Name *
-</label>
 
-<input
-id="eName"
-value="${esc(p.patient_name || "")}"
->
+      <div class="form-grid">
 
-</div>
 
+        <div class="form-group">
 
-<div>
+          <label>
+            Patient Name *
+          </label>
 
-<label>
-Phone Number *
-</label>
+          <input
+            id="editPatientName"
+            value="${escapeHTML(
+              patient.patient_name || ""
+            )}">
 
-<input
-id="ePhone"
-value="${esc(p.patient_phone || "")}"
->
+        </div>
 
-</div>
 
+        <div class="form-group">
 
-<div>
+          <label>
+            Phone Number *
+          </label>
 
-<label>
-Date of Birth
-</label>
+          <input
+            id="editPatientPhone"
+            value="${escapeHTML(
+              patient.patient_phone || ""
+            )}">
 
-<input
-id="eDOB"
-type="date"
-value="${esc(p.date_of_birth || "")}"
->
+        </div>
 
-</div>
 
+        <div class="form-group">
 
-<div>
+          <label>
+            Date of Birth
+          </label>
 
-<label>
-Gender
-</label>
+          <input
+            id="editPatientDOB"
+            type="date"
+            value="${escapeHTML(
+              patient.date_of_birth || ""
+            )}">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Age
+          </label>
 
-<select id="eGender">
+          <input
+            id="editPatientAge"
+            type="number"
+            min="0"
+            max="120"
+            value="${
+              patient.age !== null &&
+              patient.age !== undefined
+                ? escapeHTML(
+                    patient.age
+                  )
+                : escapeHTML(
+                    calculateAgeFromDOB(
+                      patient.date_of_birth
+                    )
+                  )
+            }">
 
-<option value="">
-Select Gender
-</option>
+        </div>
 
-<option
-${p.gender==="Male"?"selected":""}
->
-Male
-</option>
 
-<option
-${p.gender==="Female"?"selected":""}
->
-Female
-</option>
+        <div class="form-group">
 
-<option
-${p.gender==="Other"?"selected":""}
->
-Other
-</option>
+          <label>
+            Gender
+          </label>
 
-</select>
+          <select id="editPatientGender">
 
-</div>
+            <option value="">
+              Select Gender
+            </option>
 
+            <option
+              value="Male"
+              ${
+                patient.gender === "Male"
+                  ? "selected"
+                  : ""
+              }>
+              Male
+            </option>
 
-<div>
+            <option
+              value="Female"
+              ${
+                patient.gender === "Female"
+                  ? "selected"
+                  : ""
+              }>
+              Female
+            </option>
 
-<label>
-Blood Group
-</label>
+            <option
+              value="Other"
+              ${
+                patient.gender === "Other"
+                  ? "selected"
+                  : ""
+              }>
+              Other
+            </option>
 
-<input
-id="eBlood"
-value="${esc(p.blood_group || "")}"
->
+          </select>
 
-</div>
+        </div>
 
 
-<div>
+        <div class="form-group">
 
-<label>
-Address
-</label>
+          <label>
+            Blood Group
+          </label>
 
-<input
-id="eAddress"
-value="${esc(p.address || "")}"
->
+          <input
+            id="editPatientBloodGroup"
+            value="${escapeHTML(
+              patient.blood_group || ""
+            )}">
 
-</div>
+        </div>
 
 
-</div>
+        <div class="form-group full-width">
 
-</div>
+          <label>
+            Address
+          </label>
 
+          <textarea
+            id="editPatientAddress">${escapeHTML(
+              patient.address || ""
+            )}</textarea>
 
-<div class="form-section">
+        </div>
 
-<h3>
-📋 Past Medical Information
-</h3>
 
-<div class="form-grid one">
+      </div>
 
+    </div>
 
-<div>
 
-<label>
-Past Medical History
-</label>
+    <div class="form-section">
 
-<textarea
-id="eMedical"
->${esc(p.medical_history || "")}</textarea>
+      <h3>
+        📋 Past Medical Information
+      </h3>
 
-</div>
 
+      <div class="form-grid one-column">
 
-<div>
 
-<label>
-Surgical History
-</label>
+        <div class="form-group">
 
-<textarea
-id="eSurgical"
->${esc(p.surgical_history || "")}</textarea>
+          <label>
+            Medical History
+          </label>
 
-</div>
+          <textarea
+            id="editPatientMedicalHistory">${escapeHTML(
+              patient.medical_history || ""
+            )}</textarea>
 
+        </div>
 
-<div>
 
-<label>
-Allergy History
-</label>
+        <div class="form-group">
 
-<textarea
-id="eAllergy"
->${esc(p.allergies || "")}</textarea>
+          <label>
+            Surgical History
+          </label>
 
-</div>
+          <textarea
+            id="editPatientSurgicalHistory">${escapeHTML(
+              patient.surgical_history || ""
+            )}</textarea>
 
+        </div>
 
-<div>
 
-<label>
-Current Medications
-</label>
+        <div class="form-group">
 
-<textarea
-id="eMeds"
->${esc(p.current_medications || "")}</textarea>
+          <label>
+            Allergies
+          </label>
 
-</div>
+          <textarea
+            id="editPatientAllergies">${escapeHTML(
+              patient.allergies || ""
+            )}</textarea>
 
+        </div>
 
-</div>
 
-</div>
+        <div class="form-group">
 
+          <label>
+            Current Medications
+          </label>
 
-<div class="actions">
+          <textarea
+            id="editPatientCurrentMedications">${escapeHTML(
+              patient.current_medications || ""
+            )}</textarea>
 
-<button
-class="btn btn-primary"
-onclick="savePatientEdit(${Number(id)})"
->
-💾 Save Changes
-</button>
+        </div>
 
 
-<button
-class="btn btn-light"
-onclick="viewPatient(${Number(id)})"
->
-↩️ Cancel
-</button>
+      </div>
 
-</div>
+    </div>
 
-`;
 
+    <div class="action-row">
 
-$("mainResults")
-.scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
+      <button
+        type="button"
+        class="portal-button primary-button"
+        onclick="savePatientChanges(
+          ${Number(patient.id)}
+        )">
+
+        💾 Save Changes
+
+      </button>
+
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="returnFromPatientEdit()">
+
+        ↩ Cancel
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  showView(
+    "editPatientView"
+  );
+
+
+  document
+    .getElementById(
+      "editPatientDOB"
+    )
+    .addEventListener(
+      "change",
+      function() {
+
+        const age =
+          calculateAgeFromDOB(
+            this.value
+          );
+
+        if (
+          age !== ""
+        ) {
+
+          document
+            .getElementById(
+              "editPatientAge"
+            )
+            .value =
+              age;
+
+        }
+
+      }
+    );
 
 }
 
 
-/* =========================
-   SAVE PATIENT EDIT
-========================= */
+function returnFromPatientEdit() {
 
-async function savePatientEdit(id){
+  if (
+    registrationReturnView ===
+    "registrationSuccessView"
+  ) {
 
-const update = {
+    renderRegistrationSuccess(
+      currentPatient
+    );
 
-patient_name:
-$("eName").value.trim(),
-
-patient_phone:
-$("ePhone").value.trim(),
-
-date_of_birth:
-$("eDOB").value || null,
-
-gender:
-$("eGender").value || null,
-
-blood_group:
-$("eBlood").value.trim(),
-
-address:
-$("eAddress").value.trim(),
-
-medical_history:
-$("eMedical").value.trim(),
-
-surgical_history:
-$("eSurgical").value.trim(),
-
-allergies:
-$("eAllergy").value.trim(),
-
-current_medications:
-$("eMeds").value.trim()
-
-};
+    return;
+  }
 
 
-if(
-!update.patient_name ||
-!update.patient_phone
-){
+  if (
+    registrationReturnView ===
+    "basicDetailsView"
+  ) {
 
-alert(
-"Patient name and phone number are required."
-);
+    openBasicDetails(
+      currentPatient.id,
+      "searchView"
+    );
 
-return;
+    return;
+  }
+
+
+  showView(
+    registrationReturnView ||
+    "searchView"
+  );
+}
+
+
+async function savePatientChanges(
+  patientId
+) {
+
+  const ageValue =
+    document
+      .getElementById(
+        "editPatientAge"
+      )
+      .value;
+
+
+  const update = {
+
+    patient_name:
+      document
+        .getElementById(
+          "editPatientName"
+        )
+        .value
+        .trim(),
+
+    patient_phone:
+      document
+        .getElementById(
+          "editPatientPhone"
+        )
+        .value
+        .trim(),
+
+    date_of_birth:
+      document
+        .getElementById(
+          "editPatientDOB"
+        )
+        .value ||
+      null,
+
+    age:
+      ageValue === ""
+        ? null
+        : Number(
+            ageValue
+          ),
+
+    gender:
+      document
+        .getElementById(
+          "editPatientGender"
+        )
+        .value ||
+      null,
+
+    blood_group:
+      document
+        .getElementById(
+          "editPatientBloodGroup"
+        )
+        .value
+        .trim(),
+
+    address:
+      document
+        .getElementById(
+          "editPatientAddress"
+        )
+        .value
+        .trim(),
+
+    medical_history:
+      document
+        .getElementById(
+          "editPatientMedicalHistory"
+        )
+        .value
+        .trim(),
+
+    surgical_history:
+      document
+        .getElementById(
+          "editPatientSurgicalHistory"
+        )
+        .value
+        .trim(),
+
+    allergies:
+      document
+        .getElementById(
+          "editPatientAllergies"
+        )
+        .value
+        .trim(),
+
+    current_medications:
+      document
+        .getElementById(
+          "editPatientCurrentMedications"
+        )
+        .value
+        .trim()
+
+  };
+
+
+  if (
+    !update.patient_name ||
+    !update.patient_phone
+  ) {
+
+    alert(
+      "Patient name and phone number are required."
+    );
+
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .update(
+        update
+      )
+      .eq(
+        "id",
+        patientId
+      );
+
+
+  if (error) {
+
+    alert(
+      "Unable to update patient:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  const patient =
+    await getPatient(
+      patientId
+    );
+
+
+  currentPatient =
+    patient;
+
+
+  alert(
+    "Patient details updated successfully."
+  );
+
+
+  if (
+    registrationReturnView ===
+    "registrationSuccessView"
+  ) {
+
+    renderRegistrationSuccess(
+      patient
+    );
+
+  } else {
+
+    openBasicDetails(
+      patientId,
+      "searchView"
+    );
+
+  }
 
 }
 
 
-const {
-error
-} =
-await supabaseClient
-.from("patients")
-.update(update)
-.eq("id",id);
+/* =========================================================
+   NEW CONSULTATION
+   ========================================================= */
+
+async function startNewConsultation(
+  patientId
+) {
+
+  const patient =
+    await getPatient(
+      patientId
+    );
 
 
-if(error){
+  if (!patient) {
+    return;
+  }
 
-alert(
-error.message
-);
 
-return;
+  currentPatient =
+    patient;
+
+  currentConsultationId =
+    null;
+
+  selectedPrescriptionFiles =
+    [];
+
+  selectedLabFiles =
+    [];
+
+
+  const container =
+    document.getElementById(
+      "consultationContent"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="view-header">
+
+      <h2>
+        🩺 New Consultation
+      </h2>
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="openSearchView()">
+
+        ← Back
+
+      </button>
+
+    </div>
+
+
+    <div class="consultation-patient-bar">
+
+      <div class="consultation-patient-name">
+
+        👤
+        ${escapeHTML(
+          patient.patient_name
+        )}
+
+      </div>
+
+      <div class="consultation-patient-meta">
+
+        Patient ID:
+        <strong>
+          ${escapeHTML(
+            patient.id
+          )}
+        </strong>
+
+        &nbsp; | &nbsp;
+
+        Age:
+        <strong>
+          ${escapeHTML(
+            patientAge(
+              patient
+            )
+          )}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        🩺 Current Visit
+      </h3>
+
+      <div class="form-group">
+
+        <label>
+          Chief Complaints / Present Symptoms
+        </label>
+
+        <textarea
+          id="consultChiefComplaints"
+          placeholder="Enter present symptoms / chief complaints"></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        ❤️ Vitals
+      </h3>
+
+
+      <div class="form-grid">
+
+
+        <div class="form-group">
+
+          <label>
+            Blood Pressure (mmHg)
+          </label>
+
+          <input
+            id="consultBP"
+            placeholder="120/80">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Pulse (bpm)
+          </label>
+
+          <input
+            id="consultPulse"
+            type="number"
+            placeholder="72">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            SpO₂ (%)
+          </label>
+
+          <input
+            id="consultSpO2"
+            type="number"
+            placeholder="98">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Temperature (°F)
+          </label>
+
+          <input
+            id="consultTemperature"
+            type="number"
+            step="0.1"
+            placeholder="98.6">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Weight (kg)
+          </label>
+
+          <input
+            id="consultWeight"
+            type="number"
+            step="0.1">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Height (cm)
+          </label>
+
+          <input
+            id="consultHeight"
+            type="number"
+            step="0.1">
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        🔍 Examination
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="consultExamination"
+          placeholder="Enter examination findings"></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        🩺 Diagnosis
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="consultDiagnosis"
+          placeholder="Enter diagnosis"></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        🧪 Investigations
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="consultInvestigations"
+          placeholder="Enter investigations / laboratory findings"></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        💊 Prescription / Treatment
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="consultPrescription"
+          placeholder="Enter medicines, dose and duration"></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        📷 Prescription Images
+      </h3>
+
+      <div class="upload-box">
+
+        <input
+          type="file"
+          id="consultPrescriptionFiles"
+          accept="image/jpeg,image/png,image/webp"
+          multiple>
+
+        <div class="upload-note">
+          JPG, PNG or WEBP. Multiple images can be selected.
+        </div>
+
+      </div>
+
+      <div
+        id="selectedPrescriptionFiles"
+        class="selected-files">
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        🧪 Lab Reports
+      </h3>
+
+
+      <div class="form-group">
+
+        <label>
+          Report Type
+        </label>
+
+        <select id="consultLabType">
+
+          <option value="Laboratory Report">
+            Laboratory Report
+          </option>
+
+          <option value="Blood Test">
+            Blood Test
+          </option>
+
+          <option value="HbA1c">
+            HbA1c
+          </option>
+
+          <option value="Lipid Profile">
+            Lipid Profile
+          </option>
+
+          <option value="Thyroid">
+            Thyroid
+          </option>
+
+          <option value="Kidney">
+            Kidney
+          </option>
+
+          <option value="Liver">
+            Liver
+          </option>
+
+          <option value="Urine">
+            Urine
+          </option>
+
+          <option value="Imaging / Scan">
+            Imaging / Scan
+          </option>
+
+          <option value="Other">
+            Other
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        class="upload-box"
+        style="margin-top:10px;">
+
+        <input
+          type="file"
+          id="consultLabFiles"
+          accept="image/jpeg,image/png,image/webp,application/pdf"
+          multiple>
+
+        <div class="upload-note">
+          JPG, PNG, WEBP or PDF. These reports also appear in the Lab Investigation portal.
+        </div>
+
+      </div>
+
+      <div
+        id="selectedLabFiles"
+        class="selected-files">
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        📝 Advice
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="consultAdvice"
+          placeholder="Diet, lifestyle and other advice"></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        📅 Follow-up
+      </h3>
+
+      <div class="form-group">
+
+        <label>
+          Follow-up Date
+        </label>
+
+        <input
+          type="date"
+          id="consultFollowUp">
+
+      </div>
+
+    </div>
+
+
+    <div class="action-row">
+
+      <button
+        type="button"
+        class="portal-button primary-button"
+        id="saveConsultationButton"
+        onclick="saveNewConsultation(
+          ${Number(patient.id)}
+        )">
+
+        💾 Save Consultation
+
+      </button>
+
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="openSearchView()">
+
+        ↩ Cancel
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  showView(
+    "consultationView"
+  );
+
+
+  document
+    .getElementById(
+      "consultPrescriptionFiles"
+    )
+    .addEventListener(
+      "change",
+      function() {
+
+        selectedPrescriptionFiles =
+          Array.from(
+            this.files || []
+          );
+
+        renderSelectedPrescriptionFiles();
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "consultLabFiles"
+    )
+    .addEventListener(
+      "change",
+      function() {
+
+        selectedLabFiles =
+          Array.from(
+            this.files || []
+          );
+
+        renderSelectedLabFiles();
+
+      }
+    );
 
 }
 
 
-alert(
-"Patient details updated successfully."
-);
+/* =========================================================
+   SELECTED FILES PREVIEW
+   ========================================================= */
+
+function renderSelectedPrescriptionFiles() {
+
+  const container =
+    document.getElementById(
+      "selectedPrescriptionFiles"
+    );
 
 
-viewPatient(id);
+  if (!container) {
+    return;
+  }
+
+
+  if (
+    selectedPrescriptionFiles.length === 0
+  ) {
+
+    container.innerHTML =
+      "";
+
+    return;
+  }
+
+
+  container.innerHTML =
+    selectedPrescriptionFiles.map(
+      function(file, index) {
+
+        return `
+
+          <div class="selected-file">
+
+            <div class="selected-file-name">
+
+              📷
+              ${escapeHTML(
+                file.name
+              )}
+
+            </div>
+
+
+            <div class="file-actions">
+
+              <button
+                type="button"
+                class="portal-button primary-button small-button"
+                onclick="previewLocalFile(
+                  'prescription',
+                  ${index}
+                )">
+
+                👁️ View
+
+              </button>
+
+
+              <button
+                type="button"
+                class="portal-button danger-button small-button"
+                onclick="removeSelectedPrescriptionFile(
+                  ${index}
+                )">
+
+                ✕ Remove
+
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
 
 }
 
 
-/* =========================
+function renderSelectedLabFiles() {
+
+  const container =
+    document.getElementById(
+      "selectedLabFiles"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  if (
+    selectedLabFiles.length === 0
+  ) {
+
+    container.innerHTML =
+      "";
+
+    return;
+  }
+
+
+  container.innerHTML =
+    selectedLabFiles.map(
+      function(file, index) {
+
+        return `
+
+          <div class="selected-file">
+
+            <div class="selected-file-name">
+
+              🧪
+              ${escapeHTML(
+                file.name
+              )}
+
+            </div>
+
+
+            <div class="file-actions">
+
+              <button
+                type="button"
+                class="portal-button primary-button small-button"
+                onclick="previewLocalFile(
+                  'lab',
+                  ${index}
+                )">
+
+                👁️ View
+
+              </button>
+
+
+              <button
+                type="button"
+                class="portal-button danger-button small-button"
+                onclick="removeSelectedLabFile(
+                  ${index}
+                )">
+
+                ✕ Remove
+
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+function removeSelectedPrescriptionFile(
+  index
+) {
+
+  selectedPrescriptionFiles.splice(
+    index,
+    1
+  );
+
+  renderSelectedPrescriptionFiles();
+}
+
+
+function removeSelectedLabFile(
+  index
+) {
+
+  selectedLabFiles.splice(
+    index,
+    1
+  );
+
+  renderSelectedLabFiles();
+}
+
+
+function previewLocalFile(
+  type,
+  index
+) {
+
+  const file =
+    type === "lab"
+      ? selectedLabFiles[index]
+      : selectedPrescriptionFiles[index];
+
+
+  if (!file) {
+    return;
+  }
+
+
+  const url =
+    URL.createObjectURL(
+      file
+    );
+
+
+  if (
+    file.type ===
+    "application/pdf"
+  ) {
+
+    openPDFModal(
+      url,
+      file.name
+    );
+
+  } else {
+
+    openImageModal(
+      url,
+      file.name
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SAVE CONSULTATION
+   ========================================================= */
+
+async function saveNewConsultation(
+  patientId
+) {
+
+  const button =
+    document.getElementById(
+      "saveConsultationButton"
+    );
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "⏳ Saving...";
+
+
+  const vitals = [];
+
+
+  const bp =
+    document
+      .getElementById(
+        "consultBP"
+      )
+      .value
+      .trim();
+
+  const pulse =
+    document
+      .getElementById(
+        "consultPulse"
+      )
+      .value
+      .trim();
+
+  const spo2 =
+    document
+      .getElementById(
+        "consultSpO2"
+      )
+      .value
+      .trim();
+
+  const temperature =
+    document
+      .getElementById(
+        "consultTemperature"
+      )
+      .value
+      .trim();
+
+  const weight =
+    document
+      .getElementById(
+        "consultWeight"
+      )
+      .value
+      .trim();
+
+  const height =
+    document
+      .getElementById(
+        "consultHeight"
+      )
+      .value
+      .trim();
+
+
+  if (bp) {
+    vitals.push(
+      "BP: " + bp
+    );
+  }
+
+  if (pulse) {
+    vitals.push(
+      "Pulse: " + pulse
+    );
+  }
+
+  if (spo2) {
+    vitals.push(
+      "SpO₂: " + spo2 + "%"
+    );
+  }
+
+  if (temperature) {
+    vitals.push(
+      "Temperature: " +
+      temperature +
+      " °F"
+    );
+  }
+
+  if (weight) {
+    vitals.push(
+      "Weight: " +
+      weight +
+      " kg"
+    );
+  }
+
+  if (height) {
+    vitals.push(
+      "Height: " +
+      height +
+      " cm"
+    );
+  }
+
+
+  const consultation = {
+
+    patient_id:
+      patientId,
+
+    chief_complaints:
+      document
+        .getElementById(
+          "consultChiefComplaints"
+        )
+        .value
+        .trim(),
+
+    vitals:
+      vitals.join(
+        " | "
+      ),
+
+    examination:
+      document
+        .getElementById(
+          "consultExamination"
+        )
+        .value
+        .trim(),
+
+    diagnosis:
+      document
+        .getElementById(
+          "consultDiagnosis"
+        )
+        .value
+        .trim(),
+
+    investigations:
+      document
+        .getElementById(
+          "consultInvestigations"
+        )
+        .value
+        .trim(),
+
+    prescription:
+      document
+        .getElementById(
+          "consultPrescription"
+        )
+        .value
+        .trim(),
+
+    advice:
+      document
+        .getElementById(
+          "consultAdvice"
+        )
+        .value
+        .trim(),
+
+    follow_up_date:
+      document
+        .getElementById(
+          "consultFollowUp"
+        )
+        .value ||
+      null
+
+  };
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .insert(
+        consultation
+      )
+      .select()
+      .single();
+
+
+  if (error) {
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "💾 Save Consultation";
+
+    alert(
+      "Unable to save consultation:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  currentConsultationId =
+    data.id;
+
+
+  try {
+
+    await uploadPrescriptionFiles(
+      patientId,
+      data.id,
+      selectedPrescriptionFiles
+    );
+
+
+    await uploadLabFiles(
+      patientId,
+      data.id,
+      selectedLabFiles,
+      document
+        .getElementById(
+          "consultLabType"
+        )
+        .value
+    );
+
+  } catch (uploadError) {
+
+    console.error(
+      uploadError
+    );
+
+    alert(
+      "Consultation saved, but one or more files could not be uploaded:\n\n" +
+      uploadError.message
+    );
+
+  }
+
+
+  button.disabled =
+    false;
+
+  button.textContent =
+    "💾 Save Consultation";
+
+
+  selectedPrescriptionFiles =
+    [];
+
+  selectedLabFiles =
+    [];
+
+
+  await openSavedConsultation(
+    patientId,
+    data.id,
+    true
+  );
+
+}
+
+
+/* =========================================================
+   PRESCRIPTION UPLOAD
+   ========================================================= */
+
+async function uploadPrescriptionFiles(
+  patientId,
+  consultationId,
+  files
+) {
+
+  for (
+    let index = 0;
+    index < files.length;
+    index++
+  ) {
+
+    const file =
+      files[index];
+
+
+    if (
+      !file.type.startsWith(
+        "image/"
+      )
+    ) {
+      continue;
+    }
+
+
+    const safeName =
+      file.name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+      );
+
+
+    const path =
+      "patient-" +
+      patientId +
+      "/" +
+      consultationId +
+      "/" +
+      Date.now() +
+      "-" +
+      index +
+      "-" +
+      safeName;
+
+
+    const {
+      error:
+        uploadError
+    } =
+      await supabaseClient
+        .storage
+        .from(
+          "prescriptions"
+        )
+        .upload(
+          path,
+          file,
+          {
+            upsert: false,
+            contentType:
+              file.type
+          }
+        );
+
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+
+    const {
+      data:
+        publicData
+    } =
+      supabaseClient
+        .storage
+        .from(
+          "prescriptions"
+        )
+        .getPublicUrl(
+          path
+        );
+
+
+    /*
+       IMPORTANT:
+       consultation_images is linked ONLY
+       through consultation_id.
+
+       Do NOT insert patient_id here.
+    */
+
+    const {
+      error:
+        imageError
+    } =
+      await supabaseClient
+        .from(
+          "consultation_images"
+        )
+        .insert({
+
+          consultation_id:
+            consultationId,
+
+          image_url:
+            publicData.publicUrl
+
+        });
+
+
+    if (imageError) {
+      throw imageError;
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   LAB UPLOAD
+   ========================================================= */
+
+async function uploadLabFiles(
+  patientId,
+  consultationId,
+  files,
+  reportType
+) {
+
+  for (
+    let index = 0;
+    index < files.length;
+    index++
+  ) {
+
+    const file =
+      files[index];
+
+
+    const allowedTypes = [
+
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "application/pdf"
+
+    ];
+
+
+    if (
+      !allowedTypes.includes(
+        file.type
+      )
+    ) {
+      continue;
+    }
+
+
+    if (
+      file.size >
+      20 * 1024 * 1024
+    ) {
+      continue;
+    }
+
+
+    const safeName =
+      file.name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+      );
+
+
+    const path =
+      "patient-" +
+      patientId +
+      "/" +
+      getTodayString() +
+      "/" +
+      consultationId +
+      "-" +
+      Date.now() +
+      "-" +
+      index +
+      "-" +
+      safeName;
+
+
+    const {
+      error:
+        uploadError
+    } =
+      await supabaseClient
+        .storage
+        .from(
+          "investigation-reports"
+        )
+        .upload(
+          path,
+          file,
+          {
+            upsert: false,
+            contentType:
+              file.type
+          }
+        );
+
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+
+    const {
+      error:
+        databaseError
+    } =
+      await supabaseClient
+        .from(
+          "investigation_reports"
+        )
+        .insert({
+
+          patient_id:
+            patientId,
+
+          consultation_id:
+            consultationId,
+
+          report_date:
+            getTodayString(),
+
+          report_type:
+            reportType,
+
+          file_name:
+            file.name,
+
+          file_path:
+            path,
+
+          file_type:
+            file.type,
+
+          file_size:
+            file.size
+
+        });
+
+
+    if (databaseError) {
+
+      await supabaseClient
+        .storage
+        .from(
+          "investigation-reports"
+        )
+        .remove([
+          path
+        ]);
+
+
+      throw databaseError;
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   SAVED CONSULTATION
+   ========================================================= */
+
+async function openSavedConsultation(
+  patientId,
+  consultationId,
+  showSuccess
+) {
+
+  const patient =
+    await getPatient(
+      patientId
+    );
+
+
+  if (!patient) {
+    return;
+  }
+
+
+  const {
+    data: consultation,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select("*")
+      .eq(
+        "id",
+        consultationId
+      )
+      .single();
+
+
+  if (
+    error ||
+    !consultation
+  ) {
+
+    alert(
+      "Unable to load consultation."
+    );
+
+    return;
+  }
+
+
+  currentPatient =
+    patient;
+
+  currentConsultationId =
+    consultation.id;
+
+
+  const container =
+    document.getElementById(
+      "savedConsultationContent"
+    );
+
+
+  container.innerHTML = `
+
+    ${
+      showSuccess
+        ? `
+          <h2 class="success-title">
+            ✅ Consultation Saved Successfully
+          </h2>
+        `
+        : `
+          <h2>
+            🩺 Consultation
+          </h2>
+        `
+    }
+
+
+    <div class="consultation-patient-bar">
+
+      <div class="consultation-patient-name">
+
+        👤
+        ${escapeHTML(
+          patient.patient_name
+        )}
+
+      </div>
+
+      <div class="consultation-patient-meta">
+
+        Patient ID:
+        <strong>
+          ${escapeHTML(
+            patient.id
+          )}
+        </strong>
+
+        &nbsp; | &nbsp;
+
+        Age:
+        <strong>
+          ${escapeHTML(
+            patientAge(
+              patient
+            )
+          )}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="saved-consultation-card">
+
+      <div class="saved-date">
+
+        📅
+        ${formatDate(
+          consultation.created_at
+        )}
+
+        &nbsp; • &nbsp;
+
+        🕒
+        ${formatTime(
+          consultation.created_at
+        )}
+
+      </div>
+
+
+      <div
+        id="fullConsultation-${Number(
+          consultation.id
+        )}"
+        class="full-consultation">
+
+        <div class="portal-message">
+          Loading full consultation...
+        </div>
+
+      </div>
+
+
+      <div class="action-row">
+
+        <button
+          type="button"
+          id="viewFullButton-${Number(
+            consultation.id
+          )}"
+          class="portal-button primary-button"
+          onclick="toggleFullConsultation(
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          ▶️ View Full Consultation
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button warning-button"
+          onclick="openEditConsultation(
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          ✏️ Edit Consultation
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button success-button"
+          onclick="openBillingFromConsultation(
+            ${Number(
+              patient.id
+            )},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          💰 Create Bill
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="action-row">
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="openSearchView()">
+
+        ← Patient Search
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  showView(
+    "savedConsultationView"
+  );
+
+}
+
+
+/* =========================================================
+   FULL CONSULTATION
+   ========================================================= */
+
+async function toggleFullConsultation(
+  consultationId
+) {
+
+  const container =
+    document.getElementById(
+      "fullConsultation-" +
+      consultationId
+    );
+
+
+  const button =
+    document.getElementById(
+      "viewFullButton-" +
+      consultationId
+    );
+
+
+  if (
+    container.classList.contains(
+      "open"
+    )
+  ) {
+
+    container.classList.remove(
+      "open"
+    );
+
+    button.textContent =
+      "▶️ View Full Consultation";
+
+    return;
+  }
+
+
+  container.classList.add(
+    "open"
+  );
+
+  button.textContent =
+    "▲ Hide Full Consultation";
+
+
+  await loadFullConsultation(
+    consultationId
+  );
+
+}
+
+
+async function loadFullConsultation(
+  consultationId
+) {
+
+  const container =
+    document.getElementById(
+      "fullConsultation-" +
+      consultationId
+    );
+
+
+  const {
+    data:
+      consultation,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select("*")
+      .eq(
+        "id",
+        consultationId
+      )
+      .single();
+
+
+  if (
+    error ||
+    !consultation
+  ) {
+
+    container.innerHTML = `
+
+      <div class="portal-message">
+        Unable to load consultation.
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  const [
+    prescriptionImages,
+    labReports
+  ] =
+    await Promise.all([
+
+      getConsultationPrescriptionImages(
+        consultationId
+      ),
+
+      getConsultationLabReports(
+        consultationId
+      )
+
+    ]);
+
+
+  container.innerHTML = `
+
+    <div class="consultation-detail">
+
+      <h4>
+        🩺 Chief Complaints
+      </h4>
+
+      <div class="preformatted">
+        ${escapeHTML(
+          consultation.chief_complaints || "-"
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="consultation-detail">
+
+      <h4>
+        ❤️ Vitals
+      </h4>
+
+      <div class="preformatted">
+        ${escapeHTML(
+          consultation.vitals || "-"
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="consultation-detail">
+
+      <h4>
+        🔍 Examination
+      </h4>
+
+      <div class="preformatted">
+        ${escapeHTML(
+          consultation.examination || "-"
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="consultation-detail">
+
+      <h4>
+        🩺 Diagnosis
+      </h4>
+
+      <div class="preformatted">
+        ${escapeHTML(
+          consultation.diagnosis || "-"
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="consultation-detail">
+
+      <h4>
+        🧪 Investigations
+      </h4>
+
+      <div class="preformatted">
+        ${escapeHTML(
+          consultation.investigations || "-"
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="consultation-detail">
+
+      <h4>
+        💊 Prescription / Treatment
+      </h4>
+
+      <div class="preformatted">
+        ${escapeHTML(
+          consultation.prescription || "-"
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="consultation-detail">
+
+      <h4>
+        📷 Prescription Images
+      </h4>
+
+      ${
+        renderPrescriptionImageCards(
+          prescriptionImages,
+          consultationId
+        )
+      }
+
+    </div>
+
+
+    <div class="consultation-detail">
+
+      <h4>
+        🧪 Lab Reports
+      </h4>
+
+      ${
+        renderLabReportCards(
+          labReports
+        )
+      }
+
+    </div>
+
+
+    <div class="consultation-detail">
+
+      <h4>
+        📝 Advice
+      </h4>
+
+      <div class="preformatted">
+        ${escapeHTML(
+          consultation.advice || "-"
+        )}
+      </div>
+
+    </div>
+
+
+    <div class="consultation-detail">
+
+      <h4>
+        📅 Follow-up Date
+      </h4>
+
+      <div class="preformatted">
+        ${escapeHTML(
+          consultation.follow_up_date || "-"
+        )}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   GET PRESCRIPTION IMAGES
+   ========================================================= */
+
+async function getConsultationPrescriptionImages(
+  consultationId
+) {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "consultation_images"
+      )
+      .select("*")
+      .eq(
+        "consultation_id",
+        consultationId
+      )
+      .order(
+        "id",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Prescription loading error:",
+      error
+    );
+
+    return [];
+
+  }
+
+
+  return data || [];
+}
+
+
+/* =========================================================
+   GET LAB REPORTS
+   ========================================================= */
+
+async function getConsultationLabReports(
+  consultationId
+) {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "investigation_reports"
+      )
+      .select("*")
+      .eq(
+        "consultation_id",
+        consultationId
+      )
+      .order(
+        "report_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Lab loading error:",
+      error
+    );
+
+    return [];
+
+  }
+
+
+  return data || [];
+}
+
+
+/* =========================================================
+   RENDER PRESCRIPTION
+   ========================================================= */
+
+function renderPrescriptionImageCards(
+  images,
+  consultationId
+) {
+
+  if (
+    !images ||
+    images.length === 0
+  ) {
+
+    return `
+
+      <div class="portal-message">
+        No prescription images.
+      </div>
+
+    `;
+
+  }
+
+
+  return images.map(
+    function(image, index) {
+
+      return `
+
+        <div class="file-card">
+
+          <div class="file-title">
+
+            📷 Prescription
+            ${index + 1}
+
+          </div>
+
+
+          <div class="file-actions">
+
+            <button
+              type="button"
+              class="portal-button primary-button small-button"
+              onclick="viewPrescriptionImage(
+                '${encodeURIComponent(
+                  image.image_url
+                )}'
+              )">
+
+              👁️ View
+
+            </button>
+
+
+            <button
+              type="button"
+              class="portal-button light-button small-button"
+              onclick="downloadPrescriptionImage(
+                '${encodeURIComponent(
+                  image.image_url
+                )}',
+                ${index + 1}
+              )">
+
+              ⬇️ Download
+
+            </button>
+
+
+            <button
+              type="button"
+              class="portal-button danger-button small-button"
+              onclick="deletePrescriptionImage(
+                ${Number(
+                  image.id
+                )},
+                '${encodeURIComponent(
+                  image.image_url
+                )}',
+                ${Number(
+                  consultationId
+                )}
+              )">
+
+              🗑️ Delete
+
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+  ).join("");
+
+}
+
+
+/* =========================================================
+   RENDER LAB
+   ========================================================= */
+
+function renderLabReportCards(
+  reports
+) {
+
+  if (
+    !reports ||
+    reports.length === 0
+  ) {
+
+    return `
+
+      <div class="portal-message">
+        No lab reports.
+      </div>
+
+    `;
+
+  }
+
+
+  return reports.map(
+    function(report) {
+
+      return `
+
+        <div class="file-card">
+
+          <div class="file-title">
+
+            🧪
+            ${escapeHTML(
+              report.report_type ||
+              "Lab Report"
+            )}
+
+          </div>
+
+          <div class="file-meta">
+
+            📅
+            ${escapeHTML(
+              report.report_date || "-"
+            )}
+
+            <br>
+
+            📄
+            ${escapeHTML(
+              report.file_name || "-"
+            )}
+
+          </div>
+
+
+          <div class="file-actions">
+
+            <button
+              type="button"
+              class="portal-button primary-button small-button"
+              onclick="viewLabReport(
+                ${Number(
+                  report.id
+                )}
+              )">
+
+              👁️ View
+
+            </button>
+
+
+            <button
+              type="button"
+              class="portal-button light-button small-button"
+              onclick="downloadLabReport(
+                ${Number(
+                  report.id
+                )}
+              )">
+
+              ⬇️ Download
+
+            </button>
+
+
+            <button
+              type="button"
+              class="portal-button danger-button small-button"
+              onclick="deleteLabReport(
+                ${Number(
+                  report.id
+                )}
+              )">
+
+              🗑️ Delete
+
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+  ).join("");
+
+}
+
+
+/* =========================================================
+   PRESCRIPTION VIEW / DOWNLOAD
+   ========================================================= */
+
+function viewPrescriptionImage(
+  encodedUrl
+) {
+
+  openImageModal(
+    decodeURIComponent(
+      encodedUrl
+    ),
+    "Prescription"
+  );
+
+}
+
+
+async function downloadPrescriptionImage(
+  encodedUrl,
+  index
+) {
+
+  const url =
+    decodeURIComponent(
+      encodedUrl
+    );
+
+
+  try {
+
+    const response =
+      await fetch(
+        url
+      );
+
+
+    if (!response.ok) {
+      throw new Error(
+        "Unable to download."
+      );
+    }
+
+
+    const blob =
+      await response.blob();
+
+
+    const blobURL =
+      URL.createObjectURL(
+        blob
+      );
+
+
+    const link =
+      document.createElement(
+        "a"
+      );
+
+
+    link.href =
+      blobURL;
+
+    link.download =
+      "Prescription-" +
+      index +
+      ".jpg";
+
+
+    document.body.appendChild(
+      link
+    );
+
+    link.click();
+
+    link.remove();
+
+
+    setTimeout(
+      function() {
+
+        URL.revokeObjectURL(
+          blobURL
+        );
+
+      },
+      1000
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Unable to download prescription."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PRESCRIPTION DELETE
+   ========================================================= */
+
+function getPrescriptionStoragePath(
+  imageUrl
+) {
+
+  try {
+
+    const url =
+      new URL(
+        imageUrl
+      );
+
+
+    const marker =
+      "/storage/v1/object/public/prescriptions/";
+
+
+    const index =
+      url.pathname.indexOf(
+        marker
+      );
+
+
+    if (
+      index === -1
+    ) {
+      return null;
+    }
+
+
+    return decodeURIComponent(
+      url.pathname.substring(
+        index +
+        marker.length
+      )
+    );
+
+
+  } catch (error) {
+
+    return null;
+
+  }
+
+}
+
+
+async function deletePrescriptionImage(
+  imageId,
+  encodedUrl,
+  consultationId
+) {
+
+  if (
+    !confirm(
+      "Delete this prescription image permanently?"
+    )
+  ) {
+    return;
+  }
+
+
+  const imageUrl =
+    decodeURIComponent(
+      encodedUrl
+    );
+
+
+  const {
+    error:
+      databaseError
+  } =
+    await supabaseClient
+      .from(
+        "consultation_images"
+      )
+      .delete()
+      .eq(
+        "id",
+        imageId
+      );
+
+
+  if (databaseError) {
+
+    alert(
+      "Unable to delete prescription image:\n\n" +
+      databaseError.message
+    );
+
+    return;
+  }
+
+
+  const storagePath =
+    getPrescriptionStoragePath(
+      imageUrl
+    );
+
+
+  if (storagePath) {
+
+    await supabaseClient
+      .storage
+      .from(
+        "prescriptions"
+      )
+      .remove([
+        storagePath
+      ]);
+
+  }
+
+
+  alert(
+    "Prescription image deleted."
+  );
+
+
+  await loadFullConsultation(
+    consultationId
+  );
+
+}
+
+
+/* =========================================================
+   LAB SIGNED URL
+   ========================================================= */
+
+async function getLabReport(
+  reportId
+) {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "investigation_reports"
+      )
+      .select("*")
+      .eq(
+        "id",
+        reportId
+      )
+      .single();
+
+
+  if (
+    error ||
+    !data
+  ) {
+
+    alert(
+      "Unable to load lab report."
+    );
+
+    return null;
+  }
+
+
+  return data;
+}
+
+
+async function getLabSignedURL(
+  report
+) {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .storage
+      .from(
+        "investigation-reports"
+      )
+      .createSignedUrl(
+        report.file_path,
+        60 * 60
+      );
+
+
+  if (
+    error ||
+    !data
+  ) {
+
+    alert(
+      "Unable to open lab report."
+    );
+
+    return null;
+  }
+
+
+  return data.signedUrl;
+}
+
+
+/* =========================================================
+   LAB VIEW
+   ========================================================= */
+
+async function viewLabReport(
+  reportId
+) {
+
+  const report =
+    await getLabReport(
+      reportId
+    );
+
+
+  if (!report) {
+    return;
+  }
+
+
+  const signedURL =
+    await getLabSignedURL(
+      report
+    );
+
+
+  if (!signedURL) {
+    return;
+  }
+
+
+  const type =
+    report.file_type || "";
+
+
+  const name =
+    (
+      report.file_name || ""
+    ).toLowerCase();
+
+
+  const isPDF =
+    type ===
+    "application/pdf" ||
+    name.endsWith(
+      ".pdf"
+    );
+
+
+  if (isPDF) {
+
+    openPDFModal(
+      signedURL,
+      report.report_type ||
+      "Lab Report"
+    );
+
+  } else {
+
+    openImageModal(
+      signedURL,
+      report.report_type ||
+      "Lab Report"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   LAB DOWNLOAD
+   ========================================================= */
+
+async function downloadLabReport(
+  reportId
+) {
+
+  const report =
+    await getLabReport(
+      reportId
+    );
+
+
+  if (!report) {
+    return;
+  }
+
+
+  const signedURL =
+    await getLabSignedURL(
+      report
+    );
+
+
+  if (!signedURL) {
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        signedURL
+      );
+
+
+    if (!response.ok) {
+      throw new Error(
+        "Unable to download."
+      );
+    }
+
+
+    const blob =
+      await response.blob();
+
+
+    const blobURL =
+      URL.createObjectURL(
+        blob
+      );
+
+
+    const link =
+      document.createElement(
+        "a"
+      );
+
+
+    link.href =
+      blobURL;
+
+
+    link.download =
+      report.file_name ||
+      "lab-report";
+
+
+    document.body.appendChild(
+      link
+    );
+
+
+    link.click();
+
+
+    link.remove();
+
+
+    setTimeout(
+      function() {
+
+        URL.revokeObjectURL(
+          blobURL
+        );
+
+      },
+      1000
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Unable to download lab report."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   LAB DELETE
+   ========================================================= */
+
+async function deleteLabReport(
+  reportId
+) {
+
+  if (
+    !confirm(
+      "Delete this lab report permanently?"
+    )
+  ) {
+    return;
+  }
+
+
+  const report =
+    await getLabReport(
+      reportId
+    );
+
+
+  if (!report) {
+    return;
+  }
+
+
+  const {
+    error:
+      storageError
+  } =
+    await supabaseClient
+      .storage
+      .from(
+        "investigation-reports"
+      )
+      .remove([
+        report.file_path
+      ]);
+
+
+  if (storageError) {
+
+    console.warn(
+      storageError
+    );
+
+  }
+
+
+  const {
+    error:
+      databaseError
+  } =
+    await supabaseClient
+      .from(
+        "investigation_reports"
+      )
+      .delete()
+      .eq(
+        "id",
+        reportId
+      );
+
+
+  if (databaseError) {
+
+    alert(
+      "Unable to delete lab report:\n\n" +
+      databaseError.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Lab report deleted."
+  );
+
+
+  if (
+    currentConsultationId
+  ) {
+
+    await loadFullConsultation(
+      currentConsultationId
+    );
+
+  }
+
+}
+
+
+/* =========================================================
    EDIT CONSULTATION
-========================= */
+   ========================================================= */
 
-async function editConsultation(id){
+async function openEditConsultation(
+  consultationId
+) {
 
-const {
-data:c,
-error
-} =
-await supabaseClient
-.from("consultations")
-.select("*")
-.eq("id",id)
-.single();
+  const {
+    data:
+      consultation,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select("*")
+      .eq(
+        "id",
+        consultationId
+      )
+      .single();
 
 
-if(error){
+  if (
+    error ||
+    !consultation
+  ) {
 
-alert(
-"Unable to load consultation."
-);
+    alert(
+      "Unable to load consultation."
+    );
 
-return;
+    return;
+  }
+
+
+  currentConsultationId =
+    consultation.id;
+
+
+  const container =
+    document.getElementById(
+      "editConsultationContent"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="view-header">
+
+      <h2>
+        ✏️ Edit Consultation
+      </h2>
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="openSavedConsultation(
+          ${Number(
+            consultation.patient_id
+          )},
+          ${Number(
+            consultation.id
+          )},
+          false
+        )">
+
+        ↩ Cancel
+
+      </button>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        🩺 Chief Complaints
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="editConsultChiefComplaints">${escapeHTML(
+            consultation.chief_complaints || ""
+          )}</textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        ❤️ Vitals
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="editConsultVitals">${escapeHTML(
+            consultation.vitals || ""
+          )}</textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        🔍 Examination
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="editConsultExamination">${escapeHTML(
+            consultation.examination || ""
+          )}</textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        🩺 Diagnosis
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="editConsultDiagnosis">${escapeHTML(
+            consultation.diagnosis || ""
+          )}</textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        🧪 Investigations
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="editConsultInvestigations">${escapeHTML(
+            consultation.investigations || ""
+          )}</textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        💊 Prescription / Treatment
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="editConsultPrescription">${escapeHTML(
+            consultation.prescription || ""
+          )}</textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        📝 Advice
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="editConsultAdvice">${escapeHTML(
+            consultation.advice || ""
+          )}</textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        📅 Follow-up
+      </h3>
+
+      <div class="form-group">
+
+        <input
+          type="date"
+          id="editConsultFollowUp"
+          value="${escapeHTML(
+            consultation.follow_up_date || ""
+          )}">
+
+      </div>
+
+    </div>
+
+
+    <div class="form-section">
+
+      <h3>
+        📷 Prescription / 🧪 Lab Files
+      </h3>
+
+
+      <div class="action-row">
+
+        <button
+          type="button"
+          class="portal-button purple-button"
+          onclick="uploadMorePrescription(
+            ${Number(
+              consultation.patient_id
+            )},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          📷 Add Prescription
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button primary-button"
+          onclick="uploadMoreLabReport(
+            ${Number(
+              consultation.patient_id
+            )},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          🧪 Add Lab Report
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="action-row">
+
+      <button
+        type="button"
+        class="portal-button primary-button"
+        onclick="saveEditedConsultation(
+          ${Number(
+            consultation.id
+          )},
+          ${Number(
+            consultation.patient_id
+          )}
+        )">
+
+        💾 Save Changes
+
+      </button>
+
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="openSavedConsultation(
+          ${Number(
+            consultation.patient_id
+          )},
+          ${Number(
+            consultation.id
+          )},
+          false
+        )">
+
+        ↩ Cancel
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  showView(
+    "editConsultationView"
+  );
 
 }
 
 
-$("mainResults")
-.classList.remove("hidden");
+async function saveEditedConsultation(
+  consultationId,
+  patientId
+) {
+
+  const update = {
+
+    chief_complaints:
+      document
+        .getElementById(
+          "editConsultChiefComplaints"
+        )
+        .value
+        .trim(),
+
+    vitals:
+      document
+        .getElementById(
+          "editConsultVitals"
+        )
+        .value
+        .trim(),
+
+    examination:
+      document
+        .getElementById(
+          "editConsultExamination"
+        )
+        .value
+        .trim(),
+
+    diagnosis:
+      document
+        .getElementById(
+          "editConsultDiagnosis"
+        )
+        .value
+        .trim(),
+
+    investigations:
+      document
+        .getElementById(
+          "editConsultInvestigations"
+        )
+        .value
+        .trim(),
+
+    prescription:
+      document
+        .getElementById(
+          "editConsultPrescription"
+        )
+        .value
+        .trim(),
+
+    advice:
+      document
+        .getElementById(
+          "editConsultAdvice"
+        )
+        .value
+        .trim(),
+
+    follow_up_date:
+      document
+        .getElementById(
+          "editConsultFollowUp"
+        )
+        .value ||
+      null
+
+  };
 
 
-$("mainResults").innerHTML = `
-
-<div class="section-head">
-
-<h2>
-✏️ Edit Consultation
-</h2>
-
-<button
-class="btn btn-light"
-onclick="viewPatient(${Number(c.patient_id)})"
->
-↩️ Cancel
-</button>
-
-</div>
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .update(
+        update
+      )
+      .eq(
+        "id",
+        consultationId
+      );
 
 
-<div class="profile-header">
+  if (error) {
 
-<div class="profile-name">
+    alert(
+      "Unable to update consultation:\n\n" +
+      error.message
+    );
 
-Consultation ID:
-${esc(c.id)}
-
-</div>
-
-</div>
-
-
-<div class="form-section">
-
-<label>
-Chief Complaints
-</label>
-
-<textarea
-id="ecChief"
->${esc(c.chief_complaints || "")}</textarea>
-
-</div>
+    return;
+  }
 
 
-<div class="form-section">
-
-<label>
-Vitals
-</label>
-
-<textarea
-id="ecVitals"
->${esc(c.vitals || "")}</textarea>
-
-</div>
+  alert(
+    "Consultation updated successfully."
+  );
 
 
-<div class="form-section">
-
-<label>
-Examination
-</label>
-
-<textarea
-id="ecExam"
->${esc(c.examination || "")}</textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<h3>
-🩺 Diagnosis
-</h3>
-
-<textarea
-id="ecDiagnosis"
->${esc(c.diagnosis || "")}</textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<label>
-Investigations
-</label>
-
-<textarea
-id="ecInvestigations"
->${esc(c.investigations || "")}</textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<label>
-Prescription / Treatment
-</label>
-
-<textarea
-id="ecPrescription"
->${esc(c.prescription || "")}</textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<label>
-Advice
-</label>
-
-<textarea
-id="ecAdvice"
->${esc(c.advice || "")}</textarea>
-
-</div>
-
-
-<div class="form-section">
-
-<label>
-Follow-up Date
-</label>
-
-<input
-id="ecFollow"
-type="date"
-value="${esc(c.follow_up_date || "")}"
->
-
-</div>
-
-
-<div class="actions">
-
-<button
-class="btn btn-purple"
-onclick="uploadPrescriptionForConsultation(${Number(c.id)},${Number(c.patient_id)})"
->
-📷 Add Prescription
-</button>
-
-
-<button
-class="btn btn-primary"
-onclick="uploadLabForConsultation(${Number(c.id)},${Number(c.patient_id)})"
->
-🧪 Add Lab Report
-</button>
-
-
-<button
-class="btn btn-primary"
-onclick="saveConsultationEdit(${Number(c.id)},${Number(c.patient_id)})"
->
-💾 Save Changes
-</button>
-
-</div>
-
-`;
+  await openSavedConsultation(
+    patientId,
+    consultationId,
+    false
+  );
 
 }
 
 
-/* =========================
-   SAVE CONSULTATION EDIT
-========================= */
+/* =========================================================
+   ADD MORE PRESCRIPTION
+   ========================================================= */
 
-async function saveConsultationEdit(
-id,
-pid
-){
+function uploadMorePrescription(
+  patientId,
+  consultationId
+) {
 
-const update = {
-
-chief_complaints:
-$("ecChief").value.trim(),
-
-vitals:
-$("ecVitals").value.trim(),
-
-examination:
-$("ecExam").value.trim(),
-
-diagnosis:
-$("ecDiagnosis").value.trim(),
-
-investigations:
-$("ecInvestigations").value.trim(),
-
-prescription:
-$("ecPrescription").value.trim(),
-
-advice:
-$("ecAdvice").value.trim(),
-
-follow_up_date:
-$("ecFollow").value || null
-
-};
+  const input =
+    document.createElement(
+      "input"
+    );
 
 
-const {
-error
-} =
-await supabaseClient
-.from("consultations")
-.update(update)
-.eq("id",id);
+  input.type =
+    "file";
+
+  input.accept =
+    "image/jpeg,image/png,image/webp";
+
+  input.multiple =
+    true;
 
 
-if(error){
+  input.onchange =
+    async function() {
 
-alert(
-error.message
-);
-
-return;
-
-}
+      const files =
+        Array.from(
+          input.files || []
+        );
 
 
-alert(
-"Consultation updated successfully."
-);
+      if (
+        files.length === 0
+      ) {
+        return;
+      }
 
 
-viewPatient(pid);
+      try {
 
-}
-
-
-/* =========================
-   STORAGE PATH
-========================= */
-
-function getStoragePath(
-url,
-bucket
-){
-
-try{
-
-const u =
-new URL(url);
+        await uploadPrescriptionFiles(
+          patientId,
+          consultationId,
+          files
+        );
 
 
-const marker =
-"/storage/v1/object/public/"
-+
-bucket
-+
-"/";
+        alert(
+          "Prescription image(s) uploaded."
+        );
 
 
-const i =
-u.pathname.indexOf(marker);
+      } catch (error) {
+
+        alert(
+          "Unable to upload prescription:\n\n" +
+          error.message
+        );
+
+      }
+
+    };
 
 
-if(i < 0)
-return null;
-
-
-return decodeURIComponent(
-u.pathname.slice(
-i + marker.length
-)
-);
-
-}
-catch{
-
-return null;
-
-}
+  input.click();
 
 }
 
 
-/* =========================
-   FILE PREVIEW
-========================= */
+/* =========================================================
+   ADD MORE LAB
+   ========================================================= */
 
-function togglePreview(id){
+function uploadMoreLabReport(
+  patientId,
+  consultationId
+) {
 
-const e =
-$(id);
+  const input =
+    document.createElement(
+      "input"
+    );
 
 
-if(e){
+  input.type =
+    "file";
 
-e.style.display =
-e.style.display === "block"
-? "none"
-: "block";
+  input.accept =
+    "image/jpeg,image/png,image/webp,application/pdf";
+
+  input.multiple =
+    true;
+
+
+  input.onchange =
+    async function() {
+
+      const files =
+        Array.from(
+          input.files || []
+        );
+
+
+      if (
+        files.length === 0
+      ) {
+        return;
+      }
+
+
+      const reportType =
+        prompt(
+          "Enter report type:",
+          "Laboratory Report"
+        );
+
+
+      if (!reportType) {
+        return;
+      }
+
+
+      try {
+
+        await uploadLabFiles(
+          patientId,
+          consultationId,
+          files,
+          reportType
+        );
+
+
+        alert(
+          "Lab report(s) uploaded."
+        );
+
+
+      } catch (error) {
+
+        alert(
+          "Unable to upload lab report:\n\n" +
+          error.message
+        );
+
+      }
+
+    };
+
+
+  input.click();
 
 }
 
+
+/* =========================================================
+   HISTORY HUB
+   ========================================================= */
+
+async function openHistoryHub(
+  patientId
+) {
+
+  const patient =
+    await getPatient(
+      patientId
+    );
+
+
+  if (!patient) {
+    return;
+  }
+
+
+  currentPatient =
+    patient;
+
+
+  const container =
+    document.getElementById(
+      "historyHubContent"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="view-header">
+
+      <h2>
+        📋 Patient History
+      </h2>
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="openSearchView()">
+
+        ← Search
+
+      </button>
+
+    </div>
+
+
+    <div class="patient-header-box">
+
+      <div class="patient-header-name">
+
+        👤
+        ${escapeHTML(
+          patient.patient_name
+        )}
+
+      </div>
+
+      <div class="patient-header-meta">
+
+        Patient ID:
+        ${escapeHTML(
+          patient.id
+        )}
+
+        &nbsp; | &nbsp;
+
+        Age:
+        ${escapeHTML(
+          patientAge(
+            patient
+          )
+        )}
+
+      </div>
+
+    </div>
+
+
+    <div class="history-grid">
+
+
+      <button
+        type="button"
+        class="portal-button primary-button history-button"
+        onclick="openConsultationHistoryPortal(
+          ${Number(
+            patient.id
+          )}
+        )">
+
+        <span class="history-icon">
+          🩺
+        </span>
+
+        Consultation History
+
+      </button>
+
+
+      <button
+        type="button"
+        class="portal-button purple-button history-button"
+        onclick="openPrescriptionHistory(
+          ${Number(
+            patient.id
+          )}
+        )">
+
+        <span class="history-icon">
+          📷
+        </span>
+
+        Prescription History
+
+      </button>
+
+
+      <button
+        type="button"
+        class="portal-button success-button history-button"
+        onclick="openLabHistory(
+          ${Number(
+            patient.id
+          )}
+        )">
+
+        <span class="history-icon">
+          🧪
+        </span>
+
+        Lab Report History
+
+      </button>
+
+
+    </div>
+
+  `;
+
+
+  showView(
+    "historyHubView"
+  );
+
 }
 
 
-/* =========================
-   VIEW FILE
-========================= */
+/* =========================================================
+   CONSULTATION HISTORY PORTAL
+   ========================================================= */
 
-function viewFile(encoded){
+function openConsultationHistoryPortal(
+  patientId
+) {
 
-window.open(
-decodeURIComponent(encoded),
-"_blank"
-);
-
-}
-
-
-/* =========================
-   DOWNLOAD FILE
-========================= */
-
-function downloadFile(
-encoded,
-name
-){
-
-const a =
-document.createElement("a");
-
-
-a.href =
-decodeURIComponent(encoded);
-
-
-a.download =
-name;
-
-
-a.target =
-"_blank";
-
-
-document.body.appendChild(a);
-
-a.click();
-
-a.remove();
+  window.location.href =
+    "doctor-consultations.html" +
+    "?patient_id=" +
+    encodeURIComponent(
+      patientId
+    );
 
 }
 
 
-/* =========================
-   IMAGE MODAL
-========================= */
+/* =========================================================
+   PRESCRIPTION HISTORY
+   ========================================================= */
+
+async function openPrescriptionHistory(
+  patientId
+) {
+
+  const patient =
+    await getPatient(
+      patientId
+    );
+
+
+  if (!patient) {
+    return;
+  }
+
+
+  const {
+    data:
+      consultations,
+    error:
+      consultationError
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select("id,created_at")
+      .eq(
+        "patient_id",
+        patientId
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  let images = [];
+
+
+  if (
+    !consultationError &&
+    consultations &&
+    consultations.length > 0
+  ) {
+
+    const ids =
+      consultations.map(
+        function(item) {
+
+          return item.id;
+
+        }
+      );
+
+
+    const {
+      data:
+        imageData
+    } =
+      await supabaseClient
+        .from(
+          "consultation_images"
+        )
+        .select("*")
+        .in(
+          "consultation_id",
+          ids
+        )
+        .order(
+          "id",
+          {
+            ascending: false
+          }
+        );
+
+
+    images =
+      imageData || [];
+
+  }
+
+
+  const container =
+    document.getElementById(
+      "prescriptionHistoryContent"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="view-header">
+
+      <h2>
+        📷 Prescription History
+      </h2>
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="openHistoryHub(
+          ${Number(
+            patientId
+          )}
+        )">
+
+        ← History
+
+      </button>
+
+    </div>
+
+
+    <div class="patient-header-box">
+
+      <div class="patient-header-name">
+        ${escapeHTML(
+          patient.patient_name
+        )}
+      </div>
+
+      <div class="patient-header-meta">
+        Patient ID:
+        ${escapeHTML(
+          patient.id
+        )}
+      </div>
+
+    </div>
+
+
+    ${
+      images.length
+        ? renderPrescriptionHistoryCards(
+            images
+          )
+        : `
+          <div class="portal-message">
+            No prescription images found.
+          </div>
+        `
+    }
+
+  `;
+
+
+  showView(
+    "prescriptionHistoryView"
+  );
+
+}
+
+
+function renderPrescriptionHistoryCards(
+  images
+) {
+
+  return images.map(
+    function(image, index) {
+
+      return `
+
+        <div class="file-card">
+
+          <div class="file-title">
+
+            📷 Prescription
+            ${index + 1}
+
+          </div>
+
+          <div class="file-meta">
+
+            Consultation ID:
+            ${escapeHTML(
+              image.consultation_id
+            )}
+
+          </div>
+
+
+          <div class="file-actions">
+
+            <button
+              type="button"
+              class="portal-button primary-button small-button"
+              onclick="viewPrescriptionImage(
+                '${encodeURIComponent(
+                  image.image_url
+                )}'
+              )">
+
+              👁️ View
+
+            </button>
+
+
+            <button
+              type="button"
+              class="portal-button light-button small-button"
+              onclick="downloadPrescriptionImage(
+                '${encodeURIComponent(
+                  image.image_url
+                )}',
+                ${index + 1}
+              )">
+
+              ⬇️ Download
+
+            </button>
+
+
+            <button
+              type="button"
+              class="portal-button danger-button small-button"
+              onclick="deletePrescriptionFromHistory(
+                ${Number(
+                  image.id
+                )},
+                '${encodeURIComponent(
+                  image.image_url
+                )}'
+              )">
+
+              🗑️ Delete
+
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+  ).join("");
+
+}
+
+
+async function deletePrescriptionFromHistory(
+  imageId,
+  encodedURL
+) {
+
+  if (
+    !confirm(
+      "Delete this prescription image permanently?"
+    )
+  ) {
+    return;
+  }
+
+
+  const url =
+    decodeURIComponent(
+      encodedURL
+    );
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(
+        "consultation_images"
+      )
+      .delete()
+      .eq(
+        "id",
+        imageId
+      );
+
+
+  if (error) {
+
+    alert(
+      "Unable to delete prescription."
+    );
+
+    return;
+  }
+
+
+  const path =
+    getPrescriptionStoragePath(
+      url
+    );
+
+
+  if (path) {
+
+    await supabaseClient
+      .storage
+      .from(
+        "prescriptions"
+      )
+      .remove([
+        path
+      ]);
+
+  }
+
+
+  alert(
+    "Prescription deleted."
+  );
+
+
+  if (currentPatient) {
+
+    await openPrescriptionHistory(
+      currentPatient.id
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   LAB HISTORY
+   ========================================================= */
+
+async function openLabHistory(
+  patientId
+) {
+
+  const patient =
+    await getPatient(
+      patientId
+    );
+
+
+  if (!patient) {
+    return;
+  }
+
+
+  currentPatient =
+    patient;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "investigation_reports"
+      )
+      .select("*")
+      .eq(
+        "patient_id",
+        patientId
+      )
+      .order(
+        "report_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      );
+
+
+  const container =
+    document.getElementById(
+      "labHistoryContent"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="view-header">
+
+      <h2>
+        🧪 Lab Report History
+      </h2>
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="openHistoryHub(
+          ${Number(
+            patientId
+          )}
+        )">
+
+        ← History
+
+      </button>
+
+    </div>
+
+
+    <div class="patient-header-box">
+
+      <div class="patient-header-name">
+        ${escapeHTML(
+          patient.patient_name
+        )}
+      </div>
+
+      <div class="patient-header-meta">
+        Patient ID:
+        ${escapeHTML(
+          patient.id
+        )}
+      </div>
+
+    </div>
+
+
+    ${
+      !error &&
+      data &&
+      data.length
+        ? renderLabReportCards(
+            data
+          )
+        : `
+          <div class="portal-message">
+            No lab reports found.
+          </div>
+        `
+    }
+
+  `;
+
+
+  showView(
+    "labHistoryView"
+  );
+
+}
+
+
+/* =========================================================
+   BILLING
+   ========================================================= */
+
+function openBillingFromConsultation(
+  patientId,
+  consultationId
+) {
+
+  const returnURL =
+    "doctor-patients.html" +
+    "?view=consultation" +
+    "&patient_id=" +
+    encodeURIComponent(
+      patientId
+    ) +
+    "&consultation_id=" +
+    encodeURIComponent(
+      consultationId
+    );
+
+
+  window.location.href =
+    "doctor-billing.html" +
+    "?patient_id=" +
+    encodeURIComponent(
+      patientId
+    ) +
+    "&consultation_id=" +
+    encodeURIComponent(
+      consultationId
+    ) +
+    "&return_to=" +
+    encodeURIComponent(
+      returnURL
+    );
+
+}
+
+
+/* =========================================================
+   FILE MODAL
+   ========================================================= */
 
 function openImageModal(
-url,
-title
-){
+  imageURL,
+  title
+) {
 
-$("modalImage").src =
-url;
+  const modal =
+    document.getElementById(
+      "fileModal"
+    );
 
-$("modalTitle").textContent =
-title || "Image";
 
-$("imageModal").style.display =
-"flex";
+  document
+    .getElementById(
+      "fileModalTitle"
+    )
+    .textContent =
+      title || "Image";
+
+
+  document
+    .getElementById(
+      "fileModalContent"
+    )
+    .innerHTML = `
+
+      <img
+        src="${escapeHTML(
+          imageURL
+        )}"
+        style="
+          width:100%;
+          max-height:80vh;
+          object-fit:contain;
+        "
+        alt="${escapeHTML(
+          title || "Image"
+        )}">
+
+    `;
+
+
+  modal.classList.add(
+    "active"
+  );
 
 }
 
 
-function closeImageModal(){
+function openPDFModal(
+  pdfURL,
+  title
+) {
 
-$("imageModal").style.display =
-"none";
+  document
+    .getElementById(
+      "fileModalTitle"
+    )
+    .textContent =
+      title || "PDF";
 
-$("modalImage").src =
-"";
+
+  document
+    .getElementById(
+      "fileModalContent"
+    )
+    .innerHTML = `
+
+      <iframe
+        class="pdf-frame"
+        src="${escapeHTML(
+          pdfURL
+        )}">
+      </iframe>
+
+    `;
+
+
+  document
+    .getElementById(
+      "fileModal"
+    )
+    .classList.add(
+      "active"
+    );
 
 }
 
 
-/* =========================
-   BILLING
-========================= */
+function closeFileModal() {
 
-function openBilling(
-patientId
-){
+  document
+    .getElementById(
+      "fileModal"
+    )
+    .classList.remove(
+      "active"
+    );
 
-location.href =
-"doctor-billing.html?patient_id="
-+
-encodeURIComponent(patientId);
+
+  document
+    .getElementById(
+      "fileModalContent"
+    )
+    .innerHTML =
+      "";
 
 }
 
 
-/* =========================
+/* =========================================================
+   URL ROUTING
+   ========================================================= */
+
+async function loadViewFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const view =
+    params.get(
+      "view"
+    );
+
+
+  const patientId =
+    params.get(
+      "patient_id"
+    );
+
+
+  const consultationId =
+    params.get(
+      "consultation_id"
+    );
+
+
+  if (
+    view === "consultation" &&
+    patientId &&
+    consultationId
+  ) {
+
+    await openSavedConsultation(
+      Number(
+        patientId
+      ),
+      Number(
+        consultationId
+      ),
+      false
+    );
+
+
+    return true;
+
+  }
+
+
+  return false;
+
+}
+
+
+/* =========================================================
+   EVENT LISTENERS
+   ========================================================= */
+
+document
+  .getElementById(
+    "openRegistrationButton"
+  )
+  .addEventListener(
+    "click",
+    openRegistration
+  );
+
+
+document
+  .getElementById(
+    "openSearchButton"
+  )
+  .addEventListener(
+    "click",
+    openSearchView
+  );
+
+
+document
+  .getElementById(
+    "openTodayButton"
+  )
+  .addEventListener(
+    "click",
+    openTodayPatients
+  );
+
+
+document
+  .getElementById(
+    "saveNewPatientButton"
+  )
+  .addEventListener(
+    "click",
+    saveNewPatient
+  );
+
+
+document
+  .getElementById(
+    "searchPatientButton"
+  )
+  .addEventListener(
+    "click",
+    searchPatients
+  );
+
+
+document
+  .getElementById(
+    "patientSearch"
+  )
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key ===
+        "Enter"
+      ) {
+
+        event.preventDefault();
+
+        searchPatients();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "newPatientDOB"
+  )
+  .addEventListener(
+    "change",
+    function() {
+
+      const age =
+        calculateAgeFromDOB(
+          this.value
+        );
+
+
+      if (
+        age !== ""
+      ) {
+
+        document
+          .getElementById(
+            "newPatientAge"
+          )
+          .value =
+            age;
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    logoutDoctor
+  );
+
+
+document
+  .getElementById(
+    "fileModal"
+  )
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        this
+      ) {
+
+        closeFileModal();
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
    INITIALIZE
-========================= */
+   ========================================================= */
 
-document.addEventListener(
-"DOMContentLoaded",
-async () => {
+(async function initializePage() {
 
-if(
-!(await checkLogin())
-)
-return;
+  const loggedIn =
+    await checkDoctorLogin();
 
 
-$("addPatientButton")
-.onclick =
-openRegistration;
+  if (!loggedIn) {
+    return;
+  }
 
 
-$("openSearchButton")
-.onclick =
-openSearch;
+  await loadTodayCount();
 
 
-$("todayButton")
-.onclick =
-toggleTodayPatients;
+  const routed =
+    await loadViewFromURL();
 
 
-$("patientSearch")
-.addEventListener(
-"keydown",
-e => {
+  if (!routed) {
 
-if(
-e.key === "Enter"
-){
+    showView(
+      "homeView"
+    );
 
-e.preventDefault();
+  }
 
-searchPatients();
-
-}
-
-});
-
-
-$("imageModal")
-.addEventListener(
-"click",
-e => {
-
-if(
-e.target === $("imageModal")
-){
-
-closeImageModal();
-
-}
-
-});
-
-
-await loadTodayCount();
-
-});
+})();
 
 </script>
 
+
 </body>
+
 </html>
