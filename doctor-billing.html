@@ -3598,18 +3598,40 @@ async function printBill(
     window.open(
       "",
       "_blank",
-      "width=850,height=900"
+      "width=850,height=950"
     );
 
 
   if (!printWindow) {
 
     alert(
-      "Please allow pop-ups to print."
+      "Please allow pop-ups to print the receipt."
     );
 
     return;
   }
+
+
+  const notesHTML =
+    bill.notes
+      ? `
+
+        <div class="notes">
+
+          <strong>
+            Notes
+          </strong>
+
+          <div>
+            ${escapeHTML(
+              bill.notes
+            )}
+          </div>
+
+        </div>
+
+      `
+      : "";
 
 
   printWindow.document.write(`
@@ -3620,47 +3642,415 @@ async function printBill(
 
     <head>
 
+      <meta charset="UTF-8">
+
       <title>
-        Bill #${escapeHTML(
+        Receipt #${escapeHTML(
           bill.id
         )}
       </title>
 
+
       <style>
 
+        * {
+          box-sizing: border-box;
+        }
+
+
         body {
-          font-family: Arial, sans-serif;
-          padding: 35px;
-          color: #111;
+
+          margin: 0;
+
+          padding: 28px;
+
+          font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+          color: #172033;
+
+          background: #ffffff;
+
         }
 
-        .header {
+
+        .receipt {
+
+          width: 100%;
+
+          max-width: 720px;
+
+          margin: 0 auto;
+
+          border: 1px solid #dbe5ef;
+
+          border-radius: 14px;
+
+          overflow: hidden;
+
+          background: #ffffff;
+
+        }
+
+
+        .clinic-header {
+
           text-align: center;
-          margin-bottom: 28px;
+
+          padding: 24px 22px 19px;
+
+          background:
+            linear-gradient(
+              135deg,
+              #eef6ff,
+              #ffffff
+            );
+
+          border-bottom:
+            2px solid #2563eb;
+
         }
 
-        h1 {
-          margin-bottom: 5px;
+
+        .clinic-name {
+
+          margin: 0;
+
+          color: #1556a8;
+
+          font-size: 23px;
+
+          line-height: 1.2;
+
+          font-weight: 800;
+
+          letter-spacing: 0.5px;
+
         }
+
+
+        .clinic-address {
+
+          margin-top: 9px;
+
+          color: #475569;
+
+          font-size: 12.5px;
+
+          line-height: 1.6;
+
+        }
+
+
+        .receipt-title {
+
+          text-align: center;
+
+          padding: 15px;
+
+          color: #172033;
+
+          font-size: 18px;
+
+          font-weight: 800;
+
+          letter-spacing: 1.2px;
+
+          border-bottom: 1px solid #e2e8f0;
+
+        }
+
+
+        .content {
+
+          padding: 20px 24px 24px;
+
+        }
+
+
+        .info-grid {
+
+          display: grid;
+
+          grid-template-columns:
+            repeat(
+              2,
+              minmax(0,1fr)
+            );
+
+          gap: 10px 24px;
+
+          margin-bottom: 20px;
+
+        }
+
+
+        .info-item {
+
+          font-size: 13px;
+
+          line-height: 1.5;
+
+        }
+
+
+        .info-label {
+
+          display: block;
+
+          margin-bottom: 2px;
+
+          color: #64748b;
+
+          font-size: 11px;
+
+          font-weight: 700;
+
+          text-transform: uppercase;
+
+        }
+
+
+        .info-value {
+
+          font-weight: 700;
+
+          color: #172033;
+
+        }
+
 
         table {
+
           width: 100%;
+
           border-collapse: collapse;
-          margin-top: 20px;
+
+          margin-top: 4px;
+
         }
+
+
+        thead {
+
+          background: #eef6ff;
+
+        }
+
+
+        th {
+
+          padding: 11px 12px;
+
+          color: #315b89;
+
+          font-size: 12px;
+
+          text-align: left;
+
+          border-bottom:
+            1px solid #d5e4f4;
+
+        }
+
+
+        th:last-child {
+
+          text-align: right;
+
+        }
+
 
         td {
-          padding: 10px;
-          border-bottom: 1px solid #ddd;
+
+          padding: 11px 12px;
+
+          font-size: 13px;
+
+          border-bottom:
+            1px solid #edf0f4;
+
         }
+
 
         td:last-child {
+
           text-align: right;
+
+          font-weight: 600;
+
         }
 
-        .total {
-          font-size: 19px;
-          font-weight: bold;
+
+        .total-row td {
+
+          padding-top: 14px;
+
+          padding-bottom: 14px;
+
+          background: #f0f7ff;
+
+          color: #1556a8;
+
+          font-size: 16px;
+
+          font-weight: 800;
+
+          border-top:
+            2px solid #bcd6ef;
+
+        }
+
+
+        .payment-box {
+
+          margin-top: 18px;
+
+          padding: 14px 15px;
+
+          background: #f8fafc;
+
+          border: 1px solid #e2e8f0;
+
+          border-radius: 10px;
+
+        }
+
+
+        .payment-line {
+
+          display: flex;
+
+          justify-content: space-between;
+
+          gap: 20px;
+
+          padding: 5px 0;
+
+          font-size: 13px;
+
+        }
+
+
+        .payment-line strong {
+
+          color: #475569;
+
+        }
+
+
+        .notes {
+
+          margin-top: 15px;
+
+          padding: 12px 14px;
+
+          border-radius: 9px;
+
+          background: #fffdf5;
+
+          border: 1px solid #f3e7bd;
+
+          font-size: 12px;
+
+          line-height: 1.6;
+
+        }
+
+
+        .notes strong {
+
+          display: block;
+
+          margin-bottom: 5px;
+
+        }
+
+
+        .footer {
+
+          padding: 19px 20px 21px;
+
+          text-align: center;
+
+          border-top:
+            1px solid #e2e8f0;
+
+          background: #fbfcfe;
+
+        }
+
+
+        .thanks {
+
+          color: #1556a8;
+
+          font-size: 14px;
+
+          font-weight: 700;
+
+        }
+
+
+        .footer-clinic {
+
+          margin-top: 3px;
+
+          color: #172033;
+
+          font-size: 14px;
+
+          font-weight: 800;
+
+        }
+
+
+        .computer-note {
+
+          margin-top: 12px;
+
+          color: #7a8495;
+
+          font-size: 10.5px;
+
+          line-height: 1.5;
+
+        }
+
+
+        @media print {
+
+          body {
+
+            padding: 0;
+
+          }
+
+
+          .receipt {
+
+            border: none;
+
+            border-radius: 0;
+
+          }
+
+        }
+
+
+        @media (
+          max-width: 600px
+        ) {
+
+          .info-grid {
+
+            grid-template-columns:
+              1fr;
+
+          }
+
         }
 
       </style>
@@ -3671,141 +4061,281 @@ async function printBill(
     <body>
 
 
-      <div class="header">
+      <div class="receipt">
 
-        <strong>
-          GENERAL &amp; DIABETES CARE
-        </strong>
 
-        <h1>
-          Receipt
-        </h1>
+        <div class="clinic-header">
+
+          <h1 class="clinic-name">
+
+            GENERAL &amp; DIABETES CARE
+
+          </h1>
+
+
+          <div class="clinic-address">
+
+            No. 78, VV Kovil Street,
+            Thiruvalleswarar Nagar,
+            <br>
+
+            Thirumangalam,
+            Anna Nagar West,
+            Chennai - 600040
+
+          </div>
+
+        </div>
+
+
+        <div class="receipt-title">
+
+          RECEIPT
+
+        </div>
+
+
+        <div class="content">
+
+
+          <div class="info-grid">
+
+
+            <div class="info-item">
+
+              <span class="info-label">
+                Bill No.
+              </span>
+
+              <span class="info-value">
+                ${escapeHTML(
+                  bill.id
+                )}
+              </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span class="info-label">
+                Date
+              </span>
+
+              <span class="info-value">
+
+                ${escapeHTML(
+                  formatDate(
+                    bill.bill_date
+                  )
+                )}
+
+              </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span class="info-label">
+                Patient
+              </span>
+
+              <span class="info-value">
+
+                ${escapeHTML(
+                  patient.patient_name ||
+                  "-"
+                )}
+
+              </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+              <span class="info-label">
+                Patient ID
+              </span>
+
+              <span class="info-value">
+
+                ${escapeHTML(
+                  bill.patient_id
+                )}
+
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Particulars
+                </th>
+
+                <th>
+                  Amount
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+              <tr>
+
+                <td>
+                  Consultation Fee
+                </td>
+
+                <td>
+                  ${currency(
+                    bill.consultation_fee
+                  )}
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>
+                  Medicine Charges
+                </td>
+
+                <td>
+                  ${currency(
+                    bill.medicine_charges
+                  )}
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>
+                  Procedure / Other Charges
+                </td>
+
+                <td>
+                  ${currency(
+                    bill.procedure_charges
+                  )}
+                </td>
+
+              </tr>
+
+
+              <tr class="total-row">
+
+                <td>
+                  TOTAL
+                </td>
+
+                <td>
+                  ${currency(
+                    bill.total_amount
+                  )}
+                </td>
+
+              </tr>
+
+
+            </tbody>
+
+          </table>
+
+
+          <div class="payment-box">
+
+
+            <div class="payment-line">
+
+              <strong>
+                Payment Status
+              </strong>
+
+              <span>
+
+                ${escapeHTML(
+                  bill.payment_status ||
+                  "-"
+                )}
+
+              </span>
+
+            </div>
+
+
+            <div class="payment-line">
+
+              <strong>
+                Payment Method
+              </strong>
+
+              <span>
+
+                ${escapeHTML(
+                  bill.payment_method ||
+                  "-"
+                )}
+
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+          ${notesHTML}
+
+
+        </div>
+
+
+        <div class="footer">
+
+          <div class="thanks">
+
+            Thank you for visiting
+
+          </div>
+
+
+          <div class="footer-clinic">
+
+            GENERAL &amp; DIABETES CARE
+
+          </div>
+
+
+          <div class="computer-note">
+
+            This is a computer-generated receipt.
+            <br>
+            No signature required.
+
+          </div>
+
+        </div>
+
 
       </div>
-
-
-      <p>
-        <strong>
-          Bill #:
-        </strong>
-        ${escapeHTML(
-          bill.id
-        )}
-      </p>
-
-
-      <p>
-        <strong>
-          Date:
-        </strong>
-        ${formatDate(
-          bill.bill_date
-        )}
-      </p>
-
-
-      <p>
-        <strong>
-          Patient:
-        </strong>
-        ${escapeHTML(
-          patient.patient_name || "-"
-        )}
-      </p>
-
-
-      <p>
-        <strong>
-          Patient ID:
-        </strong>
-        ${escapeHTML(
-          bill.patient_id
-        )}
-      </p>
-
-
-      <table>
-
-        <tr>
-
-          <td>
-            Consultation Fee
-          </td>
-
-          <td>
-            ${currency(
-              bill.consultation_fee
-            )}
-          </td>
-
-        </tr>
-
-
-        <tr>
-
-          <td>
-            Medicine Charges
-          </td>
-
-          <td>
-            ${currency(
-              bill.medicine_charges
-            )}
-          </td>
-
-        </tr>
-
-
-        <tr>
-
-          <td>
-            Procedure / Other
-          </td>
-
-          <td>
-            ${currency(
-              bill.procedure_charges
-            )}
-          </td>
-
-        </tr>
-
-
-        <tr class="total">
-
-          <td>
-            Total
-          </td>
-
-          <td>
-            ${currency(
-              bill.total_amount
-            )}
-          </td>
-
-        </tr>
-
-      </table>
-
-
-      <p>
-        <strong>
-          Payment Status:
-        </strong>
-        ${escapeHTML(
-          bill.payment_status || "-"
-        )}
-      </p>
-
-
-      <p>
-        <strong>
-          Payment Method:
-        </strong>
-        ${escapeHTML(
-          bill.payment_method || "-"
-        )}
-      </p>
 
 
       <script>
@@ -3813,7 +4343,14 @@ async function printBill(
         window.onload =
           function() {
 
-            window.print();
+            setTimeout(
+              function() {
+
+                window.print();
+
+              },
+              300
+            );
 
           };
 
@@ -3866,20 +4403,95 @@ async function downloadBillPDF(
 
 
   const doc =
-    new jsPDF();
+    new jsPDF({
+      unit: "mm",
+      format: "a4"
+    });
 
 
-  doc.setFontSize(
-    14
+  const pageWidth =
+    doc.internal.pageSize
+      .getWidth();
+
+
+  const left =
+    18;
+
+
+  const right =
+    pageWidth - 18;
+
+
+  const contentWidth =
+    right - left;
+
+
+  /*
+     Colours
+  */
+
+  const clinicBlue = [
+    21,
+    86,
+    168
+  ];
+
+
+  const darkText = [
+    23,
+    32,
+    51
+  ];
+
+
+  const mutedText = [
+    100,
+    116,
+    139
+  ];
+
+
+  const lightBlue = [
+    239,
+    247,
+    255
+  ];
+
+
+  /*
+     HEADER BACKGROUND
+  */
+
+  doc.setFillColor(
+    239,
+    247,
+    255
   );
 
-  doc.text(
-    "GENERAL & DIABETES CARE",
-    105,
-    18,
-    {
-      align: "center"
-    }
+
+  doc.roundedRect(
+    left,
+    14,
+    contentWidth,
+    36,
+    3,
+    3,
+    "F"
+  );
+
+
+  /*
+     CLINIC NAME
+  */
+
+  doc.setTextColor(
+    ...clinicBlue
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
   );
 
 
@@ -3887,14 +4499,157 @@ async function downloadBillPDF(
     18
   );
 
+
   doc.text(
-    "RECEIPT",
-    105,
-    30,
+    "GENERAL & DIABETES CARE",
+    pageWidth / 2,
+    25,
     {
-      align: "center"
+      align:
+        "center"
     }
   );
+
+
+  /*
+     ADDRESS
+  */
+
+  doc.setTextColor(
+    ...mutedText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+
+  doc.setFontSize(
+    9.5
+  );
+
+
+  doc.text(
+    "No. 78, VV Kovil Street, Thiruvalleswarar Nagar,",
+    pageWidth / 2,
+    33,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.text(
+    "Thirumangalam, Anna Nagar West, Chennai - 600040",
+    pageWidth / 2,
+    39,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  /*
+     RECEIPT TITLE
+  */
+
+  doc.setDrawColor(
+    ...clinicBlue
+  );
+
+
+  doc.setLineWidth(
+    0.6
+  );
+
+
+  doc.line(
+    left,
+    57,
+    right,
+    57
+  );
+
+
+  doc.setTextColor(
+    ...darkText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.setFontSize(
+    15
+  );
+
+
+  doc.text(
+    "RECEIPT",
+    pageWidth / 2,
+    66,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.line(
+    left,
+    71,
+    right,
+    71
+  );
+
+
+  /*
+     BILL DETAILS
+  */
+
+  let y =
+    82;
+
+
+  doc.setFontSize(
+    9
+  );
+
+
+  doc.setTextColor(
+    ...mutedText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.text(
+    "BILL NO.",
+    left,
+    y
+  );
+
+
+  doc.text(
+    "DATE",
+    112,
+    y
+  );
+
+
+  y +=
+    6;
 
 
   doc.setFontSize(
@@ -3902,31 +4657,222 @@ async function downloadBillPDF(
   );
 
 
-  let y =
-    47;
+  doc.setTextColor(
+    ...darkText
+  );
 
 
-  function line(
+  doc.text(
+    String(
+      bill.id
+    ),
+    left,
+    y
+  );
+
+
+  doc.text(
+    formatDate(
+      bill.bill_date
+    ),
+    112,
+    y
+  );
+
+
+  y +=
+    13;
+
+
+  doc.setFontSize(
+    9
+  );
+
+
+  doc.setTextColor(
+    ...mutedText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.text(
+    "PATIENT",
+    left,
+    y
+  );
+
+
+  doc.text(
+    "PATIENT ID",
+    112,
+    y
+  );
+
+
+  y +=
+    6;
+
+
+  doc.setFontSize(
+    11
+  );
+
+
+  doc.setTextColor(
+    ...darkText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+
+  doc.text(
+    String(
+      patient.patient_name ||
+      "-"
+    ),
+    left,
+    y
+  );
+
+
+  doc.text(
+    String(
+      bill.patient_id
+    ),
+    112,
+    y
+  );
+
+
+  /*
+     TABLE HEADER
+  */
+
+  y +=
+    14;
+
+
+  doc.setFillColor(
+    ...lightBlue
+  );
+
+
+  doc.roundedRect(
+    left,
+    y,
+    contentWidth,
+    10,
+    2,
+    2,
+    "F"
+  );
+
+
+  doc.setTextColor(
+    ...clinicBlue
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.setFontSize(
+    10
+  );
+
+
+  doc.text(
+    "Particulars",
+    left + 4,
+    y + 6.5
+  );
+
+
+  doc.text(
+    "Amount",
+    right - 4,
+    y + 6.5,
+    {
+      align:
+        "right"
+    }
+  );
+
+
+  y +=
+    16;
+
+
+  function addChargeRow(
     label,
-    value
+    amount
   ) {
+
+    doc.setTextColor(
+      ...darkText
+    );
+
+
+    doc.setFont(
+      "helvetica",
+      "normal"
+    );
+
+
+    doc.setFontSize(
+      10
+    );
+
 
     doc.text(
       label,
-      20,
+      left + 4,
       y
     );
 
 
     doc.text(
-      String(
-        value
+      currency(
+        amount
       ),
-      190,
+      right - 4,
       y,
       {
-        align: "right"
+        align:
+          "right"
       }
+    );
+
+
+    doc.setDrawColor(
+      230,
+      234,
+      239
+    );
+
+
+    doc.setLineWidth(
+      0.25
+    );
+
+
+    doc.line(
+      left,
+      y + 4,
+      right,
+      y + 4
     );
 
 
@@ -3936,75 +4882,273 @@ async function downloadBillPDF(
   }
 
 
-  line(
-    "Bill #",
-    bill.id
-  );
-
-
-  line(
-    "Date",
-    formatDate(
-      bill.bill_date
-    )
-  );
-
-
-  line(
-    "Patient",
-    patient.patient_name ||
-    "-"
-  );
-
-
-  line(
-    "Patient ID",
-    bill.patient_id
-  );
-
-
-  y +=
-    5;
-
-
-  line(
+  addChargeRow(
     "Consultation Fee",
-    currency(
-      bill.consultation_fee
-    )
+    bill.consultation_fee
   );
 
 
-  line(
+  addChargeRow(
     "Medicine Charges",
-    currency(
-      bill.medicine_charges
-    )
+    bill.medicine_charges
   );
 
 
-  line(
-    "Procedure / Other",
-    currency(
-      bill.procedure_charges
-    )
+  addChargeRow(
+    "Procedure / Other Charges",
+    bill.procedure_charges
   );
 
+
+  /*
+     TOTAL
+  */
 
   y +=
-    4;
+    2;
+
+
+  doc.setFillColor(
+    ...lightBlue
+  );
+
+
+  doc.roundedRect(
+    left,
+    y - 5,
+    contentWidth,
+    13,
+    2,
+    2,
+    "F"
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
 
 
   doc.setFontSize(
-    14
+    13
   );
 
 
-  line(
+  doc.setTextColor(
+    ...clinicBlue
+  );
+
+
+  doc.text(
     "TOTAL",
+    left + 4,
+    y + 3
+  );
+
+
+  doc.text(
     currency(
       bill.total_amount
-    )
+    ),
+    right - 4,
+    y + 3,
+    {
+      align:
+        "right"
+    }
+  );
+
+
+  /*
+     PAYMENT DETAILS
+  */
+
+  y +=
+    20;
+
+
+  doc.setTextColor(
+    ...darkText
+  );
+
+
+  doc.setFontSize(
+    10
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.text(
+    "Payment Status:",
+    left,
+    y
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+
+  doc.text(
+    String(
+      bill.payment_status ||
+      "-"
+    ),
+    left + 38,
+    y
+  );
+
+
+  y +=
+    8;
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.text(
+    "Payment Method:",
+    left,
+    y
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+
+  doc.text(
+    String(
+      bill.payment_method ||
+      "-"
+    ),
+    left + 38,
+    y
+  );
+
+
+  /*
+     NOTES
+  */
+
+  if (
+    bill.notes
+  ) {
+
+    y +=
+      12;
+
+
+    doc.setFont(
+      "helvetica",
+      "bold"
+    );
+
+
+    doc.setFontSize(
+      9
+    );
+
+
+    doc.setTextColor(
+      ...mutedText
+    );
+
+
+    doc.text(
+      "NOTES",
+      left,
+      y
+    );
+
+
+    y +=
+      6;
+
+
+    doc.setFont(
+      "helvetica",
+      "normal"
+    );
+
+
+    doc.setFontSize(
+      10
+    );
+
+
+    doc.setTextColor(
+      ...darkText
+    );
+
+
+    const notesLines =
+      doc.splitTextToSize(
+        String(
+          bill.notes
+        ),
+        contentWidth
+      );
+
+
+    doc.text(
+      notesLines,
+      left,
+      y
+    );
+
+
+    y +=
+      notesLines.length *
+      5;
+
+  }
+
+
+  /*
+     FOOTER
+  */
+
+  const footerY =
+    258;
+
+
+  doc.setDrawColor(
+    218,
+    225,
+    233
+  );
+
+
+  doc.line(
+    left,
+    footerY,
+    right,
+    footerY
+  );
+
+
+  doc.setTextColor(
+    ...clinicBlue
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
   );
 
 
@@ -4013,66 +5157,84 @@ async function downloadBillPDF(
   );
 
 
-  y +=
-    4;
-
-
-  line(
-    "Payment Status",
-    bill.payment_status ||
-    "-"
+  doc.text(
+    "Thank you for visiting",
+    pageWidth / 2,
+    footerY + 10,
+    {
+      align:
+        "center"
+    }
   );
 
 
-  line(
-    "Payment Method",
-    bill.payment_method ||
-    "-"
+  doc.setFontSize(
+    12
   );
 
 
-  if (
-    bill.notes
-  ) {
-
-    y +=
-      4;
-
-
-    doc.text(
-      "Notes:",
-      20,
-      y
-    );
+  doc.text(
+    "GENERAL & DIABETES CARE",
+    pageWidth / 2,
+    footerY + 17,
+    {
+      align:
+        "center"
+    }
+  );
 
 
-    y +=
-      7;
+  doc.setTextColor(
+    ...mutedText
+  );
 
 
-    const lines =
-      doc.splitTextToSize(
-        bill.notes,
-        170
-      );
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
 
 
-    doc.text(
-      lines,
-      20,
-      y
-    );
+  doc.setFontSize(
+    8.5
+  );
 
-  }
 
+  doc.text(
+    "This is a computer-generated receipt.",
+    pageWidth / 2,
+    footerY + 27,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.text(
+    "No signature required.",
+    pageWidth / 2,
+    footerY + 32,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  /*
+     SAVE PDF
+  */
 
   doc.save(
-    "Bill-" +
+    "General-Diabetes-Care-Receipt-" +
     bill.id +
     ".pdf"
   );
 
 }
+
+
 
 
 /* =========================================================
