@@ -1,0 +1,4213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Investigations | General & Diabetes Care
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css">
+
+
+  <style>
+
+    /* =====================================================
+       INVESTIGATION PAGE
+       ===================================================== */
+
+    .investigation-page {
+
+      max-width: 1100px;
+
+      margin: 0 auto;
+
+      padding: 20px;
+
+    }
+
+
+    .investigation-header {
+
+      text-align: center;
+
+      margin-bottom: 25px;
+
+    }
+
+
+    .investigation-header .section-label {
+
+      margin-bottom: 5px;
+
+    }
+
+
+    .investigation-header h1 {
+
+      margin: 5px 0;
+
+    }
+
+
+    .investigation-subtitle {
+
+      color: #666;
+
+      margin-top: 5px;
+
+    }
+
+
+    /* =====================================================
+       CARDS
+       ===================================================== */
+
+    .investigation-card {
+
+      background: #ffffff;
+
+      border-radius: 16px;
+
+      padding: 22px;
+
+      margin-bottom: 20px;
+
+      box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.08);
+
+      border: 1px solid #e8e8e8;
+
+    }
+
+
+    .investigation-card h2 {
+
+      margin-top: 0;
+
+      margin-bottom: 10px;
+
+    }
+
+
+    .investigation-card h3 {
+
+      margin-top: 0;
+
+    }
+
+
+    /* =====================================================
+       DASHBOARD
+       ===================================================== */
+
+    .investigation-dashboard {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 18px;
+
+      margin-bottom: 25px;
+
+    }
+
+
+    .investigation-dashboard-card {
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffffff,
+          #f7fbff
+        );
+
+      border: 1px solid #dfe8f1;
+
+      border-radius: 18px;
+
+      padding: 24px;
+
+      min-height: 145px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: space-between;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+
+    }
+
+
+    .investigation-dashboard-card:hover {
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 8px 25px rgba(
+          0,
+          0,
+          0,
+          0.10
+        );
+
+    }
+
+
+    .investigation-dashboard-icon {
+
+      font-size: 32px;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .investigation-dashboard-title {
+
+      font-size: 19px;
+
+      font-weight: 800;
+
+      margin-bottom: 5px;
+
+    }
+
+
+    .investigation-dashboard-description {
+
+      color: #666;
+
+      font-size: 14px;
+
+    }
+
+
+    .investigation-dashboard-open {
+
+      margin-top: 18px;
+
+      font-weight: 700;
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    .investigation-search-row {
+
+      display: flex;
+
+      gap: 10px;
+
+      align-items: stretch;
+
+    }
+
+
+    .investigation-search-row input {
+
+      flex: 1;
+
+      min-width: 0;
+
+      font-size: 16px;
+
+      padding: 13px 15px;
+
+      border-radius: 10px;
+
+      box-sizing: border-box;
+
+    }
+
+
+    .investigation-search-button {
+
+      min-width: 120px;
+
+      white-space: nowrap;
+
+    }
+
+
+    /* =====================================================
+       PATIENT CARD
+       ===================================================== */
+
+    .investigation-patient-card {
+
+      border: 1px solid #dfe6ee;
+
+      border-radius: 14px;
+
+      padding: 18px;
+
+      margin-top: 12px;
+
+      background: #fafcff;
+
+    }
+
+
+    .investigation-patient-name {
+
+      font-size: 19px;
+
+      font-weight: 700;
+
+      margin-bottom: 12px;
+
+    }
+
+
+    .investigation-patient-details {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 10px;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .investigation-detail-box {
+
+      background: #ffffff;
+
+      border-radius: 10px;
+
+      padding: 10px;
+
+      border: 1px solid #e5e9ef;
+
+    }
+
+
+    .investigation-detail-label {
+
+      display: block;
+
+      font-size: 12px;
+
+      color: #777;
+
+      margin-bottom: 3px;
+
+    }
+
+
+    .investigation-detail-value {
+
+      font-weight: 600;
+
+      word-break: break-word;
+
+    }
+
+
+    /* =====================================================
+       SELECTED PATIENT
+       ===================================================== */
+
+    .selected-investigation-patient {
+
+      background:
+        linear-gradient(
+          135deg,
+          #f1f8ff,
+          #ffffff
+        );
+
+      border: 1px solid #cfe3f7;
+
+    }
+
+
+    .selected-investigation-header {
+
+      display: flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      gap: 15px;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .selected-investigation-header h3 {
+
+      margin: 0;
+
+    }
+
+
+    /* =====================================================
+       FORM
+       ===================================================== */
+
+    .investigation-form-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 16px;
+
+      margin-top: 20px;
+
+    }
+
+
+    .investigation-form-group {
+
+      display: flex;
+
+      flex-direction: column;
+
+    }
+
+
+    .investigation-form-group.full-width {
+
+      grid-column: 1 / -1;
+
+    }
+
+
+    .investigation-form-group label {
+
+      font-weight: 600;
+
+      margin-bottom: 6px;
+
+    }
+
+
+    .investigation-form-group input,
+
+    .investigation-form-group select,
+
+    .investigation-form-group textarea {
+
+      width: 100%;
+
+      box-sizing: border-box;
+
+    }
+
+
+    /* =====================================================
+       UPLOAD AREA
+       ===================================================== */
+
+    .upload-area {
+
+      border: 2px dashed #cfd8e3;
+
+      border-radius: 16px;
+
+      padding: 30px 20px;
+
+      text-align: center;
+
+      background: #fafcff;
+
+      cursor: pointer;
+
+      transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+
+    }
+
+
+    .upload-area:hover {
+
+      border-color: #8fb7dd;
+
+      background: #f4f9ff;
+
+    }
+
+
+    .upload-area-icon {
+
+      font-size: 40px;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .upload-area-title {
+
+      font-weight: 800;
+
+      font-size: 17px;
+
+    }
+
+
+    .upload-area-description {
+
+      color: #777;
+
+      font-size: 13px;
+
+      margin-top: 6px;
+
+    }
+
+
+    .upload-file-name {
+
+      margin-top: 15px;
+
+      font-weight: 700;
+
+      word-break: break-word;
+
+    }
+
+
+    .upload-file-size {
+
+      color: #777;
+
+      font-size: 13px;
+
+      margin-top: 4px;
+
+    }
+
+
+    /* =====================================================
+       ACTIONS
+       ===================================================== */
+
+    .investigation-actions {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 20px;
+
+    }
+
+
+    .investigation-actions button,
+
+    .investigation-actions a {
+
+      flex: 1;
+
+      min-width: 160px;
+
+    }
+
+
+    .secondary-investigation-button {
+
+      background: #f1f3f5 !important;
+
+      color: #333 !important;
+
+      border: 1px solid #ddd !important;
+
+    }
+
+
+    .danger-investigation-button {
+
+      background: #fff0f0 !important;
+
+      color: #c62828 !important;
+
+      border: 1px solid #f0baba !important;
+
+    }
+
+
+    /* =====================================================
+       REPORT LIST
+       ===================================================== */
+
+    .report-list {
+
+      margin-top: 15px;
+
+    }
+
+
+    .report-item {
+
+      border: 1px solid #e1e5ea;
+
+      border-radius: 14px;
+
+      margin-bottom: 10px;
+
+      overflow: hidden;
+
+      background: #ffffff;
+
+    }
+
+
+    .report-summary {
+
+      padding: 16px;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 15px;
+
+      cursor: pointer;
+
+    }
+
+
+    .report-summary:hover {
+
+      background: #fafcff;
+
+    }
+
+
+    .report-main {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 5px;
+
+      min-width: 0;
+
+    }
+
+
+    .report-date {
+
+      font-size: 16px;
+
+      font-weight: 800;
+
+    }
+
+
+    .report-type {
+
+      font-weight: 600;
+
+    }
+
+
+    .report-file {
+
+      color: #777;
+
+      font-size: 13px;
+
+      word-break: break-word;
+
+    }
+
+
+    .report-arrow {
+
+      font-size: 20px;
+
+      flex-shrink: 0;
+
+    }
+
+
+    /* =====================================================
+       REPORT DETAILS
+       ===================================================== */
+
+    .report-details {
+
+      border-top: 1px solid #e4e4e4;
+
+      padding: 18px;
+
+      background: #fafafa;
+
+    }
+
+
+    .report-detail-row {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      gap: 20px;
+
+      padding: 7px 0;
+
+      border-bottom: 1px dotted #ddd;
+
+    }
+
+
+    .report-detail-row:last-child {
+
+      border-bottom: none;
+
+    }
+
+
+    .report-viewer {
+
+      margin-top: 18px;
+
+      border-radius: 12px;
+
+      overflow: hidden;
+
+      background: #eeeeee;
+
+      text-align: center;
+
+      padding: 10px;
+
+    }
+
+
+    .report-viewer img {
+
+      max-width: 100%;
+
+      height: auto;
+
+      max-height: 75vh;
+
+      object-fit: contain;
+
+      border-radius: 8px;
+
+      cursor: zoom-in;
+
+    }
+
+
+    .report-pdf-viewer {
+
+      width: 100%;
+
+      height: 650px;
+
+      border: none;
+
+      border-radius: 8px;
+
+      background: #ffffff;
+
+    }
+
+
+    .report-viewer-loading {
+
+      padding: 40px;
+
+      color: #666;
+
+    }
+
+
+    /* =====================================================
+       EMPTY / LOADING
+       ===================================================== */
+
+    .investigation-message {
+
+      text-align: center;
+
+      padding: 25px;
+
+      color: #666;
+
+    }
+
+
+    /* =====================================================
+       MODAL
+       ===================================================== */
+
+    .image-modal {
+
+      position: fixed;
+
+      inset: 0;
+
+      background:
+        rgba(0, 0, 0, 0.88);
+
+      display: none;
+
+      align-items: center;
+
+      justify-content: center;
+
+      z-index: 9999;
+
+      padding: 20px;
+
+    }
+
+
+    .image-modal img {
+
+      max-width: 96vw;
+
+      max-height: 92vh;
+
+      object-fit: contain;
+
+      cursor: zoom-out;
+
+    }
+
+
+    .image-modal-close {
+
+      position: absolute;
+
+      top: 15px;
+
+      right: 20px;
+
+      color: #ffffff;
+
+      font-size: 34px;
+
+      cursor: pointer;
+
+      font-weight: 300;
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 700px) {
+
+      .investigation-page {
+
+        padding: 12px;
+
+      }
+
+
+      .investigation-card {
+
+        padding: 16px;
+
+        border-radius: 13px;
+
+      }
+
+
+      .investigation-dashboard {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .investigation-dashboard-card {
+
+        min-height: 125px;
+
+        padding: 20px;
+
+      }
+
+
+      .investigation-search-row {
+
+        flex-direction: column;
+
+      }
+
+
+      .investigation-search-button {
+
+        width: 100%;
+
+      }
+
+
+      .investigation-patient-details {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .investigation-form-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .investigation-form-group.full-width {
+
+        grid-column: auto;
+
+      }
+
+
+      .investigation-actions {
+
+        flex-direction: column;
+
+      }
+
+
+      .investigation-actions button,
+
+      .investigation-actions a {
+
+        width: 100%;
+
+      }
+
+
+      .report-summary {
+
+        align-items: flex-start;
+
+      }
+
+
+      .report-detail-row {
+
+        flex-direction: column;
+
+        gap: 2px;
+
+      }
+
+
+      .report-pdf-viewer {
+
+        height: 500px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<section class="doctor-dashboard">
+
+  <div class="dashboard-card investigation-page">
+
+
+    <!-- ===================================================
+         HEADER
+         =================================================== -->
+
+    <div class="investigation-header">
+
+      <p class="section-label">
+        GENERAL &amp; DIABETES CARE
+      </p>
+
+      <h1>
+        🧪 Investigations &amp; Lab Reports
+      </h1>
+
+      <p class="investigation-subtitle">
+        Upload and review patient investigation reports
+      </p>
+
+    </div>
+
+
+    <!-- ===================================================
+         MAIN DASHBOARD
+         =================================================== -->
+
+    <div
+      id="investigationDashboard"
+      class="investigation-dashboard">
+
+
+      <div
+        class="investigation-dashboard-card"
+        id="openUploadCard">
+
+        <div>
+
+          <div class="investigation-dashboard-icon">
+            📤
+          </div>
+
+          <div class="investigation-dashboard-title">
+            Upload Lab Report
+          </div>
+
+          <div class="investigation-dashboard-description">
+            Upload a new investigation report for a patient
+          </div>
+
+        </div>
+
+        <div class="investigation-dashboard-open">
+          Open →
+        </div>
+
+      </div>
+
+
+      <div
+        class="investigation-dashboard-card"
+        id="openReviewCard">
+
+        <div>
+
+          <div class="investigation-dashboard-icon">
+            📋
+          </div>
+
+          <div class="investigation-dashboard-title">
+            Review Old Reports
+          </div>
+
+          <div class="investigation-dashboard-description">
+            Search and review previously uploaded reports
+          </div>
+
+        </div>
+
+        <div class="investigation-dashboard-open">
+          Open →
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- ===================================================
+         UPLOAD SECTION
+         =================================================== -->
+
+    <div
+      id="uploadSection"
+      class="investigation-card"
+      style="display:none;">
+
+
+      <h2>
+        📤 Upload Lab Report
+      </h2>
+
+      <p>
+        Find the patient and upload the original laboratory report.
+      </p>
+
+
+      <!-- PATIENT SEARCH -->
+
+      <div style="margin-top:20px;">
+
+        <h3>
+          🔎 Find Patient
+        </h3>
+
+        <div class="investigation-search-row">
+
+          <input
+            type="text"
+            id="uploadPatientSearch"
+            placeholder="Patient ID / Name / Phone Number"
+            autocomplete="off">
+
+          <button
+            type="button"
+            class="doctor-login-button investigation-search-button"
+            id="uploadPatientSearchButton">
+
+            🔎 Search
+
+          </button>
+
+        </div>
+
+
+        <div
+          id="uploadPatientResults"
+          style="margin-top:15px;">
+
+          <div class="investigation-message">
+
+            Search for a patient to upload a report.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- SELECTED PATIENT -->
+
+      <div
+        id="selectedUploadPatient"
+        class="investigation-card selected-investigation-patient"
+        style="display:none; margin-top:20px;">
+
+
+        <div class="selected-investigation-header">
+
+          <h3>
+            👤 Selected Patient
+          </h3>
+
+          <button
+            type="button"
+            class="doctor-login-button secondary-investigation-button"
+            id="changeUploadPatientButton">
+
+            Change
+
+          </button>
+
+        </div>
+
+
+        <div class="investigation-patient-details">
+
+          <div class="investigation-detail-box">
+
+            <span class="investigation-detail-label">
+              Patient Name
+            </span>
+
+            <span
+              class="investigation-detail-value"
+              id="selectedUploadPatientName">
+              -
+            </span>
+
+          </div>
+
+
+          <div class="investigation-detail-box">
+
+            <span class="investigation-detail-label">
+              Patient ID
+            </span>
+
+            <span
+              class="investigation-detail-value"
+              id="selectedUploadPatientId">
+              -
+            </span>
+
+          </div>
+
+
+          <div class="investigation-detail-box">
+
+            <span class="investigation-detail-label">
+              Phone
+            </span>
+
+            <span
+              class="investigation-detail-value"
+              id="selectedUploadPatientPhone">
+              -
+            </span>
+
+          </div>
+
+
+          <div class="investigation-detail-box">
+
+            <span class="investigation-detail-label">
+              Status
+            </span>
+
+            <span class="investigation-detail-value">
+              Ready for upload
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- UPLOAD FORM -->
+
+        <div class="investigation-form-grid">
+
+
+          <div class="investigation-form-group">
+
+            <label for="uploadReportDate">
+              📅 Report Date
+            </label>
+
+            <input
+              type="date"
+              id="uploadReportDate">
+
+          </div>
+
+
+          <div class="investigation-form-group">
+
+            <label for="uploadReportType">
+              📄 Report Type
+            </label>
+
+            <select id="uploadReportType">
+
+              <option value="">
+                Select report type
+              </option>
+
+              <option value="Blood Test">
+                Blood Test
+              </option>
+
+              <option value="Diabetes">
+                Diabetes
+              </option>
+
+              <option value="HbA1c">
+                HbA1c
+              </option>
+
+              <option value="Lipid Profile">
+                Lipid Profile
+              </option>
+
+              <option value="Thyroid">
+                Thyroid
+              </option>
+
+              <option value="Kidney">
+                Kidney
+              </option>
+
+              <option value="Liver">
+                Liver
+              </option>
+
+              <option value="Urine">
+                Urine
+              </option>
+
+              <option value="Imaging / Scan">
+                Imaging / Scan
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="investigation-form-group full-width">
+
+            <label>
+              📎 Lab Report
+            </label>
+
+
+            <input
+              type="file"
+              id="labReportFile"
+              accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf"
+              style="display:none;">
+
+
+            <div
+              class="upload-area"
+              id="uploadArea">
+
+              <div class="upload-area-icon">
+                📎
+              </div>
+
+              <div class="upload-area-title">
+                Tap to upload lab report
+              </div>
+
+              <div class="upload-area-description">
+                JPG, PNG or PDF
+              </div>
+
+              <div
+                id="uploadFileName"
+                class="upload-file-name"
+                style="display:none;">
+              </div>
+
+              <div
+                id="uploadFileSize"
+                class="upload-file-size"
+                style="display:none;">
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- UPLOAD ACTIONS -->
+
+        <div class="investigation-actions">
+
+          <button
+            type="button"
+            class="doctor-login-button"
+            id="saveInvestigationButton">
+
+            📤 Save Report
+
+          </button>
+
+
+          <button
+            type="button"
+            class="doctor-login-button secondary-investigation-button"
+            id="cancelUploadButton">
+
+            ✖ Cancel
+
+          </button>
+
+        </div>
+
+
+        <div
+          id="uploadStatusMessage"
+          class="investigation-message"
+          style="display:none;">
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+    <!-- ===================================================
+         REVIEW SECTION
+         =================================================== -->
+
+    <div
+      id="reviewSection"
+      class="investigation-card"
+      style="display:none;">
+
+
+      <h2>
+        📋 Review Old Reports
+      </h2>
+
+      <p>
+        Search for a patient to view previously uploaded reports.
+      </p>
+
+
+      <div style="margin-top:20px;">
+
+        <div class="investigation-search-row">
+
+          <input
+            type="text"
+            id="reviewPatientSearch"
+            placeholder="Patient ID / Name / Phone Number"
+            autocomplete="off">
+
+          <button
+            type="button"
+            class="doctor-login-button investigation-search-button"
+            id="reviewPatientSearchButton">
+
+            🔎 Search
+
+          </button>
+
+        </div>
+
+
+        <div
+          id="reviewPatientResults"
+          style="margin-top:15px;">
+
+          <div class="investigation-message">
+
+            Search for a patient to review reports.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="reviewReportsContainer"
+        style="display:none; margin-top:20px;">
+
+        <div
+          class="investigation-card selected-investigation-patient">
+
+          <div class="selected-investigation-header">
+
+            <h3>
+              👤 Patient
+            </h3>
+
+            <button
+              type="button"
+              class="doctor-login-button secondary-investigation-button"
+              id="changeReviewPatientButton">
+
+              Change
+
+            </button>
+
+          </div>
+
+
+          <div class="investigation-patient-details">
+
+            <div class="investigation-detail-box">
+
+              <span class="investigation-detail-label">
+                Patient Name
+              </span>
+
+              <span
+                class="investigation-detail-value"
+                id="reviewPatientName">
+                -
+              </span>
+
+            </div>
+
+
+            <div class="investigation-detail-box">
+
+              <span class="investigation-detail-label">
+                Patient ID
+              </span>
+
+              <span
+                class="investigation-detail-value"
+                id="reviewPatientId">
+                -
+              </span>
+
+            </div>
+
+
+            <div class="investigation-detail-box">
+
+              <span class="investigation-detail-label">
+                Phone
+              </span>
+
+              <span
+                class="investigation-detail-value"
+                id="reviewPatientPhone">
+                -
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <h3 style="margin-top:20px;">
+          📅 Previous Reports
+        </h3>
+
+
+        <div
+          id="reportsList"
+          class="report-list">
+
+          <div class="investigation-message">
+            Loading reports...
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+    <!-- ===================================================
+         NAVIGATION
+         =================================================== -->
+
+    <div
+      class="investigation-actions"
+      style="margin-top:10px;">
+
+
+      <a
+        href="doctor-dashboard.html"
+        class="doctor-login-button"
+        style="text-align:center;">
+
+        ← Back to Dashboard
+
+      </a>
+
+
+      <button
+        type="button"
+        class="doctor-login-button"
+        id="investigationLogoutButton">
+
+        🔒 Logout
+
+      </button>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     IMAGE VIEWER
+     ======================================================= -->
+
+<div
+  id="imageModal"
+  class="image-modal">
+
+  <div
+    class="image-modal-close"
+    id="imageModalClose">
+
+    ×
+
+  </div>
+
+
+  <img
+    id="modalImage"
+    src=""
+    alt="Lab Report">
+
+</div>
+
+
+<!-- =======================================================
+     SUPABASE
+     ======================================================= -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================================================
+   GLOBAL VARIABLES
+   ========================================================= */
+
+let selectedUploadPatient = null;
+
+let selectedReviewPatient = null;
+
+let selectedLabFile = null;
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHTML(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+
+  }
+
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   LOGIN CHECK
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   TODAY
+   ========================================================= */
+
+function getTodayString() {
+
+  const today =
+    new Date();
+
+
+  const year =
+    today.getFullYear();
+
+
+  const month =
+    String(
+      today.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const day =
+    String(
+      today.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  return (
+    year +
+    "-" +
+    month +
+    "-" +
+    day
+  );
+
+}
+
+
+/* =========================================================
+   FORMAT DATE
+   ========================================================= */
+
+function formatReportDate(dateValue) {
+
+  if (!dateValue) {
+
+    return "-";
+
+  }
+
+
+  const parts =
+    String(
+      dateValue
+    ).split("-");
+
+
+  if (
+    parts.length !== 3
+  ) {
+
+    return dateValue;
+
+  }
+
+
+  const date =
+    new Date(
+      Number(parts[0]),
+      Number(parts[1]) - 1,
+      Number(parts[2])
+    );
+
+
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day:
+        "2-digit",
+      month:
+        "short",
+      year:
+        "numeric"
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FORMAT FILE SIZE
+   ========================================================= */
+
+function formatFileSize(bytes) {
+
+  const size =
+    Number(bytes) || 0;
+
+
+  if (
+    size < 1024
+  ) {
+
+    return (
+      size +
+      " B"
+    );
+
+  }
+
+
+  if (
+    size < 1024 * 1024
+  ) {
+
+    return (
+      (size / 1024)
+        .toFixed(1) +
+      " KB"
+    );
+
+  }
+
+
+  return (
+    (size / (
+      1024 * 1024
+    ))
+      .toFixed(1) +
+    " MB"
+  );
+
+}
+
+
+/* =========================================================
+   DASHBOARD NAVIGATION
+   ========================================================= */
+
+function showUploadSection() {
+
+  document
+    .getElementById(
+      "uploadSection"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "reviewSection"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "uploadSection"
+    )
+    .scrollIntoView({
+      behavior:
+        "smooth",
+      block:
+        "start"
+    });
+
+}
+
+
+function showReviewSection() {
+
+  document
+    .getElementById(
+      "reviewSection"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "uploadSection"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "reviewSection"
+    )
+    .scrollIntoView({
+      behavior:
+        "smooth",
+      block:
+        "start"
+    });
+
+}
+
+
+/* =========================================================
+   SEARCH PATIENT
+   ========================================================= */
+
+async function searchPatients(
+  searchValue,
+  resultsContainerId,
+  mode
+) {
+
+  const search =
+    searchValue.trim();
+
+
+  const resultsContainer =
+    document.getElementById(
+      resultsContainerId
+    );
+
+
+  if (!search) {
+
+    resultsContainer.innerHTML = `
+
+      <div class="investigation-message">
+
+        Please enter Patient ID, name or phone number.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  resultsContainer.innerHTML = `
+
+    <div class="investigation-message">
+
+      🔎 Searching patients...
+
+    </div>
+
+  `;
+
+
+  let query =
+    supabaseClient
+      .from("patients")
+      .select("*");
+
+
+  /*
+     Numeric searches can match
+     patient ID, phone or name.
+  */
+
+  if (
+    /^\d+$/.test(search)
+  ) {
+
+    query =
+      query.or(
+        "id.eq." +
+        search +
+        ",patient_phone.ilike.%" +
+        search +
+        "%,patient_name.ilike.%" +
+        search +
+        "%"
+      );
+
+  }
+
+  else {
+
+    query =
+      query.or(
+        "patient_name.ilike.%" +
+        search +
+        "%,patient_phone.ilike.%" +
+        search +
+        "%"
+      );
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await query
+      .order(
+        "patient_name",
+        {
+          ascending:
+            true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Patient search error:",
+      error
+    );
+
+
+    resultsContainer.innerHTML = `
+
+      <div class="investigation-message">
+
+        ❌ Unable to search patients.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    resultsContainer.innerHTML = `
+
+      <div class="investigation-message">
+
+        No patients found.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  resultsContainer.innerHTML = "";
+
+
+  data.forEach(
+    function(patient) {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "investigation-patient-card";
+
+
+      card.innerHTML = `
+
+        <div class="investigation-patient-name">
+
+          👤 ${escapeHTML(
+            patient.patient_name || "-"
+          )}
+
+        </div>
+
+
+        <div class="investigation-patient-details">
+
+          <div class="investigation-detail-box">
+
+            <span class="investigation-detail-label">
+              Patient ID
+            </span>
+
+            <span class="investigation-detail-value">
+
+              ${escapeHTML(
+                patient.id
+              )}
+
+            </span>
+
+          </div>
+
+
+          <div class="investigation-detail-box">
+
+            <span class="investigation-detail-label">
+              Phone
+            </span>
+
+            <span class="investigation-detail-value">
+
+              ${escapeHTML(
+                patient.patient_phone || "-"
+              )}
+
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="doctor-login-button"
+          data-action="select">
+
+          ${mode === "upload"
+            ? "📤 Select Patient"
+            : "📋 View Reports"}
+
+        </button>
+
+      `;
+
+
+      card
+        .querySelector(
+          '[data-action="select"]'
+        )
+        .addEventListener(
+          "click",
+          function() {
+
+            if (
+              mode === "upload"
+            ) {
+
+              selectUploadPatient(
+                patient
+              );
+
+            }
+
+            else {
+
+              selectReviewPatient(
+                patient
+              );
+
+            }
+
+          }
+        );
+
+
+      resultsContainer.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   SELECT UPLOAD PATIENT
+   ========================================================= */
+
+function selectUploadPatient(
+  patient
+) {
+
+  selectedUploadPatient =
+    patient;
+
+
+  document
+    .getElementById(
+      "selectedUploadPatientName"
+    )
+    .textContent =
+      patient.patient_name ||
+      "-";
+
+
+  document
+    .getElementById(
+      "selectedUploadPatientId"
+    )
+    .textContent =
+      patient.id;
+
+
+  document
+    .getElementById(
+      "selectedUploadPatientPhone"
+    )
+    .textContent =
+      patient.patient_phone ||
+      "-";
+
+
+  document
+    .getElementById(
+      "selectedUploadPatient"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "uploadPatientResults"
+    )
+    .innerHTML = "";
+
+
+  document
+    .getElementById(
+      "uploadReportDate"
+    )
+    .value =
+      getTodayString();
+
+
+  document
+    .getElementById(
+      "selectedUploadPatient"
+    )
+    .scrollIntoView({
+      behavior:
+        "smooth",
+      block:
+        "start"
+    });
+
+}
+
+
+/* =========================================================
+   SELECT REVIEW PATIENT
+   ========================================================= */
+
+async function selectReviewPatient(
+  patient
+) {
+
+  selectedReviewPatient =
+    patient;
+
+
+  document
+    .getElementById(
+      "reviewPatientName"
+    )
+    .textContent =
+      patient.patient_name ||
+      "-";
+
+
+  document
+    .getElementById(
+      "reviewPatientId"
+    )
+    .textContent =
+      patient.id;
+
+
+  document
+    .getElementById(
+      "reviewPatientPhone"
+    )
+    .textContent =
+      patient.patient_phone ||
+      "-";
+
+
+  document
+    .getElementById(
+      "reviewReportsContainer"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "reviewPatientResults"
+    )
+    .innerHTML = "";
+
+
+  await loadPatientReports(
+    patient.id
+  );
+
+
+  document
+    .getElementById(
+      "reviewReportsContainer"
+    )
+    .scrollIntoView({
+      behavior:
+        "smooth",
+      block:
+        "start"
+    });
+
+}
+
+
+/* =========================================================
+   FILE SELECTION
+   ========================================================= */
+
+function handleFileSelection(
+  file
+) {
+
+  selectedLabFile =
+    file ||
+    null;
+
+
+  const fileName =
+    document.getElementById(
+      "uploadFileName"
+    );
+
+
+  const fileSize =
+    document.getElementById(
+      "uploadFileSize"
+    );
+
+
+  if (!file) {
+
+    fileName.style.display =
+      "none";
+
+    fileSize.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  const allowedTypes = [
+
+    "image/jpeg",
+
+    "image/png",
+
+    "application/pdf"
+
+  ];
+
+
+  if (
+    !allowedTypes.includes(
+      file.type
+    )
+  ) {
+
+    alert(
+      "Please select a JPG, PNG or PDF file."
+    );
+
+
+    document
+      .getElementById(
+        "labReportFile"
+      )
+      .value = "";
+
+
+    selectedLabFile =
+      null;
+
+
+    return;
+
+  }
+
+
+  /*
+     Maximum 20 MB
+  */
+
+  const maxSize =
+    20 *
+    1024 *
+    1024;
+
+
+  if (
+    file.size >
+    maxSize
+  ) {
+
+    alert(
+      "The file is too large. Maximum allowed size is 20 MB."
+    );
+
+
+    document
+      .getElementById(
+        "labReportFile"
+      )
+      .value = "";
+
+
+    selectedLabFile =
+      null;
+
+
+    return;
+
+  }
+
+
+  fileName.textContent =
+    "📄 " +
+    file.name;
+
+
+  fileSize.textContent =
+    formatFileSize(
+      file.size
+    );
+
+
+  fileName.style.display =
+    "block";
+
+
+  fileSize.style.display =
+    "block";
+
+}
+
+
+/* =========================================================
+   UPLOAD REPORT
+   ========================================================= */
+
+async function saveInvestigationReport() {
+
+  if (
+    !selectedUploadPatient
+  ) {
+
+    alert(
+      "Please select a patient first."
+    );
+
+    return;
+
+  }
+
+
+  const reportDate =
+    document
+      .getElementById(
+        "uploadReportDate"
+      )
+      .value;
+
+
+  if (!reportDate) {
+
+    alert(
+      "Please select report date."
+    );
+
+    return;
+
+  }
+
+
+  const reportType =
+    document
+      .getElementById(
+        "uploadReportType"
+      )
+      .value;
+
+
+  if (!reportType) {
+
+    alert(
+      "Please select report type."
+    );
+
+    return;
+
+  }
+
+
+  if (!selectedLabFile) {
+
+    alert(
+      "Please select a lab report file."
+    );
+
+    return;
+
+  }
+
+
+  const saveButton =
+    document.getElementById(
+      "saveInvestigationButton"
+    );
+
+
+  const statusMessage =
+    document.getElementById(
+      "uploadStatusMessage"
+    );
+
+
+  saveButton.disabled =
+    true;
+
+
+  saveButton.textContent =
+    "⏳ Uploading...";
+
+
+  statusMessage.style.display =
+    "block";
+
+
+  statusMessage.textContent =
+    "Uploading report securely...";
+
+
+  try {
+
+    /*
+       Create a unique storage path.
+
+       Example:
+
+       patient-2/
+       2026-08-22/
+       timestamp-file.jpg
+    */
+
+    const cleanFileName =
+      selectedLabFile.name
+        .replace(
+          /[^a-zA-Z0-9._-]/g,
+          "_"
+        );
+
+
+    const storagePath =
+      "patient-" +
+      selectedUploadPatient.id +
+      "/" +
+      reportDate +
+      "/" +
+      Date.now() +
+      "-" +
+      cleanFileName;
+
+
+    /*
+       Upload actual file
+       to Supabase Storage.
+    */
+
+    const {
+      error:
+        uploadError
+    } =
+      await supabaseClient
+        .storage
+        .from(
+          "investigation-reports"
+        )
+        .upload(
+          storagePath,
+          selectedLabFile,
+          {
+            cacheControl:
+              "3600",
+
+            upsert:
+              false,
+
+            contentType:
+              selectedLabFile.type
+          }
+        );
+
+
+    if (uploadError) {
+
+      throw uploadError;
+
+    }
+
+
+    statusMessage.textContent =
+      "Saving report information...";
+
+
+    /*
+       Save metadata
+       in database.
+    */
+
+    const {
+      data,
+      error:
+        databaseError
+    } =
+      await supabaseClient
+        .from(
+          "investigation_reports"
+        )
+        .insert({
+
+          patient_id:
+            selectedUploadPatient.id,
+
+          report_date:
+            reportDate,
+
+          report_type:
+            reportType,
+
+          file_name:
+            selectedLabFile.name,
+
+          file_path:
+            storagePath,
+
+          file_type:
+            selectedLabFile.type,
+
+          file_size:
+            selectedLabFile.size
+
+        })
+        .select()
+        .single();
+
+
+    if (databaseError) {
+
+      /*
+         If database insertion fails,
+         remove the uploaded file so
+         there is no orphaned storage file.
+      */
+
+      await supabaseClient
+        .storage
+        .from(
+          "investigation-reports"
+        )
+        .remove([
+          storagePath
+        ]);
+
+
+      throw databaseError;
+
+    }
+
+
+    console.log(
+      "Investigation report saved:",
+      data
+    );
+
+
+    statusMessage.textContent =
+      "✓ Report uploaded successfully.";
+
+
+    alert(
+      "Lab report uploaded successfully."
+    );
+
+
+    resetUploadForm();
+
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Investigation upload error:",
+      error
+    );
+
+
+    statusMessage.textContent =
+      "❌ Unable to upload report.";
+
+
+    alert(
+      "Unable to upload the lab report:\n\n" +
+      (
+        error.message ||
+        "Unknown error"
+      )
+    );
+
+  }
+
+
+  saveButton.disabled =
+    false;
+
+
+  saveButton.textContent =
+    "📤 Save Report";
+
+}
+
+
+/* =========================================================
+   RESET UPLOAD FORM
+   ========================================================= */
+
+function resetUploadForm() {
+
+  selectedUploadPatient =
+    null;
+
+
+  selectedLabFile =
+    null;
+
+
+  document
+    .getElementById(
+      "selectedUploadPatient"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "uploadPatientSearch"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "uploadPatientResults"
+    )
+    .innerHTML = `
+
+      <div class="investigation-message">
+
+        Search for a patient to upload a report.
+
+      </div>
+
+    `;
+
+
+  document
+    .getElementById(
+      "uploadReportDate"
+    )
+    .value =
+      getTodayString();
+
+
+  document
+    .getElementById(
+      "uploadReportType"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "labReportFile"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "uploadFileName"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "uploadFileSize"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "uploadStatusMessage"
+    )
+    .style.display =
+      "none";
+
+}
+
+
+/* =========================================================
+   LOAD PATIENT REPORTS
+   ========================================================= */
+
+async function loadPatientReports(
+  patientId
+) {
+
+  const container =
+    document.getElementById(
+      "reportsList"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="investigation-message">
+
+      📋 Loading previous reports...
+
+    </div>
+
+  `;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "investigation_reports"
+      )
+      .select("*")
+      .eq(
+        "patient_id",
+        patientId
+      )
+      .order(
+        "report_date",
+        {
+          ascending:
+            false
+        }
+      )
+      .order(
+        "id",
+        {
+          ascending:
+            false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Report loading error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="investigation-message">
+
+        ❌ Unable to load previous reports.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="investigation-message">
+
+        📋 No previous reports found for this patient.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = "";
+
+
+  data.forEach(
+    function(report) {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "report-item";
+
+
+      const detailId =
+        "report-detail-" +
+        report.id;
+
+
+      item.innerHTML = `
+
+        <div
+          class="report-summary"
+          data-report-id="${Number(
+            report.id
+          )}">
+
+          <div class="report-main">
+
+            <span class="report-date">
+
+              📅 ${escapeHTML(
+                formatReportDate(
+                  report.report_date
+                )
+              )}
+
+            </span>
+
+
+            <span class="report-type">
+
+              🧪 ${escapeHTML(
+                report.report_type ||
+                "Other"
+              )}
+
+            </span>
+
+
+            <span class="report-file">
+
+              📄 ${escapeHTML(
+                report.file_name ||
+                "Report"
+              )}
+
+            </span>
+
+          </div>
+
+
+          <span
+            class="report-arrow"
+            id="report-arrow-${Number(
+              report.id
+            )}">
+
+            ▶
+
+          </span>
+
+        </div>
+
+
+        <div
+          id="${detailId}"
+          class="report-details"
+          style="display:none;">
+
+          <div class="report-detail-row">
+
+            <strong>
+              Report Date
+            </strong>
+
+            <span>
+
+              ${escapeHTML(
+                formatReportDate(
+                  report.report_date
+                )
+              )}
+
+            </span>
+
+          </div>
+
+
+          <div class="report-detail-row">
+
+            <strong>
+              Report Type
+            </strong>
+
+            <span>
+
+              ${escapeHTML(
+                report.report_type ||
+                "Other"
+              )}
+
+            </span>
+
+          </div>
+
+
+          <div class="report-detail-row">
+
+            <strong>
+              File
+            </strong>
+
+            <span>
+
+              ${escapeHTML(
+                report.file_name ||
+                "-"
+              )}
+
+            </span>
+
+          </div>
+
+
+          <div
+            id="viewer-${Number(
+              report.id
+            )}"
+            class="report-viewer">
+
+            <div class="report-viewer-loading">
+
+              Tap "View Report" to open the original report.
+
+            </div>
+
+          </div>
+
+
+          <div class="investigation-actions">
+
+            <button
+              type="button"
+              class="doctor-login-button"
+              data-action="view">
+
+              👁️ View Report
+
+            </button>
+
+
+            <button
+              type="button"
+              class="doctor-login-button"
+              data-action="print">
+
+              🖨️ Print
+
+            </button>
+
+
+            <button
+              type="button"
+              class="doctor-login-button"
+              data-action="download">
+
+              📥 Download
+
+            </button>
+
+
+            <button
+              type="button"
+              class="doctor-login-button danger-investigation-button"
+              data-action="delete">
+
+              🗑️ Delete
+
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      const summary =
+        item.querySelector(
+          ".report-summary"
+        );
+
+
+      summary.addEventListener(
+        "click",
+        function() {
+
+          toggleReport(
+            report
+          );
+
+        }
+      );
+
+
+      item
+        .querySelector(
+          '[data-action="view"]'
+        )
+        .addEventListener(
+          "click",
+          function(event) {
+
+            event.stopPropagation();
+
+            viewReport(
+              report
+            );
+
+          }
+        );
+
+
+      item
+        .querySelector(
+          '[data-action="print"]'
+        )
+        .addEventListener(
+          "click",
+          function(event) {
+
+            event.stopPropagation();
+
+            printReport(
+              report
+            );
+
+          }
+        );
+
+
+      item
+        .querySelector(
+          '[data-action="download"]'
+        )
+        .addEventListener(
+          "click",
+          function(event) {
+
+            event.stopPropagation();
+
+            downloadReport(
+              report
+            );
+
+          }
+        );
+
+
+      item
+        .querySelector(
+          '[data-action="delete"]'
+        )
+        .addEventListener(
+          "click",
+          function(event) {
+
+            event.stopPropagation();
+
+            deleteReport(
+              report
+            );
+
+          }
+        );
+
+
+      container.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   TOGGLE REPORT
+   ========================================================= */
+
+function toggleReport(
+  report
+) {
+
+  const detail =
+    document.getElementById(
+      "report-detail-" +
+      report.id
+    );
+
+
+  const arrow =
+    document.getElementById(
+      "report-arrow-" +
+      report.id
+    );
+
+
+  if (!detail) {
+
+    return;
+
+  }
+
+
+  if (
+    detail.style.display ===
+    "none"
+  ) {
+
+    detail.style.display =
+      "block";
+
+    arrow.textContent =
+      "▼";
+
+  }
+
+  else {
+
+    detail.style.display =
+      "none";
+
+    arrow.textContent =
+      "▶";
+
+  }
+
+}
+
+
+/* =========================================================
+   CREATE SIGNED URL
+   ========================================================= */
+
+async function getReportSignedURL(
+  report
+) {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .storage
+      .from(
+        "investigation-reports"
+      )
+      .createSignedUrl(
+        report.file_path,
+        60 * 60
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Signed URL error:",
+      error
+    );
+
+
+    alert(
+      "Unable to open the report."
+    );
+
+
+    return null;
+
+  }
+
+
+  return data.signedUrl;
+
+}
+
+
+/* =========================================================
+   VIEW REPORT
+   ========================================================= */
+
+async function viewReport(
+  report
+) {
+
+  const viewer =
+    document.getElementById(
+      "viewer-" +
+      report.id
+    );
+
+
+  if (!viewer) {
+
+    return;
+
+  }
+
+
+  viewer.innerHTML = `
+
+    <div class="report-viewer-loading">
+
+      ⏳ Opening report...
+
+    </div>
+
+  `;
+
+
+  const signedUrl =
+    await getReportSignedURL(
+      report
+    );
+
+
+  if (!signedUrl) {
+
+    viewer.innerHTML = `
+
+      <div class="report-viewer-loading">
+
+        ❌ Unable to open report.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const fileType =
+    report.file_type ||
+    "";
+
+
+  const fileName =
+    (
+      report.file_name ||
+      ""
+    ).toLowerCase();
+
+
+  const isImage =
+    fileType.startsWith(
+      "image/"
+    ) ||
+    fileName.endsWith(
+      ".jpg"
+    ) ||
+    fileName.endsWith(
+      ".jpeg"
+    ) ||
+    fileName.endsWith(
+      ".png"
+    );
+
+
+  if (isImage) {
+
+    viewer.innerHTML = `
+
+      <img
+        src="${escapeHTML(
+          signedUrl
+        )}"
+        alt="Laboratory report"
+        title="Tap to enlarge">
+
+      <div
+        style="
+          margin-top:10px;
+          color:#666;
+          font-size:13px;
+        ">
+
+        Tap image to enlarge
+
+      </div>
+
+    `;
+
+
+    viewer
+      .querySelector(
+        "img"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          openImageModal(
+            signedUrl
+          );
+
+        }
+      );
+
+  }
+
+  else {
+
+    viewer.innerHTML = `
+
+      <iframe
+        class="report-pdf-viewer"
+        src="${escapeHTML(
+          signedUrl
+        )}"
+        title="Laboratory report PDF">
+      </iframe>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   IMAGE MODAL
+   ========================================================= */
+
+function openImageModal(
+  imageUrl
+) {
+
+  document
+    .getElementById(
+      "modalImage"
+    )
+    .src =
+      imageUrl;
+
+
+  document
+    .getElementById(
+      "imageModal"
+    )
+    .style.display =
+      "flex";
+
+}
+
+
+function closeImageModal() {
+
+  document
+    .getElementById(
+      "imageModal"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "modalImage"
+    )
+    .src =
+      "";
+
+}
+
+
+/* =========================================================
+   PRINT REPORT
+   ========================================================= */
+
+async function printReport(
+  report
+) {
+
+  const signedUrl =
+    await getReportSignedURL(
+      report
+    );
+
+
+  if (!signedUrl) {
+
+    return;
+
+  }
+
+
+  const fileType =
+    report.file_type ||
+    "";
+
+
+  const fileName =
+    (
+      report.file_name ||
+      ""
+    ).toLowerCase();
+
+
+  const isImage =
+    fileType.startsWith(
+      "image/"
+    ) ||
+    fileName.endsWith(
+      ".jpg"
+    ) ||
+    fileName.endsWith(
+      ".jpeg"
+    ) ||
+    fileName.endsWith(
+      ".png"
+    );
+
+
+  const printWindow =
+    window.open(
+      "",
+      "_blank",
+      "width=900,height=900"
+    );
+
+
+  if (!printWindow) {
+
+    alert(
+      "Please allow pop-ups to print the report."
+    );
+
+    return;
+
+  }
+
+
+  if (isImage) {
+
+    printWindow.document.write(`
+
+      <!DOCTYPE html>
+
+      <html>
+
+      <head>
+
+        <title>
+          ${escapeHTML(
+            report.report_type ||
+            "Lab Report"
+          )}
+        </title>
+
+        <style>
+
+          body {
+
+            margin: 0;
+
+            padding: 20px;
+
+            text-align: center;
+
+            font-family: Arial, sans-serif;
+
+          }
+
+          img {
+
+            max-width: 100%;
+
+            max-height: 95vh;
+
+            object-fit: contain;
+
+          }
+
+        </style>
+
+      </head>
+
+      <body>
+
+        <img
+          src="${escapeHTML(
+            signedUrl
+          )}"
+          onload="window.print()">
+
+      </body>
+
+      </html>
+
+    `);
+
+  }
+
+  else {
+
+    printWindow.document.write(`
+
+      <!DOCTYPE html>
+
+      <html>
+
+      <head>
+
+        <title>
+          ${escapeHTML(
+            report.report_type ||
+            "Lab Report"
+          )}
+        </title>
+
+        <style>
+
+          body {
+
+            margin: 0;
+
+            padding: 0;
+
+          }
+
+          iframe {
+
+            width: 100vw;
+
+            height: 100vh;
+
+            border: none;
+
+          }
+
+        </style>
+
+      </head>
+
+      <body>
+
+        <iframe
+          src="${escapeHTML(
+            signedUrl
+          )}">
+
+        </iframe>
+
+      </body>
+
+      </html>
+
+    `);
+
+  }
+
+
+  printWindow.document.close();
+
+}
+
+
+/* =========================================================
+   DOWNLOAD REPORT
+   ========================================================= */
+
+async function downloadReport(
+  report
+) {
+
+  const signedUrl =
+    await getReportSignedURL(
+      report
+    );
+
+
+  if (!signedUrl) {
+
+    return;
+
+  }
+
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+
+  link.href =
+    signedUrl;
+
+
+  link.target =
+    "_blank";
+
+
+  link.rel =
+    "noopener";
+
+
+  link.download =
+    report.file_name ||
+    "lab-report";
+
+
+  document.body.appendChild(
+    link
+  );
+
+
+  link.click();
+
+
+  link.remove();
+
+}
+
+
+/* =========================================================
+   DELETE REPORT
+   ========================================================= */
+
+async function deleteReport(
+  report
+) {
+
+  const confirmed =
+    confirm(
+      "Delete this laboratory report permanently?"
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  /*
+     Delete file from storage first.
+  */
+
+  const {
+    error:
+      storageError
+  } =
+    await supabaseClient
+      .storage
+      .from(
+        "investigation-reports"
+      )
+      .remove([
+        report.file_path
+      ]);
+
+
+  if (storageError) {
+
+    console.error(
+      "Storage deletion error:",
+      storageError
+    );
+
+
+    alert(
+      "Unable to delete the report file."
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+     Delete database record.
+  */
+
+  const {
+    error:
+      databaseError
+  } =
+    await supabaseClient
+      .from(
+        "investigation_reports"
+      )
+      .delete()
+      .eq(
+        "id",
+        report.id
+      );
+
+
+  if (databaseError) {
+
+    console.error(
+      "Database deletion error:",
+      databaseError
+    );
+
+
+    alert(
+      "The file was removed, but the report record could not be deleted:\n\n" +
+      databaseError.message
+    );
+
+
+    return;
+
+  }
+
+
+  alert(
+    "Report deleted successfully."
+  );
+
+
+  if (
+    selectedReviewPatient
+  ) {
+
+    await loadPatientReports(
+      selectedReviewPatient.id
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   EVENT LISTENERS
+   ========================================================= */
+
+document
+  .getElementById(
+    "openUploadCard"
+  )
+  .addEventListener(
+    "click",
+    showUploadSection
+  );
+
+
+document
+  .getElementById(
+    "openReviewCard"
+  )
+  .addEventListener(
+    "click",
+    showReviewSection
+  );
+
+
+document
+  .getElementById(
+    "uploadPatientSearchButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      searchPatients(
+
+        document
+          .getElementById(
+            "uploadPatientSearch"
+          )
+          .value,
+
+        "uploadPatientResults",
+
+        "upload"
+
+      );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "uploadPatientSearch"
+  )
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key ===
+        "Enter"
+      ) {
+
+        event.preventDefault();
+
+        document
+          .getElementById(
+            "uploadPatientSearchButton"
+          )
+          .click();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "reviewPatientSearchButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      searchPatients(
+
+        document
+          .getElementById(
+            "reviewPatientSearch"
+          )
+          .value,
+
+        "reviewPatientResults",
+
+        "review"
+
+      );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "reviewPatientSearch"
+  )
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key ===
+        "Enter"
+      ) {
+
+        event.preventDefault();
+
+        document
+          .getElementById(
+            "reviewPatientSearchButton"
+          )
+          .click();
+
+      }
+
+    }
+  );
+
+
+/*
+   Change patient buttons
+*/
+
+document
+  .getElementById(
+    "changeUploadPatientButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      selectedUploadPatient =
+        null;
+
+
+      document
+        .getElementById(
+          "selectedUploadPatient"
+        )
+        .style.display =
+          "none";
+
+
+      document
+        .getElementById(
+          "uploadPatientSearch"
+        )
+        .focus();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "changeReviewPatientButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      selectedReviewPatient =
+        null;
+
+
+      document
+        .getElementById(
+          "reviewReportsContainer"
+        )
+        .style.display =
+          "none";
+
+
+      document
+        .getElementById(
+          "reviewPatientSearch"
+        )
+        .focus();
+
+    }
+  );
+
+
+/*
+   Upload area
+*/
+
+document
+  .getElementById(
+    "uploadArea"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "labReportFile"
+        )
+        .click();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "labReportFile"
+  )
+  .addEventListener(
+    "change",
+    function() {
+
+      handleFileSelection(
+        this.files[0]
+      );
+
+    }
+  );
+
+
+/*
+   Save report
+*/
+
+document
+  .getElementById(
+    "saveInvestigationButton"
+  )
+  .addEventListener(
+    "click",
+    saveInvestigationReport
+  );
+
+
+/*
+   Cancel upload
+*/
+
+document
+  .getElementById(
+    "cancelUploadButton"
+  )
+  .addEventListener(
+    "click",
+    resetUploadForm
+  );
+
+
+/*
+   Image modal
+*/
+
+document
+  .getElementById(
+    "imageModalClose"
+  )
+  .addEventListener(
+    "click",
+    closeImageModal
+  );
+
+
+document
+  .getElementById(
+    "imageModal"
+  )
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        this
+      ) {
+
+        closeImageModal();
+
+      }
+
+    }
+  );
+
+
+/*
+   Logout
+*/
+
+document
+  .getElementById(
+    "investigationLogoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+
+      window.location.href =
+        "doctor-login.html";
+
+    }
+  );
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+document
+  .getElementById(
+    "uploadReportDate"
+  )
+  .value =
+    getTodayString();
+
+
+checkDoctorLogin();
+
+</script>
+
+
+</body>
+
+</html>
