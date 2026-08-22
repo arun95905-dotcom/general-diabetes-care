@@ -24,25 +24,16 @@
        ===================================================== */
 
     .analytics-header {
-
       text-align: center;
-
       margin-bottom: 25px;
-
     }
-
 
     .analytics-header h1 {
-
       margin-bottom: 8px;
-
     }
 
-
     .analytics-header p {
-
       margin-top: 0;
-
     }
 
 
@@ -326,6 +317,339 @@
 
 
     /* =====================================================
+       MONTH SEARCH BUTTON
+       ===================================================== */
+
+    .month-search-button {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 6px;
+
+      margin-top: 8px;
+
+      padding:
+        9px 14px;
+
+      border:
+        none;
+
+      border-radius:
+        8px;
+
+      background:
+        #2563eb;
+
+      color:
+        #ffffff;
+
+      font-weight:
+        600;
+
+      cursor:
+        pointer;
+
+    }
+
+
+    .month-search-button:hover {
+
+      opacity:
+        0.9;
+
+    }
+
+
+    /* =====================================================
+       MONTH SEARCH MODAL
+       ===================================================== */
+
+    #monthSearchModal {
+
+      display:
+        none;
+
+      position:
+        fixed;
+
+      inset:
+        0;
+
+      background:
+        rgba(
+          0,
+          0,
+          0,
+          0.55
+        );
+
+      z-index:
+        10000;
+
+      padding:
+        20px;
+
+      overflow-y:
+        auto;
+
+    }
+
+
+    .month-search-box {
+
+      max-width:
+        420px;
+
+      margin:
+        100px auto;
+
+      background:
+        #ffffff;
+
+      border-radius:
+        16px;
+
+      padding:
+        25px;
+
+      box-shadow:
+        0 10px 30px
+        rgba(
+          0,
+          0,
+          0,
+          0.25
+        );
+
+    }
+
+
+    .month-search-box h2 {
+
+      margin-top:
+        0;
+
+      margin-bottom:
+        20px;
+
+    }
+
+
+    .month-search-field {
+
+      margin-bottom:
+        15px;
+
+    }
+
+
+    .month-search-field label {
+
+      display:
+        block;
+
+      margin-bottom:
+        6px;
+
+      font-weight:
+        600;
+
+    }
+
+
+    .month-search-field select {
+
+      width:
+        100%;
+
+      padding:
+        11px;
+
+      border:
+        1px solid #ccc;
+
+      border-radius:
+        8px;
+
+      font-size:
+        15px;
+
+      background:
+        #ffffff;
+
+    }
+
+
+    .month-search-actions {
+
+      display:
+        flex;
+
+      gap:
+        10px;
+
+      justify-content:
+        flex-end;
+
+      margin-top:
+        20px;
+
+    }
+
+
+    .month-search-actions button {
+
+      padding:
+        10px 16px;
+
+      border:
+        none;
+
+      border-radius:
+        8px;
+
+      cursor:
+        pointer;
+
+      font-weight:
+        600;
+
+    }
+
+
+    #searchSelectedMonthButton {
+
+      background:
+        #2563eb;
+
+      color:
+        #ffffff;
+
+    }
+
+
+    #closeMonthSearch {
+
+      background:
+        #e5e7eb;
+
+      color:
+        #333333;
+
+    }
+
+
+    /* =====================================================
+       MONTHLY BILL DETAILS MODAL
+       ===================================================== */
+
+    #monthlyBillDetailsModal {
+
+      display:
+        none;
+
+      position:
+        fixed;
+
+      inset:
+        0;
+
+      background:
+        rgba(
+          0,
+          0,
+          0,
+          0.55
+        );
+
+      z-index:
+        9999;
+
+      padding:
+        20px;
+
+      overflow-y:
+        auto;
+
+    }
+
+
+    .monthly-bill-modal-box {
+
+      max-width:
+        650px;
+
+      margin:
+        40px auto;
+
+      background:
+        #ffffff;
+
+      border-radius:
+        16px;
+
+      padding:
+        20px;
+
+      box-shadow:
+        0 10px 30px
+        rgba(
+          0,
+          0,
+          0,
+          0.25
+        );
+
+    }
+
+
+    .monthly-bill-modal-header {
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      margin-bottom:
+        15px;
+
+    }
+
+
+    .monthly-bill-modal-header h2 {
+
+      margin:
+        0;
+
+    }
+
+
+    #closeMonthlyBillDetails {
+
+      border:
+        none;
+
+      background:
+        none;
+
+      font-size:
+        28px;
+
+      cursor:
+        pointer;
+
+    }
+
+
+    /* =====================================================
        LOADING
        ===================================================== */
 
@@ -371,6 +695,14 @@
 
         min-width:
           550px;
+
+      }
+
+
+      .month-search-box {
+
+        margin:
+          50px auto;
 
       }
 
@@ -1093,254 +1425,354 @@
 
 
       <!-- =================================================
-     MONTHLY REVENUE CHART
-     ================================================= -->
+           MONTHLY REVENUE
+           ================================================= -->
 
-<div class="analytics-section">
+      <div class="analytics-section">
 
-  <h2>
-    📈 Monthly Revenue
-  </h2>
-
-  <p
-    style="
-      margin-top:-10px;
-      margin-bottom:20px;
-      color:#666;
-      font-size:14px;
-    "
-  >
-    Paid revenue for the last 12 months
-  </p>
+        <h2>
+          📈 Monthly Revenue
+        </h2>
 
 
-  <!-- REVENUE SUMMARY -->
+        <p
+          style="
+            margin-top:-10px;
+            margin-bottom:20px;
+            color:#666;
+            font-size:14px;
+          "
+        >
 
-  <div
-    class="analytics-grid"
-    style="margin-bottom:20px;"
-  >
+          Paid revenue for the last 12 months
 
-    <div class="analytics-card">
+        </p>
 
-      <div class="analytics-card-title">
-        💰 This Month
+
+        <!-- =================================================
+             REVENUE SUMMARY
+             ================================================= -->
+
+        <div
+          class="analytics-grid"
+          style="margin-bottom:20px;"
+        >
+
+
+          <!-- CURRENT MONTH -->
+
+          <div class="analytics-card">
+
+            <div class="analytics-card-title">
+              💰 This Month
+            </div>
+
+            <div
+              class="analytics-card-value"
+              id="monthlyRevenueCurrent">
+
+              ₹0
+
+            </div>
+
+
+            <div
+              class="analytics-card-subtitle"
+              id="monthlyRevenueCurrentBills">
+
+              0 paid bills
+
+            </div>
+
+
+            <div
+              id="monthlyRevenueCurrentMonth"
+              style="
+                margin-top:8px;
+                color:#2563eb;
+                font-weight:600;
+                cursor:pointer;
+                text-decoration:underline;
+              "
+            >
+
+              August 2026
+
+            </div>
+
+          </div>
+
+
+          <!-- PREVIOUS MONTH -->
+
+          <div class="analytics-card">
+
+            <div class="analytics-card-title">
+              📅 Last Month
+            </div>
+
+            <div
+              class="analytics-card-value"
+              id="monthlyRevenuePrevious">
+
+              ₹0
+
+            </div>
+
+
+            <div
+              class="analytics-card-subtitle"
+              id="monthlyRevenuePreviousBills">
+
+              0 paid bills
+
+            </div>
+
+
+            <div
+              id="monthlyRevenuePreviousMonth"
+              style="
+                margin-top:8px;
+                color:#2563eb;
+                font-weight:600;
+                cursor:pointer;
+                text-decoration:underline;
+              "
+            >
+
+              July 2026
+
+            </div>
+
+          </div>
+
+
+          <!-- 12 MONTH -->
+
+          <div class="analytics-card">
+
+            <div class="analytics-card-title">
+              📊 12-Month Revenue
+            </div>
+
+            <div
+              class="analytics-card-value"
+              id="monthlyRevenueYearTotal">
+
+              ₹0
+
+            </div>
+
+
+            <div
+              class="analytics-card-subtitle"
+              id="monthlyRevenueGrowth">
+
+              —
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             SEARCH MONTH & YEAR BUTTON
+             ================================================= -->
+
+        <div
+          style="
+            margin-bottom:20px;
+            text-align:center;
+          "
+        >
+
+          <button
+            type="button"
+            id="openMonthSearch"
+            class="month-search-button"
+          >
+
+            🔎 Search Month &amp; Year
+
+          </button>
+
+        </div>
+
+
+        <!-- =================================================
+             CHART
+             ================================================= -->
+
+        <div class="chart-container">
+
+          <div
+            class="chart-wrapper"
+            style="height:350px;"
+          >
+
+            <canvas
+              id="monthlyRevenueChart">
+            </canvas>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CHART INFORMATION
+             ================================================= -->
+
+        <div
+          style="
+            margin-top:15px;
+            padding:12px;
+            background:#f8f9fa;
+            border-radius:10px;
+            font-size:13px;
+            color:#666;
+          "
+        >
+
+          💡 Revenue is calculated from bills marked
+          <strong>Paid</strong> in the billing system.
+
+          <br><br>
+
+          🔎 Use <strong>Search Month &amp; Year</strong>
+          to view paid bills from any month.
+
+        </div>
+
       </div>
 
-      <div
-        class="analytics-card-value"
-        id="monthlyRevenueCurrent"
-      >
-        ₹0
+
+      <!-- =================================================
+           MONTH SEARCH MODAL
+           ================================================= -->
+
+      <div id="monthSearchModal">
+
+        <div class="month-search-box">
+
+          <h2>
+            🔎 Search Monthly Revenue
+          </h2>
+
+
+          <div class="month-search-field">
+
+            <label for="searchRevenueMonth">
+              Select Month
+            </label>
+
+            <select
+              id="searchRevenueMonth"
+            >
+
+            </select>
+
+          </div>
+
+
+          <div class="month-search-field">
+
+            <label for="searchRevenueYear">
+              Select Year
+            </label>
+
+            <select
+              id="searchRevenueYear"
+            >
+
+            </select>
+
+          </div>
+
+
+          <div class="month-search-actions">
+
+            <button
+              type="button"
+              id="closeMonthSearch"
+            >
+
+              Cancel
+
+            </button>
+
+
+            <button
+              type="button"
+              id="searchSelectedMonthButton"
+            >
+
+              🔎 Search
+
+            </button>
+
+          </div>
+
+        </div>
+
       </div>
 
-    <div
-  class="analytics-card-subtitle"
-  id="monthlyRevenueCurrentBills"
->
-  0 paid bills
-</div>
 
-<div
-  id="monthlyRevenueCurrentMonth"
-  style="
-    margin-top:8px;
-    color:#2563eb;
-    font-weight:600;
-    cursor:pointer;
-    text-decoration:underline;
-  "
->
-  August 2026
-</div>
+      <!-- =================================================
+           MONTHLY BILL DETAILS MODAL
+           ================================================= -->
 
-    </div>
+      <div id="monthlyBillDetailsModal">
+
+        <div class="monthly-bill-modal-box">
+
+          <div class="monthly-bill-modal-header">
+
+            <h2 id="monthlyBillDetailsTitle">
+
+              Monthly Bill Details
+
+            </h2>
 
 
-    <div class="analytics-card">
+            <button
+              type="button"
+              id="closeMonthlyBillDetails"
+            >
 
-      <div class="analytics-card-title">
-        📅 Last Month
+              ×
+
+            </button>
+
+          </div>
+
+
+          <div
+            id="monthlyBillDetailsSummary"
+            style="
+              margin-bottom:15px;
+              font-weight:600;
+            "
+          >
+          </div>
+
+
+          <div
+            id="monthlyBillDetailsContent"
+          >
+          </div>
+
+        </div>
+
       </div>
 
-      <div
-        class="analytics-card-value"
-        id="monthlyRevenuePrevious"
-      >
-        ₹0
-      </div>
 
-   <div
-  class="analytics-card-subtitle"
-  id="monthlyRevenuePreviousBills"
->
-  0 paid bills
-</div>
-
-<div
-  id="monthlyRevenuePreviousMonth"
-  style="
-    margin-top:8px;
-    color:#2563eb;
-    font-weight:600;
-    cursor:pointer;
-    text-decoration:underline;
-  "
->
-  July 2026
-</div>
-
-    </div>
-
-
-    <div class="analytics-card">
-
-      <div class="analytics-card-title">
-        📊 12-Month Revenue
-      </div>
-
-      <div
-        class="analytics-card-value"
-        id="monthlyRevenueYearTotal"
-      >
-        ₹0
-      </div>
-
-      <div
-        class="analytics-card-subtitle"
-        id="monthlyRevenueGrowth"
-      >
-        —
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- CHART -->
-
-  <div class="chart-container">
-
-    <div
-      class="chart-wrapper"
-      style="height:350px;"
-    >
-
-      <canvas
-        id="monthlyRevenueChart">
-      </canvas>
-
-    </div>
-
-  </div>
-
-
-  <!-- CHART INFORMATION -->
-
-  <div
-    style="
-      margin-top:15px;
-      padding:12px;
-      background:#f8f9fa;
-      border-radius:10px;
-      font-size:13px;
-      color:#666;
-    "
-  >
-
-    💡 Revenue is calculated from bills marked
-    <strong>Paid</strong> in the billing system.
-
-  </div>
-
-</div>
-
-
-<!-- =================================================
-     MONTHLY BILL DETAILS MODAL
-     ================================================= -->
-
-<div
-  id="monthlyBillDetailsModal"
-  style="
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.55);
-    z-index:9999;
-    padding:20px;
-    overflow-y:auto;
-  "
->
-
-  <div
-    style="
-      max-width:650px;
-      margin:40px auto;
-      background:#ffffff;
-      border-radius:16px;
-      padding:20px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.25);
-    "
-  >
-
-    <div
-      style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin-bottom:15px;
-      "
-    >
-
-      <h2
-        id="monthlyBillDetailsTitle"
-        style="margin:0;"
-      >
-        Monthly Bill Details
-      </h2>
-
-      <button
-        type="button"
-        id="closeMonthlyBillDetails"
-        style="
-          border:none;
-          background:none;
-          font-size:28px;
-          cursor:pointer;
-        "
-      >
-        ×
-      </button>
-
-    </div>
-
-
-    <div
-      id="monthlyBillDetailsSummary"
-      style="
-        margin-bottom:15px;
-        font-weight:600;
-      "
-    >
-    </div>
-
-
-    <div
-      id="monthlyBillDetailsContent"
-    >
-    </div>
-
-
-  </div>
-
-</div>
-
-
-<!-- =================================================
-     MONTHLY PATIENT CHART
-     ================================================= -->
+      <!-- =================================================
+           MONTHLY PATIENT CHART
+           ================================================= -->
 
       <div class="analytics-section">
 
@@ -1379,7 +1811,8 @@
 
           <div
             class="chart-wrapper"
-            style="height:350px;">
+            style="height:350px;"
+          >
 
             <canvas
               id="appointmentTypeChart">
@@ -1482,10 +1915,8 @@ const supabaseClient =
 let monthlyRevenueChart =
   null;
 
-
 let monthlyPatientChart =
   null;
-
 
 let appointmentTypeChart =
   null;
@@ -1541,9 +1972,7 @@ function escapeHTML(value) {
    FORMAT CURRENCY
    ========================================================= */
 
-function formatCurrency(
-  amount
-) {
+function formatCurrency(amount) {
 
   const value =
     Number(amount) || 0;
@@ -1553,11 +1982,8 @@ function formatCurrency(
     value.toLocaleString(
       "en-IN",
       {
-        minimumFractionDigits:
-          0,
-
-        maximumFractionDigits:
-          2
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
       }
     );
 
@@ -1568,13 +1994,10 @@ function formatCurrency(
    DATE HELPERS
    ========================================================= */
 
-function formatDateForInput(
-  date
-) {
+function formatDateForInput(date) {
 
   const year =
     date.getFullYear();
-
 
   const month =
     String(
@@ -1583,7 +2006,6 @@ function formatDateForInput(
       2,
       "0"
     );
-
 
   const day =
     String(
@@ -1604,10 +2026,6 @@ function formatDateForInput(
 
 }
 
-
-/* =========================================================
-   GET TODAY
-   ========================================================= */
 
 function getToday() {
 
@@ -1691,7 +2109,7 @@ async function checkDoctorLogin() {
 
 
 /* =========================================================
-   LOAD PATIENT DATA
+   LOAD PATIENTS
    ========================================================= */
 
 async function loadPatients() {
@@ -1711,7 +2129,6 @@ async function loadPatients() {
       "Patients loading error:",
       error
     );
-
 
     throw error;
 
@@ -1737,16 +2154,12 @@ async function loadAppointments(
     error
   } =
     await supabaseClient
-
       .from("appointments")
-
       .select("*")
-
       .gte(
         "appointment_date",
         startDate
       )
-
       .lte(
         "appointment_date",
         endDate
@@ -1759,7 +2172,6 @@ async function loadAppointments(
       "Appointments loading error:",
       error
     );
-
 
     throw error;
 
@@ -1785,16 +2197,12 @@ async function loadBilling(
     error
   } =
     await supabaseClient
-
       .from("billing")
-
       .select("*")
-
       .gte(
         "bill_date",
         startDate
       )
-
       .lte(
         "bill_date",
         endDate
@@ -1808,13 +2216,101 @@ async function loadBilling(
       error
     );
 
-
     throw error;
 
   }
 
 
   return data || [];
+
+}
+
+
+/* =========================================================
+   LOAD ALL BILLING FOR 12 MONTH CHART
+   ========================================================= */
+
+async function loadLast12MonthsBilling() {
+
+  const now =
+    new Date();
+
+
+  const start =
+    new Date(
+      now.getFullYear(),
+      now.getMonth() - 11,
+      1
+    );
+
+
+  const end =
+    new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      0
+    );
+
+
+  const startString =
+    formatDateForInput(
+      start
+    );
+
+
+  const endString =
+    formatDateForInput(
+      end
+    );
+
+
+  return loadBilling(
+    startString,
+    endString
+  );
+
+}
+
+
+/* =========================================================
+   CALCULATE DAYS
+   ========================================================= */
+
+function calculateDaysBetween(
+  startDate,
+  endDate
+) {
+
+  const start =
+    new Date(
+      startDate +
+      "T00:00:00"
+    );
+
+
+  const end =
+    new Date(
+      endDate +
+      "T00:00:00"
+    );
+
+
+  const difference =
+    end.getTime() -
+    start.getTime();
+
+
+  return (
+    Math.floor(
+      difference /
+      (
+        1000 *
+        60 *
+        60 *
+        24
+      )
+    ) + 1
+  );
 
 }
 
@@ -1831,10 +2327,9 @@ function updateOverview(
   endDate
 ) {
 
-
-  /* -----------------------------------------------
+  /* -------------------------------------------------------
      PATIENTS
-     ----------------------------------------------- */
+     ------------------------------------------------------- */
 
   const totalPatients =
     patients.length;
@@ -1895,9 +2390,9 @@ function updateOverview(
       newPatients;
 
 
-  /* -----------------------------------------------
+  /* -------------------------------------------------------
      APPOINTMENTS
-     ----------------------------------------------- */
+     ------------------------------------------------------- */
 
   const totalAppointments =
     appointments.length;
@@ -1911,7 +2406,8 @@ function updateOverview(
           String(
             appointment.status ||
             ""
-          ).toLowerCase() ===
+          )
+          .toLowerCase() ===
           "completed"
         );
 
@@ -1927,7 +2423,8 @@ function updateOverview(
           String(
             appointment.status ||
             ""
-          ).toLowerCase() ===
+          )
+          .toLowerCase() ===
           "cancelled"
         );
 
@@ -1943,16 +2440,14 @@ function updateOverview(
           String(
             appointment.status ||
             ""
-          ).toLowerCase();
+          )
+          .toLowerCase();
 
 
         return (
-          status ===
-            "pending" ||
-          status ===
-            "scheduled" ||
-          status ===
-            ""
+          status === "pending" ||
+          status === "scheduled" ||
+          status === ""
         );
 
       }
@@ -2025,37 +2520,30 @@ function updateOverview(
       otherStatus;
 
 
-  /* -----------------------------------------------
+  /* -------------------------------------------------------
      REVENUE
-     ----------------------------------------------- */
+     ------------------------------------------------------- */
 
   let totalBilled =
     0;
 
-
   let paidAmount =
     0;
-
 
   let pendingAmount =
     0;
 
-
   let cashRevenue =
     0;
-
 
   let upiRevenue =
     0;
 
-
   let cardRevenue =
     0;
 
-
   let bankRevenue =
     0;
-
 
   let otherRevenue =
     0;
@@ -2078,12 +2566,13 @@ function updateOverview(
         String(
           bill.payment_status ||
           ""
-        ).toLowerCase();
+        )
+        .trim()
+        .toLowerCase();
 
 
       if (
-        status ===
-        "paid"
+        status === "paid"
       ) {
 
         paidAmount +=
@@ -2092,8 +2581,7 @@ function updateOverview(
       }
 
       else if (
-        status ===
-        "pending"
+        status === "pending"
       ) {
 
         pendingAmount +=
@@ -2102,19 +2590,8 @@ function updateOverview(
       }
 
       else if (
-        status ===
-        "partially paid"
+        status === "partially paid"
       ) {
-
-        /*
-           For the current billing
-           table we do not have a
-           separate paid amount field.
-
-           Therefore the total is
-           counted as billed but not
-           assumed to be fully paid.
-        */
 
         pendingAmount +=
           amount;
@@ -2126,12 +2603,13 @@ function updateOverview(
         String(
           bill.payment_method ||
           ""
-        ).toLowerCase();
+        )
+        .trim()
+        .toLowerCase();
 
 
       if (
-        method ===
-        "cash"
+        method === "cash"
       ) {
 
         cashRevenue +=
@@ -2140,8 +2618,7 @@ function updateOverview(
       }
 
       else if (
-        method ===
-        "upi"
+        method === "upi"
       ) {
 
         upiRevenue +=
@@ -2150,8 +2627,7 @@ function updateOverview(
       }
 
       else if (
-        method ===
-        "card"
+        method === "card"
       ) {
 
         cardRevenue +=
@@ -2160,8 +2636,7 @@ function updateOverview(
       }
 
       else if (
-        method ===
-        "bank transfer"
+        method === "bank transfer"
       ) {
 
         bankRevenue +=
@@ -2294,25 +2769,21 @@ function updateOverview(
       );
 
 
-  /* -----------------------------------------------
+  /* -------------------------------------------------------
      APPOINTMENT TYPES
-     ----------------------------------------------- */
+     ------------------------------------------------------- */
 
   let newConsultation =
     0;
 
-
   let followUp =
     0;
-
 
   let diabetesReview =
     0;
 
-
   let generalConsultation =
     0;
-
 
   let otherTypes =
     0;
@@ -2340,10 +2811,8 @@ function updateOverview(
       }
 
       else if (
-        type ===
-        "follow-up" ||
-        type ===
-        "follow up"
+        type === "follow-up" ||
+        type === "follow up"
       ) {
 
         followUp++;
@@ -2418,9 +2887,9 @@ function updateOverview(
       otherTypes;
 
 
-  /* -----------------------------------------------
+  /* -------------------------------------------------------
      PATIENT GROWTH
-     ----------------------------------------------- */
+     ------------------------------------------------------- */
 
   const periodDays =
     calculateDaysBetween(
@@ -2532,49 +3001,6 @@ function updateOverview(
 
 
 /* =========================================================
-   CALCULATE DAYS
-   ========================================================= */
-
-function calculateDaysBetween(
-  startDate,
-  endDate
-) {
-
-  const start =
-    new Date(
-      startDate +
-      "T00:00:00"
-    );
-
-
-  const end =
-    new Date(
-      endDate +
-      "T00:00:00"
-    );
-
-
-  const difference =
-    end.getTime() -
-    start.getTime();
-
-
-  return (
-    Math.floor(
-      difference /
-      (
-        1000 *
-        60 *
-        60 *
-        24
-      )
-    ) + 1
-  );
-
-}
-
-
-/* =========================================================
    CREATE MONTH LABELS
    ========================================================= */
 
@@ -2582,7 +3008,6 @@ function getMonthLabels() {
 
   const labels =
     [];
-
 
   const now =
     new Date();
@@ -2602,26 +3027,26 @@ function getMonthLabels() {
       );
 
 
-    labels.push(
-      {
-        label:
-          date.toLocaleDateString(
-            "en-IN",
-            {
-              month:
-                "short",
-              year:
-                "numeric"
-            }
-          ),
+    labels.push({
 
-        year:
-          date.getFullYear(),
+      label:
+        date.toLocaleDateString(
+          "en-IN",
+          {
+            month:
+              "short",
+            year:
+              "numeric"
+          }
+        ),
 
-        month:
-          date.getMonth()
-      }
-    );
+      year:
+        date.getFullYear(),
+
+      month:
+        date.getMonth()
+
+    });
 
   }
 
@@ -2631,13 +3056,13 @@ function getMonthLabels() {
 }
 
 
-
 /* =========================================================
-   MONTHLY REVENUE
+   CREATE MONTHLY REVENUE CHART
    ========================================================= */
 
 function createMonthlyRevenueChart(
-  bills
+  bills,
+  patients
 ) {
 
   const months =
@@ -2691,8 +3116,7 @@ function createMonthlyRevenueChart(
 
 
               if (
-                status ===
-                "paid"
+                status === "paid"
               ) {
 
                 revenue +=
@@ -2745,19 +3169,15 @@ function createMonthlyRevenueChart(
     monthlyData[
       monthlyData.length - 2
     ];
-  /* =====================================================
-     MONTH NAMES + CLICKABLE BILL DETAILS
-     ===================================================== */
+
+
+  /* -------------------------------------------------------
+     CURRENT MONTH LABEL
+     ------------------------------------------------------- */
 
   const currentMonthLabel =
     months[
       months.length - 1
-    ].label;
-
-
-  const previousMonthLabel =
-    months[
-      months.length - 2
     ].label;
 
 
@@ -2782,12 +3202,23 @@ function createMonthlyRevenueChart(
           months[
             months.length - 1
           ],
-          bills
+          bills,
+          patients
         );
 
       };
 
   }
+
+
+  /* -------------------------------------------------------
+     PREVIOUS MONTH LABEL
+     ------------------------------------------------------- */
+
+  const previousMonthLabel =
+    months[
+      months.length - 2
+    ].label;
 
 
   const previousMonthElement =
@@ -2811,12 +3242,18 @@ function createMonthlyRevenueChart(
           months[
             months.length - 2
           ],
-          bills
+          bills,
+          patients
         );
 
       };
 
   }
+
+
+  /* -------------------------------------------------------
+     YEAR TOTAL
+     ------------------------------------------------------- */
 
   const yearlyRevenue =
     revenueValues.reduce(
@@ -2828,6 +3265,10 @@ function createMonthlyRevenueChart(
       0
     );
 
+
+  /* -------------------------------------------------------
+     MONTHLY GROWTH
+     ------------------------------------------------------- */
 
   let growthText =
     "—";
@@ -2883,35 +3324,21 @@ function createMonthlyRevenueChart(
   }
 
 
-  const currentRevenueElement =
-    document.getElementById(
+  document
+    .getElementById(
       "monthlyRevenueCurrent"
-    );
-
-
-  if (
-    currentRevenueElement
-  ) {
-
-    currentRevenueElement.textContent =
+    )
+    .textContent =
       formatCurrency(
         currentMonth.revenue
       );
 
-  }
 
-
-  const currentBillsElement =
-    document.getElementById(
+  document
+    .getElementById(
       "monthlyRevenueCurrentBills"
-    );
-
-
-  if (
-    currentBillsElement
-  ) {
-
-    currentBillsElement.textContent =
+    )
+    .textContent =
       currentMonth.paidBills +
       (
         currentMonth.paidBills === 1
@@ -2919,38 +3346,22 @@ function createMonthlyRevenueChart(
           : " paid bills"
       );
 
-  }
 
-
-  const previousRevenueElement =
-    document.getElementById(
+  document
+    .getElementById(
       "monthlyRevenuePrevious"
-    );
-
-
-  if (
-    previousRevenueElement
-  ) {
-
-    previousRevenueElement.textContent =
+    )
+    .textContent =
       formatCurrency(
         previousMonth.revenue
       );
 
-  }
 
-
-  const previousBillsElement =
-    document.getElementById(
+  document
+    .getElementById(
       "monthlyRevenuePreviousBills"
-    );
-
-
-  if (
-    previousBillsElement
-  ) {
-
-    previousBillsElement.textContent =
+    )
+    .textContent =
       previousMonth.paidBills +
       (
         previousMonth.paidBills === 1
@@ -2958,41 +3369,28 @@ function createMonthlyRevenueChart(
           : " paid bills"
       );
 
-  }
 
-
-  const yearlyRevenueElement =
-    document.getElementById(
+  document
+    .getElementById(
       "monthlyRevenueYearTotal"
-    );
-
-
-  if (
-    yearlyRevenueElement
-  ) {
-
-    yearlyRevenueElement.textContent =
+    )
+    .textContent =
       formatCurrency(
         yearlyRevenue
       );
 
-  }
 
-
-  const growthElement =
-    document.getElementById(
+  document
+    .getElementById(
       "monthlyRevenueGrowth"
-    );
-
-
-  if (
-    growthElement
-  ) {
-
-    growthElement.textContent =
+    )
+    .textContent =
       growthText;
 
-  }
+
+  /* -------------------------------------------------------
+     CHART
+     ------------------------------------------------------- */
 
   const canvas =
     document.getElementById(
@@ -3129,10 +3527,8 @@ function createMonthlyRevenueChart(
                             }
 
 
-                            return (
-                              tooltipItems[0]
-                                .label
-                            );
+                            return tooltipItems[0]
+                              .label;
 
                           },
 
@@ -3192,9 +3588,7 @@ function createMonthlyRevenueChart(
                       {
 
                         callback:
-                          function(
-                            value
-                          ) {
+                          function(value) {
 
                             return "₹" +
                               Number(
@@ -3233,16 +3627,17 @@ function createMonthlyRevenueChart(
       }
     );
 
-      }
-  
-            
+}
+
+
 /* =========================================================
    SHOW MONTHLY BILL DETAILS
    ========================================================= */
 
 function showMonthlyBillDetails(
   selectedMonth,
-  bills
+  bills,
+  patients
 ) {
 
   const monthlyBills =
@@ -3400,6 +3795,7 @@ function showMonthlyBillDetails(
                 Patient
               </th>
 
+
               <th
                 style="
                   text-align:left;
@@ -3409,6 +3805,7 @@ function showMonthlyBillDetails(
               >
                 Date
               </th>
+
 
               <th
                 style="
@@ -3424,16 +3821,63 @@ function showMonthlyBillDetails(
 
           </thead>
 
+
           <tbody>
+
     `;
 
 
     monthlyBills.forEach(
       function(bill) {
 
-        const patientName =
+        let patientName =
           bill.patient_name ||
-          "Unknown Patient";
+          "";
+
+
+        if (
+          !patientName
+        ) {
+
+          const patient =
+            patients.find(
+              function(p) {
+
+                return (
+                  String(p.id) ===
+                  String(
+                    bill.patient_id ||
+                    bill.linked_patient_id ||
+                    ""
+                  )
+                );
+
+              }
+            );
+
+
+          if (
+            patient
+          ) {
+
+            patientName =
+              patient.patient_name ||
+              patient.name ||
+              "";
+
+          }
+
+        }
+
+
+        if (
+          !patientName
+        ) {
+
+          patientName =
+            "Unknown Patient";
+
+        }
 
 
         const billDate =
@@ -3441,7 +3885,8 @@ function showMonthlyBillDetails(
             ? new Date(
                 bill.bill_date +
                 "T00:00:00"
-              ).toLocaleDateString(
+              )
+              .toLocaleDateString(
                 "en-IN"
               )
             : "—";
@@ -3463,10 +3908,13 @@ function showMonthlyBillDetails(
                 border-bottom:1px solid #eee;
               "
             >
+
               ${escapeHTML(
                 patientName
               )}
+
             </td>
+
 
             <td
               style="
@@ -3474,8 +3922,13 @@ function showMonthlyBillDetails(
                 border-bottom:1px solid #eee;
               "
             >
-              ${billDate}
+
+              ${escapeHTML(
+                billDate
+              )}
+
             </td>
+
 
             <td
               style="
@@ -3485,9 +3938,11 @@ function showMonthlyBillDetails(
                 font-weight:600;
               "
             >
+
               ${formatCurrency(
                 amount
               )}
+
             </td>
 
           </tr>
@@ -3522,56 +3977,290 @@ function showMonthlyBillDetails(
 
 
 /* =========================================================
-   CLOSE MONTHLY BILL DETAILS
+   MONTH SEARCH — CREATE MONTH OPTIONS
    ========================================================= */
 
-document
-  .getElementById(
-    "closeMonthlyBillDetails"
-  )
-  .addEventListener(
-    "click",
-    function() {
+function initializeMonthSearch() {
 
-      document
-        .getElementById(
-          "monthlyBillDetailsModal"
-        )
-        .style.display =
-          "none";
+  const monthSelect =
+    document.getElementById(
+      "searchRevenueMonth"
+    );
+
+
+  const yearSelect =
+    document.getElementById(
+      "searchRevenueYear"
+    );
+
+
+  const monthNames = [
+
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+
+  ];
+
+
+  monthSelect.innerHTML =
+    "";
+
+
+  monthNames.forEach(
+    function(name, index) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        index;
+
+
+      option.textContent =
+        name;
+
+
+      monthSelect.appendChild(
+        option
+      );
 
     }
   );
 
 
-document
-  .getElementById(
-    "monthlyBillDetailsModal"
-  )
-  .addEventListener(
-    "click",
-    function(event) {
+  /* -------------------------------------------------------
+     YEARS
+     ------------------------------------------------------- */
 
-      if (
-        event.target ===
-        this
-      ) {
+  const currentYear =
+    new Date().getFullYear();
 
-        this.style.display =
-          "none";
 
+  yearSelect.innerHTML =
+    "";
+
+
+  for (
+    let year =
+      currentYear;
+    year >=
+      currentYear - 10;
+    year--
+  ) {
+
+    const option =
+      document.createElement(
+        "option"
+      );
+
+
+    option.value =
+      year;
+
+
+    option.textContent =
+      year;
+
+
+    yearSelect.appendChild(
+      option
+    );
+
+  }
+
+
+  /* -------------------------------------------------------
+     DEFAULT TO CURRENT MONTH/YEAR
+     ------------------------------------------------------- */
+
+  const today =
+    new Date();
+
+
+  monthSelect.value =
+    today.getMonth();
+
+
+  yearSelect.value =
+    today.getFullYear();
+
+}
+
+
+/* =========================================================
+   SEARCH SELECTED MONTH
+   ========================================================= */
+
+async function searchSelectedMonth() {
+
+  const month =
+    Number(
+      document.getElementById(
+        "searchRevenueMonth"
+      ).value
+    );
+
+
+  const year =
+    Number(
+      document.getElementById(
+        "searchRevenueYear"
+      ).value
+    );
+
+
+  const firstDay =
+    new Date(
+      year,
+      month,
+      1
+    );
+
+
+  const lastDay =
+    new Date(
+      year,
+      month + 1,
+      0
+    );
+
+
+  const startDate =
+    formatDateForInput(
+      firstDay
+    );
+
+
+  const endDate =
+    formatDateForInput(
+      lastDay
+    );
+
+
+  const monthLabel =
+    firstDay.toLocaleDateString(
+      "en-IN",
+      {
+        month:
+          "long",
+        year:
+          "numeric"
       }
-
-    }
-  );
+    );
 
 
+  const searchButton =
+    document.getElementById(
+      "searchSelectedMonthButton"
+    );
 
 
-            
-        
+  const originalText =
+    searchButton.textContent;
 
-        
+
+  searchButton.disabled =
+    true;
+
+
+  searchButton.textContent =
+    "🔄 Searching...";
+
+
+  try {
+
+    const [
+      bills,
+      patients
+    ] =
+      await Promise.all(
+        [
+
+          loadBilling(
+            startDate,
+            endDate
+          ),
+
+          loadPatients()
+
+        ]
+      );
+
+
+    const selectedMonth =
+      {
+
+        label:
+          monthLabel,
+
+        year:
+          year,
+
+        month:
+          month
+
+      };
+
+
+    document
+      .getElementById(
+        "monthSearchModal"
+      )
+      .style.display =
+        "none";
+
+
+    showMonthlyBillDetails(
+      selectedMonth,
+      bills,
+      patients
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Month search error:",
+      error
+    );
+
+
+    alert(
+      "Unable to search this month.\n\n" +
+      (
+        error.message ||
+        "Unknown error"
+      )
+    );
+
+  }
+
+  finally {
+
+    searchButton.disabled =
+      false;
+
+
+    searchButton.textContent =
+      originalText;
+
+  }
+
+}
 
 
 /* =========================================================
@@ -3637,6 +4326,15 @@ function createMonthlyPatientChart(
     document.getElementById(
       "monthlyPatientChart"
     );
+
+
+  if (
+    !canvas
+  ) {
+
+    return;
+
+  }
 
 
   if (
@@ -3789,10 +4487,8 @@ function createAppointmentTypeChart(
       }
 
       else if (
-        type ===
-          "follow-up" ||
-        type ===
-          "follow up"
+        type === "follow-up" ||
+        type === "follow up"
       ) {
 
         counts[
@@ -3839,6 +4535,15 @@ function createAppointmentTypeChart(
     document.getElementById(
       "appointmentTypeChart"
     );
+
+
+  if (
+    !canvas
+  ) {
+
+    return;
+
+  }
 
 
   if (
@@ -3966,8 +4671,10 @@ async function loadAnalytics() {
       "Please select both start and end dates."
     );
 
+
     loading.style.display =
       "none";
+
 
     return;
 
@@ -3983,8 +4690,10 @@ async function loadAnalytics() {
       "Start date cannot be after end date."
     );
 
+
     loading.style.display =
       "none";
+
 
     return;
 
@@ -3996,7 +4705,8 @@ async function loadAnalytics() {
     const [
       patients,
       appointments,
-      bills
+      bills,
+      chartBills
     ] =
       await Promise.all(
         [
@@ -4011,7 +4721,9 @@ async function loadAnalytics() {
           loadBilling(
             startDate,
             endDate
-          )
+          ),
+
+          loadLast12MonthsBilling()
 
         ]
       );
@@ -4027,7 +4739,8 @@ async function loadAnalytics() {
 
 
     createMonthlyRevenueChart(
-      bills
+      chartBills,
+      patients
     );
 
 
@@ -4047,7 +4760,6 @@ async function loadAnalytics() {
 
     content.style.display =
       "block";
-
 
   }
 
@@ -4075,7 +4787,8 @@ async function loadAnalytics() {
       <button
         type="button"
         class="doctor-login-button"
-        onclick="loadAnalytics()">
+        onclick="loadAnalytics()"
+      >
 
         🔄 Try Again
 
@@ -4155,6 +4868,144 @@ document
 
 
 /* =========================================================
+   OPEN MONTH SEARCH
+   ========================================================= */
+
+document
+  .getElementById(
+    "openMonthSearch"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      initializeMonthSearch();
+
+
+      document
+        .getElementById(
+          "monthSearchModal"
+        )
+        .style.display =
+          "block";
+
+    }
+  );
+
+
+/* =========================================================
+   CLOSE MONTH SEARCH
+   ========================================================= */
+
+document
+  .getElementById(
+    "closeMonthSearch"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "monthSearchModal"
+        )
+        .style.display =
+          "none";
+
+    }
+  );
+
+
+/* =========================================================
+   CLICK OUTSIDE MONTH SEARCH
+   ========================================================= */
+
+document
+  .getElementById(
+    "monthSearchModal"
+  )
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        this
+      ) {
+
+        this.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   SEARCH SELECTED MONTH BUTTON
+   ========================================================= */
+
+document
+  .getElementById(
+    "searchSelectedMonthButton"
+  )
+  .addEventListener(
+    "click",
+    searchSelectedMonth
+  );
+
+
+/* =========================================================
+   CLOSE MONTHLY BILL DETAILS
+   ========================================================= */
+
+document
+  .getElementById(
+    "closeMonthlyBillDetails"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "monthlyBillDetailsModal"
+        )
+        .style.display =
+          "none";
+
+    }
+  );
+
+
+/* =========================================================
+   CLICK OUTSIDE BILL DETAILS
+   ========================================================= */
+
+document
+  .getElementById(
+    "monthlyBillDetailsModal"
+  )
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        this
+      ) {
+
+        this.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
    LOGOUT
    ========================================================= */
 
@@ -4188,7 +5039,9 @@ async function initializeAnalytics() {
     await checkDoctorLogin();
 
 
-  if (!loggedIn) {
+  if (
+    !loggedIn
+  ) {
 
     return;
 
@@ -4196,6 +5049,9 @@ async function initializeAnalytics() {
 
 
   setDefaultDates();
+
+
+  initializeMonthSearch();
 
 
   await loadAnalytics();
