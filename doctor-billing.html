@@ -4844,7 +4844,7 @@ async function downloadBillPDF(
 
 
     doc.text(
-      currency(
+      pdfcurrency(
         amount
       ),
       right - 4,
@@ -4948,7 +4948,7 @@ async function downloadBillPDF(
 
 
   doc.text(
-    currency(
+    pdfcurrency(
       bill.total_amount
     ),
     right - 4,
