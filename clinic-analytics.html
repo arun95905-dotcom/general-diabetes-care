@@ -1134,12 +1134,25 @@
         ₹0
       </div>
 
-      <div
-        class="analytics-card-subtitle"
-        id="monthlyRevenueCurrentBills"
-      >
-        0 paid bills
-      </div>
+    <div
+  class="analytics-card-subtitle"
+  id="monthlyRevenueCurrentBills"
+>
+  0 paid bills
+</div>
+
+<div
+  id="monthlyRevenueCurrentMonth"
+  style="
+    margin-top:8px;
+    color:#2563eb;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:underline;
+  "
+>
+  August 2026
+</div>
 
     </div>
 
@@ -1157,12 +1170,25 @@
         ₹0
       </div>
 
-      <div
-        class="analytics-card-subtitle"
-        id="monthlyRevenuePreviousBills"
-      >
-        0 paid bills
-      </div>
+   <div
+  class="analytics-card-subtitle"
+  id="monthlyRevenuePreviousBills"
+>
+  0 paid bills
+</div>
+
+<div
+  id="monthlyRevenuePreviousMonth"
+  style="
+    margin-top:8px;
+    color:#2563eb;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:underline;
+  "
+>
+  July 2026
+</div>
 
     </div>
 
@@ -1231,9 +1257,90 @@
 </div>
 
 
-      <!-- =================================================
-           MONTHLY PATIENT CHART
-           ================================================= -->
+<!-- =================================================
+     MONTHLY BILL DETAILS MODAL
+     ================================================= -->
+
+<div
+  id="monthlyBillDetailsModal"
+  style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.55);
+    z-index:9999;
+    padding:20px;
+    overflow-y:auto;
+  "
+>
+
+  <div
+    style="
+      max-width:650px;
+      margin:40px auto;
+      background:#ffffff;
+      border-radius:16px;
+      padding:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    "
+  >
+
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:15px;
+      "
+    >
+
+      <h2
+        id="monthlyBillDetailsTitle"
+        style="margin:0;"
+      >
+        Monthly Bill Details
+      </h2>
+
+      <button
+        type="button"
+        id="closeMonthlyBillDetails"
+        style="
+          border:none;
+          background:none;
+          font-size:28px;
+          cursor:pointer;
+        "
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      id="monthlyBillDetailsSummary"
+      style="
+        margin-bottom:15px;
+        font-weight:600;
+      "
+    >
+    </div>
+
+
+    <div
+      id="monthlyBillDetailsContent"
+    >
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<!-- =================================================
+     MONTHLY PATIENT CHART
+     ================================================= -->
 
       <div class="analytics-section">
 
@@ -2638,7 +2745,78 @@ function createMonthlyRevenueChart(
     monthlyData[
       monthlyData.length - 2
     ];
+  /* =====================================================
+     MONTH NAMES + CLICKABLE BILL DETAILS
+     ===================================================== */
 
+  const currentMonthLabel =
+    months[
+      months.length - 1
+    ].label;
+
+
+  const previousMonthLabel =
+    months[
+      months.length - 2
+    ].label;
+
+
+  const currentMonthElement =
+    document.getElementById(
+      "monthlyRevenueCurrentMonth"
+    );
+
+
+  if (
+    currentMonthElement
+  ) {
+
+    currentMonthElement.textContent =
+      currentMonthLabel;
+
+
+    currentMonthElement.onclick =
+      function() {
+
+        showMonthlyBillDetails(
+          months[
+            months.length - 1
+          ],
+          bills
+        );
+
+      };
+
+  }
+
+
+  const previousMonthElement =
+    document.getElementById(
+      "monthlyRevenuePreviousMonth"
+    );
+
+
+  if (
+    previousMonthElement
+  ) {
+
+    previousMonthElement.textContent =
+      previousMonthLabel;
+
+
+    previousMonthElement.onclick =
+      function() {
+
+        showMonthlyBillDetails(
+          months[
+            months.length - 2
+          ],
+          bills
+        );
+
+      };
+
+  }
 
   const yearlyRevenue =
     revenueValues.reduce(
@@ -3058,7 +3236,334 @@ function createMonthlyRevenueChart(
       }
   
             
+/* =========================================================
+   SHOW MONTHLY BILL DETAILS
+   ========================================================= */
 
+function showMonthlyBillDetails(
+  selectedMonth,
+  bills
+) {
+
+  const monthlyBills =
+    bills.filter(
+      function(bill) {
+
+        if (
+          !bill.bill_date
+        ) {
+
+          return false;
+
+        }
+
+
+        const billDate =
+          new Date(
+            bill.bill_date +
+            "T00:00:00"
+          );
+
+
+        const status =
+          String(
+            bill.payment_status ||
+            ""
+          )
+          .trim()
+          .toLowerCase();
+
+
+        return (
+          status === "paid" &&
+          billDate.getFullYear() ===
+            selectedMonth.year &&
+          billDate.getMonth() ===
+            selectedMonth.month
+        );
+
+      }
+    );
+
+
+  const modal =
+    document.getElementById(
+      "monthlyBillDetailsModal"
+    );
+
+
+  const title =
+    document.getElementById(
+      "monthlyBillDetailsTitle"
+    );
+
+
+  const summary =
+    document.getElementById(
+      "monthlyBillDetailsSummary"
+    );
+
+
+  const content =
+    document.getElementById(
+      "monthlyBillDetailsContent"
+    );
+
+
+  title.textContent =
+    selectedMonth.label +
+    " — Paid Bills";
+
+
+  let total =
+    0;
+
+
+  monthlyBills.forEach(
+    function(bill) {
+
+      total +=
+        Number(
+          bill.total_amount
+        ) || 0;
+
+    }
+  );
+
+
+  summary.textContent =
+    monthlyBills.length +
+    (
+      monthlyBills.length === 1
+        ? " paid bill"
+        : " paid bills"
+    ) +
+    " • Total: " +
+    formatCurrency(
+      total
+    );
+
+
+  if (
+    monthlyBills.length === 0
+  ) {
+
+    content.innerHTML = `
+
+      <div
+        style="
+          text-align:center;
+          padding:30px;
+          color:#777;
+        "
+      >
+
+        No paid bills found
+        for ${escapeHTML(
+          selectedMonth.label
+        )}.
+
+      </div>
+
+    `;
+
+  }
+
+  else {
+
+    let html = `
+
+      <div
+        style="
+          overflow-x:auto;
+        "
+      >
+
+        <table
+          style="
+            width:100%;
+            border-collapse:collapse;
+          "
+        >
+
+          <thead>
+
+            <tr>
+
+              <th
+                style="
+                  text-align:left;
+                  padding:10px;
+                  border-bottom:1px solid #ddd;
+                "
+              >
+                Patient
+              </th>
+
+              <th
+                style="
+                  text-align:left;
+                  padding:10px;
+                  border-bottom:1px solid #ddd;
+                "
+              >
+                Date
+              </th>
+
+              <th
+                style="
+                  text-align:right;
+                  padding:10px;
+                  border-bottom:1px solid #ddd;
+                "
+              >
+                Bill Amount
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+    `;
+
+
+    monthlyBills.forEach(
+      function(bill) {
+
+        const patientName =
+          bill.patient_name ||
+          "Unknown Patient";
+
+
+        const billDate =
+          bill.bill_date
+            ? new Date(
+                bill.bill_date +
+                "T00:00:00"
+              ).toLocaleDateString(
+                "en-IN"
+              )
+            : "—";
+
+
+        const amount =
+          Number(
+            bill.total_amount
+          ) || 0;
+
+
+        html += `
+
+          <tr>
+
+            <td
+              style="
+                padding:10px;
+                border-bottom:1px solid #eee;
+              "
+            >
+              ${escapeHTML(
+                patientName
+              )}
+            </td>
+
+            <td
+              style="
+                padding:10px;
+                border-bottom:1px solid #eee;
+              "
+            >
+              ${billDate}
+            </td>
+
+            <td
+              style="
+                padding:10px;
+                border-bottom:1px solid #eee;
+                text-align:right;
+                font-weight:600;
+              "
+            >
+              ${formatCurrency(
+                amount
+              )}
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+    html += `
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    content.innerHTML =
+      html;
+
+  }
+
+
+  modal.style.display =
+    "block";
+
+}
+
+
+/* =========================================================
+   CLOSE MONTHLY BILL DETAILS
+   ========================================================= */
+
+document
+  .getElementById(
+    "closeMonthlyBillDetails"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "monthlyBillDetailsModal"
+        )
+        .style.display =
+          "none";
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "monthlyBillDetailsModal"
+  )
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target ===
+        this
+      ) {
+
+        this.style.display =
+          "none";
+
+      }
+
+    }
+  );
 
 
 
