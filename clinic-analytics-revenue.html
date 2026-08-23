@@ -1,0 +1,3079 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>
+Revenue & Billing | General & Diabetes Care
+</title>
+
+<link
+  rel="stylesheet"
+  href="styles.css">
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(
+      135deg,
+      #f4fbf7,
+      #edf9f2,
+      #fbfdfc
+    );
+  color: #172033;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+.analytics-page {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 16px 10px 45px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  margin-bottom: 14px;
+}
+
+.section-label {
+  margin: 0;
+  color: #238458;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 1.3px;
+}
+
+.page-header h1 {
+  margin: 5px 0 3px;
+  color: #214536;
+  font-size: 29px;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: #6f8077;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.portal-button {
+  min-height: 43px;
+  padding: 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.primary-button {
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #2a9a67,
+      #1f7f53
+    );
+}
+
+.light-button {
+  color: #395247;
+  background: #f1f7f4;
+  border: 1px solid #d9e6df;
+}
+
+.secondary-button {
+  color: #ffffff;
+  background: #64748b;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.top-actions {
+  margin: 14px 0 16px;
+}
+
+.bottom-actions {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   PERIOD
+   ========================================================= */
+
+.period-card {
+  margin-bottom: 14px;
+  padding: 17px;
+  background:
+    linear-gradient(
+      135deg,
+      #ebf9f0,
+      #ffffff
+    );
+  border: 1px solid #cfe9da;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(35,120,75,.05);
+}
+
+.period-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.period-label {
+  color: #6a7c72;
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.period-value {
+  margin-top: 5px;
+  color: #244a39;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.period-description {
+  margin-top: 4px;
+  color: #77877f;
+  font-size: 12px;
+}
+
+.change-period-button {
+  padding: 8px 11px;
+  color: #247f55;
+  background: #ffffff;
+  border: 1px solid #d4e7db;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.period-controls {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #dce9e2;
+}
+
+.period-controls.open {
+  display: block;
+}
+
+.quick-periods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.quick-period-button {
+  padding: 8px 11px;
+  color: #587067;
+  background: #ffffff;
+  border: 1px solid #dbe6e0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.date-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.date-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-group label {
+  margin-bottom: 5px;
+  color: #617268;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.date-group input {
+  width: 100%;
+  padding: 10px 11px;
+  background: #ffffff;
+  border: 1px solid #d1ded7;
+  border-radius: 10px;
+}
+
+.period-actions {
+  margin-top: 11px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(5,minmax(0,1fr));
+  gap: 10px;
+}
+
+.summary-card {
+  min-height: 120px;
+  padding: 15px;
+  background: #ffffff;
+  border: 1px solid #dce8e1;
+  border-radius: 17px;
+  box-shadow:
+    0 5px 18px rgba(30,90,60,.05);
+}
+
+.summary-total {
+  background:
+    linear-gradient(
+      135deg,
+      #eaf9f0,
+      #ffffff
+    );
+}
+
+.summary-paid {
+  background:
+    linear-gradient(
+      135deg,
+      #e8fbef,
+      #ffffff
+    );
+}
+
+.summary-pending {
+  background:
+    linear-gradient(
+      135deg,
+      #fff7df,
+      #ffffff
+    );
+}
+
+.summary-bills {
+  background:
+    linear-gradient(
+      135deg,
+      #edf5ff,
+      #ffffff
+    );
+}
+
+.summary-average {
+  background:
+    linear-gradient(
+      135deg,
+      #f1edff,
+      #ffffff
+    );
+}
+
+.summary-icon {
+  font-size: 22px;
+}
+
+.summary-value {
+  margin-top: 8px;
+  color: #21382e;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.summary-title {
+  margin-top: 4px;
+  color: #68776f;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section-title {
+  margin: 22px 0 11px;
+  color: #7c8b83;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.portal-card {
+  margin-bottom: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e1e9e4;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(35,80,55,.05);
+}
+
+
+/* =========================================================
+   COLLECTION RATE
+   ========================================================= */
+
+.collection-card {
+  display: grid;
+  grid-template-columns:
+    150px minmax(0,1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.collection-circle {
+  width: 125px;
+  height: 125px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      135deg,
+      #e2f8ea,
+      #f4fcf7
+    );
+  border: 10px solid #cfeeda;
+}
+
+.collection-value {
+  color: #238458;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.collection-label {
+  margin-top: 3px;
+  color: #728078;
+  font-size: 10px;
+}
+
+.collection-details {
+  display: grid;
+  gap: 9px;
+}
+
+.collection-row {
+  padding: 11px 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f8fbf9;
+  border: 1px solid #e3ebe6;
+  border-radius: 11px;
+}
+
+.collection-row-label {
+  color: #68786f;
+  font-size: 12px;
+}
+
+.collection-row-value {
+  color: #263d32;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   PAYMENT METHODS
+   ========================================================= */
+
+.payment-list {
+  display: grid;
+  gap: 10px;
+}
+
+.payment-row {
+  padding: 12px 13px;
+  background: #f8fbf9;
+  border: 1px solid #e4ebe7;
+  border-radius: 12px;
+}
+
+.payment-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.payment-name {
+  color: #4d6257;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.payment-value {
+  color: #267e55;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.progress-track {
+  width: 100%;
+  height: 7px;
+  margin-top: 9px;
+  overflow: hidden;
+  background: #e8efe9;
+  border-radius: 999px;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      #52b77e,
+      #218554
+    );
+}
+
+
+/* =========================================================
+   MONTH CARDS
+   ========================================================= */
+
+.month-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 11px;
+}
+
+.month-summary-card {
+  position: relative;
+  padding: 17px;
+  background:
+    linear-gradient(
+      135deg,
+      #f1faf5,
+      #ffffff
+    );
+  border: 1px solid #dcebe2;
+  border-radius: 16px;
+}
+
+.month-label {
+  color: #78877f;
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.month-amount {
+  margin-top: 7px;
+  color: #22784f;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.month-bills {
+  margin-top: 4px;
+  color: #6d7d74;
+  font-size: 12px;
+}
+
+.month-link {
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px 11px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  color: #265541;
+  border: 1px solid #dce8e1;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   MONTH BILL LIST
+   ========================================================= */
+
+.month-bills-panel {
+  display: none;
+}
+
+.month-bills-panel.open {
+  display: block;
+}
+
+.panel-header {
+  margin-bottom: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.panel-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.panel-subtitle {
+  margin-top: 4px;
+  color: #748077;
+  font-size: 12px;
+}
+
+.bill-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+
+.bill-table th,
+.bill-table td {
+  padding: 11px 10px;
+  border-bottom: 1px solid #e5ebe7;
+  text-align: left;
+  font-size: 13px;
+}
+
+.bill-table th {
+  color: #738079;
+  background: #f8faf9;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.patient-link {
+  color: #1d7e51;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 850;
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   BILL DETAILS
+   ========================================================= */
+
+.bill-detail-panel {
+  display: none;
+}
+
+.bill-detail-panel.open {
+  display: block;
+}
+
+.bill-header-box {
+  padding: 16px;
+  background:
+    linear-gradient(
+      135deg,
+      #edf9f2,
+      #ffffff
+    );
+  border: 1px solid #d8e9df;
+  border-radius: 14px;
+}
+
+.bill-clinic-title {
+  color: #1f6545;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.bill-meta {
+  margin-top: 7px;
+  color: #63736a;
+  line-height: 1.7;
+  font-size: 12px;
+}
+
+.bill-items {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.bill-item-row {
+  padding: 11px 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f8faf9;
+  border: 1px solid #e5ebe7;
+  border-radius: 10px;
+}
+
+.bill-total-row {
+  margin-top: 6px;
+  padding: 14px 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #eaf8f0;
+  border: 1px solid #cfe9da;
+  border-radius: 11px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-card {
+  padding: 25px;
+  text-align: center;
+  color: #718078;
+  background: #ffffff;
+  border: 1px solid #e1e9e4;
+  border-radius: 16px;
+}
+
+.spinner {
+  width: 29px;
+  height: 29px;
+  margin: 0 auto 8px;
+  border: 3px solid #e4ebe7;
+  border-top-color: #2b9464;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:900px) {
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:650px) {
+
+  .analytics-page {
+    padding: 12px 8px 40px;
+  }
+
+  .date-grid,
+  .month-grid,
+  .collection-card {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="analytics-page">
+
+
+<header class="page-header">
+
+<p class="section-label">
+GENERAL &amp; DIABETES CARE
+</p>
+
+<h1>
+💰 Revenue &amp; Billing
+</h1>
+
+<p class="page-subtitle">
+Revenue, collections, payment methods and bill details
+</p>
+
+</header>
+
+
+<div class="action-row top-actions">
+
+<a
+  href="clinic-analytics.html"
+  class="portal-button light-button">
+
+← Back to Clinic Analytics
+
+</a>
+
+</div>
+
+
+<!-- PERIOD -->
+
+<div class="period-card">
+
+<div class="period-top">
+
+<div>
+
+<div class="period-label">
+📅 Analytics Period
+</div>
+
+<div
+  id="periodDisplay"
+  class="period-value">
+—
+</div>
+
+<div
+  id="periodDescription"
+  class="period-description">
+Last 30 days
+</div>
+
+</div>
+
+
+<button
+  type="button"
+  id="togglePeriodButton"
+  class="change-period-button">
+
+Change ›
+
+</button>
+
+</div>
+
+
+<div
+  id="periodControls"
+  class="period-controls">
+
+
+<div class="quick-periods">
+
+<button
+  class="quick-period-button"
+  onclick="setQuickPeriod('today')">
+
+Today
+
+</button>
+
+<button
+  class="quick-period-button"
+  onclick="setQuickPeriod('7')">
+
+7 Days
+
+</button>
+
+<button
+  class="quick-period-button"
+  onclick="setQuickPeriod('30')">
+
+30 Days
+
+</button>
+
+</div>
+
+
+<div class="date-grid">
+
+<div class="date-group">
+
+<label>
+From
+</label>
+
+<input
+  type="date"
+  id="analyticsStartDate">
+
+</div>
+
+
+<div class="date-group">
+
+<label>
+To
+</label>
+
+<input
+  type="date"
+  id="analyticsEndDate">
+
+</div>
+
+</div>
+
+
+<div class="period-actions">
+
+<button
+  type="button"
+  id="applyPeriodButton"
+  class="portal-button primary-button">
+
+✓ Apply
+
+</button>
+
+<button
+  type="button"
+  id="closePeriodButton"
+  class="portal-button light-button">
+
+Close
+
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<div
+  id="loadingCard"
+  class="loading-card">
+
+<div class="spinner"></div>
+
+Loading revenue analytics...
+
+</div>
+
+
+<div
+  id="analyticsContent"
+  style="display:none;">
+
+
+<!-- SUMMARY -->
+
+<div class="summary-grid">
+
+
+<div class="summary-card summary-total">
+
+<div class="summary-icon">
+💰
+</div>
+
+<div
+  id="totalBilled"
+  class="summary-value">
+₹0
+</div>
+
+<div class="summary-title">
+Total billed
+</div>
+
+</div>
+
+
+<div class="summary-card summary-paid">
+
+<div class="summary-icon">
+✅
+</div>
+
+<div
+  id="paidAmount"
+  class="summary-value">
+₹0
+</div>
+
+<div class="summary-title">
+Paid amount
+</div>
+
+</div>
+
+
+<div class="summary-card summary-pending">
+
+<div class="summary-icon">
+⏳
+</div>
+
+<div
+  id="pendingAmount"
+  class="summary-value">
+₹0
+</div>
+
+<div class="summary-title">
+Pending amount
+</div>
+
+</div>
+
+
+<div class="summary-card summary-bills">
+
+<div class="summary-icon">
+🧾
+</div>
+
+<div
+  id="billCount"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+Number of bills
+</div>
+
+</div>
+
+
+<div class="summary-card summary-average">
+
+<div class="summary-icon">
+📊
+</div>
+
+<div
+  id="averageBill"
+  class="summary-value">
+₹0
+</div>
+
+<div class="summary-title">
+Average bill
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- COLLECTION -->
+
+<div class="section-title">
+Collection Performance
+</div>
+
+
+<div class="portal-card collection-card">
+
+<div class="collection-circle">
+
+<div
+  id="collectionRate"
+  class="collection-value">
+0%
+</div>
+
+<div class="collection-label">
+Collection Rate
+</div>
+
+</div>
+
+
+<div class="collection-details">
+
+<div class="collection-row">
+
+<span class="collection-row-label">
+Paid Bills
+</span>
+
+<span
+  id="paidBillCount"
+  class="collection-row-value">
+0
+</span>
+
+</div>
+
+
+<div class="collection-row">
+
+<span class="collection-row-label">
+Pending / Unpaid Bills
+</span>
+
+<span
+  id="pendingBillCount"
+  class="collection-row-value">
+0
+</span>
+
+</div>
+
+
+<div class="collection-row">
+
+<span class="collection-row-label">
+Total Bills
+</span>
+
+<span
+  id="totalBillCount"
+  class="collection-row-value">
+0
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PAYMENT METHODS -->
+
+<div class="section-title">
+Payment Methods
+</div>
+
+
+<div class="portal-card">
+
+<div
+  id="paymentMethodList"
+  class="payment-list">
+</div>
+
+</div>
+
+
+<!-- MONTHLY REVENUE -->
+
+<div class="section-title">
+Monthly Revenue
+</div>
+
+
+<div class="month-grid">
+
+
+<div class="month-summary-card">
+
+<div class="month-label">
+💰 This Month
+</div>
+
+<div
+  id="thisMonthRevenue"
+  class="month-amount">
+₹0
+</div>
+
+<div
+  id="thisMonthBills"
+  class="month-bills">
+0 paid bills
+</div>
+
+<button
+  type="button"
+  id="thisMonthButton"
+  class="month-link">
+
+<span id="thisMonthLabel">
+—
+</span>
+
+<span>
+›
+</span>
+
+</button>
+
+</div>
+
+
+<div class="month-summary-card">
+
+<div class="month-label">
+📅 Last Month
+</div>
+
+<div
+  id="lastMonthRevenue"
+  class="month-amount">
+₹0
+</div>
+
+<div
+  id="lastMonthBills"
+  class="month-bills">
+0 paid bills
+</div>
+
+<button
+  type="button"
+  id="lastMonthButton"
+  class="month-link">
+
+<span id="lastMonthLabel">
+—
+</span>
+
+<span>
+›
+</span>
+
+</button>
+
+</div>
+
+
+</div>
+
+
+<!-- MONTH BILL LIST -->
+
+<div
+  id="monthBillsPanel"
+  class="portal-card month-bills-panel">
+
+<div class="panel-header">
+
+<div>
+
+<h2
+  id="monthBillsTitle"
+  class="panel-title">
+Paid Bills
+</h2>
+
+<div
+  id="monthBillsSubtitle"
+  class="panel-subtitle">
+—
+</div>
+
+</div>
+
+<button
+  type="button"
+  class="portal-button light-button"
+  onclick="closeMonthBills()">
+
+✕ Close
+
+</button>
+
+</div>
+
+
+<div
+  id="monthBillsContent"
+  class="bill-table-wrap">
+</div>
+
+</div>
+
+
+<!-- BILL DETAIL -->
+
+<div
+  id="billDetailPanel"
+  class="portal-card bill-detail-panel">
+
+<div class="panel-header">
+
+<div>
+
+<h2 class="panel-title">
+🧾 Bill Details
+</h2>
+
+<div class="panel-subtitle">
+Individual patient bill
+</div>
+
+</div>
+
+<button
+  type="button"
+  class="portal-button light-button"
+  onclick="closeBillDetails()">
+
+← Back to Month Bills
+
+</button>
+
+</div>
+
+
+<div id="billDetailContent"></div>
+
+</div>
+
+
+</div>
+
+
+<div class="action-row bottom-actions">
+
+<button
+  type="button"
+  id="refreshButton"
+  class="portal-button light-button">
+
+🔄 Refresh
+
+</button>
+
+<button
+  type="button"
+  id="logoutButton"
+  class="portal-button secondary-button">
+
+🔒 Logout
+
+</button>
+
+</div>
+
+
+</div>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+let allBills =
+  [];
+
+let currentMonthBills =
+  [];
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function escapeHTML(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
+
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function formatDateInput(date) {
+
+  return (
+    date.getFullYear() +
+    "-" +
+    String(
+      date.getMonth() + 1
+    ).padStart(2,"0") +
+    "-" +
+    String(
+      date.getDate()
+    ).padStart(2,"0")
+  );
+
+}
+
+
+function formatDisplayDate(value) {
+
+  if (!value) {
+    return "-";
+  }
+
+
+  return new Date(
+    value +
+    "T00:00:00"
+  )
+  .toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function formatMoney(value) {
+
+  return (
+    "₹" +
+    Number(
+      value ||
+      0
+    )
+    .toLocaleString(
+      "en-IN",
+      {
+        maximumFractionDigits: 2
+      }
+    )
+  );
+
+}
+
+
+function getBillAmount(bill) {
+
+  return Number(
+    bill.total_amount ??
+    bill.total ??
+    bill.bill_amount ??
+    0
+  );
+
+}
+
+
+function isPaid(bill) {
+
+  return (
+    String(
+      bill.payment_status ||
+      ""
+    )
+    .toLowerCase() ===
+    "paid"
+  );
+
+}
+
+
+/* =========================================================
+   DEFAULT PERIOD
+   ========================================================= */
+
+function setDefaultPeriod() {
+
+  const today =
+    new Date();
+
+
+  const start =
+    new Date();
+
+
+  start.setDate(
+    today.getDate() - 29
+  );
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      formatDateInput(start);
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      formatDateInput(today);
+
+
+  updatePeriodDisplay(
+    "Last 30 days"
+  );
+
+}
+
+
+function setQuickPeriod(type) {
+
+  const today =
+    new Date();
+
+
+  const start =
+    new Date();
+
+
+  let label =
+    "";
+
+
+  if (
+    type === "today"
+  ) {
+
+    label =
+      "Today";
+
+  }
+
+
+  if (
+    type === "7"
+  ) {
+
+    start.setDate(
+      today.getDate() - 6
+    );
+
+    label =
+      "Last 7 days";
+
+  }
+
+
+  if (
+    type === "30"
+  ) {
+
+    start.setDate(
+      today.getDate() - 29
+    );
+
+    label =
+      "Last 30 days";
+
+  }
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      formatDateInput(start);
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      formatDateInput(today);
+
+
+  updatePeriodDisplay(label);
+
+
+  loadAnalytics();
+
+}
+
+
+function updatePeriodDisplay(label) {
+
+  const start =
+    document
+      .getElementById(
+        "analyticsStartDate"
+      )
+      .value;
+
+
+  const end =
+    document
+      .getElementById(
+        "analyticsEndDate"
+      )
+      .value;
+
+
+  document
+    .getElementById(
+      "periodDisplay"
+    )
+    .textContent =
+      formatDisplayDate(start) +
+      " — " +
+      formatDisplayDate(end);
+
+
+  document
+    .getElementById(
+      "periodDescription"
+    )
+    .textContent =
+      label ||
+      "Custom analytics period";
+
+}
+
+
+/* =========================================================
+   LOAD BILLS
+   ========================================================= */
+
+async function loadBills(
+  startDate,
+  endDate
+) {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("billing")
+      .select("*")
+      .gte(
+        "bill_date",
+        startDate
+      )
+      .lte(
+        "bill_date",
+        endDate
+      )
+      .order(
+        "bill_date",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+    throw error;
+  }
+
+
+  return data || [];
+
+}
+
+
+/* =========================================================
+   LOAD ANALYTICS
+   ========================================================= */
+
+async function loadAnalytics() {
+
+  const loading =
+    document
+      .getElementById(
+        "loadingCard"
+      );
+
+
+  const content =
+    document
+      .getElementById(
+        "analyticsContent"
+      );
+
+
+  loading.style.display =
+    "block";
+
+
+  content.style.display =
+    "none";
+
+
+  closeBillDetails();
+
+  closeMonthBills();
+
+
+  try {
+
+    const startDate =
+      document
+        .getElementById(
+          "analyticsStartDate"
+        )
+        .value;
+
+
+    const endDate =
+      document
+        .getElementById(
+          "analyticsEndDate"
+        )
+        .value;
+
+
+    if (
+      !startDate ||
+      !endDate
+    ) {
+
+      throw new Error(
+        "Please select dates."
+      );
+
+    }
+
+
+    if (
+      startDate >
+      endDate
+    ) {
+
+      throw new Error(
+        "Start date cannot be after end date."
+      );
+
+    }
+
+
+    allBills =
+      await loadBills(
+        startDate,
+        endDate
+      );
+
+
+    const paidBills =
+      allBills.filter(
+        isPaid
+      );
+
+
+    const pendingBills =
+      allBills.filter(
+        function(bill) {
+
+          return !isPaid(bill);
+
+        }
+      );
+
+
+    const totalBilled =
+      allBills.reduce(
+        function(total,bill) {
+
+          return (
+            total +
+            getBillAmount(bill)
+          );
+
+        },
+        0
+      );
+
+
+    const paidAmount =
+      paidBills.reduce(
+        function(total,bill) {
+
+          return (
+            total +
+            getBillAmount(bill)
+          );
+
+        },
+        0
+      );
+
+
+    const pendingAmount =
+      pendingBills.reduce(
+        function(total,bill) {
+
+          return (
+            total +
+            getBillAmount(bill)
+          );
+
+        },
+        0
+      );
+
+
+    const averageBill =
+      allBills.length > 0
+        ? totalBilled /
+          allBills.length
+        : 0;
+
+
+    const collectionRate =
+      totalBilled > 0
+        ? (
+            paidAmount /
+            totalBilled
+          ) *
+          100
+        : 0;
+
+
+    document
+      .getElementById(
+        "totalBilled"
+      )
+      .textContent =
+        formatMoney(
+          totalBilled
+        );
+
+
+    document
+      .getElementById(
+        "paidAmount"
+      )
+      .textContent =
+        formatMoney(
+          paidAmount
+        );
+
+
+    document
+      .getElementById(
+        "pendingAmount"
+      )
+      .textContent =
+        formatMoney(
+          pendingAmount
+        );
+
+
+    document
+      .getElementById(
+        "billCount"
+      )
+      .textContent =
+        allBills.length;
+
+
+    document
+      .getElementById(
+        "averageBill"
+      )
+      .textContent =
+        formatMoney(
+          averageBill
+        );
+
+
+    document
+      .getElementById(
+        "collectionRate"
+      )
+      .textContent =
+        collectionRate
+          .toFixed(1) +
+        "%";
+
+
+    document
+      .getElementById(
+        "paidBillCount"
+      )
+      .textContent =
+        paidBills.length;
+
+
+    document
+      .getElementById(
+        "pendingBillCount"
+      )
+      .textContent =
+        pendingBills.length;
+
+
+    document
+      .getElementById(
+        "totalBillCount"
+      )
+      .textContent =
+        allBills.length;
+
+
+    renderPaymentMethods(
+      paidBills
+    );
+
+
+    await loadMonthlyCards();
+
+
+    content.style.display =
+      "block";
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    alert(
+      error.message ||
+      "Unable to load revenue analytics."
+    );
+
+
+  } finally {
+
+    loading.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================================================
+   PAYMENT METHODS
+   ========================================================= */
+
+function renderPaymentMethods(
+  paidBills
+) {
+
+  const methods = {
+
+    "Cash":
+      0,
+
+    "UPI":
+      0,
+
+    "Card":
+      0,
+
+    "Bank Transfer":
+      0,
+
+    "Other / Not Specified":
+      0
+
+  };
+
+
+  paidBills.forEach(
+    function(bill) {
+
+      const method =
+        String(
+          bill.payment_method ||
+          ""
+        ).trim();
+
+
+      if (
+        method === "Cash"
+      ) {
+
+        methods.Cash +=
+          getBillAmount(bill);
+
+      } else if (
+        method === "UPI"
+      ) {
+
+        methods.UPI +=
+          getBillAmount(bill);
+
+      } else if (
+        method === "Card"
+      ) {
+
+        methods.Card +=
+          getBillAmount(bill);
+
+      } else if (
+        method ===
+        "Bank Transfer"
+      ) {
+
+        methods[
+          "Bank Transfer"
+        ] +=
+          getBillAmount(bill);
+
+      } else {
+
+        methods[
+          "Other / Not Specified"
+        ] +=
+          getBillAmount(bill);
+
+      }
+
+    }
+  );
+
+
+  const total =
+    Object.values(
+      methods
+    )
+    .reduce(
+      function(sum,value) {
+
+        return sum + value;
+
+      },
+      0
+    );
+
+
+  const icons = {
+
+    "Cash":
+      "💵",
+
+    "UPI":
+      "📱",
+
+    "Card":
+      "💳",
+
+    "Bank Transfer":
+      "🏦",
+
+    "Other / Not Specified":
+      "📋"
+
+  };
+
+
+  document
+    .getElementById(
+      "paymentMethodList"
+    )
+    .innerHTML =
+      Object.entries(
+        methods
+      )
+      .map(
+        function(
+          [
+            method,
+            value
+          ]
+        ) {
+
+          const percent =
+            total > 0
+              ? (
+                  value /
+                  total
+                ) *
+                100
+              : 0;
+
+
+          return `
+
+            <div class="payment-row">
+
+              <div class="payment-top">
+
+                <span class="payment-name">
+
+                  ${icons[method]}
+                  ${method}
+
+                </span>
+
+                <span class="payment-value">
+
+                  ${formatMoney(
+                    value
+                  )}
+
+                </span>
+
+              </div>
+
+
+              <div class="progress-track">
+
+                <div
+                  class="progress-bar"
+                  style="width:${percent}%">
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   MONTHLY CARD DATA
+   ========================================================= */
+
+function getMonthRange(
+  year,
+  month
+) {
+
+  const start =
+    new Date(
+      year,
+      month,
+      1
+    );
+
+
+  const end =
+    new Date(
+      year,
+      month + 1,
+      0
+    );
+
+
+  return {
+
+    start:
+      formatDateInput(
+        start
+      ),
+
+    end:
+      formatDateInput(
+        end
+      )
+
+  };
+
+}
+
+
+async function getPaidBillsForMonth(
+  year,
+  month
+) {
+
+  const range =
+    getMonthRange(
+      year,
+      month
+    );
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("billing")
+      .select("*")
+      .gte(
+        "bill_date",
+        range.start
+      )
+      .lte(
+        "bill_date",
+        range.end
+      )
+      .eq(
+        "payment_status",
+        "Paid"
+      )
+      .order(
+        "bill_date",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+    throw error;
+  }
+
+
+  return data || [];
+
+}
+
+
+async function loadMonthlyCards() {
+
+  const now =
+    new Date();
+
+
+  const thisYear =
+    now.getFullYear();
+
+
+  const thisMonth =
+    now.getMonth();
+
+
+  const lastMonthDate =
+    new Date(
+      thisYear,
+      thisMonth - 1,
+      1
+    );
+
+
+  const [
+    thisMonthBills,
+    lastMonthBills
+  ] =
+    await Promise.all([
+
+      getPaidBillsForMonth(
+        thisYear,
+        thisMonth
+      ),
+
+      getPaidBillsForMonth(
+        lastMonthDate
+          .getFullYear(),
+        lastMonthDate
+          .getMonth()
+      )
+
+    ]);
+
+
+  const thisMonthTotal =
+    thisMonthBills.reduce(
+      function(total,bill) {
+
+        return (
+          total +
+          getBillAmount(bill)
+        );
+
+      },
+      0
+    );
+
+
+  const lastMonthTotal =
+    lastMonthBills.reduce(
+      function(total,bill) {
+
+        return (
+          total +
+          getBillAmount(bill)
+        );
+
+      },
+      0
+    );
+
+
+  document
+    .getElementById(
+      "thisMonthRevenue"
+    )
+    .textContent =
+      formatMoney(
+        thisMonthTotal
+      );
+
+
+  document
+    .getElementById(
+      "thisMonthBills"
+    )
+    .textContent =
+      thisMonthBills.length +
+      (
+        thisMonthBills.length === 1
+          ? " paid bill"
+          : " paid bills"
+      );
+
+
+  document
+    .getElementById(
+      "thisMonthLabel"
+    )
+    .textContent =
+      now.toLocaleDateString(
+        "en-IN",
+        {
+          month: "short",
+          year: "numeric"
+        }
+      );
+
+
+  document
+    .getElementById(
+      "lastMonthRevenue"
+    )
+    .textContent =
+      formatMoney(
+        lastMonthTotal
+      );
+
+
+  document
+    .getElementById(
+      "lastMonthBills"
+    )
+    .textContent =
+      lastMonthBills.length +
+      (
+        lastMonthBills.length === 1
+          ? " paid bill"
+          : " paid bills"
+      );
+
+
+  document
+    .getElementById(
+      "lastMonthLabel"
+    )
+    .textContent =
+      lastMonthDate
+        .toLocaleDateString(
+          "en-IN",
+          {
+            month: "short",
+            year: "numeric"
+          }
+        );
+
+
+  document
+    .getElementById(
+      "thisMonthButton"
+    )
+    .onclick =
+      function() {
+
+        openMonthBills(
+          thisYear,
+          thisMonth
+        );
+
+      };
+
+
+  document
+    .getElementById(
+      "lastMonthButton"
+    )
+    .onclick =
+      function() {
+
+        openMonthBills(
+          lastMonthDate
+            .getFullYear(),
+
+          lastMonthDate
+            .getMonth()
+        );
+
+      };
+
+}
+
+
+/* =========================================================
+   OPEN MONTH BILLS
+   ========================================================= */
+
+async function openMonthBills(
+  year,
+  month
+) {
+
+  try {
+
+    currentMonthBills =
+      await getPaidBillsForMonth(
+        year,
+        month
+      );
+
+
+    const monthDate =
+      new Date(
+        year,
+        month,
+        1
+      );
+
+
+    const monthLabel =
+      monthDate
+        .toLocaleDateString(
+          "en-IN",
+          {
+            month: "short",
+            year: "numeric"
+          }
+        );
+
+
+    const total =
+      currentMonthBills.reduce(
+        function(sum,bill) {
+
+          return (
+            sum +
+            getBillAmount(bill)
+          );
+
+        },
+        0
+      );
+
+
+    document
+      .getElementById(
+        "monthBillsTitle"
+      )
+      .textContent =
+        monthLabel +
+        " — Paid Bills";
+
+
+    document
+      .getElementById(
+        "monthBillsSubtitle"
+      )
+      .textContent =
+        currentMonthBills.length +
+        (
+          currentMonthBills.length === 1
+            ? " paid bill"
+            : " paid bills"
+        ) +
+        " • Total: " +
+        formatMoney(
+          total
+        );
+
+
+    if (
+      currentMonthBills.length ===
+      0
+    ) {
+
+      document
+        .getElementById(
+          "monthBillsContent"
+        )
+        .innerHTML = `
+
+          <div class="loading-card">
+            No paid bills found for ${monthLabel}.
+          </div>
+
+        `;
+
+    } else {
+
+      document
+        .getElementById(
+          "monthBillsContent"
+        )
+        .innerHTML = `
+
+          <table class="bill-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Patient
+                </th>
+
+                <th>
+                  Date
+                </th>
+
+                <th>
+                  Bill Amount
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              ${
+                currentMonthBills
+                  .map(
+                    function(bill) {
+
+                      return `
+
+                        <tr>
+
+                          <td>
+
+                            <button
+                              type="button"
+                              class="patient-link"
+                              onclick="openBillDetails(
+                                ${Number(
+                                  bill.id
+                                )}
+                              )">
+
+                              ${escapeHTML(
+                                bill.patient_name ||
+                                "Patient"
+                              )}
+
+                            </button>
+
+                          </td>
+
+                          <td>
+
+                            ${formatDisplayDate(
+                              bill.bill_date
+                            )}
+
+                          </td>
+
+                          <td>
+
+                            ${formatMoney(
+                              getBillAmount(
+                                bill
+                              )
+                            )}
+
+                          </td>
+
+                        </tr>
+
+                      `;
+
+                    }
+                  )
+                  .join("")
+              }
+
+            </tbody>
+
+          </table>
+
+        `;
+
+    }
+
+
+    document
+      .getElementById(
+        "monthBillsPanel"
+      )
+      .classList
+      .add(
+        "open"
+      );
+
+
+    document
+      .getElementById(
+        "monthBillsPanel"
+      )
+      .scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+
+  } catch (error) {
+
+    alert(
+      "Unable to load monthly bills."
+    );
+
+  }
+
+}
+
+
+function closeMonthBills() {
+
+  document
+    .getElementById(
+      "monthBillsPanel"
+    )
+    .classList
+    .remove(
+      "open"
+    );
+
+}
+
+
+/* =========================================================
+   BILL DETAILS
+   ========================================================= */
+
+async function openBillDetails(
+  billId
+) {
+
+  let bill =
+    currentMonthBills.find(
+      function(item) {
+
+        return (
+          Number(
+            item.id
+          ) ===
+          Number(
+            billId
+          )
+        );
+
+      }
+    );
+
+
+  if (!bill) {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("billing")
+        .select("*")
+        .eq(
+          "id",
+          billId
+        )
+        .single();
+
+
+    if (
+      error ||
+      !data
+    ) {
+
+      alert(
+        "Unable to load bill."
+      );
+
+      return;
+
+    }
+
+
+    bill =
+      data;
+
+  }
+
+
+  const consultationFee =
+    Number(
+      bill.consultation_fee ||
+      0
+    );
+
+
+  const medicineCharges =
+    Number(
+      bill.medicine_charges ||
+      0
+    );
+
+
+  const procedureCharges =
+    Number(
+      bill.procedure_charges ??
+      bill.other_charges ??
+      0
+    );
+
+
+  document
+    .getElementById(
+      "billDetailContent"
+    )
+    .innerHTML = `
+
+      <div class="bill-header-box">
+
+        <div class="bill-clinic-title">
+
+          GENERAL &amp; DIABETES CARE
+
+        </div>
+
+
+        <div class="bill-meta">
+
+          <strong>
+            Bill #:
+          </strong>
+          ${escapeHTML(
+            bill.id
+          )}
+
+          <br>
+
+          <strong>
+            Date:
+          </strong>
+          ${formatDisplayDate(
+            bill.bill_date
+          )}
+
+          <br>
+
+          <strong>
+            Patient:
+          </strong>
+          ${escapeHTML(
+            bill.patient_name ||
+            "-"
+          )}
+
+          <br>
+
+          <strong>
+            Patient ID:
+          </strong>
+          ${escapeHTML(
+            bill.patient_id ||
+            "-"
+          )}
+
+        </div>
+
+      </div>
+
+
+      <div class="bill-items">
+
+
+        <div class="bill-item-row">
+
+          <span>
+            Consultation Fee
+          </span>
+
+          <strong>
+            ${formatMoney(
+              consultationFee
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="bill-item-row">
+
+          <span>
+            Medicine Charges
+          </span>
+
+          <strong>
+            ${formatMoney(
+              medicineCharges
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="bill-item-row">
+
+          <span>
+            Procedure / Other Charges
+          </span>
+
+          <strong>
+            ${formatMoney(
+              procedureCharges
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="bill-total-row">
+
+          <span>
+            TOTAL
+          </span>
+
+          <span>
+            ${formatMoney(
+              getBillAmount(
+                bill
+              )
+            )}
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+      <div class="bill-meta">
+
+        <strong>
+          Payment Status:
+        </strong>
+        ${escapeHTML(
+          bill.payment_status ||
+          "-"
+        )}
+
+        <br>
+
+        <strong>
+          Payment Method:
+        </strong>
+        ${escapeHTML(
+          bill.payment_method ||
+          "-"
+        )}
+
+      </div>
+
+    `;
+
+
+  document
+    .getElementById(
+      "billDetailPanel"
+    )
+    .classList
+    .add(
+      "open"
+    );
+
+
+  document
+    .getElementById(
+      "billDetailPanel"
+    )
+    .scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+}
+
+
+function closeBillDetails() {
+
+  document
+    .getElementById(
+      "billDetailPanel"
+    )
+    .classList
+    .remove(
+      "open"
+    );
+
+}
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+document
+  .getElementById(
+    "togglePeriodButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .toggle(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "closePeriodButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .remove(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "applyPeriodButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      updatePeriodDisplay(
+        "Custom analytics period"
+      );
+
+
+      await loadAnalytics();
+
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .remove(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "refreshButton"
+  )
+  .addEventListener(
+    "click",
+    loadAnalytics
+  );
+
+
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+
+      window.location.href =
+        "doctor-login.html";
+
+    }
+  );
+
+
+window.setQuickPeriod =
+  setQuickPeriod;
+
+window.openMonthBills =
+  openMonthBills;
+
+window.closeMonthBills =
+  closeMonthBills;
+
+window.openBillDetails =
+  openBillDetails;
+
+window.closeBillDetails =
+  closeBillDetails;
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+(async function initializePage() {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+
+  if (!loggedIn) {
+    return;
+  }
+
+
+  setDefaultPeriod();
+
+
+  await loadAnalytics();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
