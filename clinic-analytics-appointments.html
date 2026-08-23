@@ -504,11 +504,11 @@ input {
 .chart-wrap {
   position: relative;
   width: 100%;
-  min-height: 300px;
+  min-height: 320px;
 }
 
 .chart-wrap canvas {
-  max-height: 320px;
+  max-height: 340px;
 }
 
 
@@ -536,9 +536,11 @@ input {
 }
 
 @keyframes spin {
+
   to {
     transform: rotate(360deg);
   }
+
 }
 
 
@@ -567,6 +569,10 @@ input {
 
   .completion-card {
     grid-template-columns: 1fr;
+  }
+
+  .chart-wrap {
+    min-height: 360px;
   }
 
 }
@@ -612,9 +618,12 @@ Appointment status, completion and visit patterns
 </div>
 
 
-<!-- PERIOD -->
+<!-- =====================================================
+     ANALYTICS PERIOD
+     ===================================================== -->
 
 <div class="period-card">
+
 
 <div class="period-top">
 
@@ -659,6 +668,7 @@ Change ›
 <div class="quick-periods">
 
 <button
+  type="button"
   class="quick-period-button"
   onclick="setQuickPeriod('today')">
 
@@ -667,6 +677,7 @@ Today
 </button>
 
 <button
+  type="button"
   class="quick-period-button"
   onclick="setQuickPeriod('7')">
 
@@ -675,6 +686,7 @@ Today
 </button>
 
 <button
+  type="button"
   class="quick-period-button"
   onclick="setQuickPeriod('30')">
 
@@ -686,6 +698,7 @@ Today
 
 
 <div class="date-grid">
+
 
 <div class="date-group">
 
@@ -711,6 +724,7 @@ To
   id="analyticsEndDate">
 
 </div>
+
 
 </div>
 
@@ -743,6 +757,10 @@ Close
 </div>
 
 
+<!-- =====================================================
+     LOADING
+     ===================================================== -->
+
 <div
   id="loadingCard"
   class="loading-card">
@@ -759,7 +777,9 @@ Loading appointment analytics...
   style="display:none;">
 
 
-<!-- SUMMARY -->
+<!-- =====================================================
+     SUMMARY
+     ===================================================== -->
 
 <div class="summary-grid">
 
@@ -843,7 +863,9 @@ Cancelled
 </div>
 
 
-<!-- COMPLETION -->
+<!-- =====================================================
+     COMPLETION PERFORMANCE
+     ===================================================== -->
 
 <div class="section-title">
 Completion Performance
@@ -922,7 +944,9 @@ Still Pending
 </div>
 
 
-<!-- TYPES -->
+<!-- =====================================================
+     APPOINTMENT TYPES
+     ===================================================== -->
 
 <div class="section-title">
 Appointment Types
@@ -939,7 +963,9 @@ Appointment Types
 </div>
 
 
-<!-- CHART -->
+<!-- =====================================================
+     APPOINTMENT TYPE DISTRIBUTION
+     ===================================================== -->
 
 <div class="section-title">
 Appointment Distribution
@@ -953,7 +979,7 @@ Appointment Distribution
 </h2>
 
 <p class="chart-description">
-Distribution of appointment types in the selected period
+Distribution of appointment types in the selected period — count and percentage
 </p>
 
 
@@ -969,6 +995,10 @@ Distribution of appointment types in the selected period
 
 </div>
 
+
+<!-- =====================================================
+     BOTTOM ACTIONS
+     ===================================================== -->
 
 <div class="action-row bottom-actions">
 
@@ -1068,11 +1098,17 @@ function formatDateInput(
     "-" +
     String(
       date.getMonth() + 1
-    ).padStart(2,"0") +
+    ).padStart(
+      2,
+      "0"
+    ) +
     "-" +
     String(
       date.getDate()
-    ).padStart(2,"0")
+    ).padStart(
+      2,
+      "0"
+    )
   );
 
 }
@@ -1089,9 +1125,14 @@ function formatDisplayDate(
   .toLocaleDateString(
     "en-IN",
     {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
+      day:
+        "2-digit",
+
+      month:
+        "short",
+
+      year:
+        "numeric"
     }
   );
 
@@ -1143,6 +1184,10 @@ function setDefaultPeriod() {
 
 }
 
+
+/* =========================================================
+   QUICK PERIOD
+   ========================================================= */
 
 function setQuickPeriod(
   type
@@ -1233,6 +1278,10 @@ function setQuickPeriod(
 }
 
 
+/* =========================================================
+   PERIOD DISPLAY
+   ========================================================= */
+
 function updatePeriodDisplay(
   label
 ) {
@@ -1251,6 +1300,16 @@ function updatePeriodDisplay(
         "analyticsEndDate"
       )
       .value;
+
+
+  if (
+    !start ||
+    !end
+  ) {
+
+    return;
+
+  }
 
 
   document
@@ -1292,7 +1351,9 @@ async function loadAppointments(
     error
   } =
     await supabaseClient
-      .from("appointments")
+      .from(
+        "appointments"
+      )
       .select("*")
       .gte(
         "appointment_date",
@@ -1305,7 +1366,15 @@ async function loadAppointments(
 
 
   if (error) {
+
+    console.error(
+      "Appointment analytics query error:",
+      error
+    );
+
+
     throw error;
+
   }
 
 
@@ -1696,9 +1765,11 @@ function renderAppointmentTypes(
 
               </span>
 
+
               <span class="type-count">
 
                 ${count}
+                (${percent.toFixed(1)}%)
 
               </span>
 
@@ -1726,7 +1797,8 @@ function renderAppointmentTypes(
 
 
 /* =========================================================
-   CHART
+   APPOINTMENT TYPE DISTRIBUTION
+   COUNT + PERCENTAGE
    ========================================================= */
 
 function renderAppointmentChart(
@@ -1742,6 +1814,26 @@ function renderAppointmentChart(
   const values =
     Object.values(
       types
+    );
+
+
+  const total =
+    values.reduce(
+      function(
+        sum,
+        value
+      ) {
+
+        return (
+          sum +
+          Number(
+            value ||
+            0
+          )
+        );
+
+      },
+      0
     );
 
 
@@ -1765,6 +1857,7 @@ function renderAppointmentChart(
         type:
           "doughnut",
 
+
         data: {
 
           labels:
@@ -1786,6 +1879,7 @@ function renderAppointmentChart(
 
         },
 
+
         options: {
 
           responsive:
@@ -1797,12 +1891,153 @@ function renderAppointmentChart(
           cutout:
             "62%",
 
+
           plugins: {
+
+
+            /* =================================================
+               LEGEND:
+               coloured marker + name + count + percentage
+               ================================================= */
 
             legend: {
 
               position:
-                "bottom"
+                "bottom",
+
+              labels: {
+
+                boxWidth:
+                  14,
+
+                boxHeight:
+                  14,
+
+                padding:
+                  16,
+
+
+                generateLabels:
+                  function(
+                    chart
+                  ) {
+
+                    const dataset =
+                      chart.data.datasets[0];
+
+
+                    const defaultGenerator =
+                      Chart.defaults
+                        .plugins
+                        .legend
+                        .labels
+                        .generateLabels;
+
+
+                    const defaultLabels =
+                      defaultGenerator(
+                        chart
+                      );
+
+
+                    return defaultLabels.map(
+                      function(
+                        item,
+                        index
+                      ) {
+
+                        const value =
+                          Number(
+                            dataset.data[
+                              index
+                            ] ||
+                            0
+                          );
+
+
+                        const percentage =
+                          total > 0
+                            ? (
+                                value /
+                                total *
+                                100
+                              )
+                              .toFixed(
+                                1
+                              )
+                            : "0.0";
+
+
+                        item.text =
+                          chart.data.labels[
+                            index
+                          ] +
+                          " — " +
+                          value +
+                          " (" +
+                          percentage +
+                          "%)";
+
+
+                        return item;
+
+                      }
+                    );
+
+                  }
+
+              }
+
+            },
+
+
+            /* =================================================
+               TOOLTIP:
+               tap / hover chart segment
+               ================================================= */
+
+            tooltip: {
+
+              callbacks: {
+
+
+                label:
+                  function(
+                    context
+                  ) {
+
+                    const value =
+                      Number(
+                        context.raw ||
+                        0
+                      );
+
+
+                    const percentage =
+                      total > 0
+                        ? (
+                            value /
+                            total *
+                            100
+                          )
+                          .toFixed(
+                            1
+                          )
+                        : "0.0";
+
+
+                    return (
+                      context.label +
+                      ": " +
+                      value +
+                      " appointments (" +
+                      percentage +
+                      "%)"
+                    );
+
+                  }
+
+              }
 
             }
 
