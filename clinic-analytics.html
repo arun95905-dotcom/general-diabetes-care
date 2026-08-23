@@ -3,712 +3,555 @@
 
 <head>
 
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
-
-  <title>
-    Clinic Analytics | General & Diabetes Care
-  </title>
-
-  <link
-    rel="stylesheet"
-    href="styles.css">
-
-  <style>
-
-    /* =====================================================
-       ANALYTICS PAGE
-       ===================================================== */
-
-    .analytics-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    .analytics-header h1 {
-      margin-bottom: 8px;
-    }
-
-    .analytics-header p {
-      margin-top: 0;
-    }
-
-
-    /* =====================================================
-       ANALYTICS GRID
-       ===================================================== */
-
-    .analytics-grid {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          auto-fit,
-          minmax(
-            180px,
-            1fr
-          )
-        );
-
-      gap: 15px;
-
-      margin-bottom: 25px;
-
-    }
-
-
-    .analytics-card {
-
-      background: #ffffff;
-
-      border-radius: 14px;
-
-      padding: 20px;
-
-      box-shadow:
-        0 4px 12px
-        rgba(
-          0,
-          0,
-          0,
-          0.08
-        );
-
-      border:
-        1px solid #e5e7eb;
-
-    }
-
-
-    .analytics-card-title {
-
-      font-size: 14px;
-
-      color: #666;
-
-      margin-bottom: 8px;
-
-    }
-
-
-    .analytics-card-value {
-
-      font-size: 28px;
-
-      font-weight: bold;
-
-      margin-bottom: 5px;
-
-    }
-
-
-    .analytics-card-subtitle {
-
-      font-size: 13px;
-
-      color: #777;
-
-    }
-
-
-    /* =====================================================
-       SECTION
-       ===================================================== */
-
-    .analytics-section {
-
-      background: #ffffff;
-
-      border-radius: 14px;
-
-      padding: 20px;
-
-      margin-bottom: 25px;
-
-      box-shadow:
-        0 4px 12px
-        rgba(
-          0,
-          0,
-          0,
-          0.08
-        );
-
-      border:
-        1px solid #e5e7eb;
-
-    }
-
-
-    .analytics-section h2 {
-
-      margin-top: 0;
-
-      margin-bottom: 18px;
-
-    }
-
-
-    /* =====================================================
-       TWO COLUMN
-       ===================================================== */
-
-    .analytics-two-column {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(
-          auto-fit,
-          minmax(
-            280px,
-            1fr
-          )
-        );
-
-      gap: 20px;
-
-      margin-bottom: 25px;
-
-    }
-
-
-    /* =====================================================
-       STAT LIST
-       ===================================================== */
-
-    .analytics-stat-row {
-
-      display: flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        center;
-
-      padding:
-        12px 0;
-
-      border-bottom:
-        1px solid #eeeeee;
-
-    }
-
-
-    .analytics-stat-row:last-child {
-
-      border-bottom:
-        none;
-
-    }
-
-
-    .analytics-stat-label {
-
-      font-weight:
-        500;
-
-    }
-
-
-    .analytics-stat-value {
-
-      font-weight:
-        bold;
-
-    }
-
-
-    /* =====================================================
-       CHART
-       ===================================================== */
-
-    .chart-container {
-
-      width: 100%;
-
-      overflow-x: auto;
-
-    }
-
-
-    .chart-wrapper {
-
-      min-width:
-        600px;
-
-      height:
-        300px;
-
-      position:
-        relative;
-
-    }
-
-
-    canvas {
-
-      width:
-        100% !important;
-
-      height:
-        100% !important;
-
-    }
-
-
-    /* =====================================================
-       FILTER AREA
-       ===================================================== */
-
-    .analytics-filter {
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 10px;
-
-      align-items:
-        center;
-
-      margin-bottom:
-        25px;
-
-    }
-
-
-    .analytics-filter label {
-
-      font-weight:
-        600;
-
-    }
-
-
-    .analytics-filter input {
-
-      padding:
-        10px;
-
-      border:
-        1px solid #ccc;
-
-      border-radius:
-        8px;
-
-    }
-
-
-    .analytics-button {
-
-      border:
-        none;
-
-      cursor:
-        pointer;
-
-    }
-
-
-    /* =====================================================
-       MONTH SEARCH BUTTON
-       ===================================================== */
-
-    .month-search-button {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 6px;
-
-      margin-top: 8px;
-
-      padding:
-        9px 14px;
-
-      border:
-        none;
-
-      border-radius:
-        8px;
-
-      background:
-        #2563eb;
-
-      color:
-        #ffffff;
-
-      font-weight:
-        600;
-
-      cursor:
-        pointer;
-
-    }
-
-
-    .month-search-button:hover {
-
-      opacity:
-        0.9;
-
-    }
-
-
-    /* =====================================================
-       MONTH SEARCH MODAL
-       ===================================================== */
-
-    #monthSearchModal {
-
-      display:
-        none;
-
-      position:
-        fixed;
-
-      inset:
-        0;
-
-      background:
-        rgba(
-          0,
-          0,
-          0,
-          0.55
-        );
-
-      z-index:
-        10000;
-
-      padding:
-        20px;
-
-      overflow-y:
-        auto;
-
-    }
-
-
-    .month-search-box {
-
-      max-width:
-        420px;
-
-      margin:
-        100px auto;
-
-      background:
-        #ffffff;
-
-      border-radius:
-        16px;
-
-      padding:
-        25px;
-
-      box-shadow:
-        0 10px 30px
-        rgba(
-          0,
-          0,
-          0,
-          0.25
-        );
-
-    }
-
-
-    .month-search-box h2 {
-
-      margin-top:
-        0;
-
-      margin-bottom:
-        20px;
-
-    }
-
-
-    .month-search-field {
-
-      margin-bottom:
-        15px;
-
-    }
-
-
-    .month-search-field label {
-
-      display:
-        block;
-
-      margin-bottom:
-        6px;
-
-      font-weight:
-        600;
-
-    }
-
-
-    .month-search-field select {
-
-      width:
-        100%;
-
-      padding:
-        11px;
-
-      border:
-        1px solid #ccc;
-
-      border-radius:
-        8px;
-
-      font-size:
-        15px;
-
-      background:
-        #ffffff;
-
-    }
-
-
-    .month-search-actions {
-
-      display:
-        flex;
-
-      gap:
-        10px;
-
-      justify-content:
-        flex-end;
-
-      margin-top:
-        20px;
-
-    }
-
-
-    .month-search-actions button {
-
-      padding:
-        10px 16px;
-
-      border:
-        none;
-
-      border-radius:
-        8px;
-
-      cursor:
-        pointer;
-
-      font-weight:
-        600;
-
-    }
-
-
-    #searchSelectedMonthButton {
-
-      background:
-        #2563eb;
-
-      color:
-        #ffffff;
-
-    }
-
-
-    #closeMonthSearch {
-
-      background:
-        #e5e7eb;
-
-      color:
-        #333333;
-
-    }
-
-
-    /* =====================================================
-       MONTHLY BILL DETAILS MODAL
-       ===================================================== */
-
-    #monthlyBillDetailsModal {
-
-      display:
-        none;
-
-      position:
-        fixed;
-
-      inset:
-        0;
-
-      background:
-        rgba(
-          0,
-          0,
-          0,
-          0.55
-        );
-
-      z-index:
-        9999;
-
-      padding:
-        20px;
-
-      overflow-y:
-        auto;
-
-    }
-
-
-    .monthly-bill-modal-box {
-
-      max-width:
-        650px;
-
-      margin:
-        40px auto;
-
-      background:
-        #ffffff;
-
-      border-radius:
-        16px;
-
-      padding:
-        20px;
-
-      box-shadow:
-        0 10px 30px
-        rgba(
-          0,
-          0,
-          0,
-          0.25
-        );
-
-    }
-
-
-    .monthly-bill-modal-header {
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        center;
-
-      margin-bottom:
-        15px;
-
-    }
-
-
-    .monthly-bill-modal-header h2 {
-
-      margin:
-        0;
-
-    }
-
-
-    #closeMonthlyBillDetails {
-
-      border:
-        none;
-
-      background:
-        none;
-
-      font-size:
-        28px;
-
-      cursor:
-        pointer;
-
-    }
-
-
-    /* =====================================================
-       LOADING
-       ===================================================== */
-
-    .analytics-loading {
-
-      text-align:
-        center;
-
-      padding:
-        30px;
-
-      font-weight:
-        bold;
-
-    }
-
-
-    /* =====================================================
-       MOBILE
-       ===================================================== */
-
-    @media (
-      max-width: 600px
-    ) {
-
-      .analytics-card-value {
-
-        font-size:
-          24px;
-
-      }
-
-
-      .analytics-section {
-
-        padding:
-          15px;
-
-      }
-
-
-      .chart-wrapper {
-
-        min-width:
-          550px;
-
-      }
-
-
-      .month-search-box {
-
-        margin:
-          50px auto;
-
-      }
-
-    }
-
-  </style>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>
+Clinic Analytics | General & Diabetes Care
+</title>
+
+<link
+  rel="stylesheet"
+  href="styles.css">
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(
+      135deg,
+      #f4f8fc,
+      #eef7f8,
+      #f9fbfd
+    );
+  color: #172033;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+.analytics-page {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 16px 10px 45px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.analytics-header {
+  margin-bottom: 15px;
+}
+
+.section-label {
+  margin: 0;
+  color: #167aa2;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 1.3px;
+}
+
+.analytics-header h1 {
+  margin: 5px 0 3px;
+  color: #173649;
+  font-size: 29px;
+}
+
+.analytics-subtitle {
+  margin: 0;
+  color: #72808c;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.portal-button {
+  min-height: 43px;
+  padding: 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.primary-button {
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #0784a5,
+      #096b87
+    );
+}
+
+.light-button {
+  color: #334b5a;
+  background: #f1f5f9;
+  border: 1px solid #dce4ea;
+}
+
+.secondary-button {
+  color: #ffffff;
+  background: #64748b;
+}
+
+.top-actions,
+.bottom-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.top-actions {
+  margin: 14px 0 16px;
+}
+
+.bottom-actions {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   PERIOD CARD
+   ========================================================= */
+
+.period-card {
+  margin-bottom: 14px;
+  padding: 17px;
+  background:
+    linear-gradient(
+      135deg,
+      #eef7ff,
+      #ffffff
+    );
+  border: 1px solid #d4e5f4;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(25,75,110,.05);
+}
+
+.period-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.period-label {
+  color: #6d7a89;
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+
+.period-value {
+  margin-top: 5px;
+  color: #173b4f;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.period-description {
+  margin-top: 4px;
+  color: #71808f;
+  font-size: 12px;
+}
+
+.change-period-button {
+  padding: 8px 11px;
+  color: #147b9b;
+  background: #ffffff;
+  border: 1px solid #cfe2ed;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   DATE CONTROLS
+   ========================================================= */
+
+.period-controls {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #dce7ee;
+}
+
+.period-controls.open {
+  display: block;
+}
+
+.quick-periods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.quick-period-button {
+  padding: 8px 11px;
+  color: #506170;
+  background: #ffffff;
+  border: 1px solid #d7e1e8;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.quick-period-button:hover {
+  background: #f2f8fb;
+}
+
+.date-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.date-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-group label {
+  margin-bottom: 5px;
+  color: #607080;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.date-group input {
+  width: 100%;
+  padding: 10px 11px;
+  background: #ffffff;
+  border: 1px solid #cdd9e1;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.period-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 11px;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+.section-heading {
+  margin: 21px 0 11px;
+}
+
+.section-heading-label {
+  color: #7a8794;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   TODAY AT A GLANCE
+   ========================================================= */
+
+.glance-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+  gap: 10px;
+}
+
+.glance-card {
+  min-height: 105px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+}
+
+.glance-patient {
+  background:
+    linear-gradient(
+      135deg,
+      #eaf8ff,
+      #f9fdff
+    );
+  border-color: #cceaf7;
+}
+
+.glance-appointment {
+  background:
+    linear-gradient(
+      135deg,
+      #f0ecff,
+      #fbfaff
+    );
+  border-color: #ddd3f8;
+}
+
+.glance-completed {
+  background:
+    linear-gradient(
+      135deg,
+      #eaf9f0,
+      #fbfffc
+    );
+  border-color: #cee9d8;
+}
+
+.glance-revenue {
+  background:
+    linear-gradient(
+      135deg,
+      #fff5df,
+      #fffdf9
+    );
+  border-color: #f0dfb6;
+}
+
+.glance-icon {
+  font-size: 22px;
+}
+
+.glance-value {
+  margin-top: 7px;
+  color: #172d3b;
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.glance-title {
+  margin-top: 3px;
+  color: #647485;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   EXPLORE CARDS
+   ========================================================= */
+
+.analytics-menu {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 11px;
+}
+
+.analytics-card {
+  position: relative;
+  min-height: 135px;
+  padding: 17px;
+  display: block;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 18px;
+  border: 1px solid transparent;
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease;
+}
+
+.analytics-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 23px rgba(20,31,56,.08);
+}
+
+.patient-card {
+  background:
+    linear-gradient(
+      135deg,
+      #eaf8ff,
+      #ffffff
+    );
+  border-color: #cae8f4;
+}
+
+.appointment-card {
+  background:
+    linear-gradient(
+      135deg,
+      #f1edff,
+      #ffffff
+    );
+  border-color: #ddd4fa;
+}
+
+.revenue-card {
+  background:
+    linear-gradient(
+      135deg,
+      #eaf9f0,
+      #ffffff
+    );
+  border-color: #cdebd8;
+}
+
+.trend-card {
+  background:
+    linear-gradient(
+      135deg,
+      #fff3de,
+      #ffffff
+    );
+  border-color: #f2dfb4;
+}
+
+.month-card {
+  grid-column: 1 / -1;
+  background:
+    linear-gradient(
+      135deg,
+      #eef0ff,
+      #ffffff
+    );
+  border-color: #d8dcf7;
+}
+
+.analytics-icon {
+  margin-bottom: 9px;
+  font-size: 29px;
+}
+
+.analytics-title {
+  color: #193342;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.analytics-description {
+  max-width: 80%;
+  margin-top: 5px;
+  color: #657486;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.analytics-highlight {
+  margin-top: 12px;
+  color: #29495c;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.analytics-arrow {
+  position: absolute;
+  right: 15px;
+  bottom: 14px;
+  color: #8291a1;
+  font-size: 25px;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-card {
+  padding: 20px;
+  text-align: center;
+  color: #6f7e8d;
+  background: #ffffff;
+  border: 1px solid #e1e8ed;
+  border-radius: 16px;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 8px;
+  border: 3px solid #e3e9ee;
+  border-top-color: #1687a6;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:760px) {
+
+  .glance-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:620px) {
+
+  .analytics-page {
+    padding: 12px 8px 40px;
+  }
+
+  .analytics-menu {
+    grid-template-columns: 1fr;
+  }
+
+  .month-card {
+    grid-column: auto;
+  }
+
+  .date-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-description {
+    max-width: 88%;
+  }
+
+}
+
+</style>
 
 </head>
 
@@ -716,1190 +559,521 @@
 <body>
 
 
-<section class="doctor-dashboard">
-
-  <div class="dashboard-card">
-
-
-    <!-- =================================================
-         HEADER
-         ================================================= -->
-
-    <div class="analytics-header">
-
-      <p class="section-label">
-
-        GENERAL &amp; DIABETES CARE
-
-      </p>
-
-
-      <h1>
-
-        📊 Clinic Analytics
-
-      </h1>
-
-
-      <p class="dashboard-welcome">
-
-        Monitor your clinic's patients,
-        appointments and revenue
-
-      </p>
-
-    </div>
-
-
-    <!-- =================================================
-         DATE FILTER
-         ================================================= -->
-
-    <div class="analytics-section">
-
-      <h2>
-        📅 Analytics Period
-      </h2>
-
-
-      <div class="analytics-filter">
-
-        <label for="analyticsStartDate">
-          From:
-        </label>
-
-        <input
-          type="date"
-          id="analyticsStartDate">
-
-
-        <label for="analyticsEndDate">
-          To:
-        </label>
-
-        <input
-          type="date"
-          id="analyticsEndDate">
-
-
-        <button
-          type="button"
-          class="doctor-login-button analytics-button"
-          id="applyAnalyticsButton">
-
-          🔄 Update Analytics
-
-        </button>
-
-
-        <button
-          type="button"
-          class="doctor-login-button analytics-button"
-          id="todayAnalyticsButton">
-
-          📅 Today
-
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
-         LOADING
-         ================================================= -->
-
-    <div
-      id="analyticsLoading"
-      class="analytics-loading">
-
-      Loading clinic analytics...
-
-    </div>
-
-
-    <div
-      id="analyticsContent"
-      style="display:none;">
-
-
-      <!-- =================================================
-           TOP OVERVIEW
-           ================================================= -->
-
-      <div class="analytics-section">
-
-        <h2>
-          📌 Clinic Overview
-        </h2>
-
-
-        <div class="analytics-grid">
-
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              👥 Total Patients
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="totalPatients">
-
-              0
-
-            </div>
-
-            <div class="analytics-card-subtitle">
-              Registered patients
-            </div>
-
-          </div>
-
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              🆕 New Patients
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="newPatients">
-
-              0
-
-            </div>
-
-            <div class="analytics-card-subtitle">
-              During selected period
-            </div>
-
-          </div>
-
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              📅 Appointments
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="totalAppointments">
-
-              0
-
-            </div>
-
-            <div class="analytics-card-subtitle">
-              During selected period
-            </div>
-
-          </div>
-
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              ✅ Completed
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="completedAppointments">
-
-              0
-
-            </div>
-
-            <div class="analytics-card-subtitle">
-              Completed appointments
-            </div>
-
-          </div>
-
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              ❌ Cancelled
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="cancelledAppointments">
-
-              0
-
-            </div>
-
-            <div class="analytics-card-subtitle">
-              Cancelled appointments
-            </div>
-
-          </div>
-
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              💰 Revenue
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="periodRevenue">
-
-              ₹0
-
-            </div>
-
-            <div class="analytics-card-subtitle">
-              During selected period
-            </div>
-
-          </div>
-
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           REVENUE ANALYTICS
-           ================================================= -->
-
-      <div class="analytics-two-column">
-
-
-        <div class="analytics-section">
-
-          <h2>
-            💰 Revenue Analytics
-          </h2>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              Total Billed
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="totalBilled">
-
-              ₹0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              Paid Amount
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="paidAmount">
-
-              ₹0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              Pending Amount
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="pendingAmount">
-
-              ₹0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              Number of Bills
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="numberOfBills">
-
-              0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              Average Bill
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="averageBill">
-
-              ₹0
-
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <!-- =================================================
-             PAYMENT METHODS
-             ================================================= -->
-
-        <div class="analytics-section">
-
-          <h2>
-            💳 Payment Methods
-          </h2>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              💵 Cash
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="cashRevenue">
-
-              ₹0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              📱 UPI
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="upiRevenue">
-
-              ₹0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              💳 Card
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="cardRevenue">
-
-              ₹0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              🏦 Bank Transfer
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="bankRevenue">
-
-              ₹0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              Other / Not Specified
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="otherRevenue">
-
-              ₹0
-
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           APPOINTMENT ANALYTICS
-           ================================================= -->
-
-      <div class="analytics-two-column">
-
-
-        <div class="analytics-section">
-
-          <h2>
-            📅 Appointment Status
-          </h2>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              ⏳ Pending
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="pendingAppointments">
-
-              0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              ✅ Completed
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="statusCompleted">
-
-              0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              ❌ Cancelled
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="statusCancelled">
-
-              0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              📋 Other
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="statusOther">
-
-              0
-
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <!-- =================================================
-             APPOINTMENT TYPES
-             ================================================= -->
-
-        <div class="analytics-section">
-
-          <h2>
-            🩺 Appointment Types
-          </h2>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              🆕 New Consultation
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="newConsultation">
-
-              0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              🔄 Follow-up
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="followUp">
-
-              0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              🩸 Diabetes Review
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="diabetesReview">
-
-              0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              🩺 General Consultation
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="generalConsultation">
-
-              0
-
-            </span>
-
-          </div>
-
-
-          <div class="analytics-stat-row">
-
-            <span class="analytics-stat-label">
-              Other
-            </span>
-
-            <span
-              class="analytics-stat-value"
-              id="otherAppointmentTypes">
-
-              0
-
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           PATIENT ANALYTICS
-           ================================================= -->
-
-      <div class="analytics-section">
-
-        <h2>
-          👥 Patient Analytics
-        </h2>
-
-
-        <div class="analytics-grid">
-
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              👥 All Registered Patients
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="allRegisteredPatients">
-
-              0
-
-            </div>
-
-          </div>
-
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              🆕 New Patients
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="periodNewPatients">
-
-              0
-
-            </div>
-
-          </div>
-
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              📈 Patient Growth
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="patientGrowth">
-
-              0%
-
-            </div>
-
-          </div>
-
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           MONTHLY REVENUE
-           ================================================= -->
-
-      <div class="analytics-section">
-
-        <h2>
-          📈 Monthly Revenue
-        </h2>
-
-
-        <p
-          style="
-            margin-top:-10px;
-            margin-bottom:20px;
-            color:#666;
-            font-size:14px;
-          "
-        >
-
-          Paid revenue for the last 12 months
-
-        </p>
-
-
-        <!-- =================================================
-             REVENUE SUMMARY
-             ================================================= -->
-
-        <div
-          class="analytics-grid"
-          style="margin-bottom:20px;"
-        >
-
-
-          <!-- CURRENT MONTH -->
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              💰 This Month
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="monthlyRevenueCurrent">
-
-              ₹0
-
-            </div>
-
-
-            <div
-              class="analytics-card-subtitle"
-              id="monthlyRevenueCurrentBills">
-
-              0 paid bills
-
-            </div>
-
-
-            <div
-              id="monthlyRevenueCurrentMonth"
-              style="
-                margin-top:8px;
-                color:#2563eb;
-                font-weight:600;
-                cursor:pointer;
-                text-decoration:underline;
-              "
-            >
-
-              August 2026
-
-            </div>
-
-          </div>
-
-
-          <!-- PREVIOUS MONTH -->
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              📅 Last Month
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="monthlyRevenuePrevious">
-
-              ₹0
-
-            </div>
-
-
-            <div
-              class="analytics-card-subtitle"
-              id="monthlyRevenuePreviousBills">
-
-              0 paid bills
-
-            </div>
-
-
-            <div
-              id="monthlyRevenuePreviousMonth"
-              style="
-                margin-top:8px;
-                color:#2563eb;
-                font-weight:600;
-                cursor:pointer;
-                text-decoration:underline;
-              "
-            >
-
-              July 2026
-
-            </div>
-
-          </div>
-
-
-          <!-- 12 MONTH -->
-
-          <div class="analytics-card">
-
-            <div class="analytics-card-title">
-              📊 12-Month Revenue
-            </div>
-
-            <div
-              class="analytics-card-value"
-              id="monthlyRevenueYearTotal">
-
-              ₹0
-
-            </div>
-
-
-            <div
-              class="analytics-card-subtitle"
-              id="monthlyRevenueGrowth">
-
-              —
-
-            </div>
-
-          </div>
-
-
-        </div>
-
-
-        <!-- =================================================
-             SEARCH MONTH & YEAR BUTTON
-             ================================================= -->
-
-        <div
-          style="
-            margin-bottom:20px;
-            text-align:center;
-          "
-        >
-
-          <button
-            type="button"
-            id="openMonthSearch"
-            class="month-search-button"
-          >
-
-            🔎 Search Month &amp; Year
-
-          </button>
-
-        </div>
-
-
-        <!-- =================================================
-             CHART
-             ================================================= -->
-
-        <div class="chart-container">
-
-          <div
-            class="chart-wrapper"
-            style="height:350px;"
-          >
-
-            <canvas
-              id="monthlyRevenueChart">
-            </canvas>
-
-          </div>
-
-        </div>
-
-
-        <!-- =================================================
-             CHART INFORMATION
-             ================================================= -->
-
-        <div
-          style="
-            margin-top:15px;
-            padding:12px;
-            background:#f8f9fa;
-            border-radius:10px;
-            font-size:13px;
-            color:#666;
-          "
-        >
-
-          💡 Revenue is calculated from bills marked
-          <strong>Paid</strong> in the billing system.
-
-          <br><br>
-
-          🔎 Use <strong>Search Month &amp; Year</strong>
-          to view paid bills from any month.
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           MONTH SEARCH MODAL
-           ================================================= -->
-
-      <div id="monthSearchModal">
-
-        <div class="month-search-box">
-
-          <h2>
-            🔎 Search Monthly Revenue
-          </h2>
-
-
-          <div class="month-search-field">
-
-            <label for="searchRevenueMonth">
-              Select Month
-            </label>
-
-            <select
-              id="searchRevenueMonth"
-            >
-
-            </select>
-
-          </div>
-
-
-          <div class="month-search-field">
-
-            <label for="searchRevenueYear">
-              Select Year
-            </label>
-
-            <select
-              id="searchRevenueYear"
-            >
-
-            </select>
-
-          </div>
-
-
-          <div class="month-search-actions">
-
-            <button
-              type="button"
-              id="closeMonthSearch"
-            >
-
-              Cancel
-
-            </button>
-
-
-            <button
-              type="button"
-              id="searchSelectedMonthButton"
-            >
-
-              🔎 Search
-
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           MONTHLY BILL DETAILS MODAL
-           ================================================= -->
-
-      <div id="monthlyBillDetailsModal">
-
-        <div class="monthly-bill-modal-box">
-
-          <div class="monthly-bill-modal-header">
-
-            <h2 id="monthlyBillDetailsTitle">
-
-              Monthly Bill Details
-
-            </h2>
-
-
-            <button
-              type="button"
-              id="closeMonthlyBillDetails"
-            >
-
-              ×
-
-            </button>
-
-          </div>
-
-
-          <div
-            id="monthlyBillDetailsSummary"
-            style="
-              margin-bottom:15px;
-              font-weight:600;
-            "
-          >
-          </div>
-
-
-          <div
-            id="monthlyBillDetailsContent"
-          >
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           MONTHLY PATIENT CHART
-           ================================================= -->
-
-      <div class="analytics-section">
-
-        <h2>
-          📊 Monthly Patient Registrations
-        </h2>
-
-
-        <div class="chart-container">
-
-          <div class="chart-wrapper">
-
-            <canvas
-              id="monthlyPatientChart">
-            </canvas>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           APPOINTMENT TYPE CHART
-           ================================================= -->
-
-      <div class="analytics-section">
-
-        <h2>
-          🩺 Appointment Type Distribution
-        </h2>
-
-
-        <div class="chart-container">
-
-          <div
-            class="chart-wrapper"
-            style="height:350px;"
-          >
-
-            <canvas
-              id="appointmentTypeChart">
-            </canvas>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-    </div>
-
-
-    <!-- =================================================
-         NAVIGATION
-         ================================================= -->
-
-    <br>
-
-
-    <a
-      href="doctor-dashboard.html"
-      class="doctor-login-button">
-
-      ← Back to Dashboard
-
-    </a>
-
-
-    <button
-      type="button"
-      class="doctor-login-button"
-      id="analyticsRefreshButton">
-
-      🔄 Refresh
-
-    </button>
-
-
-    <button
-      type="button"
-      class="doctor-login-button"
-      id="analyticsLogoutButton">
-
-      🔒 Logout
-
-    </button>
-
-
-  </div>
-
-</section>
+<div class="analytics-page">
 
 
 <!-- =====================================================
-     SUPABASE
+     HEADER
      ===================================================== -->
+
+<header class="analytics-header">
+
+<p class="section-label">
+GENERAL &amp; DIABETES CARE
+</p>
+
+<h1>
+📊 Clinic Analytics
+</h1>
+
+<p class="analytics-subtitle">
+Insights that help track clinic performance
+</p>
+
+</header>
+
+
+<!-- =====================================================
+     BACK TO DASHBOARD
+     ===================================================== -->
+
+<div class="top-actions">
+
+<a
+  href="doctor-dashboard.html"
+  class="portal-button light-button">
+
+← Back to Dashboard
+
+</a>
+
+</div>
+
+
+<!-- =====================================================
+     ANALYTICS PERIOD
+     ===================================================== -->
+
+<div class="period-card">
+
+
+<div class="period-top">
+
+<div>
+
+<div class="period-label">
+📅 Analytics Period
+</div>
+
+<div
+  id="periodDisplay"
+  class="period-value">
+
+—
+
+</div>
+
+<div
+  id="periodDescription"
+  class="period-description">
+
+Last 30 days
+
+</div>
+
+</div>
+
+
+<button
+  type="button"
+  id="togglePeriodButton"
+  class="change-period-button">
+
+Change ›
+
+</button>
+
+</div>
+
+
+<div
+  id="periodControls"
+  class="period-controls">
+
+
+<div class="quick-periods">
+
+<button
+  type="button"
+  class="quick-period-button"
+  onclick="setQuickPeriod('today')">
+
+Today
+
+</button>
+
+<button
+  type="button"
+  class="quick-period-button"
+  onclick="setQuickPeriod('7')">
+
+7 Days
+
+</button>
+
+<button
+  type="button"
+  class="quick-period-button"
+  onclick="setQuickPeriod('30')">
+
+30 Days
+
+</button>
+
+</div>
+
+
+<div class="date-grid">
+
+
+<div class="date-group">
+
+<label>
+From
+</label>
+
+<input
+  type="date"
+  id="analyticsStartDate">
+
+</div>
+
+
+<div class="date-group">
+
+<label>
+To
+</label>
+
+<input
+  type="date"
+  id="analyticsEndDate">
+
+</div>
+
+
+</div>
+
+
+<div class="period-actions">
+
+<button
+  type="button"
+  id="applyAnalyticsButton"
+  class="portal-button primary-button">
+
+✓ Apply Period
+
+</button>
+
+<button
+  type="button"
+  id="closePeriodButton"
+  class="portal-button light-button">
+
+Close
+
+</button>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     LOADING
+     ===================================================== -->
+
+<div
+  id="analyticsLoading"
+  class="loading-card">
+
+<div class="spinner"></div>
+
+Loading clinic analytics...
+
+</div>
+
+
+<div
+  id="analyticsContent"
+  style="display:none;">
+
+
+<!-- =====================================================
+     TODAY AT A GLANCE
+     ===================================================== -->
+
+<div class="section-heading">
+
+<div class="section-heading-label">
+Today at a Glance
+</div>
+
+</div>
+
+
+<div class="glance-grid">
+
+
+<div class="glance-card glance-patient">
+
+<div class="glance-icon">
+👥
+</div>
+
+<div
+  id="todayPatients"
+  class="glance-value">
+0
+</div>
+
+<div class="glance-title">
+Patients registered today
+</div>
+
+</div>
+
+
+<div class="glance-card glance-appointment">
+
+<div class="glance-icon">
+📅
+</div>
+
+<div
+  id="todayAppointments"
+  class="glance-value">
+0
+</div>
+
+<div class="glance-title">
+Appointments today
+</div>
+
+</div>
+
+
+<div class="glance-card glance-completed">
+
+<div class="glance-icon">
+✅
+</div>
+
+<div
+  id="todayCompleted"
+  class="glance-value">
+0
+</div>
+
+<div class="glance-title">
+Completed today
+</div>
+
+</div>
+
+
+<div class="glance-card glance-revenue">
+
+<div class="glance-icon">
+💰
+</div>
+
+<div
+  id="todayRevenue"
+  class="glance-value">
+₹0
+</div>
+
+<div class="glance-title">
+Paid revenue today
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     EXPLORE ANALYTICS
+     ===================================================== -->
+
+<div class="section-heading">
+
+<div class="section-heading-label">
+Explore Analytics
+</div>
+
+</div>
+
+
+<div class="analytics-menu">
+
+
+<a
+  href="clinic-analytics-patients.html"
+  class="analytics-card patient-card">
+
+<div class="analytics-icon">
+👥
+</div>
+
+<div class="analytics-title">
+Patient Insights
+</div>
+
+<div class="analytics-description">
+Registrations, new patients, growth and patient trends
+</div>
+
+<div
+  id="patientHighlight"
+  class="analytics-highlight">
+
+—
+
+</div>
+
+<div class="analytics-arrow">
+›
+</div>
+
+</a>
+
+
+<a
+  href="clinic-analytics-appointments.html"
+  class="analytics-card appointment-card">
+
+<div class="analytics-icon">
+📅
+</div>
+
+<div class="analytics-title">
+Appointment Insights
+</div>
+
+<div class="analytics-description">
+Status, consultation types and appointment patterns
+</div>
+
+<div
+  id="appointmentHighlight"
+  class="analytics-highlight">
+
+—
+
+</div>
+
+<div class="analytics-arrow">
+›
+</div>
+
+</a>
+
+
+<a
+  href="clinic-analytics-revenue.html"
+  class="analytics-card revenue-card">
+
+<div class="analytics-icon">
+💰
+</div>
+
+<div class="analytics-title">
+Revenue &amp; Billing
+</div>
+
+<div class="analytics-description">
+Revenue, paid and pending bills, averages and payment methods
+</div>
+
+<div
+  id="revenueHighlight"
+  class="analytics-highlight">
+
+—
+
+</div>
+
+<div class="analytics-arrow">
+›
+</div>
+
+</a>
+
+
+<a
+  href="clinic-analytics-trends.html"
+  class="analytics-card trend-card">
+
+<div class="analytics-icon">
+📈
+</div>
+
+<div class="analytics-title">
+Performance Trends
+</div>
+
+<div class="analytics-description">
+Monthly revenue and patient registration trends
+</div>
+
+<div class="analytics-highlight">
+12-month performance
+</div>
+
+<div class="analytics-arrow">
+›
+</div>
+
+</a>
+
+
+<a
+  href="clinic-analytics-monthly.html"
+  class="analytics-card month-card">
+
+<div class="analytics-icon">
+🗓️
+</div>
+
+<div class="analytics-title">
+Monthly Reports
+</div>
+
+<div class="analytics-description">
+Choose a month, review paid bills and open individual bill details
+</div>
+
+<div class="analytics-highlight">
+Month → Paid Bills → Bill Details
+</div>
+
+<div class="analytics-arrow">
+›
+</div>
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     BOTTOM
+     ===================================================== -->
+
+<div class="bottom-actions">
+
+<button
+  type="button"
+  id="refreshAnalyticsButton"
+  class="portal-button light-button">
+
+🔄 Refresh
+
+</button>
+
+<button
+  type="button"
+  id="analyticsLogoutButton"
+  class="portal-button secondary-button">
+
+🔒 Logout
+
+</button>
+
+</div>
+
+
+</div>
+
 
 <script
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
 
-<!-- =====================================================
-     CHART.JS
-     ===================================================== -->
-
-<script
-  src="https://cdn.jsdelivr.net/npm/chart.js">
-</script>
-
-
 <script>
 
 /* =========================================================
-   SUPABASE CONFIGURATION
+   SUPABASE
    ========================================================= */
 
 const SUPABASE_URL =
   "https://twdmvdqqckcpwoccvtkj.supabase.co";
 
-
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
-
 
 const supabaseClient =
   supabase.createClient(
@@ -1909,125 +1083,35 @@ const supabaseClient =
 
 
 /* =========================================================
-   GLOBAL VARIABLES
+   HELPERS
    ========================================================= */
 
-let monthlyRevenueChart =
-  null;
+function formatDateForInput(
+  date
+) {
 
-let monthlyPatientChart =
-  null;
-
-let appointmentTypeChart =
-  null;
-
-
-/* =========================================================
-   HTML ESCAPE
-   ========================================================= */
-
-function escapeHTML(value) {
-
-  if (
-    value === null ||
-    value === undefined
-  ) {
-
-    return "";
-
-  }
-
-
-  return String(value)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-/* =========================================================
-   FORMAT CURRENCY
-   ========================================================= */
-
-function formatCurrency(amount) {
-
-  const value =
-    Number(amount) || 0;
-
-
-  return "₹" +
-    value.toLocaleString(
-      "en-IN",
-      {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      }
-    );
-
-}
-
-
-/* =========================================================
-   DATE HELPERS
-   ========================================================= */
-
-function formatDateForInput(date) {
-
-  const year =
-    date.getFullYear();
-
-  const month =
+  return (
+    date.getFullYear() +
+    "-" +
     String(
       date.getMonth() + 1
     ).padStart(
       2,
       "0"
-    );
-
-  const day =
+    ) +
+    "-" +
     String(
       date.getDate()
     ).padStart(
       2,
       "0"
-    );
-
-
-  return (
-    year +
-    "-" +
-    month +
-    "-" +
-    day
+    )
   );
 
 }
 
 
-function getToday() {
+function getTodayString() {
 
   return formatDateForInput(
     new Date()
@@ -2036,8 +1120,92 @@ function getToday() {
 }
 
 
+function formatDisplayDate(
+  value
+) {
+
+  const date =
+    new Date(
+      value +
+      "T00:00:00"
+    );
+
+
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day:
+        "2-digit",
+
+      month:
+        "short",
+
+      year:
+        "numeric"
+    }
+  );
+
+}
+
+
+function formatMoney(
+  value
+) {
+
+  const amount =
+    Number(
+      value ||
+      0
+    );
+
+
+  return (
+    "₹" +
+    amount.toLocaleString(
+      "en-IN",
+      {
+        maximumFractionDigits:
+          0
+      }
+    )
+  );
+
+}
+
+
 /* =========================================================
-   SET DEFAULT DATES
+   AUTH
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   DEFAULT PERIOD
    ========================================================= */
 
 function setDefaultDates() {
@@ -2074,42 +1242,185 @@ function setDefaultDates() {
         today
       );
 
+
+  updatePeriodDisplay(
+    "Last 30 days"
+  );
+
 }
 
 
 /* =========================================================
-   LOGIN CHECK
+   QUICK PERIOD
    ========================================================= */
 
-async function checkDoctorLogin() {
+function setQuickPeriod(
+  type
+) {
 
-  const {
-    data: {
-      session
-    }
-  } =
-    await supabaseClient
-      .auth
-      .getSession();
+  const today =
+    new Date();
 
 
-  if (!session) {
+  let start =
+    new Date();
 
-    window.location.href =
-      "doctor-login.html";
 
-    return false;
+  let description =
+    "Custom period";
+
+
+  if (
+    type ===
+    "today"
+  ) {
+
+    start =
+      new Date(
+        today
+      );
+
+
+    description =
+      "Today";
 
   }
 
 
-  return true;
+  if (
+    type ===
+    "7"
+  ) {
+
+    start.setDate(
+      today.getDate() - 6
+    );
+
+
+    description =
+      "Last 7 days";
+
+  }
+
+
+  if (
+    type ===
+    "30"
+  ) {
+
+    start.setDate(
+      today.getDate() - 29
+    );
+
+
+    description =
+      "Last 30 days";
+
+  }
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      formatDateForInput(
+        start
+      );
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      formatDateForInput(
+        today
+      );
+
+
+  updatePeriodDisplay(
+    description
+  );
+
+
+  loadAnalytics();
 
 }
 
 
 /* =========================================================
-   LOAD PATIENTS
+   PERIOD DISPLAY
+   ========================================================= */
+
+function updatePeriodDisplay(
+  description
+) {
+
+  const start =
+    document
+      .getElementById(
+        "analyticsStartDate"
+      )
+      .value;
+
+
+  const end =
+    document
+      .getElementById(
+        "analyticsEndDate"
+      )
+      .value;
+
+
+  if (
+    start &&
+    end
+  ) {
+
+    document
+      .getElementById(
+        "periodDisplay"
+      )
+      .textContent =
+        formatDisplayDate(
+          start
+        ) +
+        " — " +
+        formatDisplayDate(
+          end
+        );
+
+  }
+
+
+  if (
+    description
+  ) {
+
+    document
+      .getElementById(
+        "periodDescription"
+      )
+      .textContent =
+        description;
+
+  } else {
+
+    document
+      .getElementById(
+        "periodDescription"
+      )
+      .textContent =
+        "Custom analytics period";
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD DATA
    ========================================================= */
 
 async function loadPatients() {
@@ -2119,19 +1430,14 @@ async function loadPatients() {
     error
   } =
     await supabaseClient
-      .from("patients")
+      .from(
+        "patients"
+      )
       .select("*");
 
 
   if (error) {
-
-    console.error(
-      "Patients loading error:",
-      error
-    );
-
     throw error;
-
   }
 
 
@@ -2139,10 +1445,6 @@ async function loadPatients() {
 
 }
 
-
-/* =========================================================
-   LOAD APPOINTMENTS
-   ========================================================= */
 
 async function loadAppointments(
   startDate,
@@ -2154,7 +1456,9 @@ async function loadAppointments(
     error
   } =
     await supabaseClient
-      .from("appointments")
+      .from(
+        "appointments"
+      )
       .select("*")
       .gte(
         "appointment_date",
@@ -2167,14 +1471,7 @@ async function loadAppointments(
 
 
   if (error) {
-
-    console.error(
-      "Appointments loading error:",
-      error
-    );
-
     throw error;
-
   }
 
 
@@ -2182,10 +1479,6 @@ async function loadAppointments(
 
 }
 
-
-/* =========================================================
-   LOAD BILLING
-   ========================================================= */
 
 async function loadBilling(
   startDate,
@@ -2197,7 +1490,9 @@ async function loadBilling(
     error
   } =
     await supabaseClient
-      .from("billing")
+      .from(
+        "billing"
+      )
       .select("*")
       .gte(
         "bill_date",
@@ -2210,14 +1505,7 @@ async function loadBilling(
 
 
   if (error) {
-
-    console.error(
-      "Billing loading error:",
-      error
-    );
-
     throw error;
-
   }
 
 
@@ -2227,2395 +1515,19 @@ async function loadBilling(
 
 
 /* =========================================================
-   LOAD ALL BILLING FOR 12 MONTH CHART
+   BILL TOTAL
    ========================================================= */
 
-async function loadLast12MonthsBilling() {
-
-  const now =
-    new Date();
-
-
-  const start =
-    new Date(
-      now.getFullYear(),
-      now.getMonth() - 11,
-      1
-    );
-
-
-  const end =
-    new Date(
-      now.getFullYear(),
-      now.getMonth() + 1,
-      0
-    );
-
-
-  const startString =
-    formatDateForInput(
-      start
-    );
-
-
-  const endString =
-    formatDateForInput(
-      end
-    );
-
-
-  return loadBilling(
-    startString,
-    endString
-  );
-
-}
-
-
-/* =========================================================
-   CALCULATE DAYS
-   ========================================================= */
-
-function calculateDaysBetween(
-  startDate,
-  endDate
+function getBillAmount(
+  bill
 ) {
 
-  const start =
-    new Date(
-      startDate +
-      "T00:00:00"
-    );
-
-
-  const end =
-    new Date(
-      endDate +
-      "T00:00:00"
-    );
-
-
-  const difference =
-    end.getTime() -
-    start.getTime();
-
-
-  return (
-    Math.floor(
-      difference /
-      (
-        1000 *
-        60 *
-        60 *
-        24
-      )
-    ) + 1
+  return Number(
+    bill.total_amount ??
+    bill.total ??
+    bill.bill_amount ??
+    0
   );
-
-}
-
-
-/* =========================================================
-   UPDATE OVERVIEW
-   ========================================================= */
-
-function updateOverview(
-  patients,
-  appointments,
-  bills,
-  startDate,
-  endDate
-) {
-
-  /* -------------------------------------------------------
-     PATIENTS
-     ------------------------------------------------------- */
-
-  const totalPatients =
-    patients.length;
-
-
-  const newPatients =
-    patients.filter(
-      function(patient) {
-
-        const created =
-          patient.created_at
-            ? patient.created_at.substring(
-                0,
-                10
-              )
-            : null;
-
-
-        return (
-          created &&
-          created >= startDate &&
-          created <= endDate
-        );
-
-      }
-    ).length;
-
-
-  document
-    .getElementById(
-      "totalPatients"
-    )
-    .textContent =
-      totalPatients;
-
-
-  document
-    .getElementById(
-      "newPatients"
-    )
-    .textContent =
-      newPatients;
-
-
-  document
-    .getElementById(
-      "allRegisteredPatients"
-    )
-    .textContent =
-      totalPatients;
-
-
-  document
-    .getElementById(
-      "periodNewPatients"
-    )
-    .textContent =
-      newPatients;
-
-
-  /* -------------------------------------------------------
-     APPOINTMENTS
-     ------------------------------------------------------- */
-
-  const totalAppointments =
-    appointments.length;
-
-
-  const completed =
-    appointments.filter(
-      function(appointment) {
-
-        return (
-          String(
-            appointment.status ||
-            ""
-          )
-          .toLowerCase() ===
-          "completed"
-        );
-
-      }
-    ).length;
-
-
-  const cancelled =
-    appointments.filter(
-      function(appointment) {
-
-        return (
-          String(
-            appointment.status ||
-            ""
-          )
-          .toLowerCase() ===
-          "cancelled"
-        );
-
-      }
-    ).length;
-
-
-  const pending =
-    appointments.filter(
-      function(appointment) {
-
-        const status =
-          String(
-            appointment.status ||
-            ""
-          )
-          .toLowerCase();
-
-
-        return (
-          status === "pending" ||
-          status === "scheduled" ||
-          status === ""
-        );
-
-      }
-    ).length;
-
-
-  const otherStatus =
-    Math.max(
-      0,
-      totalAppointments -
-      completed -
-      cancelled -
-      pending
-    );
-
-
-  document
-    .getElementById(
-      "totalAppointments"
-    )
-    .textContent =
-      totalAppointments;
-
-
-  document
-    .getElementById(
-      "completedAppointments"
-    )
-    .textContent =
-      completed;
-
-
-  document
-    .getElementById(
-      "cancelledAppointments"
-    )
-    .textContent =
-      cancelled;
-
-
-  document
-    .getElementById(
-      "pendingAppointments"
-    )
-    .textContent =
-      pending;
-
-
-  document
-    .getElementById(
-      "statusCompleted"
-    )
-    .textContent =
-      completed;
-
-
-  document
-    .getElementById(
-      "statusCancelled"
-    )
-    .textContent =
-      cancelled;
-
-
-  document
-    .getElementById(
-      "statusOther"
-    )
-    .textContent =
-      otherStatus;
-
-
-  /* -------------------------------------------------------
-     REVENUE
-     ------------------------------------------------------- */
-
-  let totalBilled =
-    0;
-
-  let paidAmount =
-    0;
-
-  let pendingAmount =
-    0;
-
-  let cashRevenue =
-    0;
-
-  let upiRevenue =
-    0;
-
-  let cardRevenue =
-    0;
-
-  let bankRevenue =
-    0;
-
-  let otherRevenue =
-    0;
-
-
-  bills.forEach(
-    function(bill) {
-
-      const amount =
-        Number(
-          bill.total_amount
-        ) || 0;
-
-
-      totalBilled +=
-        amount;
-
-
-      const status =
-        String(
-          bill.payment_status ||
-          ""
-        )
-        .trim()
-        .toLowerCase();
-
-
-      if (
-        status === "paid"
-      ) {
-
-        paidAmount +=
-          amount;
-
-      }
-
-      else if (
-        status === "pending"
-      ) {
-
-        pendingAmount +=
-          amount;
-
-      }
-
-      else if (
-        status === "partially paid"
-      ) {
-
-        pendingAmount +=
-          amount;
-
-      }
-
-
-      const method =
-        String(
-          bill.payment_method ||
-          ""
-        )
-        .trim()
-        .toLowerCase();
-
-
-      if (
-        method === "cash"
-      ) {
-
-        cashRevenue +=
-          amount;
-
-      }
-
-      else if (
-        method === "upi"
-      ) {
-
-        upiRevenue +=
-          amount;
-
-      }
-
-      else if (
-        method === "card"
-      ) {
-
-        cardRevenue +=
-          amount;
-
-      }
-
-      else if (
-        method === "bank transfer"
-      ) {
-
-        bankRevenue +=
-          amount;
-
-      }
-
-      else {
-
-        otherRevenue +=
-          amount;
-
-      }
-
-    }
-  );
-
-
-  const averageBill =
-    bills.length > 0
-      ? totalBilled / bills.length
-      : 0;
-
-
-  document
-    .getElementById(
-      "periodRevenue"
-    )
-    .textContent =
-      formatCurrency(
-        paidAmount
-      );
-
-
-  document
-    .getElementById(
-      "totalBilled"
-    )
-    .textContent =
-      formatCurrency(
-        totalBilled
-      );
-
-
-  document
-    .getElementById(
-      "paidAmount"
-    )
-    .textContent =
-      formatCurrency(
-        paidAmount
-      );
-
-
-  document
-    .getElementById(
-      "pendingAmount"
-    )
-    .textContent =
-      formatCurrency(
-        pendingAmount
-      );
-
-
-  document
-    .getElementById(
-      "numberOfBills"
-    )
-    .textContent =
-      bills.length;
-
-
-  document
-    .getElementById(
-      "averageBill"
-    )
-    .textContent =
-      formatCurrency(
-        averageBill
-      );
-
-
-  document
-    .getElementById(
-      "cashRevenue"
-    )
-    .textContent =
-      formatCurrency(
-        cashRevenue
-      );
-
-
-  document
-    .getElementById(
-      "upiRevenue"
-    )
-    .textContent =
-      formatCurrency(
-        upiRevenue
-      );
-
-
-  document
-    .getElementById(
-      "cardRevenue"
-    )
-    .textContent =
-      formatCurrency(
-        cardRevenue
-      );
-
-
-  document
-    .getElementById(
-      "bankRevenue"
-    )
-    .textContent =
-      formatCurrency(
-        bankRevenue
-      );
-
-
-  document
-    .getElementById(
-      "otherRevenue"
-    )
-    .textContent =
-      formatCurrency(
-        otherRevenue
-      );
-
-
-  /* -------------------------------------------------------
-     APPOINTMENT TYPES
-     ------------------------------------------------------- */
-
-  let newConsultation =
-    0;
-
-  let followUp =
-    0;
-
-  let diabetesReview =
-    0;
-
-  let generalConsultation =
-    0;
-
-  let otherTypes =
-    0;
-
-
-  appointments.forEach(
-    function(appointment) {
-
-      const type =
-        String(
-          appointment.appointment_type ||
-          ""
-        )
-        .trim()
-        .toLowerCase();
-
-
-      if (
-        type ===
-        "new consultation"
-      ) {
-
-        newConsultation++;
-
-      }
-
-      else if (
-        type === "follow-up" ||
-        type === "follow up"
-      ) {
-
-        followUp++;
-
-      }
-
-      else if (
-        type ===
-        "diabetes review"
-      ) {
-
-        diabetesReview++;
-
-      }
-
-      else if (
-        type ===
-        "general consultation"
-      ) {
-
-        generalConsultation++;
-
-      }
-
-      else {
-
-        otherTypes++;
-
-      }
-
-    }
-  );
-
-
-  document
-    .getElementById(
-      "newConsultation"
-    )
-    .textContent =
-      newConsultation;
-
-
-  document
-    .getElementById(
-      "followUp"
-    )
-    .textContent =
-      followUp;
-
-
-  document
-    .getElementById(
-      "diabetesReview"
-    )
-    .textContent =
-      diabetesReview;
-
-
-  document
-    .getElementById(
-      "generalConsultation"
-    )
-    .textContent =
-      generalConsultation;
-
-
-  document
-    .getElementById(
-      "otherAppointmentTypes"
-    )
-    .textContent =
-      otherTypes;
-
-
-  /* -------------------------------------------------------
-     PATIENT GROWTH
-     ------------------------------------------------------- */
-
-  const periodDays =
-    calculateDaysBetween(
-      startDate,
-      endDate
-    );
-
-
-  const previousStart =
-    new Date(
-      startDate
-    );
-
-
-  previousStart.setDate(
-    previousStart.getDate() -
-    periodDays
-  );
-
-
-  const previousEnd =
-    new Date(
-      startDate
-    );
-
-
-  previousEnd.setDate(
-    previousEnd.getDate() -
-    1
-  );
-
-
-  const previousStartString =
-    formatDateForInput(
-      previousStart
-    );
-
-
-  const previousEndString =
-    formatDateForInput(
-      previousEnd
-    );
-
-
-  const previousPatients =
-    patients.filter(
-      function(patient) {
-
-        const created =
-          patient.created_at
-            ? patient.created_at.substring(
-                0,
-                10
-              )
-            : null;
-
-
-        return (
-          created &&
-          created >=
-            previousStartString &&
-          created <=
-            previousEndString
-        );
-
-      }
-    ).length;
-
-
-  let growth =
-    0;
-
-
-  if (
-    previousPatients > 0
-  ) {
-
-    growth =
-      (
-        (
-          newPatients -
-          previousPatients
-        ) /
-        previousPatients
-      ) *
-      100;
-
-  }
-
-  else if (
-    newPatients > 0
-  ) {
-
-    growth =
-      100;
-
-  }
-
-
-  document
-    .getElementById(
-      "patientGrowth"
-    )
-    .textContent =
-      growth.toFixed(1) +
-      "%";
-
-}
-
-
-/* =========================================================
-   CREATE MONTH LABELS
-   ========================================================= */
-
-function getMonthLabels() {
-
-  const labels =
-    [];
-
-  const now =
-    new Date();
-
-
-  for (
-    let i = 11;
-    i >= 0;
-    i--
-  ) {
-
-    const date =
-      new Date(
-        now.getFullYear(),
-        now.getMonth() - i,
-        1
-      );
-
-
-    labels.push({
-
-      label:
-        date.toLocaleDateString(
-          "en-IN",
-          {
-            month:
-              "short",
-            year:
-              "numeric"
-          }
-        ),
-
-      year:
-        date.getFullYear(),
-
-      month:
-        date.getMonth()
-
-    });
-
-  }
-
-
-  return labels;
-
-}
-
-
-/* =========================================================
-   CREATE MONTHLY REVENUE CHART
-   ========================================================= */
-
-function createMonthlyRevenueChart(
-  bills,
-  patients
-) {
-
-  const months =
-    getMonthLabels();
-
-
-  const monthlyData =
-    months.map(
-      function(month) {
-
-        let revenue =
-          0;
-
-        let paidBills =
-          0;
-
-
-        bills.forEach(
-          function(bill) {
-
-            if (
-              !bill.bill_date
-            ) {
-
-              return;
-
-            }
-
-
-            const billDate =
-              new Date(
-                bill.bill_date +
-                "T00:00:00"
-              );
-
-
-            if (
-              billDate.getFullYear() ===
-                month.year &&
-              billDate.getMonth() ===
-                month.month
-            ) {
-
-              const status =
-                String(
-                  bill.payment_status ||
-                  ""
-                )
-                .trim()
-                .toLowerCase();
-
-
-              if (
-                status === "paid"
-              ) {
-
-                revenue +=
-                  Number(
-                    bill.total_amount
-                  ) || 0;
-
-
-                paidBills++;
-
-              }
-
-            }
-
-          }
-        );
-
-
-        return {
-
-          revenue:
-            revenue,
-
-          paidBills:
-            paidBills
-
-        };
-
-      }
-    );
-
-
-  const revenueValues =
-    monthlyData.map(
-      function(item) {
-
-        return item.revenue;
-
-      }
-    );
-
-
-  const currentMonth =
-    monthlyData[
-      monthlyData.length - 1
-    ];
-
-
-  const previousMonth =
-    monthlyData[
-      monthlyData.length - 2
-    ];
-
-
-  /* -------------------------------------------------------
-     CURRENT MONTH LABEL
-     ------------------------------------------------------- */
-
-  const currentMonthLabel =
-    months[
-      months.length - 1
-    ].label;
-
-
-  const currentMonthElement =
-    document.getElementById(
-      "monthlyRevenueCurrentMonth"
-    );
-
-
-  if (
-    currentMonthElement
-  ) {
-
-    currentMonthElement.textContent =
-      currentMonthLabel;
-
-
-    currentMonthElement.onclick =
-      function() {
-
-        showMonthlyBillDetails(
-          months[
-            months.length - 1
-          ],
-          bills,
-          patients
-        );
-
-      };
-
-  }
-
-
-  /* -------------------------------------------------------
-     PREVIOUS MONTH LABEL
-     ------------------------------------------------------- */
-
-  const previousMonthLabel =
-    months[
-      months.length - 2
-    ].label;
-
-
-  const previousMonthElement =
-    document.getElementById(
-      "monthlyRevenuePreviousMonth"
-    );
-
-
-  if (
-    previousMonthElement
-  ) {
-
-    previousMonthElement.textContent =
-      previousMonthLabel;
-
-
-    previousMonthElement.onclick =
-      function() {
-
-        showMonthlyBillDetails(
-          months[
-            months.length - 2
-          ],
-          bills,
-          patients
-        );
-
-      };
-
-  }
-
-
-  /* -------------------------------------------------------
-     YEAR TOTAL
-     ------------------------------------------------------- */
-
-  const yearlyRevenue =
-    revenueValues.reduce(
-      function(total, value) {
-
-        return total + value;
-
-      },
-      0
-    );
-
-
-  /* -------------------------------------------------------
-     MONTHLY GROWTH
-     ------------------------------------------------------- */
-
-  let growthText =
-    "—";
-
-
-  if (
-    previousMonth &&
-    previousMonth.revenue > 0
-  ) {
-
-    const growth =
-      (
-        (
-          currentMonth.revenue -
-          previousMonth.revenue
-        ) /
-        previousMonth.revenue
-      ) *
-      100;
-
-
-    if (
-      growth > 0
-    ) {
-
-      growthText =
-        "↑ " +
-        growth.toFixed(1) +
-        "% vs last month";
-
-    }
-
-    else if (
-      growth < 0
-    ) {
-
-      growthText =
-        "↓ " +
-        Math.abs(
-          growth
-        ).toFixed(1) +
-        "% vs last month";
-
-    }
-
-    else {
-
-      growthText =
-        "No change vs last month";
-
-    }
-
-  }
-
-
-  document
-    .getElementById(
-      "monthlyRevenueCurrent"
-    )
-    .textContent =
-      formatCurrency(
-        currentMonth.revenue
-      );
-
-
-  document
-    .getElementById(
-      "monthlyRevenueCurrentBills"
-    )
-    .textContent =
-      currentMonth.paidBills +
-      (
-        currentMonth.paidBills === 1
-          ? " paid bill"
-          : " paid bills"
-      );
-
-
-  document
-    .getElementById(
-      "monthlyRevenuePrevious"
-    )
-    .textContent =
-      formatCurrency(
-        previousMonth.revenue
-      );
-
-
-  document
-    .getElementById(
-      "monthlyRevenuePreviousBills"
-    )
-    .textContent =
-      previousMonth.paidBills +
-      (
-        previousMonth.paidBills === 1
-          ? " paid bill"
-          : " paid bills"
-      );
-
-
-  document
-    .getElementById(
-      "monthlyRevenueYearTotal"
-    )
-    .textContent =
-      formatCurrency(
-        yearlyRevenue
-      );
-
-
-  document
-    .getElementById(
-      "monthlyRevenueGrowth"
-    )
-    .textContent =
-      growthText;
-
-
-  /* -------------------------------------------------------
-     CHART
-     ------------------------------------------------------- */
-
-  const canvas =
-    document.getElementById(
-      "monthlyRevenueChart"
-    );
-
-
-  if (!canvas) {
-
-    return;
-
-  }
-
-
-  if (
-    monthlyRevenueChart
-  ) {
-
-    monthlyRevenueChart.destroy();
-
-  }
-
-
-  monthlyRevenueChart =
-    new Chart(
-      canvas,
-      {
-
-        type:
-          "line",
-
-
-        data:
-          {
-
-            labels:
-              months.map(
-                function(month) {
-
-                  return month.label;
-
-                }
-              ),
-
-
-            datasets:
-              [
-
-                {
-
-                  label:
-                    "Paid Revenue",
-
-                  data:
-                    revenueValues,
-
-                  tension:
-                    0.35,
-
-                  fill:
-                    true,
-
-                  pointRadius:
-                    5,
-
-                  pointHoverRadius:
-                    8,
-
-                  pointHitRadius:
-                    20
-
-                }
-
-              ]
-
-          },
-
-
-        options:
-          {
-
-            responsive:
-              true,
-
-            maintainAspectRatio:
-              false,
-
-
-            interaction:
-              {
-
-                mode:
-                  "index",
-
-                intersect:
-                  false
-
-              },
-
-
-            plugins:
-              {
-
-                legend:
-                  {
-
-                    display:
-                      true
-
-                  },
-
-
-                tooltip:
-                  {
-
-                    displayColors:
-                      false,
-
-                    callbacks:
-                      {
-
-                        title:
-                          function(
-                            tooltipItems
-                          ) {
-
-                            if (
-                              !tooltipItems ||
-                              !tooltipItems.length
-                            ) {
-
-                              return "";
-
-                            }
-
-
-                            return tooltipItems[0]
-                              .label;
-
-                          },
-
-
-                        label:
-                          function(
-                            context
-                          ) {
-
-                            const index =
-                              context.dataIndex;
-
-
-                            const revenue =
-                              monthlyData[
-                                index
-                              ].revenue;
-
-
-                            const paidBills =
-                              monthlyData[
-                                index
-                              ].paidBills;
-
-
-                            return [
-
-                              "Revenue: " +
-                              formatCurrency(
-                                revenue
-                              ),
-
-                              "Paid Bills: " +
-                              paidBills
-
-                            ];
-
-                          }
-
-                      }
-
-                  }
-
-              },
-
-
-            scales:
-              {
-
-                y:
-                  {
-
-                    beginAtZero:
-                      true,
-
-                    ticks:
-                      {
-
-                        callback:
-                          function(value) {
-
-                            return "₹" +
-                              Number(
-                                value
-                              ).toLocaleString(
-                                "en-IN"
-                              );
-
-                          }
-
-                      }
-
-                  },
-
-
-                x:
-                  {
-
-                    ticks:
-                      {
-
-                        maxRotation:
-                          45,
-
-                        minRotation:
-                          0
-
-                      }
-
-                  }
-
-              }
-
-          }
-
-      }
-    );
-
-}
-
-
-/* =========================================================
-   SHOW MONTHLY BILL DETAILS
-   ========================================================= */
-
-function showMonthlyBillDetails(
-  selectedMonth,
-  bills,
-  patients
-) {
-
-  const monthlyBills =
-    bills.filter(
-      function(bill) {
-
-        if (
-          !bill.bill_date
-        ) {
-
-          return false;
-
-        }
-
-
-        const billDate =
-          new Date(
-            bill.bill_date +
-            "T00:00:00"
-          );
-
-
-        const status =
-          String(
-            bill.payment_status ||
-            ""
-          )
-          .trim()
-          .toLowerCase();
-
-
-        return (
-          status === "paid" &&
-          billDate.getFullYear() ===
-            selectedMonth.year &&
-          billDate.getMonth() ===
-            selectedMonth.month
-        );
-
-      }
-    );
-
-
-  const modal =
-    document.getElementById(
-      "monthlyBillDetailsModal"
-    );
-
-
-  const title =
-    document.getElementById(
-      "monthlyBillDetailsTitle"
-    );
-
-
-  const summary =
-    document.getElementById(
-      "monthlyBillDetailsSummary"
-    );
-
-
-  const content =
-    document.getElementById(
-      "monthlyBillDetailsContent"
-    );
-
-
-  title.textContent =
-    selectedMonth.label +
-    " — Paid Bills";
-
-
-  let total =
-    0;
-
-
-  monthlyBills.forEach(
-    function(bill) {
-
-      total +=
-        Number(
-          bill.total_amount
-        ) || 0;
-
-    }
-  );
-
-
-  summary.textContent =
-    monthlyBills.length +
-    (
-      monthlyBills.length === 1
-        ? " paid bill"
-        : " paid bills"
-    ) +
-    " • Total: " +
-    formatCurrency(
-      total
-    );
-
-
-  if (
-    monthlyBills.length === 0
-  ) {
-
-    content.innerHTML = `
-
-      <div
-        style="
-          text-align:center;
-          padding:30px;
-          color:#777;
-        "
-      >
-
-        No paid bills found
-        for ${escapeHTML(
-          selectedMonth.label
-        )}.
-
-      </div>
-
-    `;
-
-  }
-
-  else {
-
-    let html = `
-
-      <div
-        style="
-          overflow-x:auto;
-        "
-      >
-
-        <table
-          style="
-            width:100%;
-            border-collapse:collapse;
-          "
-        >
-
-          <thead>
-
-            <tr>
-
-              <th
-                style="
-                  text-align:left;
-                  padding:10px;
-                  border-bottom:1px solid #ddd;
-                "
-              >
-                Patient
-              </th>
-
-
-              <th
-                style="
-                  text-align:left;
-                  padding:10px;
-                  border-bottom:1px solid #ddd;
-                "
-              >
-                Date
-              </th>
-
-
-              <th
-                style="
-                  text-align:right;
-                  padding:10px;
-                  border-bottom:1px solid #ddd;
-                "
-              >
-                Bill Amount
-              </th>
-
-            </tr>
-
-          </thead>
-
-
-          <tbody>
-
-    `;
-
-
-    monthlyBills.forEach(
-      function(bill) {
-
-        let patientName =
-          bill.patient_name ||
-          "";
-
-
-        if (
-          !patientName
-        ) {
-
-          const patient =
-            patients.find(
-              function(p) {
-
-                return (
-                  String(p.id) ===
-                  String(
-                    bill.patient_id ||
-                    bill.linked_patient_id ||
-                    ""
-                  )
-                );
-
-              }
-            );
-
-
-          if (
-            patient
-          ) {
-
-            patientName =
-              patient.patient_name ||
-              patient.name ||
-              "";
-
-          }
-
-        }
-
-
-        if (
-          !patientName
-        ) {
-
-          patientName =
-            "Unknown Patient";
-
-        }
-
-
-        const billDate =
-          bill.bill_date
-            ? new Date(
-                bill.bill_date +
-                "T00:00:00"
-              )
-              .toLocaleDateString(
-                "en-IN"
-              )
-            : "—";
-
-
-        const amount =
-          Number(
-            bill.total_amount
-          ) || 0;
-
-
-        html += `
-
-          <tr>
-
-            <td
-              style="
-                padding:10px;
-                border-bottom:1px solid #eee;
-              "
-            >
-
-              ${escapeHTML(
-                patientName
-              )}
-
-            </td>
-
-
-            <td
-              style="
-                padding:10px;
-                border-bottom:1px solid #eee;
-              "
-            >
-
-              ${escapeHTML(
-                billDate
-              )}
-
-            </td>
-
-
-            <td
-              style="
-                padding:10px;
-                border-bottom:1px solid #eee;
-                text-align:right;
-                font-weight:600;
-              "
-            >
-
-              ${formatCurrency(
-                amount
-              )}
-
-            </td>
-
-          </tr>
-
-        `;
-
-      }
-    );
-
-
-    html += `
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    `;
-
-
-    content.innerHTML =
-      html;
-
-  }
-
-
-  modal.style.display =
-    "block";
-
-}
-
-
-/* =========================================================
-   MONTH SEARCH — CREATE MONTH OPTIONS
-   ========================================================= */
-
-function initializeMonthSearch() {
-
-  const monthSelect =
-    document.getElementById(
-      "searchRevenueMonth"
-    );
-
-
-  const yearSelect =
-    document.getElementById(
-      "searchRevenueYear"
-    );
-
-
-  const monthNames = [
-
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-
-  ];
-
-
-  monthSelect.innerHTML =
-    "";
-
-
-  monthNames.forEach(
-    function(name, index) {
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      option.value =
-        index;
-
-
-      option.textContent =
-        name;
-
-
-      monthSelect.appendChild(
-        option
-      );
-
-    }
-  );
-
-
-  /* -------------------------------------------------------
-     YEARS
-     ------------------------------------------------------- */
-
-  const currentYear =
-    new Date().getFullYear();
-
-
-  yearSelect.innerHTML =
-    "";
-
-
-  for (
-    let year =
-      currentYear;
-    year >=
-      currentYear - 10;
-    year--
-  ) {
-
-    const option =
-      document.createElement(
-        "option"
-      );
-
-
-    option.value =
-      year;
-
-
-    option.textContent =
-      year;
-
-
-    yearSelect.appendChild(
-      option
-    );
-
-  }
-
-
-  /* -------------------------------------------------------
-     DEFAULT TO CURRENT MONTH/YEAR
-     ------------------------------------------------------- */
-
-  const today =
-    new Date();
-
-
-  monthSelect.value =
-    today.getMonth();
-
-
-  yearSelect.value =
-    today.getFullYear();
-
-}
-
-
-/* =========================================================
-   SEARCH SELECTED MONTH
-   ========================================================= */
-
-async function searchSelectedMonth() {
-
-  const month =
-    Number(
-      document.getElementById(
-        "searchRevenueMonth"
-      ).value
-    );
-
-
-  const year =
-    Number(
-      document.getElementById(
-        "searchRevenueYear"
-      ).value
-    );
-
-
-  const firstDay =
-    new Date(
-      year,
-      month,
-      1
-    );
-
-
-  const lastDay =
-    new Date(
-      year,
-      month + 1,
-      0
-    );
-
-
-  const startDate =
-    formatDateForInput(
-      firstDay
-    );
-
-
-  const endDate =
-    formatDateForInput(
-      lastDay
-    );
-
-
-  const monthLabel =
-    firstDay.toLocaleDateString(
-      "en-IN",
-      {
-        month:
-          "long",
-        year:
-          "numeric"
-      }
-    );
-
-
-  const searchButton =
-    document.getElementById(
-      "searchSelectedMonthButton"
-    );
-
-
-  const originalText =
-    searchButton.textContent;
-
-
-  searchButton.disabled =
-    true;
-
-
-  searchButton.textContent =
-    "🔄 Searching...";
-
-
-  try {
-
-    const [
-      bills,
-      patients
-    ] =
-      await Promise.all(
-        [
-
-          loadBilling(
-            startDate,
-            endDate
-          ),
-
-          loadPatients()
-
-        ]
-      );
-
-
-    const selectedMonth =
-      {
-
-        label:
-          monthLabel,
-
-        year:
-          year,
-
-        month:
-          month
-
-      };
-
-
-    document
-      .getElementById(
-        "monthSearchModal"
-      )
-      .style.display =
-        "none";
-
-
-    showMonthlyBillDetails(
-      selectedMonth,
-      bills,
-      patients
-    );
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Month search error:",
-      error
-    );
-
-
-    alert(
-      "Unable to search this month.\n\n" +
-      (
-        error.message ||
-        "Unknown error"
-      )
-    );
-
-  }
-
-  finally {
-
-    searchButton.disabled =
-      false;
-
-
-    searchButton.textContent =
-      originalText;
-
-  }
-
-}
-
-
-/* =========================================================
-   MONTHLY PATIENT CHART
-   ========================================================= */
-
-function createMonthlyPatientChart(
-  patients
-) {
-
-  const months =
-    getMonthLabels();
-
-
-  const values =
-    months.map(
-      function(month) {
-
-        let count =
-          0;
-
-
-        patients.forEach(
-          function(patient) {
-
-            if (
-              !patient.created_at
-            ) {
-
-              return;
-
-            }
-
-
-            const date =
-              new Date(
-                patient.created_at
-              );
-
-
-            if (
-              date.getFullYear() ===
-                month.year &&
-              date.getMonth() ===
-                month.month
-            ) {
-
-              count++;
-
-            }
-
-          }
-        );
-
-
-        return count;
-
-      }
-    );
-
-
-  const canvas =
-    document.getElementById(
-      "monthlyPatientChart"
-    );
-
-
-  if (
-    !canvas
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    monthlyPatientChart
-  ) {
-
-    monthlyPatientChart.destroy();
-
-  }
-
-
-  monthlyPatientChart =
-    new Chart(
-      canvas,
-      {
-
-        type:
-          "bar",
-
-        data:
-          {
-
-            labels:
-              months.map(
-                function(month) {
-
-                  return month.label;
-
-                }
-              ),
-
-            datasets:
-              [
-
-                {
-
-                  label:
-                    "New Patients",
-
-                  data:
-                    values
-
-                }
-
-              ]
-
-          },
-
-        options:
-          {
-
-            responsive:
-              true,
-
-            maintainAspectRatio:
-              false,
-
-            plugins:
-              {
-
-                legend:
-                  {
-
-                    display:
-                      true
-
-                  }
-
-              },
-
-            scales:
-              {
-
-                y:
-                  {
-
-                    beginAtZero:
-                      true,
-
-                    ticks:
-                      {
-
-                        precision:
-                          0
-
-                      }
-
-                  }
-
-              }
-
-          }
-
-      }
-    );
-
-}
-
-
-/* =========================================================
-   APPOINTMENT TYPE CHART
-   ========================================================= */
-
-function createAppointmentTypeChart(
-  appointments
-) {
-
-  const counts =
-    {
-
-      "New Consultation":
-        0,
-
-      "Follow-up":
-        0,
-
-      "Diabetes Review":
-        0,
-
-      "General Consultation":
-        0,
-
-      "Other":
-        0
-
-    };
-
-
-  appointments.forEach(
-    function(appointment) {
-
-      const type =
-        String(
-          appointment.appointment_type ||
-          ""
-        )
-        .trim()
-        .toLowerCase();
-
-
-      if (
-        type ===
-        "new consultation"
-      ) {
-
-        counts[
-          "New Consultation"
-        ]++;
-
-      }
-
-      else if (
-        type === "follow-up" ||
-        type === "follow up"
-      ) {
-
-        counts[
-          "Follow-up"
-        ]++;
-
-      }
-
-      else if (
-        type ===
-        "diabetes review"
-      ) {
-
-        counts[
-          "Diabetes Review"
-        ]++;
-
-      }
-
-      else if (
-        type ===
-        "general consultation"
-      ) {
-
-        counts[
-          "General Consultation"
-        ]++;
-
-      }
-
-      else {
-
-        counts[
-          "Other"
-        ]++;
-
-      }
-
-    }
-  );
-
-
-  const canvas =
-    document.getElementById(
-      "appointmentTypeChart"
-    );
-
-
-  if (
-    !canvas
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    appointmentTypeChart
-  ) {
-
-    appointmentTypeChart.destroy();
-
-  }
-
-
-  appointmentTypeChart =
-    new Chart(
-      canvas,
-      {
-
-        type:
-          "doughnut",
-
-        data:
-          {
-
-            labels:
-              Object.keys(
-                counts
-              ),
-
-            datasets:
-              [
-
-                {
-
-                  label:
-                    "Appointments",
-
-                  data:
-                    Object.values(
-                      counts
-                    )
-
-                }
-
-              ]
-
-          },
-
-        options:
-          {
-
-            responsive:
-              true,
-
-            maintainAspectRatio:
-              false,
-
-            plugins:
-              {
-
-                legend:
-                  {
-
-                    position:
-                      "bottom"
-
-                  }
-
-              }
-
-          }
-
-      }
-    );
 
 }
 
@@ -4627,15 +1539,17 @@ function createAppointmentTypeChart(
 async function loadAnalytics() {
 
   const loading =
-    document.getElementById(
-      "analyticsLoading"
-    );
+    document
+      .getElementById(
+        "analyticsLoading"
+      );
 
 
   const content =
-    document.getElementById(
-      "analyticsContent"
-    );
+    document
+      .getElementById(
+        "analyticsContent"
+      );
 
 
   loading.style.display =
@@ -4668,7 +1582,7 @@ async function loadAnalytics() {
   ) {
 
     alert(
-      "Please select both start and end dates."
+      "Please select both dates."
     );
 
 
@@ -4700,36 +1614,34 @@ async function loadAnalytics() {
   }
 
 
+  updatePeriodDisplay();
+
+
   try {
 
     const [
       patients,
       appointments,
-      bills,
-      chartBills
+      bills
     ] =
-      await Promise.all(
-        [
+      await Promise.all([
 
-          loadPatients(),
+        loadPatients(),
 
-          loadAppointments(
-            startDate,
-            endDate
-          ),
+        loadAppointments(
+          startDate,
+          endDate
+        ),
 
-          loadBilling(
-            startDate,
-            endDate
-          ),
+        loadBilling(
+          startDate,
+          endDate
+        )
 
-          loadLast12MonthsBilling()
-
-        ]
-      );
+      ]);
 
 
-    updateOverview(
+    updateHeadlineAnalytics(
       patients,
       appointments,
       bills,
@@ -4738,63 +1650,26 @@ async function loadAnalytics() {
     );
 
 
-    createMonthlyRevenueChart(
-      chartBills,
-      patients
-    );
-
-
-    createMonthlyPatientChart(
-      patients
-    );
-
-
-    createAppointmentTypeChart(
-      appointments
-    );
-
-
-    loading.style.display =
-      "none";
-
-
     content.style.display =
       "block";
 
-  }
 
-  catch (error) {
+  } catch (error) {
 
     console.error(
-      "Analytics error:",
+      "Analytics loading error:",
       error
     );
 
 
-    loading.innerHTML = `
+    alert(
+      "Unable to load clinic analytics."
+    );
 
-      <p>
-        ❌ Unable to load clinic analytics.
-      </p>
+  } finally {
 
-      <p>
-        ${escapeHTML(
-          error.message ||
-          "Unknown error"
-        )}
-      </p>
-
-      <button
-        type="button"
-        class="doctor-login-button"
-        onclick="loadAnalytics()"
-      >
-
-        🔄 Try Again
-
-      </button>
-
-    `;
+    loading.style.display =
+      "none";
 
   }
 
@@ -4802,46 +1677,283 @@ async function loadAnalytics() {
 
 
 /* =========================================================
-   TODAY BUTTON
+   UPDATE HEADLINES
+   ========================================================= */
+
+function updateHeadlineAnalytics(
+  patients,
+  appointments,
+  bills,
+  startDate,
+  endDate
+) {
+
+  const today =
+    getTodayString();
+
+
+  const todayPatients =
+    patients.filter(
+      function(patient) {
+
+        return (
+          patient.created_at &&
+          patient.created_at
+            .substring(
+              0,
+              10
+            ) ===
+            today
+        );
+
+      }
+    );
+
+
+  /*
+     Today appointments need a separate query period
+     only if today falls outside selected range.
+     Usually selected period includes today.
+  */
+
+  const todayAppointments =
+    appointments.filter(
+      function(appointment) {
+
+        return (
+          appointment.appointment_date ===
+          today
+        );
+
+      }
+    );
+
+
+  const todayCompleted =
+    todayAppointments.filter(
+      function(appointment) {
+
+        return (
+          appointment.status ===
+          "Completed"
+        );
+
+      }
+    );
+
+
+  const todayBills =
+    bills.filter(
+      function(bill) {
+
+        return (
+          bill.bill_date ===
+          today &&
+          String(
+            bill.payment_status ||
+            ""
+          )
+          .toLowerCase() ===
+          "paid"
+        );
+
+      }
+    );
+
+
+  const todayRevenue =
+    todayBills.reduce(
+      function(total,bill) {
+
+        return (
+          total +
+          getBillAmount(
+            bill
+          )
+        );
+
+      },
+      0
+    );
+
+
+  document
+    .getElementById(
+      "todayPatients"
+    )
+    .textContent =
+      todayPatients.length;
+
+
+  document
+    .getElementById(
+      "todayAppointments"
+    )
+    .textContent =
+      todayAppointments.length;
+
+
+  document
+    .getElementById(
+      "todayCompleted"
+    )
+    .textContent =
+      todayCompleted.length;
+
+
+  document
+    .getElementById(
+      "todayRevenue"
+    )
+    .textContent =
+      formatMoney(
+        todayRevenue
+      );
+
+
+  /*
+     Selected period patients
+  */
+
+  const newPatients =
+    patients.filter(
+      function(patient) {
+
+        if (
+          !patient.created_at
+        ) {
+          return false;
+        }
+
+
+        const created =
+          patient.created_at
+            .substring(
+              0,
+              10
+            );
+
+
+        return (
+          created >= startDate &&
+          created <= endDate
+        );
+
+      }
+    );
+
+
+  const paidBills =
+    bills.filter(
+      function(bill) {
+
+        return (
+          String(
+            bill.payment_status ||
+            ""
+          )
+          .toLowerCase() ===
+          "paid"
+        );
+
+      }
+    );
+
+
+  const revenue =
+    paidBills.reduce(
+      function(total,bill) {
+
+        return (
+          total +
+          getBillAmount(
+            bill
+          )
+        );
+
+      },
+      0
+    );
+
+
+  document
+    .getElementById(
+      "patientHighlight"
+    )
+    .textContent =
+      patients.length +
+      " registered • " +
+      newPatients.length +
+      " new in period";
+
+
+  document
+    .getElementById(
+      "appointmentHighlight"
+    )
+    .textContent =
+      appointments.length +
+      " appointments in period";
+
+
+  document
+    .getElementById(
+      "revenueHighlight"
+    )
+    .textContent =
+      formatMoney(
+        revenue
+      ) +
+      " paid revenue";
+
+}
+
+
+/* =========================================================
+   EVENTS
    ========================================================= */
 
 document
   .getElementById(
-    "todayAnalyticsButton"
+    "togglePeriodButton"
   )
   .addEventListener(
     "click",
     function() {
 
-      const today =
-        getToday();
-
-
       document
         .getElementById(
-          "analyticsStartDate"
+          "periodControls"
         )
-        .value =
-          today;
-
-
-      document
-        .getElementById(
-          "analyticsEndDate"
-        )
-        .value =
-          today;
-
-
-      loadAnalytics();
+        .classList
+        .toggle(
+          "open"
+        );
 
     }
   );
 
 
-/* =========================================================
-   APPLY FILTER
-   ========================================================= */
+document
+  .getElementById(
+    "closePeriodButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .remove(
+          "open"
+        );
+
+    }
+  );
+
 
 document
   .getElementById(
@@ -4849,165 +1961,38 @@ document
   )
   .addEventListener(
     "click",
+    async function() {
+
+      updatePeriodDisplay(
+        "Custom analytics period"
+      );
+
+
+      await loadAnalytics();
+
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .remove(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "refreshAnalyticsButton"
+  )
+  .addEventListener(
+    "click",
     loadAnalytics
   );
 
-
-/* =========================================================
-   REFRESH
-   ========================================================= */
-
-document
-  .getElementById(
-    "analyticsRefreshButton"
-  )
-  .addEventListener(
-    "click",
-    loadAnalytics
-  );
-
-
-/* =========================================================
-   OPEN MONTH SEARCH
-   ========================================================= */
-
-document
-  .getElementById(
-    "openMonthSearch"
-  )
-  .addEventListener(
-    "click",
-    function() {
-
-      initializeMonthSearch();
-
-
-      document
-        .getElementById(
-          "monthSearchModal"
-        )
-        .style.display =
-          "block";
-
-    }
-  );
-
-
-/* =========================================================
-   CLOSE MONTH SEARCH
-   ========================================================= */
-
-document
-  .getElementById(
-    "closeMonthSearch"
-  )
-  .addEventListener(
-    "click",
-    function() {
-
-      document
-        .getElementById(
-          "monthSearchModal"
-        )
-        .style.display =
-          "none";
-
-    }
-  );
-
-
-/* =========================================================
-   CLICK OUTSIDE MONTH SEARCH
-   ========================================================= */
-
-document
-  .getElementById(
-    "monthSearchModal"
-  )
-  .addEventListener(
-    "click",
-    function(event) {
-
-      if (
-        event.target ===
-        this
-      ) {
-
-        this.style.display =
-          "none";
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   SEARCH SELECTED MONTH BUTTON
-   ========================================================= */
-
-document
-  .getElementById(
-    "searchSelectedMonthButton"
-  )
-  .addEventListener(
-    "click",
-    searchSelectedMonth
-  );
-
-
-/* =========================================================
-   CLOSE MONTHLY BILL DETAILS
-   ========================================================= */
-
-document
-  .getElementById(
-    "closeMonthlyBillDetails"
-  )
-  .addEventListener(
-    "click",
-    function() {
-
-      document
-        .getElementById(
-          "monthlyBillDetailsModal"
-        )
-        .style.display =
-          "none";
-
-    }
-  );
-
-
-/* =========================================================
-   CLICK OUTSIDE BILL DETAILS
-   ========================================================= */
-
-document
-  .getElementById(
-    "monthlyBillDetailsModal"
-  )
-  .addEventListener(
-    "click",
-    function(event) {
-
-      if (
-        event.target ===
-        this
-      ) {
-
-        this.style.display =
-          "none";
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   LOGOUT
-   ========================================================= */
 
 document
   .getElementById(
@@ -5029,37 +2014,31 @@ document
   );
 
 
+window.setQuickPeriod =
+  setQuickPeriod;
+
+
 /* =========================================================
    INITIALIZE
    ========================================================= */
 
-async function initializeAnalytics() {
+(async function initializeAnalytics() {
 
   const loggedIn =
     await checkDoctorLogin();
 
 
-  if (
-    !loggedIn
-  ) {
-
+  if (!loggedIn) {
     return;
-
   }
 
 
   setDefaultDates();
 
 
-  initializeMonthSearch();
-
-
   await loadAnalytics();
 
-}
-
-
-initializeAnalytics();
+})();
 
 </script>
 
