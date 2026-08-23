@@ -19,10 +19,6 @@ Patients | General & Diabetes Care
 
 <style>
 
-/* =========================================================
-   GENERAL
-   ========================================================= */
-
 * {
   box-sizing: border-box;
 }
@@ -87,7 +83,7 @@ textarea {
 
 
 /* =========================================================
-   VIEWS
+   VIEW
    ========================================================= */
 
 .portal-view {
@@ -100,7 +96,7 @@ textarea {
 
 
 /* =========================================================
-   CARDS
+   CARD
    ========================================================= */
 
 .portal-card {
@@ -386,7 +382,7 @@ textarea {
 
 
 /* =========================================================
-   PATIENT RESULT
+   PATIENT
    ========================================================= */
 
 .patient-result-card {
@@ -408,11 +404,6 @@ textarea {
   font-size: 13px;
   line-height: 1.75;
 }
-
-
-/* =========================================================
-   PATIENT HEADER
-   ========================================================= */
 
 .patient-header-box,
 .consultation-patient-bar {
@@ -441,11 +432,6 @@ textarea {
   font-size: 13px;
   line-height: 1.7;
 }
-
-
-/* =========================================================
-   BASIC DETAILS
-   ========================================================= */
 
 .patient-details-grid {
   display: grid;
@@ -477,7 +463,7 @@ textarea {
 
 
 /* =========================================================
-   SUCCESS
+   SUCCESS / CONSULTATION
    ========================================================= */
 
 .success-card {
@@ -494,11 +480,6 @@ textarea {
   margin: 0 0 10px;
   color: #15803d;
 }
-
-
-/* =========================================================
-   CONSULTATION
-   ========================================================= */
 
 .saved-consultation-card {
   padding: 17px;
@@ -544,6 +525,37 @@ textarea {
 .preformatted {
   line-height: 1.6;
   white-space: pre-wrap;
+}
+
+
+/* =========================================================
+   APPOINTMENT BANNER
+   ========================================================= */
+
+.appointment-link-box {
+  margin-bottom: 14px;
+  padding: 13px 14px;
+  background:
+    linear-gradient(
+      135deg,
+      #fff7df,
+      #ffffff
+    );
+  border: 1px solid #f2dfad;
+  border-radius: 13px;
+}
+
+.appointment-link-title {
+  color: #825d00;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.appointment-link-meta {
+  margin-top: 4px;
+  color: #756a53;
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 
@@ -734,7 +746,6 @@ Simple patient registration, consultation and records
 </div>
 
 
-
 <!-- =====================================================
      HOME
      ===================================================== -->
@@ -839,8 +850,8 @@ Tap to view today's registered patients
 
 <button
   type="button"
-  class="portal-button secondary-button"
-  id="logoutButton">
+  id="logoutButton"
+  class="portal-button secondary-button">
 
 🔒 Logout
 
@@ -849,7 +860,6 @@ Tap to view today's registered patients
 </div>
 
 </div>
-
 
 
 <!-- =====================================================
@@ -861,6 +871,7 @@ Tap to view today's registered patients
   class="portal-view">
 
 <div class="portal-card">
+
 
 <div class="view-header">
 
@@ -885,6 +896,7 @@ Tap to view today's registered patients
 <h3>
 👤 Basic Patient Details
 </h3>
+
 
 <div class="form-grid">
 
@@ -1009,6 +1021,7 @@ Address
 📋 Past Medical Information
 </h3>
 
+
 <div class="form-grid one-column">
 
 
@@ -1067,8 +1080,8 @@ Current Medications
 
 <button
   type="button"
-  class="portal-button primary-button"
-  id="savePatientButton">
+  id="savePatientButton"
+  class="portal-button primary-button">
 
 💾 Register Patient
 
@@ -1085,10 +1098,10 @@ Current Medications
 
 </div>
 
-</div>
 
 </div>
 
+</div>
 
 
 <!-- =====================================================
@@ -1107,7 +1120,6 @@ Current Medications
 </div>
 
 
-
 <!-- =====================================================
      SEARCH
      ===================================================== -->
@@ -1117,6 +1129,7 @@ Current Medications
   class="portal-view">
 
 <div class="portal-card">
+
 
 <div class="view-header">
 
@@ -1145,8 +1158,8 @@ Current Medications
 
 <button
   type="button"
-  class="portal-button primary-button"
-  id="searchPatientButton">
+  id="searchPatientButton"
+  class="portal-button primary-button">
 
 🔎 Search
 
@@ -1165,10 +1178,10 @@ Search for a patient.
 
 </div>
 
-</div>
 
 </div>
 
+</div>
 
 
 <!-- =====================================================
@@ -1180,6 +1193,7 @@ Search for a patient.
   class="portal-view">
 
 <div class="portal-card">
+
 
 <div class="view-header">
 
@@ -1198,6 +1212,7 @@ Search for a patient.
 
 </div>
 
+
 <div id="todayPatientsContainer">
 
 <div class="portal-message">
@@ -1206,10 +1221,10 @@ Loading...
 
 </div>
 
-</div>
 
 </div>
 
+</div>
 
 
 <!-- =====================================================
@@ -1228,7 +1243,6 @@ Loading...
 </div>
 
 
-
 <!-- =====================================================
      EDIT PATIENT
      ===================================================== -->
@@ -1243,7 +1257,6 @@ Loading...
 </div>
 
 </div>
-
 
 
 <!-- =====================================================
@@ -1262,7 +1275,6 @@ Loading...
 </div>
 
 
-
 <!-- =====================================================
      SAVED CONSULTATION
      ===================================================== -->
@@ -1273,11 +1285,10 @@ Loading...
 
 <div
   id="savedConsultationContent"
-  class="portal-card">
+  class="portal-card success-card">
 </div>
 
 </div>
-
 
 
 <!-- =====================================================
@@ -1299,7 +1310,6 @@ Loading...
 </div>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -1334,7 +1344,6 @@ File
 </div>
 
 </div>
-
 
 
 <script
@@ -1372,6 +1381,18 @@ let currentConsultationId =
   null;
 
 
+/*
+   STEP 3:
+   appointment-linked consultation state
+*/
+
+let currentAppointmentId =
+  null;
+
+let consultationReturnURL =
+  null;
+
+
 /* =========================================================
    HELPERS
    ========================================================= */
@@ -1384,6 +1405,7 @@ function escapeHTML(value) {
   ) {
     return "";
   }
+
 
   return String(value)
     .replace(/&/g,"&amp;")
@@ -1439,9 +1461,18 @@ function showView(
 
 function showHomeView() {
 
+  currentAppointmentId =
+    null;
+
+
+  consultationReturnURL =
+    null;
+
+
   showView(
     "homeView"
   );
+
 
   loadTodayPatientCount();
 
@@ -1452,6 +1483,7 @@ function getTodayString() {
 
   const date =
     new Date();
+
 
   return (
     date.getFullYear() +
@@ -1484,9 +1516,11 @@ function getTomorrowISO(
       "T00:00:00"
     );
 
+
   date.setDate(
     date.getDate() + 1
   );
+
 
   return date.toISOString();
 
@@ -1513,7 +1547,9 @@ function formatDate(value) {
       date.getTime()
     )
   ) {
+
     return value;
+
   }
 
 
@@ -1545,7 +1581,9 @@ function formatDateTime(value) {
       date.getTime()
     )
   ) {
+
     return "-";
+
   }
 
 
@@ -1559,6 +1597,51 @@ function formatDateTime(value) {
       minute: "2-digit"
     }
   );
+
+}
+
+
+function formatAppointmentTime(
+  value
+) {
+
+  if (!value) {
+    return "-";
+  }
+
+
+  const time =
+    String(value)
+      .substring(
+        0,
+        5
+      );
+
+
+  const labels = {
+
+    "18:00":
+      "6:00 PM",
+
+    "18:30":
+      "6:30 PM",
+
+    "19:00":
+      "7:00 PM",
+
+    "19:30":
+      "7:30 PM",
+
+    "20:00":
+      "8:00 PM",
+
+    "20:30":
+      "8:30 PM"
+
+  };
+
+
+  return labels[time] || time;
 
 }
 
@@ -1619,6 +1702,21 @@ function calculateAge(
 
 
   return age;
+
+}
+
+
+function getValue(id) {
+
+  const element =
+    document.getElementById(
+      id
+    );
+
+
+  return element
+    ? element.value.trim()
+    : "";
 
 }
 
@@ -1699,9 +1797,11 @@ async function getPatient(
       error
     );
 
+
     alert(
       "Unable to load patient."
     );
+
 
     return null;
 
@@ -1720,21 +1820,15 @@ async function getPatient(
 async function savePatient() {
 
   const patientName =
-    document
-      .getElementById(
-        "newPatientName"
-      )
-      .value
-      .trim();
+    getValue(
+      "newPatientName"
+    );
 
 
   const patientPhone =
-    document
-      .getElementById(
-        "newPatientPhone"
-      )
-      .value
-      .trim();
+    getValue(
+      "newPatientPhone"
+    );
 
 
   if (
@@ -1749,6 +1843,12 @@ async function savePatient() {
     return;
 
   }
+
+
+  const ageValue =
+    getValue(
+      "newPatientAge"
+    );
 
 
   const newPatient = {
@@ -1768,18 +1868,8 @@ async function savePatient() {
       null,
 
     age:
-      document
-        .getElementById(
-          "newPatientAge"
-        )
-        .value
-        ? Number(
-            document
-              .getElementById(
-                "newPatientAge"
-              )
-              .value
-          )
+      ageValue
+        ? Number(ageValue)
         : null,
 
     gender:
@@ -1791,52 +1881,34 @@ async function savePatient() {
       null,
 
     blood_group:
-      document
-        .getElementById(
-          "newPatientBloodGroup"
-        )
-        .value
-        .trim(),
+      getValue(
+        "newPatientBloodGroup"
+      ),
 
     address:
-      document
-        .getElementById(
-          "newPatientAddress"
-        )
-        .value
-        .trim(),
+      getValue(
+        "newPatientAddress"
+      ),
 
     medical_history:
-      document
-        .getElementById(
-          "newPatientMedicalHistory"
-        )
-        .value
-        .trim(),
+      getValue(
+        "newPatientMedicalHistory"
+      ),
 
     surgical_history:
-      document
-        .getElementById(
-          "newPatientSurgicalHistory"
-        )
-        .value
-        .trim(),
+      getValue(
+        "newPatientSurgicalHistory"
+      ),
 
     allergies:
-      document
-        .getElementById(
-          "newPatientAllergies"
-        )
-        .value
-        .trim(),
+      getValue(
+        "newPatientAllergies"
+      ),
 
     current_medications:
-      document
-        .getElementById(
-          "newPatientCurrentMedications"
-        )
-        .value
-        .trim()
+      getValue(
+        "newPatientCurrentMedications"
+      )
 
   };
 
@@ -1855,10 +1927,6 @@ async function savePatient() {
 
 
   if (error) {
-
-    console.error(
-      error
-    );
 
     alert(
       "Unable to register patient:\n\n" +
@@ -1912,11 +1980,9 @@ async function savePatient() {
           <br>
 
           Phone:
-          <strong>
-            ${escapeHTML(
-              data.patient_phone
-            )}
-          </strong>
+          ${escapeHTML(
+            data.patient_phone
+          )}
 
         </div>
 
@@ -1924,20 +1990,6 @@ async function savePatient() {
 
 
       <div class="action-row">
-
-        <button
-          type="button"
-          class="portal-button success-button"
-          onclick="startConsultation(
-            ${Number(
-              data.id
-            )}
-          )">
-
-          🩺 New Consultation
-
-        </button>
-
 
         <button
           type="button"
@@ -1952,10 +2004,20 @@ async function savePatient() {
 
         </button>
 
-      </div>
 
+        <button
+          type="button"
+          class="portal-button success-button"
+          onclick="startConsultation(
+            ${Number(
+              data.id
+            )}
+          )">
 
-      <div class="action-row">
+          🩺 New Consultation
+
+        </button>
+
 
         <button
           type="button"
@@ -2005,10 +2067,7 @@ function clearRegistrationForm() {
 
 
       if (element) {
-
-        element.value =
-          "";
-
+        element.value = "";
       }
 
     }
@@ -2062,13 +2121,8 @@ async function loadTodayPatientCount() {
 
 
   if (error) {
-
-    console.error(
-      error
-    );
-
+    console.error(error);
     return;
-
   }
 
 
@@ -2178,18 +2232,15 @@ async function loadTodayPatients() {
 
 
 /* =========================================================
-   SEARCH PATIENT
+   SEARCH
    ========================================================= */
 
 async function searchPatients() {
 
   const search =
-    document
-      .getElementById(
-        "patientSearch"
-      )
-      .value
-      .trim();
+    getValue(
+      "patientSearch"
+    );
 
 
   const container =
@@ -2274,10 +2325,6 @@ async function searchPatients() {
 
   if (error) {
 
-    console.error(
-      error
-    );
-
     container.innerHTML = `
 
       <div class="portal-message">
@@ -2320,8 +2367,7 @@ async function searchPatients() {
 
 
 /* =========================================================
-   SEARCH RESULT
-   ONLY FOUR ACTIONS
+   PATIENT RESULT
    ========================================================= */
 
 function renderPatientResultCard(
@@ -2370,13 +2416,11 @@ function renderPatientResultCard(
         ${
           patient.gender
             ? `
-
               &nbsp; • &nbsp;
               ⚧
               ${escapeHTML(
                 patient.gender
               )}
-
             `
             : ""
         }
@@ -2385,7 +2429,6 @@ function renderPatientResultCard(
 
 
       <div class="action-row">
-
 
         <button
           type="button"
@@ -2442,7 +2485,6 @@ function renderPatientResultCard(
 
         </button>
 
-
       </div>
 
     </div>
@@ -2453,7 +2495,7 @@ function renderPatientResultCard(
 
 
 /* =========================================================
-   SEPARATE HISTORY PAGE
+   HISTORY PAGE
    ========================================================= */
 
 function openPatientHistory(
@@ -2543,12 +2585,10 @@ async function viewPatientDetails(
 
       <div class="patient-details-grid">
 
-
         ${patientDetailHTML(
           "Phone",
           patient.patient_phone
         )}
-
 
         ${patientDetailHTML(
           "Age",
@@ -2556,7 +2596,6 @@ async function viewPatientDetails(
             patient
           )
         )}
-
 
         ${patientDetailHTML(
           "Date of Birth",
@@ -2567,58 +2606,40 @@ async function viewPatientDetails(
             : "-"
         )}
 
-
         ${patientDetailHTML(
           "Gender",
           patient.gender
         )}
-
 
         ${patientDetailHTML(
           "Blood Group",
           patient.blood_group
         )}
 
-
         ${patientDetailHTML(
           "Address",
           patient.address
         )}
 
-
-      </div>
-
-
-      <div class="form-section">
-
-        <h3>
-          📋 Past Medical Information
-        </h3>
-
-
-        ${historyFieldHTML(
+        ${patientDetailHTML(
           "Medical History",
           patient.medical_history
         )}
 
-
-        ${historyFieldHTML(
+        ${patientDetailHTML(
           "Surgical History",
           patient.surgical_history
         )}
 
-
-        ${historyFieldHTML(
+        ${patientDetailHTML(
           "Allergies",
           patient.allergies
         )}
 
-
-        ${historyFieldHTML(
+        ${patientDetailHTML(
           "Current Medications",
           patient.current_medications
         )}
-
 
       </div>
 
@@ -2676,48 +2697,13 @@ function patientDetailHTML(
       </span>
 
       <div class="patient-detail-value">
-
         ${escapeHTML(
           value ||
           "-"
         )}
-
       </div>
 
     </div>
-
-  `;
-
-}
-
-
-function historyFieldHTML(
-  label,
-  value
-) {
-
-  return `
-
-    <p>
-
-      <strong>
-        ${escapeHTML(
-          label
-        )}
-      </strong>
-
-      <br>
-
-      <span class="preformatted">
-
-        ${escapeHTML(
-          value ||
-          "-"
-        )}
-
-      </span>
-
-    </p>
 
   `;
 
@@ -2843,16 +2829,10 @@ async function editPatient(
             <input
               type="number"
               id="editPatientAge"
-              min="0"
-              max="120"
-              value="${
-                patient.age === null ||
-                patient.age === undefined
-                  ? ""
-                  : escapeHTML(
-                      patient.age
-                    )
-              }">
+              value="${escapeHTML(
+                patient.age ||
+                ""
+              )}">
 
           </div>
 
@@ -2866,7 +2846,7 @@ async function editPatient(
             <select id="editPatientGender">
 
               <option value="">
-                Select Gender
+                Select
               </option>
 
               <option
@@ -2952,66 +2932,29 @@ async function editPatient(
 
         <div class="form-grid one-column">
 
+          ${editPatientTextArea(
+            "Medical History",
+            "editPatientMedicalHistory",
+            patient.medical_history
+          )}
 
-          <div class="form-group">
+          ${editPatientTextArea(
+            "Surgical History",
+            "editPatientSurgicalHistory",
+            patient.surgical_history
+          )}
 
-            <label>
-              Medical History
-            </label>
+          ${editPatientTextArea(
+            "Allergies",
+            "editPatientAllergies",
+            patient.allergies
+          )}
 
-            <textarea
-              id="editPatientMedicalHistory">${escapeHTML(
-                patient.medical_history ||
-                ""
-              )}</textarea>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label>
-              Surgical History
-            </label>
-
-            <textarea
-              id="editPatientSurgicalHistory">${escapeHTML(
-                patient.surgical_history ||
-                ""
-              )}</textarea>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label>
-              Allergies
-            </label>
-
-            <textarea
-              id="editPatientAllergies">${escapeHTML(
-                patient.allergies ||
-                ""
-              )}</textarea>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label>
-              Current Medications
-            </label>
-
-            <textarea
-              id="editPatientMedications">${escapeHTML(
-                patient.current_medications ||
-                ""
-              )}</textarea>
-
-          </div>
-
+          ${editPatientTextArea(
+            "Current Medications",
+            "editPatientMedications",
+            patient.current_medications
+          )}
 
         </div>
 
@@ -3023,7 +2966,7 @@ async function editPatient(
         <button
           type="button"
           class="portal-button primary-button"
-          onclick="savePatientChanges(
+          onclick="saveEditedPatient(
             ${Number(
               patient.id
             )}
@@ -3032,7 +2975,6 @@ async function editPatient(
           💾 Save Changes
 
         </button>
-
 
         <button
           type="button"
@@ -3059,27 +3001,54 @@ async function editPatient(
 }
 
 
-async function savePatientChanges(
+function editPatientTextArea(
+  label,
+  id,
+  value
+) {
+
+  return `
+
+    <div class="form-group">
+
+      <label>
+        ${label}
+      </label>
+
+      <textarea
+        id="${id}">${escapeHTML(
+          value ||
+          ""
+        )}</textarea>
+
+    </div>
+
+  `;
+
+}
+
+
+async function saveEditedPatient(
   patientId
 ) {
+
+  const age =
+    getValue(
+      "editPatientAge"
+    );
+
 
   const update = {
 
     patient_name:
-      document
-        .getElementById(
-          "editPatientName"
-        )
-        .value
-        .trim(),
+      getValue(
+        "editPatientName"
+      ),
 
     patient_phone:
-      document
-        .getElementById(
-          "editPatientPhone"
-        )
-        .value
-        .trim(),
+      getValue(
+        "editPatientPhone"
+      ),
 
     date_of_birth:
       document
@@ -3090,18 +3059,8 @@ async function savePatientChanges(
       null,
 
     age:
-      document
-        .getElementById(
-          "editPatientAge"
-        )
-        .value
-        ? Number(
-            document
-              .getElementById(
-                "editPatientAge"
-              )
-              .value
-          )
+      age
+        ? Number(age)
         : null,
 
     gender:
@@ -3113,52 +3072,34 @@ async function savePatientChanges(
       null,
 
     blood_group:
-      document
-        .getElementById(
-          "editPatientBloodGroup"
-        )
-        .value
-        .trim(),
+      getValue(
+        "editPatientBloodGroup"
+      ),
 
     address:
-      document
-        .getElementById(
-          "editPatientAddress"
-        )
-        .value
-        .trim(),
+      getValue(
+        "editPatientAddress"
+      ),
 
     medical_history:
-      document
-        .getElementById(
-          "editPatientMedicalHistory"
-        )
-        .value
-        .trim(),
+      getValue(
+        "editPatientMedicalHistory"
+      ),
 
     surgical_history:
-      document
-        .getElementById(
-          "editPatientSurgicalHistory"
-        )
-        .value
-        .trim(),
+      getValue(
+        "editPatientSurgicalHistory"
+      ),
 
     allergies:
-      document
-        .getElementById(
-          "editPatientAllergies"
-        )
-        .value
-        .trim(),
+      getValue(
+        "editPatientAllergies"
+      ),
 
     current_medications:
-      document
-        .getElementById(
-          "editPatientMedications"
-        )
-        .value
-        .trim()
+      getValue(
+        "editPatientMedications"
+      )
 
   };
 
@@ -3216,6 +3157,55 @@ async function savePatientChanges(
 
 
 /* =========================================================
+   LOAD APPOINTMENT INFO
+   ========================================================= */
+
+async function getCurrentAppointment() {
+
+  if (
+    !currentAppointmentId
+  ) {
+
+    return null;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("appointments")
+      .select("*")
+      .eq(
+        "id",
+        currentAppointmentId
+      )
+      .single();
+
+
+  if (
+    error ||
+    !data
+  ) {
+
+    console.warn(
+      "Unable to load linked appointment:",
+      error
+    );
+
+    return null;
+
+  }
+
+
+  return data;
+
+}
+
+
+/* =========================================================
    NEW CONSULTATION
    ========================================================= */
 
@@ -3238,6 +3228,10 @@ async function startConsultation(
     patient.id;
 
 
+  const appointment =
+    await getCurrentAppointment();
+
+
   document
     .getElementById(
       "consultationContent"
@@ -3250,14 +3244,33 @@ async function startConsultation(
           🩺 New Consultation
         </h2>
 
-        <button
-          type="button"
-          class="portal-button light-button"
-          onclick="showView('searchView')">
+        ${
+          consultationReturnURL
+            ? `
 
-          ← Back
+              <button
+                type="button"
+                class="portal-button light-button"
+                onclick="returnToAppointments()">
 
-        </button>
+                ← Appointments
+
+              </button>
+
+            `
+            : `
+
+              <button
+                type="button"
+                class="portal-button light-button"
+                onclick="showView('searchView')">
+
+                ← Back
+
+              </button>
+
+            `
+        }
 
       </div>
 
@@ -3293,12 +3306,10 @@ async function startConsultation(
           ${
             patient.gender
               ? `
-
                 &nbsp; • &nbsp;
                 ${escapeHTML(
                   patient.gender
                 )}
-
               `
               : ""
           }
@@ -3306,6 +3317,44 @@ async function startConsultation(
         </div>
 
       </div>
+
+
+      ${
+        appointment
+          ? `
+
+            <div class="appointment-link-box">
+
+              <div class="appointment-link-title">
+                📅 Linked Appointment
+              </div>
+
+              <div class="appointment-link-meta">
+
+                ${formatDate(
+                  appointment.appointment_date
+                )}
+
+                &nbsp; • &nbsp;
+
+                ${formatAppointmentTime(
+                  appointment.appointment_time
+                )}
+
+                <br>
+
+                ${escapeHTML(
+                  appointment.appointment_type ||
+                  "Consultation"
+                )}
+
+              </div>
+
+            </div>
+
+          `
+          : ""
+      }
 
 
       ${newConsultationFormHTML(
@@ -3355,88 +3404,51 @@ function newConsultationFormHTML(
         ❤️ Vitals
       </h3>
 
+
       <div class="form-grid">
 
 
-        <div class="form-group">
+        ${consultInput(
+          "Blood Pressure",
+          "consultBP",
+          "text",
+          "120/80"
+        )}
 
-          <label>
-            Blood Pressure
-          </label>
+        ${consultInput(
+          "Pulse",
+          "consultPulse",
+          "number",
+          ""
+        )}
 
-          <input
-            id="consultBP"
-            placeholder="120/80">
+        ${consultInput(
+          "SpO₂",
+          "consultSpO2",
+          "number",
+          ""
+        )}
 
-        </div>
+        ${consultInput(
+          "Temperature °F",
+          "consultTemperature",
+          "number",
+          ""
+        )}
 
+        ${consultInput(
+          "Weight kg",
+          "consultWeight",
+          "number",
+          ""
+        )}
 
-        <div class="form-group">
-
-          <label>
-            Pulse
-          </label>
-
-          <input
-            id="consultPulse"
-            type="number">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>
-            SpO₂
-          </label>
-
-          <input
-            id="consultSpO2"
-            type="number">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>
-            Temperature °F
-          </label>
-
-          <input
-            id="consultTemperature"
-            type="number"
-            step="0.1">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>
-            Weight kg
-          </label>
-
-          <input
-            id="consultWeight"
-            type="number"
-            step="0.1">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>
-            Height cm
-          </label>
-
-          <input
-            id="consultHeight"
-            type="number"
-            step="0.1">
-
-        </div>
+        ${consultInput(
+          "Height cm",
+          "consultHeight",
+          "number",
+          ""
+        )}
 
 
       </div>
@@ -3444,72 +3456,32 @@ function newConsultationFormHTML(
     </div>
 
 
-    <div class="form-section">
-
-      <h3>
-        🔍 Examination
-      </h3>
-
-      <div class="form-group">
-
-        <textarea
-          id="consultExamination"
-          placeholder="Enter examination findings"></textarea>
-
-      </div>
-
-    </div>
+    ${consultTextAreaSection(
+      "🔍 Examination",
+      "consultExamination",
+      "Enter examination findings"
+    )}
 
 
-    <div class="form-section">
-
-      <h3>
-        🩺 Diagnosis
-      </h3>
-
-      <div class="form-group">
-
-        <textarea
-          id="consultDiagnosis"
-          placeholder="Enter diagnosis"></textarea>
-
-      </div>
-
-    </div>
+    ${consultTextAreaSection(
+      "🩺 Diagnosis",
+      "consultDiagnosis",
+      "Enter diagnosis"
+    )}
 
 
-    <div class="form-section">
-
-      <h3>
-        🧪 Investigations
-      </h3>
-
-      <div class="form-group">
-
-        <textarea
-          id="consultInvestigations"
-          placeholder="Enter investigations"></textarea>
-
-      </div>
-
-    </div>
+    ${consultTextAreaSection(
+      "🧪 Investigations",
+      "consultInvestigations",
+      "Enter investigations / tests advised"
+    )}
 
 
-    <div class="form-section">
-
-      <h3>
-        💊 Prescription / Treatment
-      </h3>
-
-      <div class="form-group">
-
-        <textarea
-          id="consultPrescription"
-          placeholder="Enter medicines, dose and duration"></textarea>
-
-      </div>
-
-    </div>
+    ${consultTextAreaSection(
+      "💊 Prescription / Treatment",
+      "consultPrescription",
+      "Enter prescription / treatment"
+    )}
 
 
     <div class="form-section">
@@ -3527,7 +3499,7 @@ function newConsultationFormHTML(
           multiple>
 
         <div class="upload-note">
-          Optional. Multiple prescription images can be selected.
+          JPG, PNG or WEBP. Multiple images allowed.
         </div>
 
       </div>
@@ -3556,26 +3528,6 @@ function newConsultationFormHTML(
 
           <option value="Blood Test">
             Blood Test
-          </option>
-
-          <option value="HbA1c">
-            HbA1c
-          </option>
-
-          <option value="Lipid Profile">
-            Lipid Profile
-          </option>
-
-          <option value="Thyroid">
-            Thyroid
-          </option>
-
-          <option value="Kidney">
-            Kidney
-          </option>
-
-          <option value="Liver">
-            Liver
           </option>
 
           <option value="Urine">
@@ -3614,21 +3566,11 @@ function newConsultationFormHTML(
     </div>
 
 
-    <div class="form-section">
-
-      <h3>
-        📝 Advice
-      </h3>
-
-      <div class="form-group">
-
-        <textarea
-          id="consultAdvice"
-          placeholder="Enter advice"></textarea>
-
-      </div>
-
-    </div>
+    ${consultTextAreaSection(
+      "📝 Advice",
+      "consultAdvice",
+      "Enter advice"
+    )}
 
 
     <div class="form-section">
@@ -3665,14 +3607,95 @@ function newConsultationFormHTML(
       </button>
 
 
-      <button
-        type="button"
-        class="portal-button light-button"
-        onclick="showView('searchView')">
+      ${
+        consultationReturnURL
+          ? `
 
-        ↩ Cancel
+            <button
+              type="button"
+              class="portal-button light-button"
+              onclick="returnToAppointments()">
 
-      </button>
+              ↩ Cancel
+
+            </button>
+
+          `
+          : `
+
+            <button
+              type="button"
+              class="portal-button light-button"
+              onclick="showView('searchView')">
+
+              ↩ Cancel
+
+            </button>
+
+          `
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+function consultInput(
+  label,
+  id,
+  type,
+  placeholder
+) {
+
+  return `
+
+    <div class="form-group">
+
+      <label>
+        ${label}
+      </label>
+
+      <input
+        id="${id}"
+        type="${type}"
+        step="${
+          type ===
+          "number"
+            ? "0.1"
+            : ""
+        }"
+        placeholder="${placeholder}">
+
+    </div>
+
+  `;
+
+}
+
+
+function consultTextAreaSection(
+  title,
+  id,
+  placeholder
+) {
+
+  return `
+
+    <div class="form-section">
+
+      <h3>
+        ${title}
+      </h3>
+
+      <div class="form-group">
+
+        <textarea
+          id="${id}"
+          placeholder="${placeholder}"></textarea>
+
+      </div>
 
     </div>
 
@@ -3786,23 +3809,9 @@ function buildVitals() {
 }
 
 
-function getValue(id) {
-
-  const element =
-    document.getElementById(
-      id
-    );
-
-
-  return element
-    ? element.value.trim()
-    : "";
-
-}
-
-
 /* =========================================================
    SAVE CONSULTATION
+   STEP 3
    ========================================================= */
 
 async function saveConsultation(
@@ -3827,6 +3836,15 @@ async function saveConsultation(
 
     patient_id:
       patientId,
+
+    /*
+       STEP 3:
+       link consultation to appointment
+    */
+
+    appointment_id:
+      currentAppointmentId ||
+      null,
 
     chief_complaints:
       getValue(
@@ -3872,7 +3890,7 @@ async function saveConsultation(
   };
 
 
-  const {
+  let {
     data,
     error
   } =
@@ -3883,6 +3901,48 @@ async function saveConsultation(
       )
       .select()
       .single();
+
+
+  /*
+     Compatibility fallback if appointment_id
+     does not yet exist in consultations.
+  */
+
+  if (
+    error &&
+    currentAppointmentId &&
+    String(
+      error.message ||
+      ""
+    )
+    .toLowerCase()
+    .includes(
+      "appointment_id"
+    )
+  ) {
+
+    delete consultation
+      .appointment_id;
+
+
+    const retry =
+      await supabaseClient
+        .from("consultations")
+        .insert(
+          consultation
+        )
+        .select()
+        .single();
+
+
+    data =
+      retry.data;
+
+
+    error =
+      retry.error;
+
+  }
 
 
   if (error) {
@@ -3964,6 +4024,48 @@ async function saveConsultation(
   }
 
 
+  /*
+     STEP 3:
+     consultation from appointment automatically
+     marks that appointment completed.
+  */
+
+  if (
+    currentAppointmentId
+  ) {
+
+    const {
+      error:
+        appointmentUpdateError
+    } =
+      await supabaseClient
+        .from("appointments")
+        .update({
+
+          status:
+            "Completed"
+
+        })
+        .eq(
+          "id",
+          currentAppointmentId
+        );
+
+
+    if (
+      appointmentUpdateError
+    ) {
+
+      console.warn(
+        "Consultation saved but appointment status could not be updated:",
+        appointmentUpdateError
+      );
+
+    }
+
+  }
+
+
   button.disabled =
     false;
 
@@ -4006,15 +4108,6 @@ async function uploadPrescriptionFiles(
       files[i];
 
 
-    if (
-      !file.type.startsWith(
-        "image/"
-      )
-    ) {
-      continue;
-    }
-
-
     const safeName =
       file.name.replace(
         /[^a-zA-Z0-9._-]/g,
@@ -4048,7 +4141,9 @@ async function uploadPrescriptionFiles(
           path,
           file,
           {
-            upsert: false,
+            upsert:
+              false,
+
             contentType:
               file.type
           }
@@ -4056,9 +4151,7 @@ async function uploadPrescriptionFiles(
 
 
     if (uploadError) {
-
       throw uploadError;
-
     }
 
 
@@ -4096,15 +4189,12 @@ async function uploadPrescriptionFiles(
 
 
     if (insertError) {
-
       throw insertError;
-
     }
 
 
     /*
-       Keep first image in legacy column too.
-       This helps older parts of portal remain compatible.
+       Keep first image in legacy column
     */
 
     if (
@@ -4113,7 +4203,7 @@ async function uploadPrescriptionFiles(
 
       const {
         data:
-          consultation
+          existingConsultation
       } =
         await supabaseClient
           .from(
@@ -4130,8 +4220,9 @@ async function uploadPrescriptionFiles(
 
 
       if (
-        consultation &&
-        !consultation.prescription_image_url
+        existingConsultation &&
+        !existingConsultation
+          .prescription_image_url
       ) {
 
         await supabaseClient
@@ -4169,16 +4260,6 @@ async function uploadLabFiles(
   reportType
 ) {
 
-  const allowedTypes = [
-
-    "image/jpeg",
-    "image/png",
-    "image/webp",
-    "application/pdf"
-
-  ];
-
-
   for (
     let i = 0;
     i < files.length;
@@ -4187,17 +4268,6 @@ async function uploadLabFiles(
 
     const file =
       files[i];
-
-
-    if (
-      !allowedTypes.includes(
-        file.type
-      )
-    ) {
-
-      continue;
-
-    }
 
 
     const safeName =
@@ -4235,7 +4305,9 @@ async function uploadLabFiles(
           path,
           file,
           {
-            upsert: false,
+            upsert:
+              false,
+
             contentType:
               file.type
           }
@@ -4243,9 +4315,7 @@ async function uploadLabFiles(
 
 
     if (uploadError) {
-
       throw uploadError;
-
     }
 
 
@@ -4309,8 +4379,7 @@ async function uploadLabFiles(
 
 
 /* =========================================================
-   PRESCRIPTION IMAGES
-   INCLUDES LEGACY prescription_image_url
+   GET PRESCRIPTIONS
    ========================================================= */
 
 async function getConsultationPrescriptionImages(
@@ -4393,8 +4462,10 @@ async function getConsultationPrescriptionImages(
     !images.some(
       function(image) {
 
-        return image.image_url ===
-          legacyURL;
+        return (
+          image.image_url ===
+          legacyURL
+        );
 
       }
     )
@@ -4422,7 +4493,7 @@ async function getConsultationPrescriptionImages(
 
 
 /* =========================================================
-   LAB REPORTS
+   GET LAB REPORTS
    ========================================================= */
 
 async function getConsultationLabReports(
@@ -4458,9 +4529,7 @@ async function getConsultationLabReports(
 
   if (error) {
 
-    console.error(
-      error
-    );
+    console.error(error);
 
     return [];
 
@@ -4473,12 +4542,13 @@ async function getConsultationLabReports(
 
 
 /* =========================================================
-   PRESCRIPTION CARDS
+   RENDER FILES
    ========================================================= */
 
-function renderPrescriptionImageCards(
+function renderPrescriptionCards(
   images,
-  consultationId
+  consultationId,
+  allowDelete = true
 ) {
 
   if (
@@ -4528,14 +4598,16 @@ function renderPrescriptionImageCards(
 
             <div class="file-actions">
 
-
               <button
                 type="button"
                 class="portal-button primary-button small-button"
-                onclick="viewPrescriptionImage(
-                  '${encodeURIComponent(
-                    image.image_url
-                  )}'
+                onclick="openImageModal(
+                  decodeURIComponent(
+                    '${encodeURIComponent(
+                      image.image_url
+                    )}'
+                  ),
+                  'Prescription Image'
                 )">
 
                 👁 View
@@ -4543,34 +4615,41 @@ function renderPrescriptionImageCards(
               </button>
 
 
-              <button
-                type="button"
-                class="portal-button danger-button small-button"
-                onclick="deletePrescriptionImage(
-                  ${
-                    image.id === null
-                      ? "null"
-                      : Number(
-                          image.id
-                        )
-                  },
-                  '${encodeURIComponent(
-                    image.image_url
-                  )}',
-                  ${Number(
-                    consultationId
-                  )},
-                  ${
-                    image.legacy
-                      ? "true"
-                      : "false"
-                  }
-                )">
+              ${
+                allowDelete
+                  ? `
 
-                🗑 Delete
+                    <button
+                      type="button"
+                      class="portal-button danger-button small-button"
+                      onclick="deletePrescriptionImage(
+                        ${
+                          image.id === null
+                            ? "null"
+                            : Number(
+                                image.id
+                              )
+                        },
+                        '${encodeURIComponent(
+                          image.image_url
+                        )}',
+                        ${Number(
+                          consultationId
+                        )},
+                        ${
+                          image.legacy
+                            ? "true"
+                            : "false"
+                        }
+                      )">
 
-              </button>
+                      🗑 Delete
 
+                    </button>
+
+                  `
+                  : ""
+              }
 
             </div>
 
@@ -4585,12 +4664,9 @@ function renderPrescriptionImageCards(
 }
 
 
-/* =========================================================
-   LAB CARDS
-   ========================================================= */
-
 function renderLabReportCards(
-  reports
+  reports,
+  allowDelete = true
 ) {
 
   if (
@@ -4648,7 +4724,6 @@ function renderLabReportCards(
 
             <div class="file-actions">
 
-
               <button
                 type="button"
                 class="portal-button primary-button small-button"
@@ -4663,19 +4738,26 @@ function renderLabReportCards(
               </button>
 
 
-              <button
-                type="button"
-                class="portal-button danger-button small-button"
-                onclick="deleteLabReport(
-                  ${Number(
-                    report.id
-                  )}
-                )">
+              ${
+                allowDelete
+                  ? `
 
-                🗑 Delete
+                    <button
+                      type="button"
+                      class="portal-button danger-button small-button"
+                      onclick="deleteLabReport(
+                        ${Number(
+                          report.id
+                        )}
+                      )">
 
-              </button>
+                      🗑 Delete
 
+                    </button>
+
+                  `
+                  : ""
+              }
 
             </div>
 
@@ -4889,25 +4971,25 @@ async function openSavedConsultation(
 
           </button>
 
+
+          ${
+            consultationReturnURL
+              ? `
+
+                <button
+                  type="button"
+                  class="portal-button light-button"
+                  onclick="returnToAppointments()">
+
+                  ← Back to Appointments
+
+                </button>
+
+              `
+              : ""
+          }
+
         </div>
-
-      </div>
-
-
-      <div class="action-row">
-
-        <button
-          type="button"
-          class="portal-button light-button"
-          onclick="openPatientHistory(
-            ${Number(
-              patient.id
-            )}
-          )">
-
-          ← Patient History
-
-        </button>
 
       </div>
 
@@ -4939,11 +5021,6 @@ async function toggleFullConsultation(
     document.getElementById(
       "fullConsultationButton"
     );
-
-
-  if (!box) {
-    return;
-  }
 
 
   if (
@@ -4990,11 +5067,6 @@ async function loadFullConsultation(
     document.getElementById(
       "fullConsultation"
     );
-
-
-  if (!box) {
-    return;
-  }
 
 
   const {
@@ -5089,9 +5161,10 @@ async function loadFullConsultation(
       </h4>
 
       ${
-        renderPrescriptionImageCards(
+        renderPrescriptionCards(
           images,
-          consultationId
+          consultationId,
+          false
         )
       }
 
@@ -5106,7 +5179,8 @@ async function loadFullConsultation(
 
       ${
         renderLabReportCards(
-          reports
+          reports,
+          false
         )
       }
 
@@ -5117,7 +5191,6 @@ async function loadFullConsultation(
       "📝 Advice",
       consultation.advice
     )}
-
 
     ${consultationDetailHTML(
       "📅 Follow-up",
@@ -5162,8 +5235,114 @@ function consultationDetailHTML(
 
 /* =========================================================
    EDIT CONSULTATION
-   EXISTING FILES ARE SHOWN
    ========================================================= */
+
+function parseVitals(
+  value
+) {
+
+  const result = {
+
+    bp: "",
+    pulse: "",
+    spo2: "",
+    temperature: "",
+    weight: "",
+    height: ""
+
+  };
+
+
+  if (!value) {
+    return result;
+  }
+
+
+  const text =
+    String(value);
+
+
+  const bp =
+    text.match(
+      /BP:\s*([^|]+)/i
+    );
+
+
+  const pulse =
+    text.match(
+      /Pulse:\s*([^|]+)/i
+    );
+
+
+  const spo2 =
+    text.match(
+      /SpO[₂2]?:\s*([^|%]+)/i
+    );
+
+
+  const temperature =
+    text.match(
+      /Temperature:\s*([^|°]+)/i
+    );
+
+
+  const weight =
+    text.match(
+      /Weight:\s*([^|a-zA-Z]+)/i
+    );
+
+
+  const height =
+    text.match(
+      /Height:\s*([^|a-zA-Z]+)/i
+    );
+
+
+  if (bp) {
+    result.bp =
+      bp[1].trim();
+  }
+
+
+  if (pulse) {
+    result.pulse =
+      pulse[1]
+        .replace(
+          /bpm/gi,
+          ""
+        )
+        .trim();
+  }
+
+
+  if (spo2) {
+    result.spo2 =
+      spo2[1].trim();
+  }
+
+
+  if (temperature) {
+    result.temperature =
+      temperature[1].trim();
+  }
+
+
+  if (weight) {
+    result.weight =
+      weight[1].trim();
+  }
+
+
+  if (height) {
+    result.height =
+      height[1].trim();
+  }
+
+
+  return result;
+
+}
+
 
 async function openEditConsultation(
   consultationId
@@ -5206,6 +5385,12 @@ async function openEditConsultation(
 
   currentConsultationId =
     consultation.id;
+
+
+  const vitals =
+    parseVitals(
+      consultation.vitals
+    );
 
 
   const [
@@ -5264,11 +5449,54 @@ async function openEditConsultation(
       )}
 
 
-      ${editTextSection(
-        "❤️ Vitals",
-        "editConsultVitals",
-        consultation.vitals
-      )}
+      <div class="form-section">
+
+        <h3>
+          ❤️ Vitals
+        </h3>
+
+
+        <div class="form-grid">
+
+          ${editVitalInput(
+            "Blood Pressure",
+            "editConsultBP",
+            vitals.bp
+          )}
+
+          ${editVitalInput(
+            "Pulse",
+            "editConsultPulse",
+            vitals.pulse
+          )}
+
+          ${editVitalInput(
+            "SpO₂",
+            "editConsultSpO2",
+            vitals.spo2
+          )}
+
+          ${editVitalInput(
+            "Temperature °F",
+            "editConsultTemperature",
+            vitals.temperature
+          )}
+
+          ${editVitalInput(
+            "Weight kg",
+            "editConsultWeight",
+            vitals.weight
+          )}
+
+          ${editVitalInput(
+            "Height cm",
+            "editConsultHeight",
+            vitals.height
+          )}
+
+        </div>
+
+      </div>
 
 
       ${editTextSection(
@@ -5277,20 +5505,17 @@ async function openEditConsultation(
         consultation.examination
       )}
 
-
       ${editTextSection(
         "🩺 Diagnosis",
         "editConsultDiagnosis",
         consultation.diagnosis
       )}
 
-
       ${editTextSection(
         "🧪 Investigations",
         "editConsultInvestigations",
         consultation.investigations
       )}
-
 
       ${editTextSection(
         "💊 Prescription / Treatment",
@@ -5299,38 +5524,19 @@ async function openEditConsultation(
       )}
 
 
-      <!-- EXISTING PRESCRIPTION IMAGES -->
-
       <div class="form-section">
 
         <h3>
-          📷 Prescription Images
+          📷 Existing Prescription Images
         </h3>
 
-
-        <p
-          style="
-            margin-top:-4px;
-            color:#667085;
-            font-size:13px;
-          ">
-
-          ${prescriptionImages.length}
-          uploaded image(s)
-
-        </p>
-
-
-        <div>
-
-          ${
-            renderPrescriptionImageCards(
-              prescriptionImages,
-              consultation.id
-            )
-          }
-
-        </div>
+        ${
+          renderPrescriptionCards(
+            prescriptionImages,
+            consultation.id,
+            true
+          )
+        }
 
 
         <div class="action-row">
@@ -5356,37 +5562,18 @@ async function openEditConsultation(
       </div>
 
 
-      <!-- EXISTING LAB REPORTS -->
-
       <div class="form-section">
 
         <h3>
-          🧪 Lab Reports
+          🧪 Existing Lab Reports
         </h3>
 
-
-        <p
-          style="
-            margin-top:-4px;
-            color:#667085;
-            font-size:13px;
-          ">
-
-          ${labReports.length}
-          uploaded report(s)
-
-        </p>
-
-
-        <div>
-
-          ${
-            renderLabReportCards(
-              labReports
-            )
-          }
-
-        </div>
+        ${
+          renderLabReportCards(
+            labReports,
+            true
+          )
+        }
 
 
         <div class="action-row">
@@ -5424,7 +5611,6 @@ async function openEditConsultation(
         <h3>
           📅 Follow-up
         </h3>
-
 
         <div class="form-group">
 
@@ -5520,9 +5706,134 @@ function editTextSection(
 }
 
 
-/* =========================================================
-   SAVE EDIT CONSULTATION
-   ========================================================= */
+function editVitalInput(
+  label,
+  id,
+  value
+) {
+
+  return `
+
+    <div class="form-group">
+
+      <label>
+        ${label}
+      </label>
+
+      <input
+        id="${id}"
+        value="${escapeHTML(
+          value ||
+          ""
+        )}">
+
+    </div>
+
+  `;
+
+}
+
+
+function buildEditedVitals() {
+
+  const parts =
+    [];
+
+
+  const bp =
+    getValue(
+      "editConsultBP"
+    );
+
+
+  const pulse =
+    getValue(
+      "editConsultPulse"
+    );
+
+
+  const spo2 =
+    getValue(
+      "editConsultSpO2"
+    );
+
+
+  const temperature =
+    getValue(
+      "editConsultTemperature"
+    );
+
+
+  const weight =
+    getValue(
+      "editConsultWeight"
+    );
+
+
+  const height =
+    getValue(
+      "editConsultHeight"
+    );
+
+
+  if (bp) {
+    parts.push(
+      "BP: " +
+      bp
+    );
+  }
+
+
+  if (pulse) {
+    parts.push(
+      "Pulse: " +
+      pulse
+    );
+  }
+
+
+  if (spo2) {
+    parts.push(
+      "SpO₂: " +
+      spo2 +
+      "%"
+    );
+  }
+
+
+  if (temperature) {
+    parts.push(
+      "Temperature: " +
+      temperature +
+      " °F"
+    );
+  }
+
+
+  if (weight) {
+    parts.push(
+      "Weight: " +
+      weight +
+      " kg"
+    );
+  }
+
+
+  if (height) {
+    parts.push(
+      "Height: " +
+      height +
+      " cm"
+    );
+  }
+
+
+  return parts.join(
+    " | "
+  );
+
+}
+
 
 async function saveEditedConsultation(
   consultationId,
@@ -5537,9 +5848,7 @@ async function saveEditedConsultation(
       ),
 
     vitals:
-      getValue(
-        "editConsultVitals"
-      ),
+      buildEditedVitals(),
 
     examination:
       getValue(
@@ -5610,7 +5919,7 @@ async function saveEditedConsultation(
   );
 
 
-  openSavedConsultation(
+  await openSavedConsultation(
     patientId,
     consultationId,
     false
@@ -5620,7 +5929,7 @@ async function saveEditedConsultation(
 
 
 /* =========================================================
-   ADD PRESCRIPTION IMAGE
+   ADD MORE FILES
    ========================================================= */
 
 function uploadMorePrescription(
@@ -5685,11 +5994,6 @@ function uploadMorePrescription(
 
       } catch (error) {
 
-        console.error(
-          error
-        );
-
-
         alert(
           "Unable to upload prescription image:\n\n" +
           error.message
@@ -5704,10 +6008,6 @@ function uploadMorePrescription(
 
 }
 
-
-/* =========================================================
-   ADD LAB REPORT
-   ========================================================= */
 
 function uploadMoreLabReport(
   patientId,
@@ -5784,11 +6084,6 @@ function uploadMoreLabReport(
 
       } catch (error) {
 
-        console.error(
-          error
-        );
-
-
         alert(
           "Unable to upload lab report:\n\n" +
           error.message
@@ -5805,39 +6100,12 @@ function uploadMoreLabReport(
 
 
 /* =========================================================
-   PRESCRIPTION VIEW
-   ========================================================= */
-
-function viewPrescriptionImage(
-  encodedURL
-) {
-
-  const url =
-    decodeURIComponent(
-      encodedURL
-    );
-
-
-  openImageModal(
-    url,
-    "Prescription Image"
-  );
-
-}
-
-
-/* =========================================================
-   STORAGE PATH
+   DELETE PRESCRIPTION
    ========================================================= */
 
 function getPrescriptionStoragePath(
   imageURL
 ) {
-
-  if (!imageURL) {
-    return null;
-  }
-
 
   try {
 
@@ -5883,9 +6151,7 @@ function getPrescriptionStoragePath(
 
   } catch (error) {
 
-    console.warn(
-      error
-    );
+    console.warn(error);
 
   }
 
@@ -5895,11 +6161,6 @@ function getPrescriptionStoragePath(
 }
 
 
-/* =========================================================
-   DELETE PRESCRIPTION IMAGE
-   SUPPORTS LEGACY
-   ========================================================= */
-
 async function deletePrescriptionImage(
   imageId,
   encodedURL,
@@ -5907,13 +6168,11 @@ async function deletePrescriptionImage(
   isLegacy
 ) {
 
-  const confirmed =
-    confirm(
+  if (
+    !confirm(
       "Delete this prescription image permanently?"
-    );
-
-
-  if (!confirmed) {
+    )
+  ) {
     return;
   }
 
@@ -5923,10 +6182,6 @@ async function deletePrescriptionImage(
       encodedURL
     );
 
-
-  /*
-     Delete consultation_images record
-  */
 
   if (
     imageId !== null &&
@@ -5961,10 +6216,6 @@ async function deletePrescriptionImage(
   }
 
 
-  /*
-     Clear legacy main URL
-  */
-
   const {
     data:
       consultation
@@ -5987,7 +6238,8 @@ async function deletePrescriptionImage(
     isLegacy ||
     (
       consultation &&
-      consultation.prescription_image_url ===
+      consultation
+        .prescription_image_url ===
       imageURL
     )
   ) {
@@ -6000,7 +6252,7 @@ async function deletePrescriptionImage(
         .from(
           "consultation_images"
         )
-        .select("*")
+        .select("image_url")
         .eq(
           "consultation_id",
           consultationId
@@ -6013,7 +6265,7 @@ async function deletePrescriptionImage(
         );
 
 
-    const nextImage =
+    const nextURL =
       remaining &&
       remaining.length > 0
         ? remaining[0]
@@ -6028,7 +6280,7 @@ async function deletePrescriptionImage(
       .update({
 
         prescription_image_url:
-          nextImage
+          nextURL
 
       })
       .eq(
@@ -6039,17 +6291,13 @@ async function deletePrescriptionImage(
   }
 
 
-  /*
-     Delete storage file
-  */
-
-  const storagePath =
+  const path =
     getPrescriptionStoragePath(
       imageURL
     );
 
 
-  if (storagePath) {
+  if (path) {
 
     await supabaseClient
       .storage
@@ -6057,7 +6305,7 @@ async function deletePrescriptionImage(
         "prescriptions"
       )
       .remove([
-        storagePath
+        path
       ]);
 
   }
@@ -6204,7 +6452,7 @@ async function viewLabReport(
   const isPDF =
     report.file_type ===
       "application/pdf" ||
-    (
+    String(
       report.file_name ||
       ""
     )
@@ -6235,22 +6483,18 @@ async function viewLabReport(
 }
 
 
-/* =========================================================
-   DELETE LAB REPORT
-   ========================================================= */
-
 async function deleteLabReport(
   reportId
 ) {
 
-  const confirmed =
-    confirm(
+  if (
+    !confirm(
       "Delete this lab report permanently?"
-    );
+    )
+  ) {
 
-
-  if (!confirmed) {
     return;
+
   }
 
 
@@ -6340,7 +6584,6 @@ async function deleteLabReport(
 
 /* =========================================================
    BILLING
-   ONLY AFTER SAVED CONSULTATION
    ========================================================= */
 
 function openBillingForConsultation(
@@ -6348,7 +6591,7 @@ function openBillingForConsultation(
   consultationId
 ) {
 
-  const returnURL =
+  let returnURL =
     "doctor-patients.html" +
     "?view=consultation" +
     "&patient_id=" +
@@ -6359,6 +6602,36 @@ function openBillingForConsultation(
     encodeURIComponent(
       consultationId
     );
+
+
+  /*
+     Preserve appointment workflow across Billing.
+  */
+
+  if (
+    currentAppointmentId
+  ) {
+
+    returnURL +=
+      "&appointment_id=" +
+      encodeURIComponent(
+        currentAppointmentId
+      );
+
+  }
+
+
+  if (
+    consultationReturnURL
+  ) {
+
+    returnURL +=
+      "&return_to=" +
+      encodeURIComponent(
+        consultationReturnURL
+      );
+
+  }
 
 
   window.location.href =
@@ -6375,6 +6648,30 @@ function openBillingForConsultation(
     encodeURIComponent(
       returnURL
     );
+
+}
+
+
+/* =========================================================
+   RETURN TO APPOINTMENTS
+   ========================================================= */
+
+function returnToAppointments() {
+
+  if (
+    consultationReturnURL
+  ) {
+
+    window.location.href =
+      consultationReturnURL;
+
+    return;
+
+  }
+
+
+  window.location.href =
+    "doctor-appointments.html";
 
 }
 
@@ -6412,7 +6709,7 @@ function openImageModal(
           "Image"
         )}">
 
-  `;
+    `;
 
 
   document
@@ -6453,7 +6750,7 @@ function openPDFModal(
         )}">
       </iframe>
 
-  `;
+    `;
 
 
   document
@@ -6489,7 +6786,8 @@ function closeFileModal() {
 
 
 /* =========================================================
-   RETURN FROM BILLING
+   URL PARAMETERS
+   STEP 3
    ========================================================= */
 
 async function handleURLParameters() {
@@ -6517,6 +6815,60 @@ async function handleURLParameters() {
       "consultation_id"
     );
 
+
+  const appointmentId =
+    params.get(
+      "appointment_id"
+    );
+
+
+  consultationReturnURL =
+    params.get(
+      "return_to"
+    );
+
+
+  /*
+     Remember appointment ID.
+  */
+
+  if (
+    appointmentId
+  ) {
+
+    currentAppointmentId =
+      Number(
+        appointmentId
+      );
+
+  }
+
+
+  /*
+     Appointment → Start Consultation
+  */
+
+  if (
+    view ===
+      "new-consultation" &&
+    patientId
+  ) {
+
+    await startConsultation(
+      Number(
+        patientId
+      )
+    );
+
+
+    return true;
+
+  }
+
+
+  /*
+     Return from Billing
+  */
 
   if (
     view ===
@@ -6558,6 +6910,14 @@ document
     "click",
     function() {
 
+      currentAppointmentId =
+        null;
+
+
+      consultationReturnURL =
+        null;
+
+
       showView(
         "registrationView"
       );
@@ -6573,6 +6933,14 @@ document
   .addEventListener(
     "click",
     function() {
+
+      currentAppointmentId =
+        null;
+
+
+      consultationReturnURL =
+        null;
+
 
       showView(
         "searchView"
@@ -6681,6 +7049,77 @@ document
 
 
 /* =========================================================
+   GLOBAL FUNCTIONS
+   ========================================================= */
+
+window.showHomeView =
+  showHomeView;
+
+window.showView =
+  showView;
+
+window.viewPatientDetails =
+  viewPatientDetails;
+
+window.editPatient =
+  editPatient;
+
+window.saveEditedPatient =
+  saveEditedPatient;
+
+window.startConsultation =
+  startConsultation;
+
+window.saveConsultation =
+  saveConsultation;
+
+window.openPatientHistory =
+  openPatientHistory;
+
+window.openSavedConsultation =
+  openSavedConsultation;
+
+window.toggleFullConsultation =
+  toggleFullConsultation;
+
+window.openEditConsultation =
+  openEditConsultation;
+
+window.saveEditedConsultation =
+  saveEditedConsultation;
+
+window.uploadMorePrescription =
+  uploadMorePrescription;
+
+window.uploadMoreLabReport =
+  uploadMoreLabReport;
+
+window.deletePrescriptionImage =
+  deletePrescriptionImage;
+
+window.viewLabReport =
+  viewLabReport;
+
+window.deleteLabReport =
+  deleteLabReport;
+
+window.openBillingForConsultation =
+  openBillingForConsultation;
+
+window.returnToAppointments =
+  returnToAppointments;
+
+window.openImageModal =
+  openImageModal;
+
+window.openPDFModal =
+  openPDFModal;
+
+window.closeFileModal =
+  closeFileModal;
+
+
+/* =========================================================
    START
    ========================================================= */
 
@@ -6695,6 +7134,10 @@ document
   }
 
 
+  /*
+     Handle appointment / billing URL first.
+  */
+
   const handled =
     await handleURLParameters();
 
@@ -6708,7 +7151,7 @@ document
   }
 
 
-  loadTodayPatientCount();
+  await loadTodayPatientCount();
 
 })();
 
