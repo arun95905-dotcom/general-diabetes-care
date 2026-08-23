@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>
+Appointment Insights | General & Diabetes Care
+</title>
+
+<link
+  rel="stylesheet"
+  href="styles.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(
+      135deg,
+      #f6f4ff,
+      #f3f0ff,
+      #fbfaff
+    );
+  color: #172033;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+.analytics-page {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 16px 10px 45px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  margin-bottom: 14px;
+}
+
+.section-label {
+  margin: 0;
+  color: #7258c9;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 1.3px;
+}
+
+.page-header h1 {
+  margin: 5px 0 3px;
+  color: #2f2851;
+  font-size: 29px;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: #77718b;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.portal-button {
+  min-height: 43px;
+  padding: 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.primary-button {
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #7859d4,
+      #5d42b7
+    );
+}
+
+.light-button {
+  color: #4d4660;
+  background: #f4f2fa;
+  border: 1px solid #ded9eb;
+}
+
+.secondary-button {
+  color: #ffffff;
+  background: #64748b;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.top-actions {
+  margin: 14px 0 16px;
+}
+
+.bottom-actions {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   PERIOD
+   ========================================================= */
+
+.period-card {
+  margin-bottom: 14px;
+  padding: 17px;
+  background:
+    linear-gradient(
+      135deg,
+      #f1edff,
+      #ffffff
+    );
+  border: 1px solid #ddd3f7;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(70,45,130,.05);
+}
+
+.period-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.period-label {
+  color: #746b8a;
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.period-value {
+  margin-top: 5px;
+  color: #332c53;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.period-description {
+  margin-top: 4px;
+  color: #817a95;
+  font-size: 12px;
+}
+
+.change-period-button {
+  padding: 8px 11px;
+  color: #664db9;
+  background: #ffffff;
+  border: 1px solid #ddd5f2;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.period-controls {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #e2ddf0;
+}
+
+.period-controls.open {
+  display: block;
+}
+
+.quick-periods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.quick-period-button {
+  padding: 8px 11px;
+  color: #5d5671;
+  background: #ffffff;
+  border: 1px solid #ddd8e9;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.date-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.date-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-group label {
+  margin-bottom: 5px;
+  color: #6e687f;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.date-group input {
+  width: 100%;
+  padding: 10px 11px;
+  background: #ffffff;
+  border: 1px solid #d8d2e5;
+  border-radius: 10px;
+}
+
+.period-actions {
+  margin-top: 11px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+  gap: 10px;
+}
+
+.summary-card {
+  min-height: 120px;
+  padding: 15px;
+  background: #ffffff;
+  border: 1px solid #e0dbea;
+  border-radius: 17px;
+  box-shadow:
+    0 5px 18px rgba(60,45,90,.05);
+}
+
+.summary-total {
+  background:
+    linear-gradient(
+      135deg,
+      #f1edff,
+      #ffffff
+    );
+}
+
+.summary-pending {
+  background:
+    linear-gradient(
+      135deg,
+      #fff7df,
+      #ffffff
+    );
+}
+
+.summary-completed {
+  background:
+    linear-gradient(
+      135deg,
+      #eaf9f0,
+      #ffffff
+    );
+}
+
+.summary-cancelled {
+  background:
+    linear-gradient(
+      135deg,
+      #fff0f0,
+      #ffffff
+    );
+}
+
+.summary-icon {
+  font-size: 22px;
+}
+
+.summary-value {
+  margin-top: 8px;
+  color: #26213e;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.summary-title {
+  margin-top: 4px;
+  color: #716b81;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section-title {
+  margin: 22px 0 11px;
+  color: #817b91;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.portal-card {
+  margin-bottom: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e3deeb;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(45,35,80,.05);
+}
+
+
+/* =========================================================
+   COMPLETION RATE
+   ========================================================= */
+
+.completion-card {
+  display: grid;
+  grid-template-columns:
+    150px minmax(0,1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.completion-circle {
+  width: 125px;
+  height: 125px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      135deg,
+      #eee8ff,
+      #f8f6ff
+    );
+  border: 10px solid #ded5fb;
+}
+
+.completion-value {
+  color: #6046ba;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.completion-label {
+  margin-top: 3px;
+  color: #776f8a;
+  font-size: 10px;
+}
+
+.completion-details {
+  display: grid;
+  gap: 9px;
+}
+
+.completion-row {
+  padding: 11px 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f9f8fc;
+  border: 1px solid #e7e3ed;
+  border-radius: 11px;
+}
+
+.completion-row-label {
+  color: #6c657d;
+  font-size: 12px;
+}
+
+.completion-row-value {
+  color: #312b48;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   TYPE BREAKDOWN
+   ========================================================= */
+
+.type-list {
+  display: grid;
+  gap: 10px;
+}
+
+.type-row {
+  padding: 12px 13px;
+  background: #f9f8fc;
+  border: 1px solid #e7e3ed;
+  border-radius: 12px;
+}
+
+.type-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.type-name {
+  color: #413951;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.type-count {
+  color: #6046ba;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.progress-track {
+  width: 100%;
+  height: 7px;
+  margin-top: 9px;
+  overflow: hidden;
+  background: #ebe7f3;
+  border-radius: 999px;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      #8c71e1,
+      #6547c0
+    );
+}
+
+
+/* =========================================================
+   CHART
+   ========================================================= */
+
+.chart-title {
+  margin: 0;
+  color: #332d47;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.chart-description {
+  margin: 4px 0 16px;
+  color: #7e778f;
+  font-size: 12px;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+}
+
+.chart-wrap canvas {
+  max-height: 320px;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-card {
+  padding: 25px;
+  text-align: center;
+  color: #777084;
+  background: #ffffff;
+  border: 1px solid #e1ddea;
+  border-radius: 16px;
+}
+
+.spinner {
+  width: 29px;
+  height: 29px;
+  margin: 0 auto 8px;
+  border: 3px solid #e6e2ed;
+  border-top-color: #7657cf;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:850px) {
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:650px) {
+
+  .analytics-page {
+    padding: 12px 8px 40px;
+  }
+
+  .date-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .completion-card {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="analytics-page">
+
+
+<header class="page-header">
+
+<p class="section-label">
+GENERAL &amp; DIABETES CARE
+</p>
+
+<h1>
+📅 Appointment Insights
+</h1>
+
+<p class="page-subtitle">
+Appointment status, completion and visit patterns
+</p>
+
+</header>
+
+
+<div class="action-row top-actions">
+
+<a
+  href="clinic-analytics.html"
+  class="portal-button light-button">
+
+← Back to Clinic Analytics
+
+</a>
+
+</div>
+
+
+<!-- PERIOD -->
+
+<div class="period-card">
+
+<div class="period-top">
+
+<div>
+
+<div class="period-label">
+📅 Analytics Period
+</div>
+
+<div
+  id="periodDisplay"
+  class="period-value">
+—
+</div>
+
+<div
+  id="periodDescription"
+  class="period-description">
+Last 30 days
+</div>
+
+</div>
+
+
+<button
+  type="button"
+  id="togglePeriodButton"
+  class="change-period-button">
+
+Change ›
+
+</button>
+
+</div>
+
+
+<div
+  id="periodControls"
+  class="period-controls">
+
+
+<div class="quick-periods">
+
+<button
+  class="quick-period-button"
+  onclick="setQuickPeriod('today')">
+
+Today
+
+</button>
+
+<button
+  class="quick-period-button"
+  onclick="setQuickPeriod('7')">
+
+7 Days
+
+</button>
+
+<button
+  class="quick-period-button"
+  onclick="setQuickPeriod('30')">
+
+30 Days
+
+</button>
+
+</div>
+
+
+<div class="date-grid">
+
+<div class="date-group">
+
+<label>
+From
+</label>
+
+<input
+  type="date"
+  id="analyticsStartDate">
+
+</div>
+
+
+<div class="date-group">
+
+<label>
+To
+</label>
+
+<input
+  type="date"
+  id="analyticsEndDate">
+
+</div>
+
+</div>
+
+
+<div class="period-actions">
+
+<button
+  type="button"
+  id="applyPeriodButton"
+  class="portal-button primary-button">
+
+✓ Apply
+
+</button>
+
+<button
+  type="button"
+  id="closePeriodButton"
+  class="portal-button light-button">
+
+Close
+
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<div
+  id="loadingCard"
+  class="loading-card">
+
+<div class="spinner"></div>
+
+Loading appointment analytics...
+
+</div>
+
+
+<div
+  id="analyticsContent"
+  style="display:none;">
+
+
+<!-- SUMMARY -->
+
+<div class="summary-grid">
+
+
+<div class="summary-card summary-total">
+
+<div class="summary-icon">
+📅
+</div>
+
+<div
+  id="totalAppointments"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+Total appointments
+</div>
+
+</div>
+
+
+<div class="summary-card summary-pending">
+
+<div class="summary-icon">
+⏳
+</div>
+
+<div
+  id="pendingAppointments"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+Pending
+</div>
+
+</div>
+
+
+<div class="summary-card summary-completed">
+
+<div class="summary-icon">
+✅
+</div>
+
+<div
+  id="completedAppointments"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+Completed
+</div>
+
+</div>
+
+
+<div class="summary-card summary-cancelled">
+
+<div class="summary-icon">
+❌
+</div>
+
+<div
+  id="cancelledAppointments"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+Cancelled
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- COMPLETION -->
+
+<div class="section-title">
+Completion Performance
+</div>
+
+
+<div class="portal-card completion-card">
+
+
+<div class="completion-circle">
+
+<div
+  id="completionRate"
+  class="completion-value">
+0%
+</div>
+
+<div class="completion-label">
+Completion Rate
+</div>
+
+</div>
+
+
+<div class="completion-details">
+
+
+<div class="completion-row">
+
+<span class="completion-row-label">
+Completed
+</span>
+
+<span
+  id="completionCompleted"
+  class="completion-row-value">
+0
+</span>
+
+</div>
+
+
+<div class="completion-row">
+
+<span class="completion-row-label">
+Cancelled
+</span>
+
+<span
+  id="completionCancelled"
+  class="completion-row-value">
+0
+</span>
+
+</div>
+
+
+<div class="completion-row">
+
+<span class="completion-row-label">
+Still Pending
+</span>
+
+<span
+  id="completionPending"
+  class="completion-row-value">
+0
+</span>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- TYPES -->
+
+<div class="section-title">
+Appointment Types
+</div>
+
+
+<div class="portal-card">
+
+<div
+  id="appointmentTypeList"
+  class="type-list">
+</div>
+
+</div>
+
+
+<!-- CHART -->
+
+<div class="section-title">
+Appointment Distribution
+</div>
+
+
+<div class="portal-card">
+
+<h2 class="chart-title">
+🩺 Appointment Type Distribution
+</h2>
+
+<p class="chart-description">
+Distribution of appointment types in the selected period
+</p>
+
+
+<div class="chart-wrap">
+
+<canvas id="appointmentTypeChart"></canvas>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div class="action-row bottom-actions">
+
+<button
+  type="button"
+  id="refreshButton"
+  class="portal-button light-button">
+
+🔄 Refresh
+
+</button>
+
+<button
+  type="button"
+  id="logoutButton"
+  class="portal-button secondary-button">
+
+🔒 Logout
+
+</button>
+
+</div>
+
+
+</div>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+let appointmentChart =
+  null;
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   DATE HELPERS
+   ========================================================= */
+
+function formatDateInput(
+  date
+) {
+
+  return (
+    date.getFullYear() +
+    "-" +
+    String(
+      date.getMonth() + 1
+    ).padStart(2,"0") +
+    "-" +
+    String(
+      date.getDate()
+    ).padStart(2,"0")
+  );
+
+}
+
+
+function formatDisplayDate(
+  value
+) {
+
+  return new Date(
+    value +
+    "T00:00:00"
+  )
+  .toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+/* =========================================================
+   DEFAULT PERIOD
+   ========================================================= */
+
+function setDefaultPeriod() {
+
+  const today =
+    new Date();
+
+
+  const start =
+    new Date();
+
+
+  start.setDate(
+    today.getDate() - 29
+  );
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      formatDateInput(
+        start
+      );
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      formatDateInput(
+        today
+      );
+
+
+  updatePeriodDisplay(
+    "Last 30 days"
+  );
+
+}
+
+
+function setQuickPeriod(
+  type
+) {
+
+  const today =
+    new Date();
+
+
+  const start =
+    new Date();
+
+
+  let label =
+    "";
+
+
+  if (
+    type ===
+    "today"
+  ) {
+
+    label =
+      "Today";
+
+  }
+
+
+  if (
+    type ===
+    "7"
+  ) {
+
+    start.setDate(
+      today.getDate() - 6
+    );
+
+
+    label =
+      "Last 7 days";
+
+  }
+
+
+  if (
+    type ===
+    "30"
+  ) {
+
+    start.setDate(
+      today.getDate() - 29
+    );
+
+
+    label =
+      "Last 30 days";
+
+  }
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      formatDateInput(
+        start
+      );
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      formatDateInput(
+        today
+      );
+
+
+  updatePeriodDisplay(
+    label
+  );
+
+
+  loadAnalytics();
+
+}
+
+
+function updatePeriodDisplay(
+  label
+) {
+
+  const start =
+    document
+      .getElementById(
+        "analyticsStartDate"
+      )
+      .value;
+
+
+  const end =
+    document
+      .getElementById(
+        "analyticsEndDate"
+      )
+      .value;
+
+
+  document
+    .getElementById(
+      "periodDisplay"
+    )
+    .textContent =
+      formatDisplayDate(
+        start
+      ) +
+      " — " +
+      formatDisplayDate(
+        end
+      );
+
+
+  document
+    .getElementById(
+      "periodDescription"
+    )
+    .textContent =
+      label ||
+      "Custom analytics period";
+
+}
+
+
+/* =========================================================
+   LOAD APPOINTMENTS
+   ========================================================= */
+
+async function loadAppointments(
+  startDate,
+  endDate
+) {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("appointments")
+      .select("*")
+      .gte(
+        "appointment_date",
+        startDate
+      )
+      .lte(
+        "appointment_date",
+        endDate
+      );
+
+
+  if (error) {
+    throw error;
+  }
+
+
+  return data || [];
+
+}
+
+
+/* =========================================================
+   LOAD ANALYTICS
+   ========================================================= */
+
+async function loadAnalytics() {
+
+  const loading =
+    document
+      .getElementById(
+        "loadingCard"
+      );
+
+
+  const content =
+    document
+      .getElementById(
+        "analyticsContent"
+      );
+
+
+  loading.style.display =
+    "block";
+
+
+  content.style.display =
+    "none";
+
+
+  try {
+
+    const startDate =
+      document
+        .getElementById(
+          "analyticsStartDate"
+        )
+        .value;
+
+
+    const endDate =
+      document
+        .getElementById(
+          "analyticsEndDate"
+        )
+        .value;
+
+
+    if (
+      !startDate ||
+      !endDate
+    ) {
+
+      throw new Error(
+        "Please select dates."
+      );
+
+    }
+
+
+    if (
+      startDate >
+      endDate
+    ) {
+
+      throw new Error(
+        "Start date cannot be after end date."
+      );
+
+    }
+
+
+    const appointments =
+      await loadAppointments(
+        startDate,
+        endDate
+      );
+
+
+    const pending =
+      appointments.filter(
+        function(appointment) {
+
+          return (
+            (
+              appointment.status ||
+              "Pending"
+            ) ===
+            "Pending"
+          );
+
+        }
+      );
+
+
+    const completed =
+      appointments.filter(
+        function(appointment) {
+
+          return (
+            appointment.status ===
+            "Completed"
+          );
+
+        }
+      );
+
+
+    const cancelled =
+      appointments.filter(
+        function(appointment) {
+
+          return (
+            appointment.status ===
+            "Cancelled"
+          );
+
+        }
+      );
+
+
+    let completionRate =
+      0;
+
+
+    if (
+      appointments.length > 0
+    ) {
+
+      completionRate =
+        (
+          completed.length /
+          appointments.length
+        ) *
+        100;
+
+    }
+
+
+    document
+      .getElementById(
+        "totalAppointments"
+      )
+      .textContent =
+        appointments.length;
+
+
+    document
+      .getElementById(
+        "pendingAppointments"
+      )
+      .textContent =
+        pending.length;
+
+
+    document
+      .getElementById(
+        "completedAppointments"
+      )
+      .textContent =
+        completed.length;
+
+
+    document
+      .getElementById(
+        "cancelledAppointments"
+      )
+      .textContent =
+        cancelled.length;
+
+
+    document
+      .getElementById(
+        "completionRate"
+      )
+      .textContent =
+        completionRate
+          .toFixed(1) +
+        "%";
+
+
+    document
+      .getElementById(
+        "completionCompleted"
+      )
+      .textContent =
+        completed.length;
+
+
+    document
+      .getElementById(
+        "completionCancelled"
+      )
+      .textContent =
+        cancelled.length;
+
+
+    document
+      .getElementById(
+        "completionPending"
+      )
+      .textContent =
+        pending.length;
+
+
+    const types =
+      calculateAppointmentTypes(
+        appointments
+      );
+
+
+    renderAppointmentTypes(
+      types,
+      appointments.length
+    );
+
+
+    renderAppointmentChart(
+      types
+    );
+
+
+    content.style.display =
+      "block";
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      error.message ||
+      "Unable to load appointment analytics."
+    );
+
+
+  } finally {
+
+    loading.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================================================
+   APPOINTMENT TYPES
+   ========================================================= */
+
+function calculateAppointmentTypes(
+  appointments
+) {
+
+  const types = {
+
+    "New Consultation":
+      0,
+
+    "Follow-up":
+      0,
+
+    "Diabetes Review":
+      0,
+
+    "General Consultation":
+      0,
+
+    "Other":
+      0
+
+  };
+
+
+  appointments.forEach(
+    function(appointment) {
+
+      const type =
+        appointment.appointment_type ||
+        "Other";
+
+
+      if (
+        Object.prototype
+          .hasOwnProperty
+          .call(
+            types,
+            type
+          )
+      ) {
+
+        types[
+          type
+        ]++;
+
+      } else {
+
+        types.Other++;
+
+      }
+
+    }
+  );
+
+
+  return types;
+
+}
+
+
+/* =========================================================
+   TYPE LIST
+   ========================================================= */
+
+function renderAppointmentTypes(
+  types,
+  total
+) {
+
+  const container =
+    document
+      .getElementById(
+        "appointmentTypeList"
+      );
+
+
+  const icons = {
+
+    "New Consultation":
+      "🆕",
+
+    "Follow-up":
+      "🔄",
+
+    "Diabetes Review":
+      "🩸",
+
+    "General Consultation":
+      "🩺",
+
+    "Other":
+      "📋"
+
+  };
+
+
+  container.innerHTML =
+    Object.entries(
+      types
+    )
+    .map(
+      function(
+        [
+          type,
+          count
+        ]
+      ) {
+
+        const percent =
+          total > 0
+            ? (
+                count /
+                total
+              ) *
+              100
+            : 0;
+
+
+        return `
+
+          <div class="type-row">
+
+            <div class="type-top">
+
+              <span class="type-name">
+
+                ${icons[type]}
+                ${type}
+
+              </span>
+
+              <span class="type-count">
+
+                ${count}
+
+              </span>
+
+            </div>
+
+
+            <div class="progress-track">
+
+              <div
+                class="progress-bar"
+                style="width:${percent}%">
+              </div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+/* =========================================================
+   CHART
+   ========================================================= */
+
+function renderAppointmentChart(
+  types
+) {
+
+  const labels =
+    Object.keys(
+      types
+    );
+
+
+  const values =
+    Object.values(
+      types
+    );
+
+
+  if (
+    appointmentChart
+  ) {
+
+    appointmentChart.destroy();
+
+  }
+
+
+  appointmentChart =
+    new Chart(
+      document
+        .getElementById(
+          "appointmentTypeChart"
+        ),
+      {
+
+        type:
+          "doughnut",
+
+        data: {
+
+          labels:
+            labels,
+
+          datasets: [
+
+            {
+
+              data:
+                values,
+
+              borderWidth:
+                2
+
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive:
+            true,
+
+          maintainAspectRatio:
+            false,
+
+          cutout:
+            "62%",
+
+          plugins: {
+
+            legend: {
+
+              position:
+                "bottom"
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+document
+  .getElementById(
+    "togglePeriodButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .toggle(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "closePeriodButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .remove(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "applyPeriodButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      updatePeriodDisplay(
+        "Custom analytics period"
+      );
+
+
+      await loadAnalytics();
+
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .remove(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "refreshButton"
+  )
+  .addEventListener(
+    "click",
+    loadAnalytics
+  );
+
+
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+
+      window.location.href =
+        "doctor-login.html";
+
+    }
+  );
+
+
+window.setQuickPeriod =
+  setQuickPeriod;
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+(async function initializePage() {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+
+  if (!loggedIn) {
+    return;
+  }
+
+
+  setDefaultPeriod();
+
+
+  await loadAnalytics();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
