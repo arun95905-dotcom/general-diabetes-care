@@ -1,0 +1,2118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>
+Monthly Reports | General & Diabetes Care
+</title>
+
+<link
+  rel="stylesheet"
+  href="styles.css">
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(
+      135deg,
+      #f5f6ff,
+      #eff1ff,
+      #fafaff
+    );
+  color: #172033;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button,
+select {
+  font-family: inherit;
+}
+
+.analytics-page {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 16px 10px 45px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  margin-bottom: 14px;
+}
+
+.section-label {
+  margin: 0;
+  color: #5967c9;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 1.3px;
+}
+
+.page-header h1 {
+  margin: 5px 0 3px;
+  color: #303863;
+  font-size: 29px;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: #737995;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.portal-button {
+  min-height: 43px;
+  padding: 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.primary-button {
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #6672d7,
+      #4d59b5
+    );
+}
+
+.light-button {
+  color: #4e5572;
+  background: #f3f4fb;
+  border: 1px solid #dde0ee;
+}
+
+.secondary-button {
+  color: #ffffff;
+  background: #64748b;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.top-actions {
+  margin: 14px 0 16px;
+}
+
+.bottom-actions {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   SEARCH CARD
+   ========================================================= */
+
+.search-card {
+  margin-bottom: 14px;
+  padding: 18px;
+  background:
+    linear-gradient(
+      135deg,
+      #eef0ff,
+      #ffffff
+    );
+  border: 1px solid #d9def6;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(55,65,130,.05);
+}
+
+.search-title {
+  margin: 0 0 13px;
+  color: #343b62;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.search-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-group label {
+  margin-bottom: 5px;
+  color: #686f88;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.search-group select {
+  width: 100%;
+  padding: 11px 12px;
+  background: #ffffff;
+  border: 1px solid #d2d7eb;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.search-actions {
+  margin-top: 12px;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section-title {
+  margin: 22px 0 11px;
+  color: #81879e;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.portal-card {
+  margin-bottom: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e1e4ef;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(45,50,90,.05);
+}
+
+
+/* =========================================================
+   MONTH HEADER
+   ========================================================= */
+
+.month-header-card {
+  padding: 20px;
+  background:
+    linear-gradient(
+      135deg,
+      #edf0ff,
+      #ffffff
+    );
+  border: 1px solid #d9def6;
+  border-radius: 18px;
+}
+
+.month-name {
+  color: #343b62;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.month-subtitle {
+  margin-top: 5px;
+  color: #737995;
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.summary-card {
+  min-height: 115px;
+  padding: 15px;
+  background: #ffffff;
+  border: 1px solid #e0e4ef;
+  border-radius: 15px;
+}
+
+.summary-revenue {
+  background:
+    linear-gradient(
+      135deg,
+      #eaf9f0,
+      #ffffff
+    );
+}
+
+.summary-bills {
+  background:
+    linear-gradient(
+      135deg,
+      #edf5ff,
+      #ffffff
+    );
+}
+
+.summary-patients {
+  background:
+    linear-gradient(
+      135deg,
+      #eaf8ff,
+      #ffffff
+    );
+}
+
+.summary-appointments {
+  background:
+    linear-gradient(
+      135deg,
+      #f1edff,
+      #ffffff
+    );
+}
+
+.summary-icon {
+  font-size: 22px;
+}
+
+.summary-value {
+  margin-top: 8px;
+  color: #242b46;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.summary-label {
+  margin-top: 4px;
+  color: #727990;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   APPOINTMENT SUMMARY
+   ========================================================= */
+
+.status-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  gap: 10px;
+}
+
+.status-card {
+  padding: 14px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.status-pending {
+  background: #fff7df;
+  border: 1px solid #f0dfac;
+}
+
+.status-completed {
+  background: #eaf9f0;
+  border: 1px solid #cee9d8;
+}
+
+.status-cancelled {
+  background: #fff0f0;
+  border: 1px solid #f0cccc;
+}
+
+.status-value {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.status-label {
+  margin-top: 4px;
+  color: #6f7585;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   BILL TABLE
+   ========================================================= */
+
+.bill-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 580px;
+}
+
+.bill-table th,
+.bill-table td {
+  padding: 11px 10px;
+  border-bottom: 1px solid #e5e8ef;
+  text-align: left;
+  font-size: 13px;
+}
+
+.bill-table th {
+  color: #747b91;
+  background: #f8f9fc;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.patient-link {
+  padding: 0;
+  color: #5360bd;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 850;
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   BILL DETAIL
+   ========================================================= */
+
+.bill-detail-panel {
+  display: none;
+}
+
+.bill-detail-panel.open {
+  display: block;
+}
+
+.panel-header {
+  margin-bottom: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.panel-title {
+  margin: 0;
+  font-size: 19px;
+}
+
+.panel-subtitle {
+  margin-top: 4px;
+  color: #777e91;
+  font-size: 12px;
+}
+
+.bill-header-box {
+  padding: 16px;
+  background:
+    linear-gradient(
+      135deg,
+      #eef0ff,
+      #ffffff
+    );
+  border: 1px solid #dce0f4;
+  border-radius: 14px;
+}
+
+.bill-clinic-title {
+  color: #3e488f;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.bill-meta {
+  margin-top: 7px;
+  color: #657087;
+  line-height: 1.7;
+  font-size: 12px;
+}
+
+.bill-items {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.bill-item-row {
+  padding: 11px 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f8f9fc;
+  border: 1px solid #e5e8ef;
+  border-radius: 10px;
+}
+
+.bill-total-row {
+  margin-top: 6px;
+  padding: 14px 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #edf0ff;
+  border: 1px solid #d9def6;
+  border-radius: 11px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING
+   ========================================================= */
+
+.loading-card,
+.empty-card {
+  padding: 25px;
+  text-align: center;
+  color: #747b91;
+  background: #ffffff;
+  border: 1px solid #e1e4ef;
+  border-radius: 16px;
+}
+
+.spinner {
+  width: 29px;
+  height: 29px;
+  margin: 0 auto 8px;
+  border: 3px solid #e4e6f0;
+  border-top-color: #6672d7;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:850px) {
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:650px) {
+
+  .analytics-page {
+    padding: 12px 8px 40px;
+  }
+
+  .search-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="analytics-page">
+
+
+<header class="page-header">
+
+<p class="section-label">
+GENERAL &amp; DIABETES CARE
+</p>
+
+<h1>
+🗓️ Monthly Reports
+</h1>
+
+<p class="page-subtitle">
+Review clinic performance and paid bills by month
+</p>
+
+</header>
+
+
+<div class="action-row top-actions">
+
+<a
+  href="clinic-analytics.html"
+  class="portal-button light-button">
+
+← Back to Clinic Analytics
+
+</a>
+
+</div>
+
+
+<!-- =====================================================
+     MONTH / YEAR SEARCH
+     ===================================================== -->
+
+<div class="search-card">
+
+<h2 class="search-title">
+🔎 Search Month &amp; Year
+</h2>
+
+
+<div class="search-grid">
+
+
+<div class="search-group">
+
+<label>
+Month
+</label>
+
+<select id="monthSelect">
+
+<option value="0">
+January
+</option>
+
+<option value="1">
+February
+</option>
+
+<option value="2">
+March
+</option>
+
+<option value="3">
+April
+</option>
+
+<option value="4">
+May
+</option>
+
+<option value="5">
+June
+</option>
+
+<option value="6">
+July
+</option>
+
+<option value="7">
+August
+</option>
+
+<option value="8">
+September
+</option>
+
+<option value="9">
+October
+</option>
+
+<option value="10">
+November
+</option>
+
+<option value="11">
+December
+</option>
+
+</select>
+
+</div>
+
+
+<div class="search-group">
+
+<label>
+Year
+</label>
+
+<select id="yearSelect"></select>
+
+</div>
+
+
+</div>
+
+
+<div class="search-actions">
+
+<button
+  type="button"
+  id="viewReportButton"
+  class="portal-button primary-button">
+
+🔎 View Monthly Report
+
+</button>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     LOADING
+     ===================================================== -->
+
+<div
+  id="loadingCard"
+  class="loading-card">
+
+<div class="spinner"></div>
+
+Loading monthly report...
+
+</div>
+
+
+<!-- =====================================================
+     REPORT
+     ===================================================== -->
+
+<div
+  id="reportContent"
+  style="display:none;">
+
+
+<div class="month-header-card">
+
+<div
+  id="reportMonthName"
+  class="month-name">
+—
+</div>
+
+<div class="month-subtitle">
+Clinic performance summary
+</div>
+
+</div>
+
+
+<div class="section-title">
+Monthly Overview
+</div>
+
+
+<div class="summary-grid">
+
+
+<div class="summary-card summary-revenue">
+
+<div class="summary-icon">
+💰
+</div>
+
+<div
+  id="monthlyRevenue"
+  class="summary-value">
+₹0
+</div>
+
+<div class="summary-label">
+Paid revenue
+</div>
+
+</div>
+
+
+<div class="summary-card summary-bills">
+
+<div class="summary-icon">
+🧾
+</div>
+
+<div
+  id="monthlyBills"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-label">
+Paid bills
+</div>
+
+</div>
+
+
+<div class="summary-card summary-patients">
+
+<div class="summary-icon">
+👥
+</div>
+
+<div
+  id="monthlyPatients"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-label">
+New patients
+</div>
+
+</div>
+
+
+<div class="summary-card summary-appointments">
+
+<div class="summary-icon">
+📅
+</div>
+
+<div
+  id="monthlyAppointments"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-label">
+Appointments
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- APPOINTMENT STATUS -->
+
+<div class="section-title">
+Appointment Status
+</div>
+
+
+<div class="status-grid">
+
+
+<div class="status-card status-pending">
+
+<div
+  id="pendingCount"
+  class="status-value">
+0
+</div>
+
+<div class="status-label">
+⏳ Pending
+</div>
+
+</div>
+
+
+<div class="status-card status-completed">
+
+<div
+  id="completedCount"
+  class="status-value">
+0
+</div>
+
+<div class="status-label">
+✅ Completed
+</div>
+
+</div>
+
+
+<div class="status-card status-cancelled">
+
+<div
+  id="cancelledCount"
+  class="status-value">
+0
+</div>
+
+<div class="status-label">
+❌ Cancelled
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- PAID BILLS -->
+
+<div class="section-title">
+Paid Bills
+</div>
+
+
+<div class="portal-card">
+
+<div
+  id="billListContent"
+  class="bill-table-wrap">
+</div>
+
+</div>
+
+
+<!-- BILL DETAIL -->
+
+<div
+  id="billDetailPanel"
+  class="portal-card bill-detail-panel">
+
+
+<div class="panel-header">
+
+<div>
+
+<h2 class="panel-title">
+🧾 Bill Details
+</h2>
+
+<div class="panel-subtitle">
+Individual patient bill
+</div>
+
+</div>
+
+
+<button
+  type="button"
+  class="portal-button light-button"
+  onclick="closeBillDetails()">
+
+← Back to Monthly Bills
+
+</button>
+
+</div>
+
+
+<div id="billDetailContent"></div>
+
+
+</div>
+
+
+</div>
+
+
+<div class="action-row bottom-actions">
+
+<button
+  type="button"
+  id="refreshButton"
+  class="portal-button light-button">
+
+🔄 Refresh
+
+</button>
+
+<button
+  type="button"
+  id="logoutButton"
+  class="portal-button secondary-button">
+
+🔒 Logout
+
+</button>
+
+</div>
+
+
+</div>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+let currentPaidBills =
+  [];
+
+let currentYear =
+  null;
+
+let currentMonth =
+  null;
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function escapeHTML(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
+
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function formatDateInput(date) {
+
+  return (
+    date.getFullYear() +
+    "-" +
+    String(
+      date.getMonth() + 1
+    ).padStart(2,"0") +
+    "-" +
+    String(
+      date.getDate()
+    ).padStart(2,"0")
+  );
+
+}
+
+
+function formatDisplayDate(value) {
+
+  if (!value) {
+    return "-";
+  }
+
+
+  return new Date(
+    value +
+    "T00:00:00"
+  )
+  .toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function formatMoney(value) {
+
+  return (
+    "₹" +
+    Number(
+      value ||
+      0
+    )
+    .toLocaleString(
+      "en-IN",
+      {
+        maximumFractionDigits: 2
+      }
+    )
+  );
+
+}
+
+
+function getBillAmount(bill) {
+
+  return Number(
+    bill.total_amount ??
+    bill.total ??
+    bill.bill_amount ??
+    0
+  );
+
+}
+
+
+function getMonthRange(
+  year,
+  month
+) {
+
+  const start =
+    new Date(
+      year,
+      month,
+      1
+    );
+
+
+  const end =
+    new Date(
+      year,
+      month + 1,
+      0
+    );
+
+
+  return {
+
+    start:
+      formatDateInput(
+        start
+      ),
+
+    end:
+      formatDateInput(
+        end
+      )
+
+  };
+
+}
+
+
+/* =========================================================
+   YEAR OPTIONS
+   ========================================================= */
+
+function buildYearOptions() {
+
+  const select =
+    document
+      .getElementById(
+        "yearSelect"
+      );
+
+
+  const current =
+    new Date()
+      .getFullYear();
+
+
+  select.innerHTML =
+    "";
+
+
+  for (
+    let year =
+      current;
+    year >=
+      current - 10;
+    year--
+  ) {
+
+    const option =
+      document.createElement(
+        "option"
+      );
+
+
+    option.value =
+      year;
+
+
+    option.textContent =
+      year;
+
+
+    select.appendChild(
+      option
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   DEFAULT MONTH
+   ========================================================= */
+
+function setDefaultMonth() {
+
+  const now =
+    new Date();
+
+
+  document
+    .getElementById(
+      "monthSelect"
+    )
+    .value =
+      now.getMonth();
+
+
+  document
+    .getElementById(
+      "yearSelect"
+    )
+    .value =
+      now.getFullYear();
+
+}
+
+
+/* =========================================================
+   LOAD MONTH DATA
+   ========================================================= */
+
+async function loadMonthlyReport() {
+
+  const loading =
+    document
+      .getElementById(
+        "loadingCard"
+      );
+
+
+  const content =
+    document
+      .getElementById(
+        "reportContent"
+      );
+
+
+  loading.style.display =
+    "block";
+
+
+  content.style.display =
+    "none";
+
+
+  closeBillDetails();
+
+
+  currentMonth =
+    Number(
+      document
+        .getElementById(
+          "monthSelect"
+        )
+        .value
+    );
+
+
+  currentYear =
+    Number(
+      document
+        .getElementById(
+          "yearSelect"
+        )
+        .value
+    );
+
+
+  const range =
+    getMonthRange(
+      currentYear,
+      currentMonth
+    );
+
+
+  try {
+
+    const [
+      billingResult,
+      patientsResult,
+      appointmentsResult
+    ] =
+      await Promise.all([
+
+        supabaseClient
+          .from("billing")
+          .select("*")
+          .gte(
+            "bill_date",
+            range.start
+          )
+          .lte(
+            "bill_date",
+            range.end
+          )
+          .order(
+            "bill_date",
+            {
+              ascending: true
+            }
+          ),
+
+        supabaseClient
+          .from("patients")
+          .select(
+            "id,created_at"
+          )
+          .gte(
+            "created_at",
+            range.start +
+            "T00:00:00"
+          )
+          .lte(
+            "created_at",
+            range.end +
+            "T23:59:59"
+          ),
+
+        supabaseClient
+          .from("appointments")
+          .select("*")
+          .gte(
+            "appointment_date",
+            range.start
+          )
+          .lte(
+            "appointment_date",
+            range.end
+          )
+
+      ]);
+
+
+    if (
+      billingResult.error
+    ) {
+      throw billingResult.error;
+    }
+
+
+    if (
+      patientsResult.error
+    ) {
+      throw patientsResult.error;
+    }
+
+
+    if (
+      appointmentsResult.error
+    ) {
+      throw appointmentsResult.error;
+    }
+
+
+    const bills =
+      billingResult.data ||
+      [];
+
+
+    const patients =
+      patientsResult.data ||
+      [];
+
+
+    const appointments =
+      appointmentsResult.data ||
+      [];
+
+
+    currentPaidBills =
+      bills.filter(
+        function(bill) {
+
+          return (
+            String(
+              bill.payment_status ||
+              ""
+            )
+            .toLowerCase() ===
+            "paid"
+          );
+
+        }
+      );
+
+
+    const revenue =
+      currentPaidBills.reduce(
+        function(total,bill) {
+
+          return (
+            total +
+            getBillAmount(
+              bill
+            )
+          );
+
+        },
+        0
+      );
+
+
+    const pending =
+      appointments.filter(
+        function(appointment) {
+
+          return (
+            (
+              appointment.status ||
+              "Pending"
+            ) ===
+            "Pending"
+          );
+
+        }
+      );
+
+
+    const completed =
+      appointments.filter(
+        function(appointment) {
+
+          return (
+            appointment.status ===
+            "Completed"
+          );
+
+        }
+      );
+
+
+    const cancelled =
+      appointments.filter(
+        function(appointment) {
+
+          return (
+            appointment.status ===
+            "Cancelled"
+          );
+
+        }
+      );
+
+
+    const monthDate =
+      new Date(
+        currentYear,
+        currentMonth,
+        1
+      );
+
+
+    const monthLabel =
+      monthDate.toLocaleDateString(
+        "en-IN",
+        {
+          month: "long",
+          year: "numeric"
+        }
+      );
+
+
+    document
+      .getElementById(
+        "reportMonthName"
+      )
+      .textContent =
+        monthLabel;
+
+
+    document
+      .getElementById(
+        "monthlyRevenue"
+      )
+      .textContent =
+        formatMoney(
+          revenue
+        );
+
+
+    document
+      .getElementById(
+        "monthlyBills"
+      )
+      .textContent =
+        currentPaidBills.length;
+
+
+    document
+      .getElementById(
+        "monthlyPatients"
+      )
+      .textContent =
+        patients.length;
+
+
+    document
+      .getElementById(
+        "monthlyAppointments"
+      )
+      .textContent =
+        appointments.length;
+
+
+    document
+      .getElementById(
+        "pendingCount"
+      )
+      .textContent =
+        pending.length;
+
+
+    document
+      .getElementById(
+        "completedCount"
+      )
+      .textContent =
+        completed.length;
+
+
+    document
+      .getElementById(
+        "cancelledCount"
+      )
+      .textContent =
+        cancelled.length;
+
+
+    renderPaidBills(
+      monthLabel
+    );
+
+
+    content.style.display =
+      "block";
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    alert(
+      "Unable to load monthly report."
+    );
+
+
+  } finally {
+
+    loading.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================================================
+   PAID BILLS
+   ========================================================= */
+
+function renderPaidBills(
+  monthLabel
+) {
+
+  const container =
+    document
+      .getElementById(
+        "billListContent"
+      );
+
+
+  if (
+    currentPaidBills.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty-card">
+
+        No paid bills found for
+        ${escapeHTML(
+          monthLabel
+        )}.
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  const total =
+    currentPaidBills.reduce(
+      function(sum,bill) {
+
+        return (
+          sum +
+          getBillAmount(
+            bill
+          )
+        );
+
+      },
+      0
+    );
+
+
+  container.innerHTML = `
+
+    <div
+      style="
+        margin-bottom:12px;
+        color:#70778e;
+        font-size:12px;
+      ">
+
+      ${currentPaidBills.length}
+      ${
+        currentPaidBills.length === 1
+          ? "paid bill"
+          : "paid bills"
+      }
+
+      • Total:
+      <strong>
+        ${formatMoney(
+          total
+        )}
+      </strong>
+
+    </div>
+
+
+    <table class="bill-table">
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Patient
+          </th>
+
+          <th>
+            Date
+          </th>
+
+          <th>
+            Bill Amount
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${
+          currentPaidBills
+            .map(
+              function(bill) {
+
+                return `
+
+                  <tr>
+
+                    <td>
+
+                      <button
+                        type="button"
+                        class="patient-link"
+                        onclick="openBillDetails(
+                          ${Number(
+                            bill.id
+                          )}
+                        )">
+
+                        ${escapeHTML(
+                          bill.patient_name ||
+                          "Patient"
+                        )}
+
+                      </button>
+
+                    </td>
+
+                    <td>
+
+                      ${formatDisplayDate(
+                        bill.bill_date
+                      )}
+
+                    </td>
+
+                    <td>
+
+                      ${formatMoney(
+                        getBillAmount(
+                          bill
+                        )
+                      )}
+
+                    </td>
+
+                  </tr>
+
+                `;
+
+              }
+            )
+            .join("")
+        }
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+/* =========================================================
+   BILL DETAILS
+   ========================================================= */
+
+async function openBillDetails(
+  billId
+) {
+
+  let bill =
+    currentPaidBills.find(
+      function(item) {
+
+        return (
+          Number(
+            item.id
+          ) ===
+          Number(
+            billId
+          )
+        );
+
+      }
+    );
+
+
+  if (!bill) {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("billing")
+        .select("*")
+        .eq(
+          "id",
+          billId
+        )
+        .single();
+
+
+    if (
+      error ||
+      !data
+    ) {
+
+      alert(
+        "Unable to load bill details."
+      );
+
+      return;
+
+    }
+
+
+    bill =
+      data;
+
+  }
+
+
+  const consultationFee =
+    Number(
+      bill.consultation_fee ||
+      0
+    );
+
+
+  const medicineCharges =
+    Number(
+      bill.medicine_charges ||
+      0
+    );
+
+
+  const procedureCharges =
+    Number(
+      bill.procedure_charges ??
+      bill.other_charges ??
+      0
+    );
+
+
+  document
+    .getElementById(
+      "billDetailContent"
+    )
+    .innerHTML = `
+
+      <div class="bill-header-box">
+
+        <div class="bill-clinic-title">
+          GENERAL &amp; DIABETES CARE
+        </div>
+
+
+        <div class="bill-meta">
+
+          <strong>
+            Bill #:
+          </strong>
+
+          ${escapeHTML(
+            bill.id
+          )}
+
+          <br>
+
+          <strong>
+            Date:
+          </strong>
+
+          ${formatDisplayDate(
+            bill.bill_date
+          )}
+
+          <br>
+
+          <strong>
+            Patient:
+          </strong>
+
+          ${escapeHTML(
+            bill.patient_name ||
+            "-"
+          )}
+
+          <br>
+
+          <strong>
+            Patient ID:
+          </strong>
+
+          ${escapeHTML(
+            bill.patient_id ||
+            "-"
+          )}
+
+        </div>
+
+      </div>
+
+
+      <div class="bill-items">
+
+
+        <div class="bill-item-row">
+
+          <span>
+            Consultation Fee
+          </span>
+
+          <strong>
+            ${formatMoney(
+              consultationFee
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="bill-item-row">
+
+          <span>
+            Medicine Charges
+          </span>
+
+          <strong>
+            ${formatMoney(
+              medicineCharges
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="bill-item-row">
+
+          <span>
+            Procedure / Other Charges
+          </span>
+
+          <strong>
+            ${formatMoney(
+              procedureCharges
+            )}
+          </strong>
+
+        </div>
+
+
+        <div class="bill-total-row">
+
+          <span>
+            TOTAL
+          </span>
+
+          <span>
+            ${formatMoney(
+              getBillAmount(
+                bill
+              )
+            )}
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+      <div class="bill-meta">
+
+        <strong>
+          Payment Status:
+        </strong>
+
+        ${escapeHTML(
+          bill.payment_status ||
+          "-"
+        )}
+
+        <br>
+
+        <strong>
+          Payment Method:
+        </strong>
+
+        ${escapeHTML(
+          bill.payment_method ||
+          "-"
+        )}
+
+      </div>
+
+    `;
+
+
+  document
+    .getElementById(
+      "billDetailPanel"
+    )
+    .classList
+    .add(
+      "open"
+    );
+
+
+  document
+    .getElementById(
+      "billDetailPanel"
+    )
+    .scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+}
+
+
+function closeBillDetails() {
+
+  document
+    .getElementById(
+      "billDetailPanel"
+    )
+    .classList
+    .remove(
+      "open"
+    );
+
+}
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+document
+  .getElementById(
+    "viewReportButton"
+  )
+  .addEventListener(
+    "click",
+    loadMonthlyReport
+  );
+
+
+document
+  .getElementById(
+    "refreshButton"
+  )
+  .addEventListener(
+    "click",
+    loadMonthlyReport
+  );
+
+
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+
+      window.location.href =
+        "doctor-login.html";
+
+    }
+  );
+
+
+window.openBillDetails =
+  openBillDetails;
+
+window.closeBillDetails =
+  closeBillDetails;
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+(async function initializePage() {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+
+  if (!loggedIn) {
+    return;
+  }
+
+
+  buildYearOptions();
+
+
+  setDefaultMonth();
+
+
+  await loadMonthlyReport();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
