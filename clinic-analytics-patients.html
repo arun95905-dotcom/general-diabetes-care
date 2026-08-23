@@ -453,11 +453,76 @@ input {
 .chart-wrap {
   position: relative;
   width: 100%;
-  min-height: 290px;
+  min-height: 310px;
 }
 
 .chart-wrap canvas {
-  max-height: 310px;
+  max-height: 330px;
+}
+
+
+/* =========================================================
+   SELECTED MONTH POPUP
+   ========================================================= */
+
+.registration-month-popup {
+  display: none;
+  margin-top: 14px;
+  padding: 15px 16px;
+  background:
+    linear-gradient(
+      135deg,
+      #eaf8ff,
+      #ffffff
+    );
+  border: 1px solid #cce8f5;
+  border-radius: 14px;
+  box-shadow:
+    0 5px 17px rgba(30,90,120,.05);
+}
+
+.registration-month-popup.open {
+  display: block;
+}
+
+.popup-label {
+  color: #6b7b88;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.popup-month {
+  margin-top: 5px;
+  color: #173b4f;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.popup-value {
+  margin-top: 7px;
+  color: #1180a2;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.popup-description {
+  margin-top: 2px;
+  color: #6d7c89;
+  font-size: 12px;
+}
+
+.popup-close {
+  margin-top: 10px;
+  padding: 6px 9px;
+  color: #536877;
+  background: #ffffff;
+  border: 1px solid #d6e3ea;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 750;
 }
 
 
@@ -517,9 +582,11 @@ input {
 }
 
 @keyframes spin {
+
   to {
     transform: rotate(360deg);
   }
+
 }
 
 
@@ -550,6 +617,10 @@ input {
     grid-template-columns: 1fr;
   }
 
+  .chart-wrap {
+    min-height: 340px;
+  }
+
 }
 
 </style>
@@ -562,6 +633,10 @@ input {
 
 <div class="analytics-page">
 
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
 
 <header class="page-header">
 
@@ -593,7 +668,9 @@ Patient registrations, growth and trends
 </div>
 
 
-<!-- PERIOD -->
+<!-- =====================================================
+     PERIOD
+     ===================================================== -->
 
 <div class="period-card">
 
@@ -640,6 +717,7 @@ Change ›
 <div class="quick-periods">
 
 <button
+  type="button"
   class="quick-period-button"
   onclick="setQuickPeriod('today')">
 
@@ -648,6 +726,7 @@ Today
 </button>
 
 <button
+  type="button"
   class="quick-period-button"
   onclick="setQuickPeriod('7')">
 
@@ -656,6 +735,7 @@ Today
 </button>
 
 <button
+  type="button"
   class="quick-period-button"
   onclick="setQuickPeriod('30')">
 
@@ -667,6 +747,7 @@ Today
 
 
 <div class="date-grid">
+
 
 <div class="date-group">
 
@@ -692,6 +773,7 @@ To
   id="analyticsEndDate">
 
 </div>
+
 
 </div>
 
@@ -724,6 +806,10 @@ Close
 </div>
 
 
+<!-- =====================================================
+     LOADING
+     ===================================================== -->
+
 <div
   id="loadingCard"
   class="loading-card">
@@ -740,7 +826,9 @@ Loading patient analytics...
   style="display:none;">
 
 
-<!-- SUMMARY -->
+<!-- =====================================================
+     SUMMARY
+     ===================================================== -->
 
 <div class="summary-grid">
 
@@ -824,7 +912,9 @@ Registered this month
 </div>
 
 
-<!-- GROWTH -->
+<!-- =====================================================
+     GROWTH
+     ===================================================== -->
 
 <div class="section-title">
 Patient Growth
@@ -903,7 +993,9 @@ Difference
 </div>
 
 
-<!-- REGISTRATION SUMMARY -->
+<!-- =====================================================
+     REGISTRATION SUMMARY
+     ===================================================== -->
 
 <div class="section-title">
 Registration Summary
@@ -980,7 +1072,9 @@ Previous Month
 </div>
 
 
-<!-- CHART -->
+<!-- =====================================================
+     MONTHLY REGISTRATION CHART
+     ===================================================== -->
 
 <div class="section-title">
 Monthly Registration Trend
@@ -994,7 +1088,7 @@ Monthly Registration Trend
 </h2>
 
 <p class="chart-description">
-New patient registrations during the last 12 months
+Tap any month point to view the number of new patient registrations
 </p>
 
 
@@ -1005,11 +1099,53 @@ New patient registrations during the last 12 months
 </div>
 
 
+<div
+  id="registrationMonthPopup"
+  class="registration-month-popup">
+
+<div class="popup-label">
+📅 Monthly Registration
+</div>
+
+<div
+  id="popupMonth"
+  class="popup-month">
+—
+</div>
+
+<div
+  id="popupValue"
+  class="popup-value">
+0
+</div>
+
+<div
+  id="popupDescription"
+  class="popup-description">
+patient registrations
+</div>
+
+<button
+  type="button"
+  class="popup-close"
+  onclick="closeRegistrationMonthPopup()">
+
+✕ Close
+
+</button>
+
 </div>
 
 
 </div>
 
+
+</div>
+
+
+<!-- =====================================================
+     BOTTOM ACTIONS
+     ===================================================== -->
 
 <div class="action-row bottom-actions">
 
@@ -1100,24 +1236,34 @@ async function checkDoctorLogin() {
    DATE HELPERS
    ========================================================= */
 
-function formatDateInput(date) {
+function formatDateInput(
+  date
+) {
 
   return (
     date.getFullYear() +
     "-" +
     String(
       date.getMonth() + 1
-    ).padStart(2,"0") +
+    ).padStart(
+      2,
+      "0"
+    ) +
     "-" +
     String(
       date.getDate()
-    ).padStart(2,"0")
+    ).padStart(
+      2,
+      "0"
+    )
   );
 
 }
 
 
-function formatDisplayDate(value) {
+function formatDisplayDate(
+  value
+) {
 
   return new Date(
     value +
@@ -1126,20 +1272,32 @@ function formatDisplayDate(value) {
   .toLocaleDateString(
     "en-IN",
     {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
+      day:
+        "2-digit",
+
+      month:
+        "short",
+
+      year:
+        "numeric"
     }
   );
 
 }
 
 
-function dateOnly(value) {
+function dateOnly(
+  value
+) {
 
   return value
-    ? String(value)
-        .substring(0,10)
+    ? String(
+        value
+      )
+      .substring(
+        0,
+        10
+      )
     : "";
 
 }
@@ -1169,7 +1327,9 @@ function setDefaultPeriod() {
       "analyticsStartDate"
     )
     .value =
-      formatDateInput(start);
+      formatDateInput(
+        start
+      );
 
 
   document
@@ -1177,7 +1337,9 @@ function setDefaultPeriod() {
       "analyticsEndDate"
     )
     .value =
-      formatDateInput(today);
+      formatDateInput(
+        today
+      );
 
 
   updatePeriodDisplay(
@@ -1187,7 +1349,13 @@ function setDefaultPeriod() {
 }
 
 
-function setQuickPeriod(type) {
+/* =========================================================
+   QUICK PERIOD
+   ========================================================= */
+
+function setQuickPeriod(
+  type
+) {
 
   const today =
     new Date();
@@ -1202,7 +1370,8 @@ function setQuickPeriod(type) {
 
 
   if (
-    type === "today"
+    type ===
+    "today"
   ) {
 
     label =
@@ -1212,12 +1381,14 @@ function setQuickPeriod(type) {
 
 
   if (
-    type === "7"
+    type ===
+    "7"
   ) {
 
     start.setDate(
       today.getDate() - 6
     );
+
 
     label =
       "Last 7 days";
@@ -1226,12 +1397,14 @@ function setQuickPeriod(type) {
 
 
   if (
-    type === "30"
+    type ===
+    "30"
   ) {
 
     start.setDate(
       today.getDate() - 29
     );
+
 
     label =
       "Last 30 days";
@@ -1244,7 +1417,9 @@ function setQuickPeriod(type) {
       "analyticsStartDate"
     )
     .value =
-      formatDateInput(start);
+      formatDateInput(
+        start
+      );
 
 
   document
@@ -1252,10 +1427,14 @@ function setQuickPeriod(type) {
       "analyticsEndDate"
     )
     .value =
-      formatDateInput(today);
+      formatDateInput(
+        today
+      );
 
 
-  updatePeriodDisplay(label);
+  updatePeriodDisplay(
+    label
+  );
 
 
   loadAnalytics();
@@ -1263,7 +1442,13 @@ function setQuickPeriod(type) {
 }
 
 
-function updatePeriodDisplay(label) {
+/* =========================================================
+   PERIOD DISPLAY
+   ========================================================= */
+
+function updatePeriodDisplay(
+  label
+) {
 
   const start =
     document
@@ -1281,14 +1466,28 @@ function updatePeriodDisplay(label) {
       .value;
 
 
+  if (
+    !start ||
+    !end
+  ) {
+
+    return;
+
+  }
+
+
   document
     .getElementById(
       "periodDisplay"
     )
     .textContent =
-      formatDisplayDate(start) +
+      formatDisplayDate(
+        start
+      ) +
       " — " +
-      formatDisplayDate(end);
+      formatDisplayDate(
+        end
+      );
 
 
   document
@@ -1313,20 +1512,31 @@ async function loadPatients() {
     error
   } =
     await supabaseClient
-      .from("patients")
+      .from(
+        "patients"
+      )
       .select(
         "id,created_at"
       )
       .order(
         "created_at",
         {
-          ascending: true
+          ascending:
+            true
         }
       );
 
 
   if (error) {
+
+    console.error(
+      "Patient analytics query error:",
+      error
+    );
+
+
     throw error;
+
   }
 
 
@@ -1336,7 +1546,7 @@ async function loadPatients() {
 
 
 /* =========================================================
-   COUNTERS
+   COUNTER
    ========================================================= */
 
 function countBetween(
@@ -1366,21 +1576,23 @@ function countBetween(
 
 
 /* =========================================================
-   ANALYTICS
+   LOAD ANALYTICS
    ========================================================= */
 
 async function loadAnalytics() {
 
   const loading =
-    document.getElementById(
-      "loadingCard"
-    );
+    document
+      .getElementById(
+        "loadingCard"
+      );
 
 
   const content =
-    document.getElementById(
-      "analyticsContent"
-    );
+    document
+      .getElementById(
+        "analyticsContent"
+      );
 
 
   loading.style.display =
@@ -1389,6 +1601,9 @@ async function loadAnalytics() {
 
   content.style.display =
     "none";
+
+
+  closeRegistrationMonthPopup();
 
 
   try {
@@ -1442,7 +1657,9 @@ async function loadAnalytics() {
 
 
     const todayString =
-      formatDateInput(today);
+      formatDateInput(
+        today
+      );
 
 
     const monthStart =
@@ -1491,6 +1708,10 @@ async function loadAnalytics() {
         endDate
       );
 
+
+    /* =====================================================
+       PREVIOUS EQUAL PERIOD
+       ===================================================== */
 
     const startObject =
       new Date(
@@ -1551,6 +1772,10 @@ async function loadAnalytics() {
         )
       );
 
+
+    /* =====================================================
+       GROWTH
+       ===================================================== */
 
     let growth =
       0;
@@ -1618,6 +1843,10 @@ async function loadAnalytics() {
       );
 
 
+    /* =====================================================
+       DISPLAY SUMMARY
+       ===================================================== */
+
     document
       .getElementById(
         "totalPatients"
@@ -1655,7 +1884,9 @@ async function loadAnalytics() {
         "growthPercent"
       )
       .textContent =
-        growth.toFixed(1) +
+        growth.toFixed(
+          1
+        ) +
         "%";
 
 
@@ -1680,10 +1911,8 @@ async function loadAnalytics() {
         "growthDifference"
       )
       .textContent =
-        (
-          periodCount -
-          previousCount
-        );
+        periodCount -
+        previousCount;
 
 
     document
@@ -1729,7 +1958,10 @@ async function loadAnalytics() {
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "Patient Analytics error:",
+      error
+    );
 
 
     alert(
@@ -1749,7 +1981,8 @@ async function loadAnalytics() {
 
 
 /* =========================================================
-   CHART
+   MONTHLY PATIENT CHART
+   CLICKABLE MONTHS
    ========================================================= */
 
 function renderPatientChart(
@@ -1761,6 +1994,10 @@ function renderPatientChart(
 
 
   const values =
+    [];
+
+
+  const monthData =
     [];
 
 
@@ -1797,7 +2034,9 @@ function renderPatientChart(
           if (
             !patient.created_at
           ) {
+
             return false;
+
           }
 
 
@@ -1805,6 +2044,17 @@ function renderPatientChart(
             new Date(
               patient.created_at
             );
+
+
+          if (
+            Number.isNaN(
+              date.getTime()
+            )
+          ) {
+
+            return false;
+
+          }
 
 
           return (
@@ -1818,20 +2068,60 @@ function renderPatientChart(
       ).length;
 
 
-    labels.push(
+    const shortLabel =
       month.toLocaleDateString(
         "en-IN",
         {
-          month: "short",
-          year: "2-digit"
+          month:
+            "short",
+
+          year:
+            "2-digit"
         }
-      )
+      );
+
+
+    const fullLabel =
+      month.toLocaleDateString(
+        "en-IN",
+        {
+          month:
+            "long",
+
+          year:
+            "numeric"
+        }
+      );
+
+
+    labels.push(
+      shortLabel
     );
 
 
     values.push(
       count
     );
+
+
+    monthData.push({
+
+      year:
+        year,
+
+      month:
+        monthNumber,
+
+      shortLabel:
+        shortLabel,
+
+      label:
+        fullLabel,
+
+      count:
+        count
+
+    });
 
   }
 
@@ -1845,20 +2135,27 @@ function renderPatientChart(
   }
 
 
+  const canvas =
+    document
+      .getElementById(
+        "patientRegistrationChart"
+      );
+
+
   patientChart =
     new Chart(
-      document.getElementById(
-        "patientRegistrationChart"
-      ),
+      canvas,
       {
 
         type:
           "line",
 
+
         data: {
 
           labels:
             labels,
+
 
           datasets: [
 
@@ -1874,13 +2171,23 @@ function renderPatientChart(
                 0.35,
 
               fill:
-                true
+                true,
+
+              pointRadius:
+                5,
+
+              pointHoverRadius:
+                7,
+
+              pointHitRadius:
+                20
 
             }
 
           ]
 
         },
+
 
         options: {
 
@@ -1890,14 +2197,138 @@ function renderPatientChart(
           maintainAspectRatio:
             false,
 
+
+          interaction: {
+
+            mode:
+              "nearest",
+
+            intersect:
+              true
+
+          },
+
+
+          /* =================================================
+             TAP / CLICK MONTH POINT
+             ================================================= */
+
+          onClick:
+            function(
+              event,
+              elements
+            ) {
+
+              if (
+                !elements ||
+                elements.length === 0
+              ) {
+
+                return;
+
+              }
+
+
+              const index =
+                elements[0]
+                  .index;
+
+
+              showRegistrationMonthPopup(
+                monthData[
+                  index
+                ]
+              );
+
+            },
+
+
+          /* =================================================
+             CHANGE CURSOR OVER CLICKABLE POINT
+             ================================================= */
+
+          onHover:
+            function(
+              event,
+              elements
+            ) {
+
+              const target =
+                event.native
+                  ? event.native.target
+                  : canvas;
+
+
+              target.style.cursor =
+                elements &&
+                elements.length > 0
+                  ? "pointer"
+                  : "default";
+
+            },
+
+
           plugins: {
 
             legend: {
+
               display:
                 false
+
+            },
+
+
+            tooltip: {
+
+              callbacks: {
+
+
+                title:
+                  function(
+                    context
+                  ) {
+
+                    const index =
+                      context[0]
+                        .dataIndex;
+
+
+                    return monthData[
+                      index
+                    ].label;
+
+                  },
+
+
+                label:
+                  function(
+                    context
+                  ) {
+
+                    const count =
+                      Number(
+                        context.raw ||
+                        0
+                      );
+
+
+                    return (
+                      count +
+                      (
+                        count === 1
+                          ? " patient registration"
+                          : " patient registrations"
+                      )
+                    );
+
+                  }
+
+              }
+
             }
 
           },
+
 
           scales: {
 
@@ -1921,6 +2352,90 @@ function renderPatientChart(
 
       }
     );
+
+}
+
+
+/* =========================================================
+   MONTH POPUP
+   ========================================================= */
+
+function showRegistrationMonthPopup(
+  month
+) {
+
+  if (!month) {
+    return;
+  }
+
+
+  const popup =
+    document
+      .getElementById(
+        "registrationMonthPopup"
+      );
+
+
+  document
+    .getElementById(
+      "popupMonth"
+    )
+    .textContent =
+      month.label;
+
+
+  document
+    .getElementById(
+      "popupValue"
+    )
+    .textContent =
+      month.count;
+
+
+  document
+    .getElementById(
+      "popupDescription"
+    )
+    .textContent =
+      month.count === 1
+        ? "patient registration"
+        : "patient registrations";
+
+
+  popup.classList.add(
+    "open"
+  );
+
+
+  popup.scrollIntoView({
+
+    behavior:
+      "smooth",
+
+    block:
+      "nearest"
+
+  });
+
+}
+
+
+function closeRegistrationMonthPopup() {
+
+  const popup =
+    document
+      .getElementById(
+        "registrationMonthPopup"
+      );
+
+
+  if (popup) {
+
+    popup.classList.remove(
+      "open"
+    );
+
+  }
 
 }
 
@@ -2032,6 +2547,9 @@ document
 
 window.setQuickPeriod =
   setQuickPeriod;
+
+window.closeRegistrationMonthPopup =
+  closeRegistrationMonthPopup;
 
 
 /* =========================================================
