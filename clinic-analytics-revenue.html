@@ -13,9 +13,7 @@
 Revenue & Billing | General & Diabetes Care
 </title>
 
-<link
-  rel="stylesheet"
-  href="styles.css">
+<link rel="stylesheet" href="styles.css">
 
 <style>
 
@@ -345,7 +343,7 @@ select {
 
 
 /* =========================================================
-   SECTION
+   GENERAL CARD
    ========================================================= */
 
 .section-title {
@@ -751,7 +749,6 @@ select {
 
 <body>
 
-
 <div class="analytics-page">
 
 
@@ -776,6 +773,7 @@ Revenue, collections, payment methods and bill details
 
 <a
   href="clinic-analytics.html"
+  id="backToAnalyticsLink"
   class="portal-button light-button">
 
 ← Back to Clinic Analytics
@@ -785,7 +783,9 @@ Revenue, collections, payment methods and bill details
 </div>
 
 
-<!-- PERIOD -->
+<!-- =====================================================
+     PERIOD
+     ===================================================== -->
 
 <div class="period-card">
 
@@ -832,6 +832,7 @@ Change ›
 <div class="quick-periods">
 
 <button
+  type="button"
   class="quick-period-button"
   onclick="setQuickPeriod('today')">
 
@@ -840,6 +841,7 @@ Today
 </button>
 
 <button
+  type="button"
   class="quick-period-button"
   onclick="setQuickPeriod('7')">
 
@@ -848,6 +850,7 @@ Today
 </button>
 
 <button
+  type="button"
   class="quick-period-button"
   onclick="setQuickPeriod('30')">
 
@@ -910,11 +913,14 @@ Close
 
 </div>
 
-
 </div>
 
 </div>
 
+
+<!-- =====================================================
+     LOADING
+     ===================================================== -->
 
 <div
   id="loadingCard"
@@ -932,7 +938,9 @@ Loading revenue analytics...
   style="display:none;">
 
 
-<!-- SUMMARY -->
+<!-- =====================================================
+     SUMMARY
+     ===================================================== -->
 
 <div class="summary-grid">
 
@@ -1035,7 +1043,9 @@ Average bill
 </div>
 
 
-<!-- COLLECTION -->
+<!-- =====================================================
+     COLLECTION
+     ===================================================== -->
 
 <div class="section-title">
 Collection Performance
@@ -1043,6 +1053,7 @@ Collection Performance
 
 
 <div class="portal-card collection-card">
+
 
 <div class="collection-circle">
 
@@ -1110,7 +1121,9 @@ Total Bills
 </div>
 
 
-<!-- PAYMENT METHODS -->
+<!-- =====================================================
+     PAYMENT METHODS
+     ===================================================== -->
 
 <div class="section-title">
 Payment Methods
@@ -1127,7 +1140,9 @@ Payment Methods
 </div>
 
 
-<!-- MONTHLY REVENUE -->
+<!-- =====================================================
+     MONTHLY REVENUE
+     ===================================================== -->
 
 <div class="section-title">
 Monthly Revenue
@@ -1164,9 +1179,7 @@ Monthly Revenue
 —
 </span>
 
-<span>
-›
-</span>
+<span>›</span>
 
 </button>
 
@@ -1200,9 +1213,7 @@ Monthly Revenue
 —
 </span>
 
-<span>
-›
-</span>
+<span>›</span>
 
 </button>
 
@@ -1212,7 +1223,9 @@ Monthly Revenue
 </div>
 
 
-<!-- MONTH BILL LIST -->
+<!-- =====================================================
+     MONTH BILLS
+     ===================================================== -->
 
 <div
   id="monthBillsPanel"
@@ -1236,6 +1249,7 @@ Paid Bills
 
 </div>
 
+
 <button
   type="button"
   class="portal-button light-button"
@@ -1256,7 +1270,9 @@ Paid Bills
 </div>
 
 
-<!-- BILL DETAIL -->
+<!-- =====================================================
+     BILL DETAIL
+     ===================================================== -->
 
 <div
   id="billDetailPanel"
@@ -1275,6 +1291,7 @@ Individual patient bill
 </div>
 
 </div>
+
 
 <button
   type="button"
@@ -1486,6 +1503,7 @@ function isPaid(bill) {
       bill.payment_status ||
       ""
     )
+    .trim()
     .toLowerCase() ===
     "paid"
   );
@@ -1517,7 +1535,9 @@ function setDefaultPeriod() {
       "analyticsStartDate"
     )
     .value =
-      formatDateInput(start);
+      formatDateInput(
+        start
+      );
 
 
   document
@@ -1525,7 +1545,9 @@ function setDefaultPeriod() {
       "analyticsEndDate"
     )
     .value =
-      formatDateInput(today);
+      formatDateInput(
+        today
+      );
 
 
   updatePeriodDisplay(
@@ -1534,6 +1556,155 @@ function setDefaultPeriod() {
 
 }
 
+
+/* =========================================================
+   RECEIVE PERIOD FROM MAIN ANALYTICS
+   ========================================================= */
+
+function loadPeriodFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const start =
+    params.get(
+      "start"
+    );
+
+
+  const end =
+    params.get(
+      "end"
+    );
+
+
+  if (
+    !start ||
+    !end
+  ) {
+
+    return false;
+
+  }
+
+
+  const datePattern =
+    /^\d{4}-\d{2}-\d{2}$/;
+
+
+  if (
+    !datePattern.test(start) ||
+    !datePattern.test(end)
+  ) {
+
+    return false;
+
+  }
+
+
+  if (
+    start >
+    end
+  ) {
+
+    return false;
+
+  }
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      start;
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      end;
+
+
+  updatePeriodDisplay(
+    "Selected analytics period"
+  );
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   BACK WITH SAME PERIOD
+   ========================================================= */
+
+function updateBackToAnalyticsLink() {
+
+  const start =
+    document
+      .getElementById(
+        "analyticsStartDate"
+      )
+      .value;
+
+
+  const end =
+    document
+      .getElementById(
+        "analyticsEndDate"
+      )
+      .value;
+
+
+  const link =
+    document
+      .getElementById(
+        "backToAnalyticsLink"
+      );
+
+
+  if (!link) {
+    return;
+  }
+
+
+  if (
+    !start ||
+    !end
+  ) {
+
+    link.href =
+      "clinic-analytics.html";
+
+    return;
+
+  }
+
+
+  link.href =
+    "clinic-analytics.html" +
+    "?start=" +
+    encodeURIComponent(
+      start
+    ) +
+    "&end=" +
+    encodeURIComponent(
+      end
+    );
+
+}
+
+
+/* =========================================================
+   QUICK PERIOD
+   ========================================================= */
 
 function setQuickPeriod(type) {
 
@@ -1550,7 +1721,8 @@ function setQuickPeriod(type) {
 
 
   if (
-    type === "today"
+    type ===
+    "today"
   ) {
 
     label =
@@ -1560,12 +1732,14 @@ function setQuickPeriod(type) {
 
 
   if (
-    type === "7"
+    type ===
+    "7"
   ) {
 
     start.setDate(
       today.getDate() - 6
     );
+
 
     label =
       "Last 7 days";
@@ -1574,12 +1748,14 @@ function setQuickPeriod(type) {
 
 
   if (
-    type === "30"
+    type ===
+    "30"
   ) {
 
     start.setDate(
       today.getDate() - 29
     );
+
 
     label =
       "Last 30 days";
@@ -1592,7 +1768,9 @@ function setQuickPeriod(type) {
       "analyticsStartDate"
     )
     .value =
-      formatDateInput(start);
+      formatDateInput(
+        start
+      );
 
 
   document
@@ -1600,16 +1778,27 @@ function setQuickPeriod(type) {
       "analyticsEndDate"
     )
     .value =
-      formatDateInput(today);
+      formatDateInput(
+        today
+      );
 
 
-  updatePeriodDisplay(label);
+  updatePeriodDisplay(
+    label
+  );
+
+
+  updateBackToAnalyticsLink();
 
 
   loadAnalytics();
 
 }
 
+
+/* =========================================================
+   PERIOD DISPLAY
+   ========================================================= */
 
 function updatePeriodDisplay(label) {
 
@@ -1629,14 +1818,28 @@ function updatePeriodDisplay(label) {
       .value;
 
 
+  if (
+    !start ||
+    !end
+  ) {
+
+    return;
+
+  }
+
+
   document
     .getElementById(
       "periodDisplay"
     )
     .textContent =
-      formatDisplayDate(start) +
+      formatDisplayDate(
+        start
+      ) +
       " — " +
-      formatDisplayDate(end);
+      formatDisplayDate(
+        end
+      );
 
 
   document
@@ -1683,7 +1886,15 @@ async function loadBills(
 
 
   if (error) {
+
+    console.error(
+      "Revenue billing query error:",
+      error
+    );
+
+
     throw error;
+
   }
 
 
@@ -1693,7 +1904,7 @@ async function loadBills(
 
 
 /* =========================================================
-   LOAD ANALYTICS
+   MAIN ANALYTICS
    ========================================================= */
 
 async function loadAnalytics() {
@@ -1784,7 +1995,9 @@ async function loadAnalytics() {
       allBills.filter(
         function(bill) {
 
-          return !isPaid(bill);
+          return !isPaid(
+            bill
+          );
 
         }
       );
@@ -1792,11 +2005,16 @@ async function loadAnalytics() {
 
     const totalBilled =
       allBills.reduce(
-        function(total,bill) {
+        function(
+          total,
+          bill
+        ) {
 
           return (
             total +
-            getBillAmount(bill)
+            getBillAmount(
+              bill
+            )
           );
 
         },
@@ -1806,11 +2024,16 @@ async function loadAnalytics() {
 
     const paidAmount =
       paidBills.reduce(
-        function(total,bill) {
+        function(
+          total,
+          bill
+        ) {
 
           return (
             total +
-            getBillAmount(bill)
+            getBillAmount(
+              bill
+            )
           );
 
         },
@@ -1820,11 +2043,16 @@ async function loadAnalytics() {
 
     const pendingAmount =
       pendingBills.reduce(
-        function(total,bill) {
+        function(
+          total,
+          bill
+        ) {
 
           return (
             total +
-            getBillAmount(bill)
+            getBillAmount(
+              bill
+            )
           );
 
         },
@@ -1945,7 +2173,10 @@ async function loadAnalytics() {
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "Revenue analytics error:",
+      error
+    );
 
 
     alert(
@@ -2002,26 +2233,35 @@ function renderPaymentMethods(
         ).trim();
 
 
+      const amount =
+        getBillAmount(
+          bill
+        );
+
+
       if (
-        method === "Cash"
+        method ===
+        "Cash"
       ) {
 
         methods.Cash +=
-          getBillAmount(bill);
+          amount;
 
       } else if (
-        method === "UPI"
+        method ===
+        "UPI"
       ) {
 
         methods.UPI +=
-          getBillAmount(bill);
+          amount;
 
       } else if (
-        method === "Card"
+        method ===
+        "Card"
       ) {
 
         methods.Card +=
-          getBillAmount(bill);
+          amount;
 
       } else if (
         method ===
@@ -2031,14 +2271,14 @@ function renderPaymentMethods(
         methods[
           "Bank Transfer"
         ] +=
-          getBillAmount(bill);
+          amount;
 
       } else {
 
         methods[
           "Other / Not Specified"
         ] +=
-          getBillAmount(bill);
+          amount;
 
       }
 
@@ -2051,9 +2291,15 @@ function renderPaymentMethods(
       methods
     )
     .reduce(
-      function(sum,value) {
+      function(
+        sum,
+        value
+      ) {
 
-        return sum + value;
+        return (
+          sum +
+          value
+        );
 
       },
       0
@@ -2151,7 +2397,7 @@ function renderPaymentMethods(
 
 
 /* =========================================================
-   MONTHLY CARD DATA
+   MONTH HELPERS
    ========================================================= */
 
 function getMonthRange(
@@ -2192,6 +2438,10 @@ function getMonthRange(
 }
 
 
+/* =========================================================
+   MONTH PAID BILLS
+   ========================================================= */
+
 async function getPaidBillsForMonth(
   year,
   month
@@ -2219,10 +2469,6 @@ async function getPaidBillsForMonth(
         "bill_date",
         range.end
       )
-      .eq(
-        "payment_status",
-        "Paid"
-      )
       .order(
         "bill_date",
         {
@@ -2232,14 +2478,32 @@ async function getPaidBillsForMonth(
 
 
   if (error) {
+
+    console.error(
+      "Monthly billing query error:",
+      error
+    );
+
+
     throw error;
+
   }
 
 
-  return data || [];
+  return (
+    data ||
+    []
+  )
+  .filter(
+    isPaid
+  );
 
 }
 
+
+/* =========================================================
+   MONTH CARDS
+   ========================================================= */
 
 async function loadMonthlyCards() {
 
@@ -2277,6 +2541,7 @@ async function loadMonthlyCards() {
       getPaidBillsForMonth(
         lastMonthDate
           .getFullYear(),
+
         lastMonthDate
           .getMonth()
       )
@@ -2286,11 +2551,16 @@ async function loadMonthlyCards() {
 
   const thisMonthTotal =
     thisMonthBills.reduce(
-      function(total,bill) {
+      function(
+        total,
+        bill
+      ) {
 
         return (
           total +
-          getBillAmount(bill)
+          getBillAmount(
+            bill
+          )
         );
 
       },
@@ -2300,11 +2570,16 @@ async function loadMonthlyCards() {
 
   const lastMonthTotal =
     lastMonthBills.reduce(
-      function(total,bill) {
+      function(
+        total,
+        bill
+      ) {
 
         return (
           total +
-          getBillAmount(bill)
+          getBillAmount(
+            bill
+          )
         );
 
       },
@@ -2329,7 +2604,8 @@ async function loadMonthlyCards() {
     .textContent =
       thisMonthBills.length +
       (
-        thisMonthBills.length === 1
+        thisMonthBills.length ===
+        1
           ? " paid bill"
           : " paid bills"
       );
@@ -2343,8 +2619,11 @@ async function loadMonthlyCards() {
       now.toLocaleDateString(
         "en-IN",
         {
-          month: "short",
-          year: "numeric"
+          month:
+            "short",
+
+          year:
+            "numeric"
         }
       );
 
@@ -2366,7 +2645,8 @@ async function loadMonthlyCards() {
     .textContent =
       lastMonthBills.length +
       (
-        lastMonthBills.length === 1
+        lastMonthBills.length ===
+        1
           ? " paid bill"
           : " paid bills"
       );
@@ -2381,8 +2661,11 @@ async function loadMonthlyCards() {
         .toLocaleDateString(
           "en-IN",
           {
-            month: "short",
-            year: "numeric"
+            month:
+              "short",
+
+            year:
+              "numeric"
           }
         );
 
@@ -2453,19 +2736,27 @@ async function openMonthBills(
         .toLocaleDateString(
           "en-IN",
           {
-            month: "short",
-            year: "numeric"
+            month:
+              "short",
+
+            year:
+              "numeric"
           }
         );
 
 
     const total =
       currentMonthBills.reduce(
-        function(sum,bill) {
+        function(
+          sum,
+          bill
+        ) {
 
           return (
             sum +
-            getBillAmount(bill)
+            getBillAmount(
+              bill
+            )
           );
 
         },
@@ -2489,7 +2780,8 @@ async function openMonthBills(
       .textContent =
         currentMonthBills.length +
         (
-          currentMonthBills.length === 1
+          currentMonthBills.length ===
+          1
             ? " paid bill"
             : " paid bills"
         ) +
@@ -2511,7 +2803,12 @@ async function openMonthBills(
         .innerHTML = `
 
           <div class="loading-card">
-            No paid bills found for ${monthLabel}.
+
+            No paid bills found for
+            ${escapeHTML(
+              monthLabel
+            )}.
+
           </div>
 
         `;
@@ -2546,6 +2843,7 @@ async function openMonthBills(
 
             </thead>
 
+
             <tbody>
 
               ${
@@ -2577,6 +2875,7 @@ async function openMonthBills(
 
                           </td>
 
+
                           <td>
 
                             ${formatDisplayDate(
@@ -2584,6 +2883,7 @@ async function openMonthBills(
                             )}
 
                           </td>
+
 
                           <td>
 
@@ -2628,12 +2928,22 @@ async function openMonthBills(
         "monthBillsPanel"
       )
       .scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+
+        behavior:
+          "smooth",
+
+        block:
+          "start"
+
       });
 
 
   } catch (error) {
+
+    console.error(
+      error
+    );
+
 
     alert(
       "Unable to load monthly bills."
@@ -2643,6 +2953,10 @@ async function openMonthBills(
 
 }
 
+
+/* =========================================================
+   CLOSE MONTH
+   ========================================================= */
 
 function closeMonthBills() {
 
@@ -2708,6 +3022,7 @@ async function openBillDetails(
         "Unable to load bill."
       );
 
+
       return;
 
     }
@@ -2761,24 +3076,29 @@ async function openBillDetails(
           <strong>
             Bill #:
           </strong>
+
           ${escapeHTML(
             bill.id
           )}
 
           <br>
 
+
           <strong>
             Date:
           </strong>
+
           ${formatDisplayDate(
             bill.bill_date
           )}
 
           <br>
 
+
           <strong>
             Patient:
           </strong>
+
           ${escapeHTML(
             bill.patient_name ||
             "-"
@@ -2786,9 +3106,11 @@ async function openBillDetails(
 
           <br>
 
+
           <strong>
             Patient ID:
           </strong>
+
           ${escapeHTML(
             bill.patient_id ||
             "-"
@@ -2809,9 +3131,11 @@ async function openBillDetails(
           </span>
 
           <strong>
+
             ${formatMoney(
               consultationFee
             )}
+
           </strong>
 
         </div>
@@ -2824,9 +3148,11 @@ async function openBillDetails(
           </span>
 
           <strong>
+
             ${formatMoney(
               medicineCharges
             )}
+
           </strong>
 
         </div>
@@ -2839,9 +3165,11 @@ async function openBillDetails(
           </span>
 
           <strong>
+
             ${formatMoney(
               procedureCharges
             )}
+
           </strong>
 
         </div>
@@ -2854,11 +3182,13 @@ async function openBillDetails(
           </span>
 
           <span>
+
             ${formatMoney(
               getBillAmount(
                 bill
               )
             )}
+
           </span>
 
         </div>
@@ -2872,6 +3202,7 @@ async function openBillDetails(
         <strong>
           Payment Status:
         </strong>
+
         ${escapeHTML(
           bill.payment_status ||
           "-"
@@ -2879,9 +3210,11 @@ async function openBillDetails(
 
         <br>
 
+
         <strong>
           Payment Method:
         </strong>
+
         ${escapeHTML(
           bill.payment_method ||
           "-"
@@ -2907,12 +3240,21 @@ async function openBillDetails(
       "billDetailPanel"
     )
     .scrollIntoView({
-      behavior: "smooth",
-      block: "start"
+
+      behavior:
+        "smooth",
+
+      block:
+        "start"
+
     });
 
 }
 
+
+/* =========================================================
+   CLOSE BILL
+   ========================================================= */
 
 function closeBillDetails() {
 
@@ -2929,7 +3271,7 @@ function closeBillDetails() {
 
 
 /* =========================================================
-   EVENTS
+   PERIOD UI
    ========================================================= */
 
 document
@@ -2974,6 +3316,10 @@ document
   );
 
 
+/* =========================================================
+   APPLY PERIOD
+   ========================================================= */
+
 document
   .getElementById(
     "applyPeriodButton"
@@ -2985,6 +3331,9 @@ document
       updatePeriodDisplay(
         "Custom analytics period"
       );
+
+
+      updateBackToAnalyticsLink();
 
 
       await loadAnalytics();
@@ -3003,6 +3352,10 @@ document
   );
 
 
+/* =========================================================
+   REFRESH
+   ========================================================= */
+
 document
   .getElementById(
     "refreshButton"
@@ -3012,6 +3365,10 @@ document
     loadAnalytics
   );
 
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
 
 document
   .getElementById(
@@ -3032,6 +3389,10 @@ document
     }
   );
 
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
 
 window.setQuickPeriod =
   setQuickPeriod;
@@ -3064,7 +3425,35 @@ window.closeBillDetails =
   }
 
 
-  setDefaultPeriod();
+  /*
+     First try to use the period supplied
+     by clinic-analytics.html.
+  */
+
+  const periodLoadedFromURL =
+    loadPeriodFromURL();
+
+
+  /*
+     If the page was opened directly,
+     use Last 30 Days.
+  */
+
+  if (
+    !periodLoadedFromURL
+  ) {
+
+    setDefaultPeriod();
+
+  }
+
+
+  /*
+     Back button carries the same dates
+     to the main Analytics page.
+  */
+
+  updateBackToAnalyticsLink();
 
 
   await loadAnalytics();
