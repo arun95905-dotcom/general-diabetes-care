@@ -388,9 +388,11 @@ button {
 }
 
 @keyframes spin {
+
   to {
     transform: rotate(360deg);
   }
+
 }
 
 
@@ -471,6 +473,10 @@ Monthly revenue and patient growth over time
 
 </div>
 
+
+<!-- =====================================================
+     LOADING
+     ===================================================== -->
 
 <div
   id="loadingCard"
@@ -718,7 +724,7 @@ Number of newly registered clinic patients each month
 
 
 <!-- =====================================================
-     MONTH SUMMARY
+     12 MONTH SUMMARY
      ===================================================== -->
 
 <div class="section-title">
@@ -738,6 +744,10 @@ Number of newly registered clinic patients each month
 
 </div>
 
+
+<!-- =====================================================
+     BOTTOM ACTIONS
+     ===================================================== -->
 
 <div class="action-row bottom-actions">
 
@@ -857,6 +867,11 @@ function getBillAmount(
   bill
 ) {
 
+  /*
+     Works safely regardless of which total column
+     exists in the current billing table.
+  */
+
   return Number(
     bill.total_amount ??
     bill.total ??
@@ -876,6 +891,7 @@ function isPaid(
       bill.payment_status ||
       ""
     )
+    .trim()
     .toLowerCase() ===
     "paid"
   );
@@ -883,11 +899,62 @@ function isPaid(
 }
 
 
+function safeDate(
+  value
+) {
+
+  if (!value) {
+    return null;
+  }
+
+
+  const date =
+    String(value).length === 10
+      ? new Date(
+          value +
+          "T00:00:00"
+        )
+      : new Date(
+          value
+        );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  return date;
+
+}
+
+
 /* =========================================================
    LOAD DATA
+   FIXED
    ========================================================= */
 
 async function loadBills() {
+
+  /*
+     IMPORTANT FIX
+
+     Do not explicitly request:
+     total
+     bill_amount
+
+     because Supabase rejects the entire query when
+     one of those columns does not exist.
+
+     select("*") is compatible with your current
+     billing table.
+  */
 
   const {
     data,
@@ -895,13 +962,19 @@ async function loadBills() {
   } =
     await supabaseClient
       .from("billing")
-      .select(
-        "id,bill_date,total_amount,total,bill_amount,payment_status"
-      );
+      .select("*");
 
 
   if (error) {
+
+    console.error(
+      "Performance Trends billing query error:",
+      error
+    );
+
+
     throw error;
+
   }
 
 
@@ -924,7 +997,15 @@ async function loadPatients() {
 
 
   if (error) {
+
+    console.error(
+      "Performance Trends patient query error:",
+      error
+    );
+
+
     throw error;
+
   }
 
 
@@ -1010,12 +1091,17 @@ async function loadAnalytics() {
   } catch (error) {
 
     console.error(
+      "Performance Trends error:",
       error
     );
 
 
     alert(
-      "Unable to load performance trends."
+      "Unable to load performance trends.\n\n" +
+      (
+        error.message ||
+        "Please refresh and try again."
+      )
     );
 
 
@@ -1068,13 +1154,19 @@ function buildMonthlyData(
       monthDate.getMonth();
 
 
+    /* =====================================================
+       PAID BILLS FOR MONTH
+       ===================================================== */
+
     const monthBills =
       bills.filter(
         function(bill) {
 
           if (
             !bill.bill_date ||
-            !isPaid(bill)
+            !isPaid(
+              bill
+            )
           ) {
 
             return false;
@@ -1083,10 +1175,14 @@ function buildMonthlyData(
 
 
           const date =
-            new Date(
-              bill.bill_date +
-              "T00:00:00"
+            safeDate(
+              bill.bill_date
             );
+
+
+          if (!date) {
+            return false;
+          }
 
 
           return (
@@ -1102,7 +1198,10 @@ function buildMonthlyData(
 
     const revenue =
       monthBills.reduce(
-        function(total,bill) {
+        function(
+          total,
+          bill
+        ) {
 
           return (
             total +
@@ -1115,6 +1214,10 @@ function buildMonthlyData(
         0
       );
 
+
+    /* =====================================================
+       PATIENT REGISTRATIONS FOR MONTH
+       ===================================================== */
 
     const monthPatients =
       patients.filter(
@@ -1130,9 +1233,14 @@ function buildMonthlyData(
 
 
           const date =
-            new Date(
+            safeDate(
               patient.created_at
             );
+
+
+          if (!date) {
+            return false;
+          }
 
 
           return (
@@ -1207,6 +1315,16 @@ function renderSummary(
   monthlyData
 ) {
 
+  if (
+    !monthlyData ||
+    monthlyData.length < 2
+  ) {
+
+    return;
+
+  }
+
+
   const current =
     monthlyData[
       monthlyData.length - 1
@@ -1221,11 +1339,17 @@ function renderSummary(
 
   const twelveMonthRevenue =
     monthlyData.reduce(
-      function(total,item) {
+      function(
+        total,
+        item
+      ) {
 
         return (
           total +
-          item.revenue
+          Number(
+            item.revenue ||
+            0
+          )
         );
 
       },
@@ -1287,6 +1411,10 @@ function renderSummary(
       current.patients;
 
 
+  /* =====================================================
+     REVENUE CHANGE
+     ===================================================== */
+
   let change =
     0;
 
@@ -1321,11 +1449,13 @@ function renderSummary(
     )
     .textContent =
       (
-        change >= 0
+        change > 0
           ? "+"
           : ""
       ) +
-      change.toFixed(1) +
+      change.toFixed(
+        1
+      ) +
       "%";
 
 
@@ -1360,9 +1490,11 @@ function renderSummary(
     )
     .textContent =
       (
-        difference >= 0
+        difference > 0
           ? "+"
-          : "-"
+          : difference < 0
+            ? "-"
+            : ""
       ) +
       formatMoney(
         Math.abs(
@@ -1390,12 +1522,16 @@ function renderRevenueChart(
   }
 
 
+  const canvas =
+    document
+      .getElementById(
+        "revenueChart"
+      );
+
+
   revenueChart =
     new Chart(
-      document
-        .getElementById(
-          "revenueChart"
-        ),
+      canvas,
       {
 
         type:
@@ -1432,13 +1568,23 @@ function renderRevenueChart(
                 0.35,
 
               fill:
-                true
+                true,
+
+              pointRadius:
+                4,
+
+              pointHoverRadius:
+                6,
+
+              pointHitRadius:
+                15
 
             }
 
           ]
 
         },
+
 
         options: {
 
@@ -1448,21 +1594,110 @@ function renderRevenueChart(
           maintainAspectRatio:
             false,
 
+
+          interaction: {
+
+            mode:
+              "nearest",
+
+            intersect:
+              false
+
+          },
+
+
           plugins: {
 
             legend: {
+
               display:
                 false
+
+            },
+
+
+            tooltip: {
+
+              callbacks: {
+
+                title:
+                  function(context) {
+
+                    const index =
+                      context[0]
+                        .dataIndex;
+
+
+                    return monthlyData[
+                      index
+                    ].label;
+
+                  },
+
+
+                label:
+                  function(context) {
+
+                    const index =
+                      context.dataIndex;
+
+
+                    const month =
+                      monthlyData[
+                        index
+                      ];
+
+
+                    return (
+                      "Paid revenue: " +
+                      formatMoney(
+                        month.revenue
+                      ) +
+                      " • " +
+                      month.paidBills +
+                      (
+                        month.paidBills ===
+                        1
+                          ? " bill"
+                          : " bills"
+                      )
+                    );
+
+                  }
+
+              }
+
             }
 
           },
+
 
           scales: {
 
             y: {
 
               beginAtZero:
-                true
+                true,
+
+              ticks: {
+
+                callback:
+                  function(value) {
+
+                    return (
+                      "₹" +
+                      Number(
+                        value ||
+                        0
+                      )
+                      .toLocaleString(
+                        "en-IN"
+                      )
+                    );
+
+                  }
+
+              }
 
             }
 
@@ -1493,12 +1728,16 @@ function renderPatientChart(
   }
 
 
+  const canvas =
+    document
+      .getElementById(
+        "patientChart"
+      );
+
+
   patientChart =
     new Chart(
-      document
-        .getElementById(
-          "patientChart"
-        ),
+      canvas,
       {
 
         type:
@@ -1537,6 +1776,7 @@ function renderPatientChart(
 
         },
 
+
         options: {
 
           responsive:
@@ -1545,14 +1785,63 @@ function renderPatientChart(
           maintainAspectRatio:
             false,
 
+
           plugins: {
 
             legend: {
+
               display:
                 false
+
+            },
+
+
+            tooltip: {
+
+              callbacks: {
+
+                title:
+                  function(context) {
+
+                    const index =
+                      context[0]
+                        .dataIndex;
+
+
+                    return monthlyData[
+                      index
+                    ].label;
+
+                  },
+
+
+                label:
+                  function(context) {
+
+                    const count =
+                      Number(
+                        context.raw ||
+                        0
+                      );
+
+
+                    return (
+                      count +
+                      (
+                        count === 1
+                          ? " patient registration"
+                          : " patient registrations"
+                      )
+                    );
+
+                  }
+
+              }
+
             }
 
           },
+
 
           scales: {
 
@@ -1581,7 +1870,7 @@ function renderPatientChart(
 
 
 /* =========================================================
-   MONTHLY SUMMARY
+   12 MONTH SUMMARY
    ========================================================= */
 
 function renderMonthlySummary(
@@ -1603,6 +1892,7 @@ function renderMonthlySummary(
 
               <div class="month-row">
 
+
                 <div class="month-name">
 
                   ${item.label}
@@ -1616,6 +1906,7 @@ function renderMonthlySummary(
                     item.revenue
                   )}
 
+
                   <div
                     style="
                       font-size:10px;
@@ -1625,10 +1916,11 @@ function renderMonthlySummary(
                     ">
 
                     ${item.paidBills}
+
                     ${
                       item.paidBills === 1
-                        ? "bill"
-                        : "bills"
+                        ? "paid bill"
+                        : "paid bills"
                     }
 
                   </div>
@@ -1640,9 +1932,15 @@ function renderMonthlySummary(
 
                   👥
                   ${item.patients}
-                  patients
+
+                  ${
+                    item.patients === 1
+                      ? "patient"
+                      : "patients"
+                  }
 
                 </div>
+
 
               </div>
 
