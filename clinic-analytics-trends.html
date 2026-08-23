@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>
+Performance Trends | General & Diabetes Care
+</title>
+
+<link
+  rel="stylesheet"
+  href="styles.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(
+      135deg,
+      #fffaf1,
+      #fff7e8,
+      #fdfcf9
+    );
+  color: #172033;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
+.analytics-page {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 16px 10px 45px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  margin-bottom: 14px;
+}
+
+.section-label {
+  margin: 0;
+  color: #c37a18;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 1.3px;
+}
+
+.page-header h1 {
+  margin: 5px 0 3px;
+  color: #4d3516;
+  font-size: 29px;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: #85745d;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.portal-button {
+  min-height: 43px;
+  padding: 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.light-button {
+  color: #5d503e;
+  background: #fbf7f1;
+  border: 1px solid #e8dfd2;
+}
+
+.secondary-button {
+  color: #ffffff;
+  background: #64748b;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.top-actions {
+  margin: 14px 0 16px;
+}
+
+.bottom-actions {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+  gap: 10px;
+}
+
+.summary-card {
+  min-height: 120px;
+  padding: 15px;
+  background: #ffffff;
+  border: 1px solid #eee2d2;
+  border-radius: 17px;
+  box-shadow:
+    0 5px 18px rgba(100,70,30,.05);
+}
+
+.summary-this {
+  background:
+    linear-gradient(
+      135deg,
+      #fff3dc,
+      #ffffff
+    );
+}
+
+.summary-last {
+  background:
+    linear-gradient(
+      135deg,
+      #f6f1ff,
+      #ffffff
+    );
+}
+
+.summary-year {
+  background:
+    linear-gradient(
+      135deg,
+      #edf9f1,
+      #ffffff
+    );
+}
+
+.summary-patients {
+  background:
+    linear-gradient(
+      135deg,
+      #eaf7ff,
+      #ffffff
+    );
+}
+
+.summary-icon {
+  font-size: 22px;
+}
+
+.summary-value {
+  margin-top: 8px;
+  color: #3f331f;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.summary-title {
+  margin-top: 4px;
+  color: #756956;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section-title {
+  margin: 22px 0 11px;
+  color: #8c7d68;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.portal-card {
+  margin-bottom: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #eee5d9;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(80,60,35,.05);
+}
+
+
+/* =========================================================
+   TREND COMPARISON
+   ========================================================= */
+
+.trend-comparison {
+  display: grid;
+  grid-template-columns:
+    150px minmax(0,1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.trend-circle {
+  width: 125px;
+  height: 125px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      135deg,
+      #fff1d8,
+      #fff9ed
+    );
+  border: 10px solid #f6dfb7;
+}
+
+.trend-value {
+  color: #b26b12;
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.trend-label {
+  margin-top: 3px;
+  color: #83745f;
+  font-size: 10px;
+}
+
+.trend-details {
+  display: grid;
+  gap: 9px;
+}
+
+.trend-row {
+  padding: 11px 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #fcfaf7;
+  border: 1px solid #eee8df;
+  border-radius: 11px;
+}
+
+.trend-row-label {
+  color: #756b5d;
+  font-size: 12px;
+}
+
+.trend-row-value {
+  color: #493b28;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   CHART
+   ========================================================= */
+
+.chart-title {
+  margin: 0;
+  color: #453723;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.chart-description {
+  margin: 4px 0 16px;
+  color: #887965;
+  font-size: 12px;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 310px;
+}
+
+.chart-wrap canvas {
+  max-height: 330px;
+}
+
+
+/* =========================================================
+   MONTHLY SUMMARY
+   ========================================================= */
+
+.month-list {
+  display: grid;
+  gap: 9px;
+}
+
+.month-row {
+  padding: 12px 13px;
+  display: grid;
+  grid-template-columns:
+    minmax(0,1fr) 120px 90px;
+  gap: 10px;
+  align-items: center;
+  background: #fcfaf7;
+  border: 1px solid #eee8df;
+  border-radius: 11px;
+}
+
+.month-name {
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.month-revenue {
+  text-align: right;
+  color: #a86613;
+  font-weight: 850;
+}
+
+.month-patients {
+  text-align: right;
+  color: #30749a;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-card {
+  padding: 25px;
+  text-align: center;
+  color: #817461;
+  background: #ffffff;
+  border: 1px solid #ece4d8;
+  border-radius: 16px;
+}
+
+.spinner {
+  width: 29px;
+  height: 29px;
+  margin: 0 auto 8px;
+  border: 3px solid #eee6da;
+  border-top-color: #c98220;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:850px) {
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:650px) {
+
+  .analytics-page {
+    padding: 12px 8px 40px;
+  }
+
+  .trend-comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .month-row {
+    grid-template-columns:
+      minmax(0,1fr) 100px;
+  }
+
+  .month-patients {
+    grid-column: 1 / -1;
+    text-align: left;
+    color: #64748b;
+    font-size: 12px;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="analytics-page">
+
+
+<header class="page-header">
+
+<p class="section-label">
+GENERAL &amp; DIABETES CARE
+</p>
+
+<h1>
+📈 Performance Trends
+</h1>
+
+<p class="page-subtitle">
+Monthly revenue and patient growth over time
+</p>
+
+</header>
+
+
+<div class="action-row top-actions">
+
+<a
+  href="clinic-analytics.html"
+  class="portal-button light-button">
+
+← Back to Clinic Analytics
+
+</a>
+
+</div>
+
+
+<div
+  id="loadingCard"
+  class="loading-card">
+
+<div class="spinner"></div>
+
+Loading performance trends...
+
+</div>
+
+
+<div
+  id="analyticsContent"
+  style="display:none;">
+
+
+<!-- =====================================================
+     SUMMARY
+     ===================================================== -->
+
+<div class="summary-grid">
+
+
+<div class="summary-card summary-this">
+
+<div class="summary-icon">
+💰
+</div>
+
+<div
+  id="thisMonthRevenue"
+  class="summary-value">
+₹0
+</div>
+
+<div
+  id="thisMonthLabel"
+  class="summary-title">
+This month
+</div>
+
+</div>
+
+
+<div class="summary-card summary-last">
+
+<div class="summary-icon">
+📅
+</div>
+
+<div
+  id="lastMonthRevenue"
+  class="summary-value">
+₹0
+</div>
+
+<div
+  id="lastMonthLabel"
+  class="summary-title">
+Last month
+</div>
+
+</div>
+
+
+<div class="summary-card summary-year">
+
+<div class="summary-icon">
+📊
+</div>
+
+<div
+  id="twelveMonthRevenue"
+  class="summary-value">
+₹0
+</div>
+
+<div class="summary-title">
+12-month paid revenue
+</div>
+
+</div>
+
+
+<div class="summary-card summary-patients">
+
+<div class="summary-icon">
+👥
+</div>
+
+<div
+  id="thisMonthPatients"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+Patients this month
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     REVENUE CHANGE
+     ===================================================== -->
+
+<div class="section-title">
+Revenue Change
+</div>
+
+
+<div class="portal-card trend-comparison">
+
+
+<div class="trend-circle">
+
+<div
+  id="revenueChange"
+  class="trend-value">
+0%
+</div>
+
+<div class="trend-label">
+vs Last Month
+</div>
+
+</div>
+
+
+<div class="trend-details">
+
+
+<div class="trend-row">
+
+<span class="trend-row-label">
+This Month
+</span>
+
+<span
+  id="revenueCurrent"
+  class="trend-row-value">
+₹0
+</span>
+
+</div>
+
+
+<div class="trend-row">
+
+<span class="trend-row-label">
+Previous Month
+</span>
+
+<span
+  id="revenuePrevious"
+  class="trend-row-value">
+₹0
+</span>
+
+</div>
+
+
+<div class="trend-row">
+
+<span class="trend-row-label">
+Difference
+</span>
+
+<span
+  id="revenueDifference"
+  class="trend-row-value">
+₹0
+</span>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     REVENUE CHART
+     ===================================================== -->
+
+<div class="section-title">
+Revenue Trend
+</div>
+
+
+<div class="portal-card">
+
+<h2 class="chart-title">
+💰 Paid Revenue — Last 12 Months
+</h2>
+
+<p class="chart-description">
+Revenue from bills marked Paid
+</p>
+
+
+<div class="chart-wrap">
+
+<canvas id="revenueChart"></canvas>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     PATIENT CHART
+     ===================================================== -->
+
+<div class="section-title">
+Patient Growth Trend
+</div>
+
+
+<div class="portal-card">
+
+<h2 class="chart-title">
+👥 Patient Registrations — Last 12 Months
+</h2>
+
+<p class="chart-description">
+Number of newly registered clinic patients each month
+</p>
+
+
+<div class="chart-wrap">
+
+<canvas id="patientChart"></canvas>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     MONTH SUMMARY
+     ===================================================== -->
+
+<div class="section-title">
+12-Month Summary
+</div>
+
+
+<div class="portal-card">
+
+<div
+  id="monthlySummary"
+  class="month-list">
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="action-row bottom-actions">
+
+<button
+  type="button"
+  id="refreshButton"
+  class="portal-button light-button">
+
+🔄 Refresh
+
+</button>
+
+<button
+  type="button"
+  id="logoutButton"
+  class="portal-button secondary-button">
+
+🔒 Logout
+
+</button>
+
+</div>
+
+
+</div>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+let revenueChart =
+  null;
+
+let patientChart =
+  null;
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function formatMoney(
+  value
+) {
+
+  return (
+    "₹" +
+    Number(
+      value ||
+      0
+    )
+    .toLocaleString(
+      "en-IN",
+      {
+        maximumFractionDigits:
+          2
+      }
+    )
+  );
+
+}
+
+
+function getBillAmount(
+  bill
+) {
+
+  return Number(
+    bill.total_amount ??
+    bill.total ??
+    bill.bill_amount ??
+    0
+  );
+
+}
+
+
+function isPaid(
+  bill
+) {
+
+  return (
+    String(
+      bill.payment_status ||
+      ""
+    )
+    .toLowerCase() ===
+    "paid"
+  );
+
+}
+
+
+/* =========================================================
+   LOAD DATA
+   ========================================================= */
+
+async function loadBills() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("billing")
+      .select(
+        "id,bill_date,total_amount,total,bill_amount,payment_status"
+      );
+
+
+  if (error) {
+    throw error;
+  }
+
+
+  return data || [];
+
+}
+
+
+async function loadPatients() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select(
+        "id,created_at"
+      );
+
+
+  if (error) {
+    throw error;
+  }
+
+
+  return data || [];
+
+}
+
+
+/* =========================================================
+   ANALYTICS
+   ========================================================= */
+
+async function loadAnalytics() {
+
+  const loading =
+    document
+      .getElementById(
+        "loadingCard"
+      );
+
+
+  const content =
+    document
+      .getElementById(
+        "analyticsContent"
+      );
+
+
+  loading.style.display =
+    "block";
+
+
+  content.style.display =
+    "none";
+
+
+  try {
+
+    const [
+      bills,
+      patients
+    ] =
+      await Promise.all([
+
+        loadBills(),
+
+        loadPatients()
+
+      ]);
+
+
+    const monthlyData =
+      buildMonthlyData(
+        bills,
+        patients
+      );
+
+
+    renderSummary(
+      monthlyData
+    );
+
+
+    renderRevenueChart(
+      monthlyData
+    );
+
+
+    renderPatientChart(
+      monthlyData
+    );
+
+
+    renderMonthlySummary(
+      monthlyData
+    );
+
+
+    content.style.display =
+      "block";
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "Unable to load performance trends."
+    );
+
+
+  } finally {
+
+    loading.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================================================
+   BUILD 12 MONTH DATA
+   ========================================================= */
+
+function buildMonthlyData(
+  bills,
+  patients
+) {
+
+  const result =
+    [];
+
+
+  const now =
+    new Date();
+
+
+  for (
+    let i = 11;
+    i >= 0;
+    i--
+  ) {
+
+    const monthDate =
+      new Date(
+        now.getFullYear(),
+        now.getMonth() - i,
+        1
+      );
+
+
+    const year =
+      monthDate.getFullYear();
+
+
+    const month =
+      monthDate.getMonth();
+
+
+    const monthBills =
+      bills.filter(
+        function(bill) {
+
+          if (
+            !bill.bill_date ||
+            !isPaid(bill)
+          ) {
+
+            return false;
+
+          }
+
+
+          const date =
+            new Date(
+              bill.bill_date +
+              "T00:00:00"
+            );
+
+
+          return (
+            date.getFullYear() ===
+              year &&
+            date.getMonth() ===
+              month
+          );
+
+        }
+      );
+
+
+    const revenue =
+      monthBills.reduce(
+        function(total,bill) {
+
+          return (
+            total +
+            getBillAmount(
+              bill
+            )
+          );
+
+        },
+        0
+      );
+
+
+    const monthPatients =
+      patients.filter(
+        function(patient) {
+
+          if (
+            !patient.created_at
+          ) {
+
+            return false;
+
+          }
+
+
+          const date =
+            new Date(
+              patient.created_at
+            );
+
+
+          return (
+            date.getFullYear() ===
+              year &&
+            date.getMonth() ===
+              month
+          );
+
+        }
+      );
+
+
+    result.push({
+
+      year:
+        year,
+
+      month:
+        month,
+
+      label:
+        monthDate
+          .toLocaleDateString(
+            "en-IN",
+            {
+              month:
+                "short",
+
+              year:
+                "numeric"
+            }
+          ),
+
+      shortLabel:
+        monthDate
+          .toLocaleDateString(
+            "en-IN",
+            {
+              month:
+                "short",
+
+              year:
+                "2-digit"
+            }
+          ),
+
+      revenue:
+        revenue,
+
+      paidBills:
+        monthBills.length,
+
+      patients:
+        monthPatients.length
+
+    });
+
+  }
+
+
+  return result;
+
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+function renderSummary(
+  monthlyData
+) {
+
+  const current =
+    monthlyData[
+      monthlyData.length - 1
+    ];
+
+
+  const previous =
+    monthlyData[
+      monthlyData.length - 2
+    ];
+
+
+  const twelveMonthRevenue =
+    monthlyData.reduce(
+      function(total,item) {
+
+        return (
+          total +
+          item.revenue
+        );
+
+      },
+      0
+    );
+
+
+  document
+    .getElementById(
+      "thisMonthRevenue"
+    )
+    .textContent =
+      formatMoney(
+        current.revenue
+      );
+
+
+  document
+    .getElementById(
+      "thisMonthLabel"
+    )
+    .textContent =
+      current.label;
+
+
+  document
+    .getElementById(
+      "lastMonthRevenue"
+    )
+    .textContent =
+      formatMoney(
+        previous.revenue
+      );
+
+
+  document
+    .getElementById(
+      "lastMonthLabel"
+    )
+    .textContent =
+      previous.label;
+
+
+  document
+    .getElementById(
+      "twelveMonthRevenue"
+    )
+    .textContent =
+      formatMoney(
+        twelveMonthRevenue
+      );
+
+
+  document
+    .getElementById(
+      "thisMonthPatients"
+    )
+    .textContent =
+      current.patients;
+
+
+  let change =
+    0;
+
+
+  if (
+    previous.revenue > 0
+  ) {
+
+    change =
+      (
+        (
+          current.revenue -
+          previous.revenue
+        ) /
+        previous.revenue
+      ) *
+      100;
+
+  } else if (
+    current.revenue > 0
+  ) {
+
+    change =
+      100;
+
+  }
+
+
+  document
+    .getElementById(
+      "revenueChange"
+    )
+    .textContent =
+      (
+        change >= 0
+          ? "+"
+          : ""
+      ) +
+      change.toFixed(1) +
+      "%";
+
+
+  document
+    .getElementById(
+      "revenueCurrent"
+    )
+    .textContent =
+      formatMoney(
+        current.revenue
+      );
+
+
+  document
+    .getElementById(
+      "revenuePrevious"
+    )
+    .textContent =
+      formatMoney(
+        previous.revenue
+      );
+
+
+  const difference =
+    current.revenue -
+    previous.revenue;
+
+
+  document
+    .getElementById(
+      "revenueDifference"
+    )
+    .textContent =
+      (
+        difference >= 0
+          ? "+"
+          : "-"
+      ) +
+      formatMoney(
+        Math.abs(
+          difference
+        )
+      );
+
+}
+
+
+/* =========================================================
+   REVENUE CHART
+   ========================================================= */
+
+function renderRevenueChart(
+  monthlyData
+) {
+
+  if (
+    revenueChart
+  ) {
+
+    revenueChart.destroy();
+
+  }
+
+
+  revenueChart =
+    new Chart(
+      document
+        .getElementById(
+          "revenueChart"
+        ),
+      {
+
+        type:
+          "line",
+
+        data: {
+
+          labels:
+            monthlyData.map(
+              function(item) {
+
+                return item.shortLabel;
+
+              }
+            ),
+
+          datasets: [
+
+            {
+
+              label:
+                "Paid Revenue",
+
+              data:
+                monthlyData.map(
+                  function(item) {
+
+                    return item.revenue;
+
+                  }
+                ),
+
+              tension:
+                0.35,
+
+              fill:
+                true
+
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive:
+            true,
+
+          maintainAspectRatio:
+            false,
+
+          plugins: {
+
+            legend: {
+              display:
+                false
+            }
+
+          },
+
+          scales: {
+
+            y: {
+
+              beginAtZero:
+                true
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   PATIENT CHART
+   ========================================================= */
+
+function renderPatientChart(
+  monthlyData
+) {
+
+  if (
+    patientChart
+  ) {
+
+    patientChart.destroy();
+
+  }
+
+
+  patientChart =
+    new Chart(
+      document
+        .getElementById(
+          "patientChart"
+        ),
+      {
+
+        type:
+          "bar",
+
+        data: {
+
+          labels:
+            monthlyData.map(
+              function(item) {
+
+                return item.shortLabel;
+
+              }
+            ),
+
+          datasets: [
+
+            {
+
+              label:
+                "Patient Registrations",
+
+              data:
+                monthlyData.map(
+                  function(item) {
+
+                    return item.patients;
+
+                  }
+                )
+
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive:
+            true,
+
+          maintainAspectRatio:
+            false,
+
+          plugins: {
+
+            legend: {
+              display:
+                false
+            }
+
+          },
+
+          scales: {
+
+            y: {
+
+              beginAtZero:
+                true,
+
+              ticks: {
+
+                precision:
+                  0
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   MONTHLY SUMMARY
+   ========================================================= */
+
+function renderMonthlySummary(
+  monthlyData
+) {
+
+  document
+    .getElementById(
+      "monthlySummary"
+    )
+    .innerHTML =
+      monthlyData
+        .slice()
+        .reverse()
+        .map(
+          function(item) {
+
+            return `
+
+              <div class="month-row">
+
+                <div class="month-name">
+
+                  ${item.label}
+
+                </div>
+
+
+                <div class="month-revenue">
+
+                  ${formatMoney(
+                    item.revenue
+                  )}
+
+                  <div
+                    style="
+                      font-size:10px;
+                      color:#8a7b68;
+                      margin-top:2px;
+                      font-weight:500;
+                    ">
+
+                    ${item.paidBills}
+                    ${
+                      item.paidBills === 1
+                        ? "bill"
+                        : "bills"
+                    }
+
+                  </div>
+
+                </div>
+
+
+                <div class="month-patients">
+
+                  👥
+                  ${item.patients}
+                  patients
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join("");
+
+}
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+document
+  .getElementById(
+    "refreshButton"
+  )
+  .addEventListener(
+    "click",
+    loadAnalytics
+  );
+
+
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+
+      window.location.href =
+        "doctor-login.html";
+
+    }
+  );
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+(async function initializePage() {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+
+  if (!loggedIn) {
+    return;
+  }
+
+
+  await loadAnalytics();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
