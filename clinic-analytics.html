@@ -876,7 +876,8 @@ Explore Analytics
 
 
 <a
-  href="clinic-analytics-patients.html"
+  href="#"
+  id="patientInsightsLink"
   class="analytics-card patient-card">
 
 <div class="analytics-icon">
@@ -905,10 +906,11 @@ Registrations, new patients, growth and patient trends
 
 </a>
 
-
 <a
-  href="clinic-analytics-appointments.html"
+  href="#"
+  id="appointmentInsightsLink"
   class="analytics-card appointment-card">
+
 
 <div class="analytics-icon">
 📅
@@ -936,10 +938,11 @@ Status, consultation types and appointment patterns
 
 </a>
 
-
 <a
-  href="clinic-analytics-revenue.html"
+  href="#"
+  id="revenueInsightsLink"
   class="analytics-card revenue-card">
+
 
 <div class="analytics-icon">
 💰
@@ -2017,7 +2020,119 @@ document
 window.setQuickPeriod =
   setQuickPeriod;
 
+/* =========================================================
+   ANALYTICS PERIOD NAVIGATION
+   ========================================================= */
 
+function getAnalyticsPeriodQuery() {
+
+  const startDate =
+    document
+      .getElementById(
+        "analyticsStartDate"
+      )
+      .value;
+
+
+  const endDate =
+    document
+      .getElementById(
+        "analyticsEndDate"
+      )
+      .value;
+
+
+  if (
+    !startDate ||
+    !endDate
+  ) {
+
+    return "";
+
+  }
+
+
+  return (
+    "?start=" +
+    encodeURIComponent(
+      startDate
+    ) +
+    "&end=" +
+    encodeURIComponent(
+      endDate
+    )
+  );
+
+}
+
+
+/* =========================================================
+   PATIENT INSIGHTS
+   ========================================================= */
+
+document
+  .getElementById(
+    "patientInsightsLink"
+  )
+  .addEventListener(
+    "click",
+    function(event) {
+
+      event.preventDefault();
+
+
+      window.location.href =
+        "clinic-analytics-patients.html" +
+        getAnalyticsPeriodQuery();
+
+    }
+  );
+
+
+/* =========================================================
+   APPOINTMENT INSIGHTS
+   ========================================================= */
+
+document
+  .getElementById(
+    "appointmentInsightsLink"
+  )
+  .addEventListener(
+    "click",
+    function(event) {
+
+      event.preventDefault();
+
+
+      window.location.href =
+        "clinic-analytics-appointments.html" +
+        getAnalyticsPeriodQuery();
+
+    }
+  );
+
+
+/* =========================================================
+   REVENUE & BILLING
+   ========================================================= */
+
+document
+  .getElementById(
+    "revenueInsightsLink"
+  )
+  .addEventListener(
+    "click",
+    function(event) {
+
+      event.preventDefault();
+
+
+      window.location.href =
+        "clinic-analytics-revenue.html" +
+        getAnalyticsPeriodQuery();
+
+    }
+  );
 /* =========================================================
    INITIALIZE
    ========================================================= */
