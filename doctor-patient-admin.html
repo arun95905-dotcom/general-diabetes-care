@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>
+Patient Administration | General & Diabetes Care
+</title>
+
+<link
+  rel="stylesheet"
+  href="styles.css">
+
+<style>
+
+/* =========================================================
+   GENERAL
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f5f7fb;
+  color: #172033;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
+.doctor-dashboard {
+  min-height: 100vh;
+  padding: 16px 10px 45px;
+}
+
+.admin-page {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.portal-header {
+  margin-bottom: 18px;
+}
+
+.section-label {
+  margin: 0;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 1.3px;
+}
+
+.portal-header h1 {
+  margin: 4px 0;
+  font-size: 28px;
+}
+
+.portal-subtitle {
+  margin: 0;
+  color: #697386;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.portal-card {
+  margin-bottom: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e4e9f0;
+  border-radius: 18px;
+  box-shadow:
+    0 5px 20px rgba(20,31,56,.06);
+}
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.portal-button {
+  min-height: 43px;
+  padding: 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.primary-button {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.danger-button {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.secondary-button {
+  background: #64748b;
+  color: #ffffff;
+}
+
+.light-button {
+  background: #f1f5f9;
+  color: #172033;
+  border: 1px solid #dce3ec;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+
+/* =========================================================
+   PATIENT SUMMARY
+   ========================================================= */
+
+.patient-summary {
+  padding: 20px;
+  background:
+    linear-gradient(
+      135deg,
+      #eef6ff,
+      #ffffff
+    );
+  border: 1px solid #d4e5fb;
+  border-radius: 17px;
+}
+
+.patient-name {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.patient-id {
+  margin-top: 5px;
+  color: #5c687a;
+  font-size: 13px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  gap: 10px;
+  margin-top: 17px;
+}
+
+.summary-item {
+  padding: 12px;
+  background: rgba(255,255,255,.9);
+  border: 1px solid #dce7f4;
+  border-radius: 12px;
+}
+
+.summary-label {
+  margin-bottom: 4px;
+  color: #7a8594;
+  font-size: 10px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.summary-value {
+  color: #172033;
+  font-size: 14px;
+  font-weight: 750;
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   BASIC DETAILS BUTTON
+   ========================================================= */
+
+.section-button {
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #e1e7ef;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.section-button:hover {
+  background: #f8fafc;
+}
+
+.section-button-title {
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.section-arrow {
+  color: #64748b;
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   BASIC DETAILS
+   ========================================================= */
+
+.basic-details {
+  display: none;
+  margin-top: 10px;
+}
+
+.basic-details.open {
+  display: block;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.detail-box {
+  padding: 12px;
+  background: #f8fafc;
+  border: 1px solid #e4e9ef;
+  border-radius: 12px;
+}
+
+.detail-box.full {
+  grid-column: 1 / -1;
+}
+
+.detail-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.detail-value {
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   DANGER ZONE
+   ========================================================= */
+
+.danger-zone {
+  margin-top: 22px;
+  padding: 18px;
+  background: #fff8f8;
+  border: 1px solid #fecaca;
+  border-radius: 16px;
+}
+
+.danger-title {
+  margin: 0 0 7px;
+  color: #b91c1c;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.danger-description {
+  margin: 0;
+  color: #7f1d1d;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.delete-button {
+  width: 100%;
+  margin-top: 14px;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.delete-button:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.portal-message {
+  padding: 24px 15px;
+  text-align: center;
+  color: #697386;
+  background: #f8fafc;
+  border-radius: 13px;
+}
+
+.loading-spinner {
+  width: 31px;
+  height: 31px;
+  margin: 0 auto 10px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:700px) {
+
+  .doctor-dashboard {
+    padding: 12px 8px 40px;
+  }
+
+  .portal-card {
+    padding: 14px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-box.full {
+    grid-column: auto;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<section class="doctor-dashboard">
+
+<div class="admin-page">
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<div class="portal-header">
+
+<p class="section-label">
+GENERAL &amp; DIABETES CARE
+</p>
+
+<h1>
+Patient Administration
+</h1>
+
+<p class="portal-subtitle">
+Patient information and record administration
+</p>
+
+</div>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+
+<div
+  id="patientAdminContainer"
+  class="portal-card">
+
+<div class="portal-message">
+
+<div class="loading-spinner"></div>
+
+Loading patient...
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<div class="action-row">
+
+<a
+  href="doctor-all-patients.html"
+  class="portal-button light-button">
+
+← All Patients
+
+</a>
+
+<button
+  type="button"
+  id="logoutButton"
+  class="portal-button secondary-button">
+
+🔒 Logout
+
+</button>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let currentPatient =
+  null;
+
+let currentPatientId =
+  null;
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function escapeHTML(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
+
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function formatDate(value) {
+
+  if (!value) {
+    return "-";
+  }
+
+
+  const date =
+    new Date(
+      String(value).length === 10
+        ? value + "T00:00:00"
+        : value
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "-";
+  }
+
+
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function calculateAge(patient) {
+
+  if (
+    patient.age !== null &&
+    patient.age !== undefined &&
+    patient.age !== ""
+  ) {
+
+    return patient.age;
+
+  }
+
+
+  if (!patient.date_of_birth) {
+
+    return "-";
+
+  }
+
+
+  const dob =
+    new Date(
+      patient.date_of_birth +
+      "T00:00:00"
+    );
+
+
+  const today =
+    new Date();
+
+
+  let age =
+    today.getFullYear() -
+    dob.getFullYear();
+
+
+  const monthDifference =
+    today.getMonth() -
+    dob.getMonth();
+
+
+  if (
+    monthDifference < 0 ||
+    (
+      monthDifference === 0 &&
+      today.getDate() <
+      dob.getDate()
+    )
+  ) {
+
+    age--;
+
+  }
+
+
+  return age;
+
+}
+
+
+function getPatientIdFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const patientId =
+    params.get(
+      "patient_id"
+    );
+
+
+  if (
+    !patientId ||
+    !/^\d+$/.test(
+      patientId
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  return Number(
+    patientId
+  );
+
+}
+
+
+function chunkArray(
+  array,
+  size
+) {
+
+  const chunks =
+    [];
+
+
+  for (
+    let i = 0;
+    i < array.length;
+    i += size
+  ) {
+
+    chunks.push(
+      array.slice(
+        i,
+        i + size
+      )
+    );
+
+  }
+
+
+  return chunks;
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+async function logoutDoctor() {
+
+  await supabaseClient
+    .auth
+    .signOut();
+
+
+  window.location.href =
+    "doctor-login.html";
+
+}
+
+
+/* =========================================================
+   LOAD PATIENT
+   ========================================================= */
+
+async function loadPatient() {
+
+  const container =
+    document.getElementById(
+      "patientAdminContainer"
+    );
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select("*")
+      .eq(
+        "id",
+        currentPatientId
+      )
+      .single();
+
+
+  if (
+    error ||
+    !data
+  ) {
+
+    console.error(
+      "Patient load error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="portal-message">
+
+        Patient could not be found.
+
+        <div
+          class="action-row"
+          style="justify-content:center;">
+
+          <a
+            href="doctor-all-patients.html"
+            class="portal-button light-button">
+
+            ← All Patients
+
+          </a>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    return false;
+
+  }
+
+
+  currentPatient =
+    data;
+
+
+  renderPatient();
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   RENDER PATIENT
+   ========================================================= */
+
+function renderPatient() {
+
+  const patient =
+    currentPatient;
+
+
+  const container =
+    document.getElementById(
+      "patientAdminContainer"
+    );
+
+
+  container.innerHTML = `
+
+    <!-- PATIENT SUMMARY -->
+
+    <div class="patient-summary">
+
+      <div class="patient-name">
+
+        👤
+        ${escapeHTML(
+          patient.patient_name ||
+          "-"
+        )}
+
+      </div>
+
+
+      <div class="patient-id">
+
+        Patient ID:
+        <strong>
+          ${escapeHTML(
+            patient.id
+          )}
+        </strong>
+
+      </div>
+
+
+      <div class="summary-grid">
+
+
+        <div class="summary-item">
+
+          <div class="summary-label">
+            Age
+          </div>
+
+          <div class="summary-value">
+
+            ${escapeHTML(
+              calculateAge(
+                patient
+              )
+            )}
+
+            ${
+              patient.gender
+                ? ` • ${escapeHTML(
+                    patient.gender
+                  )}`
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+
+        <div class="summary-item">
+
+          <div class="summary-label">
+            Contact Number
+          </div>
+
+          <div class="summary-value">
+
+            ${escapeHTML(
+              patient.patient_phone ||
+              "-"
+            )}
+
+          </div>
+
+        </div>
+
+
+        <div class="summary-item">
+
+          <div class="summary-label">
+            Registered
+          </div>
+
+          <div class="summary-value">
+
+            ${formatDate(
+              patient.created_at
+            )}
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+
+    <!-- BASIC DETAILS -->
+
+    <div style="margin-top:14px;">
+
+      <button
+        type="button"
+        id="basicDetailsButton"
+        class="section-button"
+        onclick="toggleBasicDetails()">
+
+        <span class="section-button-title">
+
+          👁 View Basic Details
+
+        </span>
+
+        <span
+          id="basicDetailsArrow"
+          class="section-arrow">
+
+          ›
+
+        </span>
+
+      </button>
+
+
+      <div
+        id="basicDetails"
+        class="basic-details">
+
+
+        <div class="details-grid">
+
+
+          <div class="detail-box">
+
+            <span class="detail-label">
+              Patient Name
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                patient.patient_name ||
+                "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <span class="detail-label">
+              Phone Number
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                patient.patient_phone ||
+                "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <span class="detail-label">
+              Date of Birth
+            </span>
+
+            <div class="detail-value">
+
+              ${
+                patient.date_of_birth
+                  ? formatDate(
+                      patient.date_of_birth
+                    )
+                  : "-"
+              }
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <span class="detail-label">
+              Age
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                calculateAge(
+                  patient
+                )
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <span class="detail-label">
+              Gender
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                patient.gender ||
+                "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box">
+
+            <span class="detail-label">
+              Blood Group
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                patient.blood_group ||
+                "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box full">
+
+            <span class="detail-label">
+              Address
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                patient.address ||
+                "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box full">
+
+            <span class="detail-label">
+              Past Medical History
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                patient.medical_history ||
+                "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box full">
+
+            <span class="detail-label">
+              Surgical History
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                patient.surgical_history ||
+                "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box full">
+
+            <span class="detail-label">
+              Allergies
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                patient.allergies ||
+                "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="detail-box full">
+
+            <span class="detail-label">
+              Current Medications
+            </span>
+
+            <div class="detail-value">
+
+              ${escapeHTML(
+                patient.current_medications ||
+                "-"
+              )}
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- DANGER ZONE -->
+
+    <div class="danger-zone">
+
+      <h3 class="danger-title">
+        ⚠️ Danger Zone
+      </h3>
+
+
+      <p class="danger-description">
+
+        Permanently deleting this patient will remove the
+        patient registration and all linked consultations,
+        prescription images, laboratory reports, billing
+        records and patient-linked appointments.
+
+        <br><br>
+
+        This action cannot be undone.
+
+      </p>
+
+
+      <button
+        type="button"
+        id="deletePatientButton"
+        class="portal-button delete-button"
+        onclick="deletePatientPermanently()">
+
+        🗑 Permanently Delete Patient
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   BASIC DETAILS
+   ========================================================= */
+
+function toggleBasicDetails() {
+
+  const details =
+    document.getElementById(
+      "basicDetails"
+    );
+
+
+  const arrow =
+    document.getElementById(
+      "basicDetailsArrow"
+    );
+
+
+  if (
+    details.classList.contains(
+      "open"
+    )
+  ) {
+
+    details.classList.remove(
+      "open"
+    );
+
+
+    arrow.textContent =
+      "›";
+
+
+  } else {
+
+    details.classList.add(
+      "open"
+    );
+
+
+    arrow.textContent =
+      "⌄";
+
+  }
+
+}
+
+
+/* =========================================================
+   PRESCRIPTION STORAGE PATH
+   ========================================================= */
+
+function getPrescriptionStoragePath(
+  imageURL
+) {
+
+  if (!imageURL) {
+    return null;
+  }
+
+
+  try {
+
+    const url =
+      new URL(
+        imageURL
+      );
+
+
+    const markers = [
+
+      "/storage/v1/object/public/prescriptions/",
+      "/storage/v1/object/sign/prescriptions/"
+
+    ];
+
+
+    for (
+      const marker of markers
+    ) {
+
+      const index =
+        url.pathname.indexOf(
+          marker
+        );
+
+
+      if (
+        index !== -1
+      ) {
+
+        return decodeURIComponent(
+          url.pathname.substring(
+            index +
+            marker.length
+          )
+        );
+
+      }
+
+    }
+
+
+  } catch (error) {
+
+    console.warn(
+      "Could not determine prescription path:",
+      error
+    );
+
+  }
+
+
+  return null;
+
+}
+
+
+/* =========================================================
+   REMOVE STORAGE FILES
+   ========================================================= */
+
+async function removeStorageFiles(
+  bucketName,
+  filePaths
+) {
+
+  const uniquePaths =
+    [
+      ...new Set(
+        (
+          filePaths ||
+          []
+        )
+        .filter(Boolean)
+      )
+    ];
+
+
+  if (
+    uniquePaths.length === 0
+  ) {
+    return;
+  }
+
+
+  /*
+     Remove in smaller batches.
+  */
+
+  const chunks =
+    chunkArray(
+      uniquePaths,
+      100
+    );
+
+
+  for (
+    const paths of chunks
+  ) {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .storage
+        .from(
+          bucketName
+        )
+        .remove(
+          paths
+        );
+
+
+    if (error) {
+
+      console.warn(
+        "Storage deletion warning:",
+        bucketName,
+        error
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   DELETE PATIENT
+   ========================================================= */
+
+async function deletePatientPermanently() {
+
+  if (
+    !currentPatient ||
+    !currentPatientId
+  ) {
+    return;
+  }
+
+
+  /*
+     ONE confirmation only, as requested.
+  */
+
+  const confirmed =
+    confirm(
+      "Permanently delete " +
+      (
+        currentPatient.patient_name ||
+        "this patient"
+      ) +
+      "?\n\n" +
+      "This will delete the patient's registration, consultations, prescription images, lab reports, billing records and linked appointments.\n\n" +
+      "This action cannot be undone."
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  const button =
+    document.getElementById(
+      "deletePatientButton"
+    );
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "⏳ Deleting patient records...";
+
+
+  try {
+
+    /* =====================================================
+       1. LOAD ALL CONSULTATIONS
+       ===================================================== */
+
+    const {
+      data:
+        consultations,
+      error:
+        consultationLoadError
+    } =
+      await supabaseClient
+        .from(
+          "consultations"
+        )
+        .select(
+          "id,prescription_image_url"
+        )
+        .eq(
+          "patient_id",
+          currentPatientId
+        );
+
+
+    if (consultationLoadError) {
+
+      throw new Error(
+        "Unable to read consultation records: " +
+        consultationLoadError.message
+      );
+
+    }
+
+
+    const consultationRows =
+      consultations ||
+      [];
+
+
+    const consultationIds =
+      consultationRows
+        .map(
+          function(item) {
+
+            return item.id;
+
+          }
+        );
+
+
+    /* =====================================================
+       2. LOAD PRESCRIPTION IMAGE RECORDS
+       ===================================================== */
+
+    let prescriptionImageRows =
+      [];
+
+
+    if (
+      consultationIds.length > 0
+    ) {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .from(
+            "consultation_images"
+          )
+          .select(
+            "id,consultation_id,image_url"
+          )
+          .in(
+            "consultation_id",
+            consultationIds
+          );
+
+
+      if (error) {
+
+        throw new Error(
+          "Unable to read prescription image records: " +
+          error.message
+        );
+
+      }
+
+
+      prescriptionImageRows =
+        data ||
+        [];
+
+    }
+
+
+    /* =====================================================
+       3. LOAD LAB REPORT RECORDS
+       ===================================================== */
+
+    const {
+      data:
+        labReports,
+      error:
+        labLoadError
+    } =
+      await supabaseClient
+        .from(
+          "investigation_reports"
+        )
+        .select(
+          "id,file_path"
+        )
+        .eq(
+          "patient_id",
+          currentPatientId
+        );
+
+
+    if (labLoadError) {
+
+      throw new Error(
+        "Unable to read lab report records: " +
+        labLoadError.message
+      );
+
+    }
+
+
+    /* =====================================================
+       4. DELETE PRESCRIPTION STORAGE FILES
+       ===================================================== */
+
+    const prescriptionPaths =
+      [];
+
+
+    prescriptionImageRows
+      .forEach(
+        function(image) {
+
+          const path =
+            getPrescriptionStoragePath(
+              image.image_url
+            );
+
+
+          if (path) {
+
+            prescriptionPaths.push(
+              path
+            );
+
+          }
+
+        }
+      );
+
+
+    /*
+       Older prescription images may exist only in
+       consultations.prescription_image_url.
+    */
+
+    consultationRows
+      .forEach(
+        function(consultation) {
+
+          const path =
+            getPrescriptionStoragePath(
+              consultation
+                .prescription_image_url
+            );
+
+
+          if (path) {
+
+            prescriptionPaths.push(
+              path
+            );
+
+          }
+
+        }
+      );
+
+
+    await removeStorageFiles(
+      "prescriptions",
+      prescriptionPaths
+    );
+
+
+    /* =====================================================
+       5. DELETE LAB STORAGE FILES
+       ===================================================== */
+
+    const labPaths =
+      (
+        labReports ||
+        []
+      )
+      .map(
+        function(report) {
+
+          return report.file_path;
+
+        }
+      )
+      .filter(Boolean);
+
+
+    await removeStorageFiles(
+      "investigation-reports",
+      labPaths
+    );
+
+
+    /* =====================================================
+       6. DELETE CONSULTATION IMAGE DATABASE RECORDS
+       ===================================================== */
+
+    if (
+      consultationIds.length > 0
+    ) {
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from(
+            "consultation_images"
+          )
+          .delete()
+          .in(
+            "consultation_id",
+            consultationIds
+          );
+
+
+      if (error) {
+
+        throw new Error(
+          "Unable to delete prescription image records: " +
+          error.message
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       7. DELETE LAB REPORT DATABASE RECORDS
+       ===================================================== */
+
+    const {
+      error:
+        labDeleteError
+    } =
+      await supabaseClient
+        .from(
+          "investigation_reports"
+        )
+        .delete()
+        .eq(
+          "patient_id",
+          currentPatientId
+        );
+
+
+    if (labDeleteError) {
+
+      throw new Error(
+        "Unable to delete lab report records: " +
+        labDeleteError.message
+      );
+
+    }
+
+
+    /* =====================================================
+       8. DELETE BILLING RECORDS
+
+       Done before consultations because billing may
+       reference consultation_id.
+       ===================================================== */
+
+    const {
+      error:
+        billingDeleteError
+    } =
+      await supabaseClient
+        .from(
+          "billing"
+        )
+        .delete()
+        .eq(
+          "patient_id",
+          currentPatientId
+        );
+
+
+    if (billingDeleteError) {
+
+      throw new Error(
+        "Unable to delete billing records: " +
+        billingDeleteError.message
+      );
+
+    }
+
+
+    /* =====================================================
+       9. DELETE CONSULTATIONS
+
+       Done before appointments because consultations
+       may reference appointment_id.
+       ===================================================== */
+
+    const {
+      error:
+        consultationDeleteError
+    } =
+      await supabaseClient
+        .from(
+          "consultations"
+        )
+        .delete()
+        .eq(
+          "patient_id",
+          currentPatientId
+        );
+
+
+    if (consultationDeleteError) {
+
+      throw new Error(
+        "Unable to delete consultation records: " +
+        consultationDeleteError.message
+      );
+
+    }
+
+
+    /* =====================================================
+       10. DELETE PATIENT-LINKED APPOINTMENTS
+       ===================================================== */
+
+    const {
+      error:
+        appointmentDeleteError
+    } =
+      await supabaseClient
+        .from(
+          "appointments"
+        )
+        .delete()
+        .eq(
+          "patient_id",
+          currentPatientId
+        );
+
+
+    if (appointmentDeleteError) {
+
+      throw new Error(
+        "Unable to delete linked appointments: " +
+        appointmentDeleteError.message
+      );
+
+    }
+
+
+    /* =====================================================
+       11. DELETE PATIENT RECORD LAST
+       ===================================================== */
+
+    const {
+      error:
+        patientDeleteError
+    } =
+      await supabaseClient
+        .from(
+          "patients"
+        )
+        .delete()
+        .eq(
+          "id",
+          currentPatientId
+        );
+
+
+    if (patientDeleteError) {
+
+      throw new Error(
+        "Unable to delete patient record: " +
+        patientDeleteError.message
+      );
+
+    }
+
+
+    /* =====================================================
+       SUCCESS
+       ===================================================== */
+
+    alert(
+      "Patient deleted successfully.\n\n" +
+      "All linked patient records have been removed."
+    );
+
+
+    window.location.href =
+      "doctor-all-patients.html";
+
+
+  } catch (error) {
+
+    console.error(
+      "Patient deletion error:",
+      error
+    );
+
+
+    button.disabled =
+      false;
+
+
+    button.textContent =
+      "🗑 Permanently Delete Patient";
+
+
+    alert(
+      "Patient deletion could not be completed.\n\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    logoutDoctor
+  );
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+window.toggleBasicDetails =
+  toggleBasicDetails;
+
+window.deletePatientPermanently =
+  deletePatientPermanently;
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+(async function initializePage() {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+
+  if (!loggedIn) {
+    return;
+  }
+
+
+  currentPatientId =
+    getPatientIdFromURL();
+
+
+  if (!currentPatientId) {
+
+    alert(
+      "Patient ID is missing."
+    );
+
+
+    window.location.href =
+      "doctor-all-patients.html";
+
+
+    return;
+  }
+
+
+  await loadPatient();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
