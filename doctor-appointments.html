@@ -19,6 +19,10 @@ Appointments | General & Diabetes Care
 
 <style>
 
+/* =========================================================
+   GENERAL
+   ========================================================= */
+
 * {
   box-sizing: border-box;
 }
@@ -28,8 +32,8 @@ body {
   background:
     linear-gradient(
       135deg,
-      #f5f9fc,
-      #eef6fb,
+      #f4f9fc,
+      #eef7fa,
       #f8fbfd
     );
   color: #172033;
@@ -50,7 +54,7 @@ textarea {
 
 .appointments-page {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1050px;
   margin: 0 auto;
   padding: 16px 10px 45px;
 }
@@ -130,6 +134,11 @@ textarea {
   background: #fff0f0;
 }
 
+.warning-button {
+  color: #925d00;
+  background: #fff3d8;
+}
+
 .light-button {
   color: #334b5a;
   background: #f1f5f9;
@@ -156,18 +165,13 @@ textarea {
   gap: 8px;
 }
 
-
-/* =========================================================
-   BACK
-   ========================================================= */
-
 .top-actions {
   margin: 14px 0 16px;
 }
 
 
 /* =========================================================
-   MENU
+   MAIN MENU
    ========================================================= */
 
 .appointment-menu {
@@ -180,7 +184,7 @@ textarea {
 .menu-card {
   position: relative;
   width: 100%;
-  min-height: 105px;
+  min-height: 110px;
   padding: 16px;
   text-align: left;
   border-radius: 17px;
@@ -249,8 +253,8 @@ textarea {
 }
 
 .menu-icon {
-  font-size: 27px;
   margin-bottom: 8px;
+  font-size: 27px;
 }
 
 .menu-title {
@@ -272,7 +276,7 @@ textarea {
   padding: 4px 9px;
   text-align: center;
   border-radius: 999px;
-  background: rgba(255,255,255,.85);
+  background: rgba(255,255,255,.9);
   color: #334155;
   font-size: 13px;
   font-weight: 900;
@@ -280,13 +284,13 @@ textarea {
 
 
 /* =========================================================
-   MAIN CARD
+   CARD
    ========================================================= */
 
 .portal-card {
   margin-top: 14px;
   padding: 18px;
-  background: rgba(255,255,255,.96);
+  background: rgba(255,255,255,.97);
   border: 1px solid #e3eaf0;
   border-radius: 19px;
   box-shadow:
@@ -316,15 +320,15 @@ textarea {
 
 
 /* =========================================================
-   APPOINTMENTS
+   APPOINTMENT CARD
    ========================================================= */
 
 .appointment-card {
   margin-top: 10px;
   padding: 15px;
+  background: #ffffff;
   border: 1px solid #e0e7ee;
   border-radius: 15px;
-  background: #ffffff;
 }
 
 .appointment-card.today {
@@ -437,7 +441,7 @@ textarea {
 
 
 /* =========================================================
-   ADD FORM
+   ADD APPOINTMENT FORM
    ========================================================= */
 
 .add-form-wrap {
@@ -511,7 +515,7 @@ textarea {
 
 
 /* =========================================================
-   PATIENT SEARCH
+   REGISTERED PATIENT SEARCH
    ========================================================= */
 
 .patient-search-results {
@@ -598,11 +602,6 @@ textarea {
   margin-top: 9px;
 }
 
-
-/* =========================================================
-   UNREGISTERED
-   ========================================================= */
-
 .unregistered-box {
   display: none;
   margin-top: 10px;
@@ -620,7 +619,7 @@ textarea {
 
 
 /* =========================================================
-   SLOT INFO
+   SLOT
    ========================================================= */
 
 .slot-help {
@@ -773,7 +772,9 @@ Manage clinic appointments and patient visits
 </header>
 
 
-<!-- BACK AT TOP -->
+<!-- =====================================================
+     BACK TO DASHBOARD AT TOP
+     ===================================================== -->
 
 <div class="top-actions">
 
@@ -789,7 +790,7 @@ Manage clinic appointments and patient visits
 
 
 <!-- =====================================================
-     MAIN MENU
+     MAIN BUTTONS
      ===================================================== -->
 
 <div class="appointment-menu">
@@ -951,7 +952,7 @@ Book a new appointment
 </div>
 
 
-<!-- PATIENT SEARCH -->
+<!-- REGISTERED PATIENT -->
 
 <div class="form-section">
 
@@ -992,18 +993,19 @@ Patient Name / Phone Number
   id="unregisteredBox"
   class="unregistered-box">
 
-No registered patient selected.
+No registered patient found.
 
 <br><br>
 
-You can continue by entering the patient name and phone number below.
+You can continue with the appointment by entering the
+patient name and phone number below.
 
 </div>
 
 </div>
 
 
-<!-- PATIENT DETAILS -->
+<!-- APPOINTMENT PATIENT -->
 
 <div class="form-section">
 
@@ -1050,7 +1052,7 @@ Phone Number *
 </div>
 
 
-<!-- APPOINTMENT -->
+<!-- APPOINTMENT DETAILS -->
 
 <div class="form-section">
 
@@ -1211,7 +1213,7 @@ Notes
 
 
 <!-- =====================================================
-     APPOINTMENT SECTION
+     APPOINTMENT LIST SECTION
      ===================================================== -->
 
 <div
@@ -1288,7 +1290,7 @@ Loading appointments...
 <script>
 
 /* =========================================================
-   CONFIG
+   SUPABASE
    ========================================================= */
 
 const SUPABASE_URL =
@@ -1365,11 +1367,17 @@ function getTodayString() {
     "-" +
     String(
       date.getMonth() + 1
-    ).padStart(2,"0") +
+    ).padStart(
+      2,
+      "0"
+    ) +
     "-" +
     String(
       date.getDate()
-    ).padStart(2,"0")
+    ).padStart(
+      2,
+      "0"
+    )
   );
 
 }
@@ -1410,7 +1418,10 @@ function formatTime(value) {
 
   const time =
     String(value)
-      .substring(0,5);
+      .substring(
+        0,
+        5
+      );
 
 
   const labels = {
@@ -1549,6 +1560,7 @@ async function loadAppointments() {
   if (error) {
 
     console.error(
+      "Appointment load error:",
       error
     );
 
@@ -1722,7 +1734,8 @@ function openAppointmentSection(
   getElement(
     "appointmentSectionTitle"
   ).textContent =
-    titles[section];
+    titles[section] ||
+    "Appointments";
 
 
   getElement(
@@ -1734,6 +1747,11 @@ function openAppointmentSection(
 
 
   renderCurrentSection();
+
+
+  updateSectionURL(
+    section
+  );
 
 
   getElement(
@@ -1760,11 +1778,56 @@ function closeAppointmentSection() {
     "open"
   );
 
+
+  const url =
+    new URL(
+      window.location.href
+    );
+
+
+  url.searchParams.delete(
+    "section"
+  );
+
+
+  window.history.replaceState(
+    {},
+    "",
+    url.pathname +
+    url.search
+  );
+
+}
+
+
+function updateSectionURL(
+  section
+) {
+
+  const url =
+    new URL(
+      window.location.href
+    );
+
+
+  url.searchParams.set(
+    "section",
+    section
+  );
+
+
+  window.history.replaceState(
+    {},
+    "",
+    url.pathname +
+    url.search
+  );
+
 }
 
 
 /* =========================================================
-   FILTER SECTION
+   GET CURRENT APPOINTMENTS
    ========================================================= */
 
 function getCurrentAppointments() {
@@ -1847,20 +1910,7 @@ function getCurrentAppointments() {
           }
         )
         .sort(
-          function(a,b) {
-
-            return (
-              String(
-                b.appointment_date
-              )
-              .localeCompare(
-                String(
-                  a.appointment_date
-                )
-              )
-            );
-
-          }
+          sortAppointmentsNewestFirst
         );
 
   }
@@ -1884,20 +1934,7 @@ function getCurrentAppointments() {
           }
         )
         .sort(
-          function(a,b) {
-
-            return (
-              String(
-                b.appointment_date
-              )
-              .localeCompare(
-                String(
-                  a.appointment_date
-                )
-              )
-            );
-
-          }
+          sortAppointmentsNewestFirst
         );
 
   }
@@ -1908,8 +1945,44 @@ function getCurrentAppointments() {
 }
 
 
+function sortAppointmentsNewestFirst(
+  a,
+  b
+) {
+
+  const aKey =
+    String(
+      a.appointment_date ||
+      ""
+    ) +
+    " " +
+    String(
+      a.appointment_time ||
+      ""
+    );
+
+
+  const bKey =
+    String(
+      b.appointment_date ||
+      ""
+    ) +
+    " " +
+    String(
+      b.appointment_time ||
+      ""
+    );
+
+
+  return bKey.localeCompare(
+    aKey
+  );
+
+}
+
+
 /* =========================================================
-   RENDER SECTION
+   RENDER APPOINTMENT SECTION
    ========================================================= */
 
 function renderCurrentSection() {
@@ -1951,261 +2024,7 @@ function renderCurrentSection() {
   container.innerHTML =
     appointments
       .map(
-        function(appointment) {
-
-          const status =
-            appointment.status ||
-            "Pending";
-
-
-          let statusClass =
-            "status-pending";
-
-
-          if (
-            status ===
-            "Completed"
-          ) {
-
-            statusClass =
-              "status-completed";
-
-          }
-
-
-          if (
-            status ===
-            "Cancelled"
-          ) {
-
-            statusClass =
-              "status-cancelled";
-
-          }
-
-
-          return `
-
-            <div
-              class="appointment-card ${escapeHTML(
-                currentSection
-              )}">
-
-
-              <div class="appointment-top">
-
-
-                <div>
-
-                  <h3 class="patient-name">
-
-                    👤
-                    ${escapeHTML(
-                      appointment.patient_name ||
-                      "-"
-                    )}
-
-                  </h3>
-
-
-                  <div class="appointment-type">
-
-                    ${escapeHTML(
-                      appointment.appointment_type ||
-                      "Consultation"
-                    )}
-
-                  </div>
-
-
-                  ${
-                    appointment.patient_id
-                      ? `
-
-                        <span class="patient-id-badge">
-
-                          Patient ID:
-                          ${escapeHTML(
-                            appointment.patient_id
-                          )}
-
-                        </span>
-
-                      `
-                      : ""
-                  }
-
-                </div>
-
-
-                <span
-                  class="status-badge ${statusClass}">
-
-                  ${escapeHTML(
-                    status
-                  )}
-
-                </span>
-
-
-              </div>
-
-
-              <div class="appointment-info">
-
-
-                <div class="info-box">
-
-                  📅 Date
-
-                  <strong>
-
-                    ${formatDate(
-                      appointment.appointment_date
-                    )}
-
-                  </strong>
-
-                </div>
-
-
-                <div class="info-box">
-
-                  🕐 Time
-
-                  <strong>
-
-                    ${formatTime(
-                      appointment.appointment_time
-                    )}
-
-                  </strong>
-
-                </div>
-
-
-                <div class="info-box">
-
-                  📞 Phone
-
-                  <strong>
-
-                    ${escapeHTML(
-                      appointment.patient_phone ||
-                      "-"
-                    )}
-
-                  </strong>
-
-                </div>
-
-
-              </div>
-
-
-              ${
-                appointment.notes
-                  ? `
-
-                    <div class="appointment-notes">
-
-                      📝
-                      ${escapeHTML(
-                        appointment.notes
-                      )}
-
-                    </div>
-
-                  `
-                  : ""
-              }
-
-
-              <div class="appointment-actions">
-
-
-                ${
-                  appointment.patient_id
-                    ? `
-
-                      <button
-                        type="button"
-                        class="portal-button light-button small-button"
-                        onclick="viewLinkedPatient(
-                          ${Number(
-                            appointment.patient_id
-                          )}
-                        )">
-
-                        👤 View Patient
-
-                      </button>
-
-                    `
-                    : `
-                      <button
-                        type="button"
-                        class="portal-button light-button small-button"
-                        onclick="findAndViewPatient(
-                          ${Number(
-                            appointment.id
-                          )}
-                        )">
-
-                        👤 View Patient
-
-                      </button>
-                    `
-                }
-
-
-                ${
-                  status ===
-                  "Pending"
-                    ? `
-
-                      <button
-                        type="button"
-                        class="portal-button success-button small-button"
-                        onclick="updateAppointmentStatus(
-                          ${Number(
-                            appointment.id
-                          )},
-                          'Completed'
-                        )">
-
-                        ✅ Complete
-
-                      </button>
-
-
-                      <button
-                        type="button"
-                        class="portal-button danger-button small-button"
-                        onclick="updateAppointmentStatus(
-                          ${Number(
-                            appointment.id
-                          )},
-                          'Cancelled'
-                        )">
-
-                        ❌ Cancel
-
-                      </button>
-
-                    `
-                    : ""
-                }
-
-
-              </div>
-
-
-            </div>
-
-          `;
-
-        }
+        renderAppointmentCard
       )
       .join("");
 
@@ -2213,7 +2032,310 @@ function renderCurrentSection() {
 
 
 /* =========================================================
-   STATUS
+   RENDER APPOINTMENT CARD
+   ========================================================= */
+
+function renderAppointmentCard(
+  appointment
+) {
+
+  const status =
+    appointment.status ||
+    "Pending";
+
+
+  let statusClass =
+    "status-pending";
+
+
+  if (
+    status ===
+    "Completed"
+  ) {
+
+    statusClass =
+      "status-completed";
+
+  }
+
+
+  if (
+    status ===
+    "Cancelled"
+  ) {
+
+    statusClass =
+      "status-cancelled";
+
+  }
+
+
+  const linkedPatientId =
+    appointment.patient_id ||
+    appointment.linked_patient_id ||
+    null;
+
+
+  return `
+
+    <div
+      class="appointment-card ${escapeHTML(
+        currentSection ||
+        ""
+      )}">
+
+
+      <div class="appointment-top">
+
+
+        <div>
+
+          <h3 class="patient-name">
+
+            👤
+            ${escapeHTML(
+              appointment.patient_name ||
+              "-"
+            )}
+
+          </h3>
+
+
+          <div class="appointment-type">
+
+            ${escapeHTML(
+              appointment.appointment_type ||
+              "Consultation"
+            )}
+
+          </div>
+
+
+          ${
+            linkedPatientId
+              ? `
+
+                <span class="patient-id-badge">
+
+                  Patient ID:
+                  ${escapeHTML(
+                    linkedPatientId
+                  )}
+
+                </span>
+
+              `
+              : ""
+          }
+
+        </div>
+
+
+        <span
+          class="status-badge ${statusClass}">
+
+          ${escapeHTML(
+            status
+          )}
+
+        </span>
+
+
+      </div>
+
+
+      <div class="appointment-info">
+
+
+        <div class="info-box">
+
+          📅 Date
+
+          <strong>
+
+            ${formatDate(
+              appointment.appointment_date
+            )}
+
+          </strong>
+
+        </div>
+
+
+        <div class="info-box">
+
+          🕐 Time
+
+          <strong>
+
+            ${formatTime(
+              appointment.appointment_time
+            )}
+
+          </strong>
+
+        </div>
+
+
+        <div class="info-box">
+
+          📞 Phone
+
+          <strong>
+
+            ${escapeHTML(
+              appointment.patient_phone ||
+              "-"
+            )}
+
+          </strong>
+
+        </div>
+
+
+      </div>
+
+
+      ${
+        appointment.notes
+          ? `
+
+            <div class="appointment-notes">
+
+              📝
+              ${escapeHTML(
+                appointment.notes
+              )}
+
+            </div>
+
+          `
+          : ""
+      }
+
+
+      <div class="appointment-actions">
+
+
+        <button
+          type="button"
+          class="portal-button light-button small-button"
+          onclick="handleViewPatientById(
+            ${Number(
+              appointment.id
+            )}
+          )">
+
+          👤 View Patient
+
+        </button>
+
+
+        ${
+          status ===
+          "Pending"
+            ? `
+
+              <button
+                type="button"
+                class="portal-button primary-button small-button"
+                onclick="startConsultationByAppointmentId(
+                  ${Number(
+                    appointment.id
+                  )}
+                )">
+
+                🩺 Start Consultation
+
+              </button>
+
+
+              <button
+                type="button"
+                class="portal-button success-button small-button"
+                onclick="updateAppointmentStatus(
+                  ${Number(
+                    appointment.id
+                  )},
+                  'Completed'
+                )">
+
+                ✅ Complete
+
+              </button>
+
+
+              <button
+                type="button"
+                class="portal-button warning-button small-button"
+                onclick="updateAppointmentStatus(
+                  ${Number(
+                    appointment.id
+                  )},
+                  'Cancelled'
+                )">
+
+                ❌ Cancel
+
+              </button>
+
+            `
+            : ""
+        }
+
+
+        <button
+          type="button"
+          class="portal-button danger-button small-button"
+          onclick="deleteAppointment(
+            ${Number(
+              appointment.id
+            )}
+          )">
+
+          🗑 Delete
+
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   APPOINTMENT LOOKUP
+   ========================================================= */
+
+function getAppointmentById(
+  appointmentId
+) {
+
+  return allAppointments.find(
+    function(appointment) {
+
+      return (
+        Number(
+          appointment.id
+        ) ===
+        Number(
+          appointmentId
+        )
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   UPDATE STATUS
    ========================================================= */
 
 async function updateAppointmentStatus(
@@ -2264,50 +2386,104 @@ async function updateAppointmentStatus(
 
 
 /* =========================================================
-   VIEW PATIENT
+   DELETE APPOINTMENT
    ========================================================= */
 
-function viewLinkedPatient(
-  patientId
+async function deleteAppointment(
+  appointmentId
 ) {
 
-  window.location.href =
-    "doctor-patient-history.html" +
-    "?patient_id=" +
-    encodeURIComponent(
-      patientId
+  const appointment =
+    getAppointmentById(
+      appointmentId
     );
+
+
+  const patientName =
+    appointment
+      ? appointment.patient_name
+      : "this appointment";
+
+
+  const confirmed =
+    window.confirm(
+      "Delete appointment for " +
+      patientName +
+      " permanently?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("appointments")
+      .delete()
+      .eq(
+        "id",
+        appointmentId
+      );
+
+
+  if (error) {
+
+    alert(
+      "Unable to delete appointment:\n\n" +
+      error.message
+    );
+
+
+    return;
+
+  }
+
+
+  showToast(
+    "Appointment deleted."
+  );
+
+
+  await loadAppointments();
 
 }
 
 
 /* =========================================================
-   FIND OLD APPOINTMENT PATIENT
+   RESOLVE REGISTERED PATIENT FOR APPOINTMENT
    ========================================================= */
 
-async function findAndViewPatient(
-  appointmentId
+async function resolveAppointmentPatient(
+  appointment
 ) {
 
-  const appointment =
-    allAppointments.find(
-      function(item) {
+  let patientId =
+    appointment.patient_id ||
+    appointment.linked_patient_id ||
+    null;
 
-        return (
-          Number(
-            item.id
-          ) ===
-          Number(
-            appointmentId
-          )
-        );
 
-      }
+  if (
+    patientId
+  ) {
+
+    return Number(
+      patientId
     );
 
+  }
 
-  if (!appointment) {
-    return;
+
+  if (
+    !appointment.patient_phone
+  ) {
+
+    return null;
+
   }
 
 
@@ -2322,6 +2498,12 @@ async function findAndViewPatient(
         "patient_phone",
         appointment.patient_phone
       )
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      )
       .limit(1);
 
 
@@ -2331,8 +2513,127 @@ async function findAndViewPatient(
     data.length === 0
   ) {
 
+    return null;
+
+  }
+
+
+  patientId =
+    data[0].id;
+
+
+  /*
+     Link old appointment to patient.
+  */
+
+  let update = {
+
+    patient_id:
+      patientId,
+
+    linked_patient_id:
+      patientId
+
+  };
+
+
+  let {
+    error:
+      updateError
+  } =
+    await supabaseClient
+      .from("appointments")
+      .update(
+        update
+      )
+      .eq(
+        "id",
+        appointment.id
+      );
+
+
+  /*
+     Compatibility fallback if linked_patient_id
+     is unavailable.
+  */
+
+  if (
+    updateError &&
+    String(
+      updateError.message ||
+      ""
+    )
+    .toLowerCase()
+    .includes(
+      "linked_patient_id"
+    )
+  ) {
+
+    update = {
+
+      patient_id:
+        patientId
+
+    };
+
+
+    await supabaseClient
+      .from("appointments")
+      .update(
+        update
+      )
+      .eq(
+        "id",
+        appointment.id
+      );
+
+  }
+
+
+  appointment.patient_id =
+    patientId;
+
+
+  appointment.linked_patient_id =
+    patientId;
+
+
+  return Number(
+    patientId
+  );
+
+}
+
+
+/* =========================================================
+   VIEW PATIENT
+   ========================================================= */
+
+async function handleViewPatientById(
+  appointmentId
+) {
+
+  const appointment =
+    getAppointmentById(
+      appointmentId
+    );
+
+
+  if (!appointment) {
+    return;
+  }
+
+
+  const patientId =
+    await resolveAppointmentPatient(
+      appointment
+    );
+
+
+  if (!patientId) {
+
     alert(
-      "No registered patient record found."
+      "No registered patient record was found for this appointment."
     );
 
 
@@ -2341,30 +2642,102 @@ async function findAndViewPatient(
   }
 
 
-  const patientId =
-    data[0].id;
+  const returnURL =
+    "doctor-appointments.html" +
+    (
+      currentSection
+        ? "?section=" +
+          encodeURIComponent(
+            currentSection
+          )
+        : ""
+    );
 
 
-  await supabaseClient
-    .from("appointments")
-    .update({
+  window.location.href =
+    "doctor-patient-history.html" +
+    "?patient_id=" +
+    encodeURIComponent(
+      patientId
+    ) +
+    "&return_to=" +
+    encodeURIComponent(
+      returnURL
+    );
 
-      patient_id:
-        patientId,
+}
 
-      linked_patient_id:
-        patientId
 
-    })
-    .eq(
-      "id",
+/* =========================================================
+   START CONSULTATION
+   ========================================================= */
+
+async function startConsultationByAppointmentId(
+  appointmentId
+) {
+
+  const appointment =
+    getAppointmentById(
       appointmentId
     );
 
 
-  viewLinkedPatient(
-    patientId
-  );
+  if (!appointment) {
+    return;
+  }
+
+
+  const patientId =
+    await resolveAppointmentPatient(
+      appointment
+    );
+
+
+  if (!patientId) {
+
+    alert(
+      "This appointment is not linked to a registered patient.\n\nPlease register the patient first."
+    );
+
+
+    return;
+
+  }
+
+
+  const returnSection =
+    currentSection ||
+    (
+      appointment.appointment_date ===
+      getTodayString()
+        ? "today"
+        : "upcoming"
+    );
+
+
+  const returnURL =
+    "doctor-appointments.html" +
+    "?section=" +
+    encodeURIComponent(
+      returnSection
+    );
+
+
+  window.location.href =
+    "doctor-patients.html" +
+    "?view=new-consultation" +
+    "&patient_id=" +
+    encodeURIComponent(
+      patientId
+    ) +
+    "&appointment_id=" +
+    encodeURIComponent(
+      appointment.id
+    ) +
+    "&return_to=" +
+    encodeURIComponent(
+      returnURL
+    );
 
 }
 
@@ -2450,6 +2823,10 @@ function setDefaultAppointmentDate() {
     );
 
 
+  input.min =
+    getTodayString();
+
+
   if (!input.value) {
 
     input.value =
@@ -2458,17 +2835,13 @@ function setDefaultAppointmentDate() {
   }
 
 
-  input.min =
-    getTodayString();
-
-
   updateTimeSlotAvailability();
 
 }
 
 
 /* =========================================================
-   PATIENT SEARCH
+   REGISTERED PATIENT SEARCH
    ========================================================= */
 
 function scheduleRegisteredPatientSearch() {
@@ -2565,6 +2938,12 @@ async function searchRegisteredPatients() {
     error
   } =
     await query
+      .order(
+        "patient_name",
+        {
+          ascending: true
+        }
+      )
       .limit(8);
 
 
@@ -2597,9 +2976,7 @@ async function searchRegisteredPatients() {
     container.innerHTML = `
 
       <div class="empty-state">
-
         No registered patient found.
-
       </div>
 
     `;
@@ -2690,9 +3067,7 @@ async function searchRegisteredPatients() {
 
 
               <div class="select-text">
-
                 Select ›
-
               </div>
 
 
@@ -2708,7 +3083,7 @@ async function searchRegisteredPatients() {
 
 
 /* =========================================================
-   SELECT PATIENT
+   SELECT REGISTERED PATIENT
    ========================================================= */
 
 async function selectRegisteredPatient(
@@ -2850,7 +3225,7 @@ async function selectRegisteredPatient(
 
 
 /* =========================================================
-   CLEAR SELECTED
+   CLEAR SELECTED PATIENT
    ========================================================= */
 
 function clearSelectedPatient() {
@@ -2887,8 +3262,7 @@ function clearSelectedPatient() {
 
   getElement(
     "selectedPatientBox"
-  )
-  .innerHTML =
+  ).innerHTML =
     "";
 
 
@@ -2935,7 +3309,7 @@ const SLOT_LABELS = {
 
 
 /* =========================================================
-   RESET SLOTS
+   RESET SLOT OPTIONS
    ========================================================= */
 
 function resetSlotOptions() {
@@ -2974,7 +3348,7 @@ function resetSlotOptions() {
 
 
 /* =========================================================
-   SLOT AVAILABILITY
+   SLOT AVAILABILITY 0/5–5/5
    ========================================================= */
 
 async function updateTimeSlotAvailability() {
@@ -3016,6 +3390,10 @@ async function updateTimeSlotAvailability() {
     );
 
 
+  /*
+     Sunday closed
+  */
+
   if (
     selectedDate.getDay() ===
     0
@@ -3031,7 +3409,9 @@ async function updateTimeSlotAvailability() {
     .forEach(
       function(option) {
 
-        if (option.value) {
+        if (
+          option.value
+        ) {
 
           option.disabled =
             true;
@@ -3097,7 +3477,9 @@ async function updateTimeSlotAvailability() {
         appointment.status ===
         "Cancelled"
       ) {
+
         return;
+
       }
 
 
@@ -3112,9 +3494,13 @@ async function updateTimeSlotAvailability() {
         );
 
 
-      counts[time] =
+      counts[
+        time
+      ] =
         (
-          counts[time] ||
+          counts[
+            time
+          ] ||
           0
         ) + 1;
 
@@ -3266,22 +3652,19 @@ async function saveAppointment() {
 
 
   /*
-     Recheck slot immediately before insert.
+     FINAL CAPACITY RECHECK
   */
 
   const {
-    count,
+    data:
+      slotAppointments,
     error:
       countError
   } =
     await supabaseClient
       .from("appointments")
       .select(
-        "*",
-        {
-          count: "exact",
-          head: true
-        }
+        "id,status"
       )
       .eq(
         "appointment_date",
@@ -3290,10 +3673,6 @@ async function saveAppointment() {
       .eq(
         "appointment_time",
         appointmentTime
-      )
-      .neq(
-        "status",
-        "Cancelled"
       );
 
 
@@ -3309,8 +3688,26 @@ async function saveAppointment() {
   }
 
 
+  const activeSlotCount =
+    (
+      slotAppointments ||
+      []
+    )
+    .filter(
+      function(appointment) {
+
+        return (
+          appointment.status !==
+          "Cancelled"
+        );
+
+      }
+    )
+    .length;
+
+
   if (
-    count >= 5
+    activeSlotCount >= 5
   ) {
 
     alert(
@@ -3375,11 +3772,6 @@ async function saveAppointment() {
       selectedPatient.id;
 
 
-    /*
-       Your appointments table previously included
-       linked_patient_id. Keep both IDs synchronized.
-    */
-
     appointmentRecord.linked_patient_id =
       selectedPatient.id;
 
@@ -3397,9 +3789,7 @@ async function saveAppointment() {
 
 
   /*
-     Compatibility fallback:
-     if an older database does not expose linked_patient_id,
-     retry using patient_id only.
+     Compatibility fallback.
   */
 
   if (
@@ -3475,10 +3865,6 @@ async function saveAppointment() {
   );
 
 
-  /*
-     Automatically show the relevant list.
-  */
-
   if (
     appointmentDate ===
     getTodayString()
@@ -3500,7 +3886,7 @@ async function saveAppointment() {
 
 
 /* =========================================================
-   RESET FORM
+   RESET APPOINTMENT FORM
    ========================================================= */
 
 function resetAppointmentForm() {
@@ -3593,6 +3979,45 @@ function resetAppointmentForm() {
 
 
 /* =========================================================
+   RESTORE SECTION FROM URL
+   ========================================================= */
+
+function restoreSectionFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const section =
+    params.get(
+      "section"
+    );
+
+
+  if (
+    [
+      "today",
+      "upcoming",
+      "completed",
+      "cancelled"
+    ]
+    .includes(
+      section
+    )
+  ) {
+
+    openAppointmentSection(
+      section
+    );
+
+  }
+
+}
+
+
+/* =========================================================
    EVENTS
    ========================================================= */
 
@@ -3633,7 +4058,7 @@ getElement(
 
 
 /* =========================================================
-   GLOBAL
+   GLOBAL FUNCTIONS
    ========================================================= */
 
 window.openAppointmentSection =
@@ -3657,11 +4082,14 @@ window.clearSelectedPatient =
 window.updateAppointmentStatus =
   updateAppointmentStatus;
 
-window.viewLinkedPatient =
-  viewLinkedPatient;
+window.deleteAppointment =
+  deleteAppointment;
 
-window.findAndViewPatient =
-  findAndViewPatient;
+window.handleViewPatientById =
+  handleViewPatientById;
+
+window.startConsultationByAppointmentId =
+  startConsultationByAppointmentId;
 
 
 /* =========================================================
@@ -3686,6 +4114,9 @@ window.findAndViewPatient =
 
 
   await loadAppointments();
+
+
+  restoreSectionFromURL();
 
 })();
 
