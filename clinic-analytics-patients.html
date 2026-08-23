@@ -430,6 +430,38 @@ input {
 
 
 /* =========================================================
+   BREAKDOWN
+   ========================================================= */
+
+.breakdown-list {
+  display: grid;
+  gap: 9px;
+}
+
+.breakdown-row {
+  padding: 12px 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5eaef;
+  border-radius: 11px;
+}
+
+.breakdown-label {
+  color: #627181;
+  font-size: 13px;
+}
+
+.breakdown-value {
+  color: #193442;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
    CHART
    ========================================================= */
 
@@ -462,7 +494,7 @@ input {
 
 
 /* =========================================================
-   SELECTED MONTH POPUP
+   CLICKED MONTH CARD
    ========================================================= */
 
 .registration-month-popup {
@@ -523,38 +555,6 @@ input {
   cursor: pointer;
   font-size: 11px;
   font-weight: 750;
-}
-
-
-/* =========================================================
-   BREAKDOWN
-   ========================================================= */
-
-.breakdown-list {
-  display: grid;
-  gap: 9px;
-}
-
-.breakdown-row {
-  padding: 12px 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  background: #f8fafc;
-  border: 1px solid #e5eaef;
-  border-radius: 11px;
-}
-
-.breakdown-label {
-  color: #627181;
-  font-size: 13px;
-}
-
-.breakdown-value {
-  color: #193442;
-  font-size: 14px;
-  font-weight: 900;
 }
 
 
@@ -655,10 +655,15 @@ Patient registrations, growth and trends
 </header>
 
 
+<!-- =====================================================
+     BACK
+     ===================================================== -->
+
 <div class="action-row top-actions">
 
 <a
   href="clinic-analytics.html"
+  id="backToAnalyticsLink"
   class="portal-button light-button">
 
 ← Back to Clinic Analytics
@@ -675,6 +680,7 @@ Patient registrations, growth and trends
 <div class="period-card">
 
 <div class="period-top">
+
 
 <div>
 
@@ -705,6 +711,7 @@ Last 30 days
 Change ›
 
 </button>
+
 
 </div>
 
@@ -789,6 +796,7 @@ To
 
 </button>
 
+
 <button
   type="button"
   id="closePeriodButton"
@@ -820,6 +828,10 @@ Loading patient analytics...
 
 </div>
 
+
+<!-- =====================================================
+     ANALYTICS
+     ===================================================== -->
 
 <div
   id="analyticsContent"
@@ -1073,7 +1085,7 @@ Previous Month
 
 
 <!-- =====================================================
-     MONTHLY REGISTRATION CHART
+     MONTHLY REGISTRATION TREND
      ===================================================== -->
 
 <div class="section-title">
@@ -1083,9 +1095,11 @@ Monthly Registration Trend
 
 <div class="portal-card chart-card">
 
+
 <h2 class="chart-title">
 📈 Patient Registrations
 </h2>
+
 
 <p class="chart-description">
 Tap any month point to view the number of new patient registrations
@@ -1103,9 +1117,11 @@ Tap any month point to view the number of new patient registrations
   id="registrationMonthPopup"
   class="registration-month-popup">
 
+
 <div class="popup-label">
 📅 Monthly Registration
 </div>
+
 
 <div
   id="popupMonth"
@@ -1113,17 +1129,20 @@ Tap any month point to view the number of new patient registrations
 —
 </div>
 
+
 <div
   id="popupValue"
   class="popup-value">
 0
 </div>
 
+
 <div
   id="popupDescription"
   class="popup-description">
 patient registrations
 </div>
+
 
 <button
   type="button"
@@ -1133,6 +1152,7 @@ patient registrations
 ✕ Close
 
 </button>
+
 
 </div>
 
@@ -1157,6 +1177,7 @@ patient registrations
 🔄 Refresh
 
 </button>
+
 
 <button
   type="button"
@@ -1293,8 +1314,7 @@ function dateOnly(
   return value
     ? String(
         value
-      )
-      .substring(
+      ).substring(
         0,
         10
       )
@@ -1345,6 +1365,164 @@ function setDefaultPeriod() {
   updatePeriodDisplay(
     "Last 30 days"
   );
+
+}
+
+
+/* =========================================================
+   RECEIVE PERIOD FROM CLINIC ANALYTICS
+   ========================================================= */
+
+function loadPeriodFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const start =
+    params.get(
+      "start"
+    );
+
+
+  const end =
+    params.get(
+      "end"
+    );
+
+
+  if (
+    !start ||
+    !end
+  ) {
+
+    return false;
+
+  }
+
+
+  /*
+     Basic YYYY-MM-DD validation.
+  */
+
+  const datePattern =
+    /^\d{4}-\d{2}-\d{2}$/;
+
+
+  if (
+    !datePattern.test(
+      start
+    ) ||
+    !datePattern.test(
+      end
+    )
+  ) {
+
+    return false;
+
+  }
+
+
+  if (
+    start >
+    end
+  ) {
+
+    return false;
+
+  }
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      start;
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      end;
+
+
+  updatePeriodDisplay(
+    "Selected analytics period"
+  );
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   BACK TO MAIN ANALYTICS WITH SAME PERIOD
+   ========================================================= */
+
+function updateBackToAnalyticsLink() {
+
+  const start =
+    document
+      .getElementById(
+        "analyticsStartDate"
+      )
+      .value;
+
+
+  const end =
+    document
+      .getElementById(
+        "analyticsEndDate"
+      )
+      .value;
+
+
+  const link =
+    document
+      .getElementById(
+        "backToAnalyticsLink"
+      );
+
+
+  if (
+    !link
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    !start ||
+    !end
+  ) {
+
+    link.href =
+      "clinic-analytics.html";
+
+
+    return;
+
+  }
+
+
+  link.href =
+    "clinic-analytics.html" +
+    "?start=" +
+    encodeURIComponent(
+      start
+    ) +
+    "&end=" +
+    encodeURIComponent(
+      end
+    );
 
 }
 
@@ -1435,6 +1613,9 @@ function setQuickPeriod(
   updatePeriodDisplay(
     label
   );
+
+
+  updateBackToAnalyticsLink();
 
 
   loadAnalytics();
@@ -1546,7 +1727,7 @@ async function loadPatients() {
 
 
 /* =========================================================
-   COUNTER
+   COUNT PATIENTS BETWEEN DATES
    ========================================================= */
 
 function countBetween(
@@ -1844,7 +2025,7 @@ async function loadAnalytics() {
 
 
     /* =====================================================
-       DISPLAY SUMMARY
+       DISPLAY
        ===================================================== */
 
     document
@@ -1981,8 +2162,7 @@ async function loadAnalytics() {
 
 
 /* =========================================================
-   MONTHLY PATIENT CHART
-   CLICKABLE MONTHS
+   MONTHLY REGISTRATION CHART
    ========================================================= */
 
 function renderPatientChart(
@@ -2243,10 +2423,6 @@ function renderPatientChart(
             },
 
 
-          /* =================================================
-             CHANGE CURSOR OVER CLICKABLE POINT
-             ================================================= */
-
           onHover:
             function(
               event,
@@ -2259,11 +2435,15 @@ function renderPatientChart(
                   : canvas;
 
 
-              target.style.cursor =
-                elements &&
-                elements.length > 0
-                  ? "pointer"
-                  : "default";
+              if (target) {
+
+                target.style.cursor =
+                  elements &&
+                  elements.length > 0
+                    ? "pointer"
+                    : "default";
+
+              }
 
             },
 
@@ -2357,7 +2537,7 @@ function renderPatientChart(
 
 
 /* =========================================================
-   MONTH POPUP
+   MONTH REGISTRATION POPUP
    ========================================================= */
 
 function showRegistrationMonthPopup(
@@ -2441,7 +2621,7 @@ function closeRegistrationMonthPopup() {
 
 
 /* =========================================================
-   EVENTS
+   PERIOD EVENTS
    ========================================================= */
 
 document
@@ -2499,6 +2679,9 @@ document
       );
 
 
+      updateBackToAnalyticsLink();
+
+
       await loadAnalytics();
 
 
@@ -2515,6 +2698,10 @@ document
   );
 
 
+/* =========================================================
+   REFRESH
+   ========================================================= */
+
 document
   .getElementById(
     "refreshButton"
@@ -2524,6 +2711,10 @@ document
     loadAnalytics
   );
 
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
 
 document
   .getElementById(
@@ -2544,6 +2735,10 @@ document
     }
   );
 
+
+/* =========================================================
+   GLOBAL FUNCTIONS
+   ========================================================= */
 
 window.setQuickPeriod =
   setQuickPeriod;
@@ -2567,7 +2762,35 @@ window.closeRegistrationMonthPopup =
   }
 
 
-  setDefaultPeriod();
+  /*
+     First try to receive period from
+     Clinic Analytics.
+  */
+
+  const periodLoadedFromURL =
+    loadPeriodFromURL();
+
+
+  /*
+     If no period was supplied,
+     use normal Last 30 Days.
+  */
+
+  if (
+    !periodLoadedFromURL
+  ) {
+
+    setDefaultPeriod();
+
+  }
+
+
+  /*
+     Back button should always carry
+     current period to Clinic Analytics.
+  */
+
+  updateBackToAnalyticsLink();
 
 
   await loadAnalytics();
