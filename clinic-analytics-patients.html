@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>
+Patient Insights | General & Diabetes Care
+</title>
+
+<link
+  rel="stylesheet"
+  href="styles.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(
+      135deg,
+      #f4f9fc,
+      #edf8fb,
+      #f9fbfd
+    );
+  color: #172033;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+.analytics-page {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 16px 10px 45px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  margin-bottom: 14px;
+}
+
+.section-label {
+  margin: 0;
+  color: #167aa2;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 1.3px;
+}
+
+.page-header h1 {
+  margin: 5px 0 3px;
+  color: #173649;
+  font-size: 29px;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: #72808c;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.portal-button {
+  min-height: 43px;
+  padding: 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.primary-button {
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #0784a5,
+      #096b87
+    );
+}
+
+.light-button {
+  color: #334b5a;
+  background: #f1f5f9;
+  border: 1px solid #dce4ea;
+}
+
+.secondary-button {
+  color: #ffffff;
+  background: #64748b;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.top-actions {
+  margin: 14px 0 16px;
+}
+
+.bottom-actions {
+  margin-top: 20px;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   PERIOD
+   ========================================================= */
+
+.period-card {
+  margin-bottom: 14px;
+  padding: 17px;
+  background:
+    linear-gradient(
+      135deg,
+      #eaf8ff,
+      #ffffff
+    );
+  border: 1px solid #cce8f5;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(25,75,110,.05);
+}
+
+.period-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.period-label {
+  color: #6d7a89;
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.period-value {
+  margin-top: 5px;
+  color: #173b4f;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.period-description {
+  margin-top: 4px;
+  color: #71808f;
+  font-size: 12px;
+}
+
+.change-period-button {
+  padding: 8px 11px;
+  color: #147b9b;
+  background: #ffffff;
+  border: 1px solid #cfe2ed;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.period-controls {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #dce7ee;
+}
+
+.period-controls.open {
+  display: block;
+}
+
+.quick-periods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.quick-period-button {
+  padding: 8px 11px;
+  color: #506170;
+  background: #ffffff;
+  border: 1px solid #d7e1e8;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.date-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.date-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-group label {
+  margin-bottom: 5px;
+  color: #607080;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.date-group input {
+  width: 100%;
+  padding: 10px 11px;
+  background: #ffffff;
+  border: 1px solid #cdd9e1;
+  border-radius: 10px;
+}
+
+.period-actions {
+  margin-top: 11px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+  gap: 10px;
+}
+
+.summary-card {
+  min-height: 120px;
+  padding: 15px;
+  background: #ffffff;
+  border: 1px solid #dde7ee;
+  border-radius: 17px;
+  box-shadow:
+    0 5px 18px rgba(30,70,100,.05);
+}
+
+.summary-blue {
+  background:
+    linear-gradient(
+      135deg,
+      #e9f7ff,
+      #ffffff
+    );
+}
+
+.summary-teal {
+  background:
+    linear-gradient(
+      135deg,
+      #e9fbf7,
+      #ffffff
+    );
+}
+
+.summary-purple {
+  background:
+    linear-gradient(
+      135deg,
+      #f1edff,
+      #ffffff
+    );
+}
+
+.summary-gold {
+  background:
+    linear-gradient(
+      135deg,
+      #fff5df,
+      #ffffff
+    );
+}
+
+.summary-icon {
+  font-size: 22px;
+}
+
+.summary-value {
+  margin-top: 8px;
+  color: #172d3b;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.summary-title {
+  margin-top: 4px;
+  color: #657486;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section-title {
+  margin: 22px 0 11px;
+  color: #778493;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.portal-card {
+  margin-bottom: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e2e9ef;
+  border-radius: 18px;
+  box-shadow:
+    0 6px 20px rgba(20,31,56,.05);
+}
+
+
+/* =========================================================
+   GROWTH
+   ========================================================= */
+
+.growth-card {
+  display: grid;
+  grid-template-columns:
+    150px minmax(0,1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.growth-circle {
+  width: 125px;
+  height: 125px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      135deg,
+      #dff6ff,
+      #edfaff
+    );
+  border: 10px solid #ccecf8;
+}
+
+.growth-value {
+  color: #117b9c;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.growth-label {
+  margin-top: 3px;
+  color: #6b7a88;
+  font-size: 10px;
+}
+
+.growth-details {
+  display: grid;
+  gap: 9px;
+}
+
+.growth-row {
+  padding: 11px 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5eaef;
+  border-radius: 11px;
+}
+
+.growth-row-label {
+  color: #697687;
+  font-size: 12px;
+}
+
+.growth-row-value {
+  color: #203746;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   CHART
+   ========================================================= */
+
+.chart-card {
+  position: relative;
+}
+
+.chart-title {
+  margin: 0;
+  color: #223845;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.chart-description {
+  margin: 4px 0 16px;
+  color: #778392;
+  font-size: 12px;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 290px;
+}
+
+.chart-wrap canvas {
+  max-height: 310px;
+}
+
+
+/* =========================================================
+   BREAKDOWN
+   ========================================================= */
+
+.breakdown-list {
+  display: grid;
+  gap: 9px;
+}
+
+.breakdown-row {
+  padding: 12px 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5eaef;
+  border-radius: 11px;
+}
+
+.breakdown-label {
+  color: #627181;
+  font-size: 13px;
+}
+
+.breakdown-value {
+  color: #193442;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-card {
+  padding: 25px;
+  text-align: center;
+  color: #71808f;
+  background: #ffffff;
+  border: 1px solid #e1e8ed;
+  border-radius: 16px;
+}
+
+.spinner {
+  width: 29px;
+  height: 29px;
+  margin: 0 auto 8px;
+  border: 3px solid #e3e9ee;
+  border-top-color: #1687a6;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:850px) {
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:650px) {
+
+  .analytics-page {
+    padding: 12px 8px 40px;
+  }
+
+  .date-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .growth-card {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="analytics-page">
+
+
+<header class="page-header">
+
+<p class="section-label">
+GENERAL &amp; DIABETES CARE
+</p>
+
+<h1>
+👥 Patient Insights
+</h1>
+
+<p class="page-subtitle">
+Patient registrations, growth and trends
+</p>
+
+</header>
+
+
+<div class="action-row top-actions">
+
+<a
+  href="clinic-analytics.html"
+  class="portal-button light-button">
+
+← Back to Clinic Analytics
+
+</a>
+
+</div>
+
+
+<!-- PERIOD -->
+
+<div class="period-card">
+
+<div class="period-top">
+
+<div>
+
+<div class="period-label">
+📅 Analytics Period
+</div>
+
+<div
+  id="periodDisplay"
+  class="period-value">
+—
+</div>
+
+<div
+  id="periodDescription"
+  class="period-description">
+Last 30 days
+</div>
+
+</div>
+
+
+<button
+  type="button"
+  id="togglePeriodButton"
+  class="change-period-button">
+
+Change ›
+
+</button>
+
+</div>
+
+
+<div
+  id="periodControls"
+  class="period-controls">
+
+
+<div class="quick-periods">
+
+<button
+  class="quick-period-button"
+  onclick="setQuickPeriod('today')">
+
+Today
+
+</button>
+
+<button
+  class="quick-period-button"
+  onclick="setQuickPeriod('7')">
+
+7 Days
+
+</button>
+
+<button
+  class="quick-period-button"
+  onclick="setQuickPeriod('30')">
+
+30 Days
+
+</button>
+
+</div>
+
+
+<div class="date-grid">
+
+<div class="date-group">
+
+<label>
+From
+</label>
+
+<input
+  type="date"
+  id="analyticsStartDate">
+
+</div>
+
+
+<div class="date-group">
+
+<label>
+To
+</label>
+
+<input
+  type="date"
+  id="analyticsEndDate">
+
+</div>
+
+</div>
+
+
+<div class="period-actions">
+
+<button
+  type="button"
+  id="applyPeriodButton"
+  class="portal-button primary-button">
+
+✓ Apply
+
+</button>
+
+<button
+  type="button"
+  id="closePeriodButton"
+  class="portal-button light-button">
+
+Close
+
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<div
+  id="loadingCard"
+  class="loading-card">
+
+<div class="spinner"></div>
+
+Loading patient analytics...
+
+</div>
+
+
+<div
+  id="analyticsContent"
+  style="display:none;">
+
+
+<!-- SUMMARY -->
+
+<div class="summary-grid">
+
+
+<div class="summary-card summary-blue">
+
+<div class="summary-icon">
+👥
+</div>
+
+<div
+  id="totalPatients"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+All registered patients
+</div>
+
+</div>
+
+
+<div class="summary-card summary-teal">
+
+<div class="summary-icon">
+🆕
+</div>
+
+<div
+  id="periodPatients"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+New patients in selected period
+</div>
+
+</div>
+
+
+<div class="summary-card summary-purple">
+
+<div class="summary-icon">
+📅
+</div>
+
+<div
+  id="todayPatients"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+Registered today
+</div>
+
+</div>
+
+
+<div class="summary-card summary-gold">
+
+<div class="summary-icon">
+📈
+</div>
+
+<div
+  id="thisMonthPatients"
+  class="summary-value">
+0
+</div>
+
+<div class="summary-title">
+Registered this month
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- GROWTH -->
+
+<div class="section-title">
+Patient Growth
+</div>
+
+
+<div class="portal-card growth-card">
+
+
+<div class="growth-circle">
+
+<div
+  id="growthPercent"
+  class="growth-value">
+0%
+</div>
+
+<div class="growth-label">
+Growth
+</div>
+
+</div>
+
+
+<div class="growth-details">
+
+
+<div class="growth-row">
+
+<span class="growth-row-label">
+Selected Period
+</span>
+
+<span
+  id="growthCurrent"
+  class="growth-row-value">
+0
+</span>
+
+</div>
+
+
+<div class="growth-row">
+
+<span class="growth-row-label">
+Previous Equal Period
+</span>
+
+<span
+  id="growthPrevious"
+  class="growth-row-value">
+0
+</span>
+
+</div>
+
+
+<div class="growth-row">
+
+<span class="growth-row-label">
+Difference
+</span>
+
+<span
+  id="growthDifference"
+  class="growth-row-value">
+0
+</span>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- REGISTRATION SUMMARY -->
+
+<div class="section-title">
+Registration Summary
+</div>
+
+
+<div class="portal-card">
+
+<div class="breakdown-list">
+
+
+<div class="breakdown-row">
+
+<span class="breakdown-label">
+Today
+</span>
+
+<span
+  id="summaryToday"
+  class="breakdown-value">
+0
+</span>
+
+</div>
+
+
+<div class="breakdown-row">
+
+<span class="breakdown-label">
+Last 7 Days
+</span>
+
+<span
+  id="summarySevenDays"
+  class="breakdown-value">
+0
+</span>
+
+</div>
+
+
+<div class="breakdown-row">
+
+<span class="breakdown-label">
+This Month
+</span>
+
+<span
+  id="summaryThisMonth"
+  class="breakdown-value">
+0
+</span>
+
+</div>
+
+
+<div class="breakdown-row">
+
+<span class="breakdown-label">
+Previous Month
+</span>
+
+<span
+  id="summaryPreviousMonth"
+  class="breakdown-value">
+0
+</span>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- CHART -->
+
+<div class="section-title">
+Monthly Registration Trend
+</div>
+
+
+<div class="portal-card chart-card">
+
+<h2 class="chart-title">
+📈 Patient Registrations
+</h2>
+
+<p class="chart-description">
+New patient registrations during the last 12 months
+</p>
+
+
+<div class="chart-wrap">
+
+<canvas id="patientRegistrationChart"></canvas>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div class="action-row bottom-actions">
+
+<button
+  type="button"
+  id="refreshButton"
+  class="portal-button light-button">
+
+🔄 Refresh
+
+</button>
+
+<button
+  type="button"
+  id="logoutButton"
+  class="portal-button secondary-button">
+
+🔒 Logout
+
+</button>
+
+</div>
+
+
+</div>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+let patientChart =
+  null;
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   DATE HELPERS
+   ========================================================= */
+
+function formatDateInput(date) {
+
+  return (
+    date.getFullYear() +
+    "-" +
+    String(
+      date.getMonth() + 1
+    ).padStart(2,"0") +
+    "-" +
+    String(
+      date.getDate()
+    ).padStart(2,"0")
+  );
+
+}
+
+
+function formatDisplayDate(value) {
+
+  return new Date(
+    value +
+    "T00:00:00"
+  )
+  .toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function dateOnly(value) {
+
+  return value
+    ? String(value)
+        .substring(0,10)
+    : "";
+
+}
+
+
+/* =========================================================
+   DEFAULT PERIOD
+   ========================================================= */
+
+function setDefaultPeriod() {
+
+  const today =
+    new Date();
+
+
+  const start =
+    new Date();
+
+
+  start.setDate(
+    today.getDate() - 29
+  );
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      formatDateInput(start);
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      formatDateInput(today);
+
+
+  updatePeriodDisplay(
+    "Last 30 days"
+  );
+
+}
+
+
+function setQuickPeriod(type) {
+
+  const today =
+    new Date();
+
+
+  const start =
+    new Date();
+
+
+  let label =
+    "";
+
+
+  if (
+    type === "today"
+  ) {
+
+    label =
+      "Today";
+
+  }
+
+
+  if (
+    type === "7"
+  ) {
+
+    start.setDate(
+      today.getDate() - 6
+    );
+
+    label =
+      "Last 7 days";
+
+  }
+
+
+  if (
+    type === "30"
+  ) {
+
+    start.setDate(
+      today.getDate() - 29
+    );
+
+    label =
+      "Last 30 days";
+
+  }
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      formatDateInput(start);
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      formatDateInput(today);
+
+
+  updatePeriodDisplay(label);
+
+
+  loadAnalytics();
+
+}
+
+
+function updatePeriodDisplay(label) {
+
+  const start =
+    document
+      .getElementById(
+        "analyticsStartDate"
+      )
+      .value;
+
+
+  const end =
+    document
+      .getElementById(
+        "analyticsEndDate"
+      )
+      .value;
+
+
+  document
+    .getElementById(
+      "periodDisplay"
+    )
+    .textContent =
+      formatDisplayDate(start) +
+      " — " +
+      formatDisplayDate(end);
+
+
+  document
+    .getElementById(
+      "periodDescription"
+    )
+    .textContent =
+      label ||
+      "Custom analytics period";
+
+}
+
+
+/* =========================================================
+   LOAD PATIENTS
+   ========================================================= */
+
+async function loadPatients() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select(
+        "id,created_at"
+      )
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+    throw error;
+  }
+
+
+  return data || [];
+
+}
+
+
+/* =========================================================
+   COUNTERS
+   ========================================================= */
+
+function countBetween(
+  patients,
+  start,
+  end
+) {
+
+  return patients.filter(
+    function(patient) {
+
+      const date =
+        dateOnly(
+          patient.created_at
+        );
+
+
+      return (
+        date >= start &&
+        date <= end
+      );
+
+    }
+  ).length;
+
+}
+
+
+/* =========================================================
+   ANALYTICS
+   ========================================================= */
+
+async function loadAnalytics() {
+
+  const loading =
+    document.getElementById(
+      "loadingCard"
+    );
+
+
+  const content =
+    document.getElementById(
+      "analyticsContent"
+    );
+
+
+  loading.style.display =
+    "block";
+
+
+  content.style.display =
+    "none";
+
+
+  try {
+
+    const patients =
+      await loadPatients();
+
+
+    const startDate =
+      document
+        .getElementById(
+          "analyticsStartDate"
+        )
+        .value;
+
+
+    const endDate =
+      document
+        .getElementById(
+          "analyticsEndDate"
+        )
+        .value;
+
+
+    if (
+      !startDate ||
+      !endDate
+    ) {
+
+      throw new Error(
+        "Please select dates."
+      );
+
+    }
+
+
+    if (
+      startDate >
+      endDate
+    ) {
+
+      throw new Error(
+        "Start date cannot be after end date."
+      );
+
+    }
+
+
+    const today =
+      new Date();
+
+
+    const todayString =
+      formatDateInput(today);
+
+
+    const monthStart =
+      new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        1
+      );
+
+
+    const thisMonthStart =
+      formatDateInput(
+        monthStart
+      );
+
+
+    const previousMonthStart =
+      new Date(
+        today.getFullYear(),
+        today.getMonth() - 1,
+        1
+      );
+
+
+    const previousMonthEnd =
+      new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        0
+      );
+
+
+    const sevenDaysAgo =
+      new Date();
+
+
+    sevenDaysAgo.setDate(
+      today.getDate() - 6
+    );
+
+
+    const periodCount =
+      countBetween(
+        patients,
+        startDate,
+        endDate
+      );
+
+
+    const startObject =
+      new Date(
+        startDate +
+        "T00:00:00"
+      );
+
+
+    const endObject =
+      new Date(
+        endDate +
+        "T00:00:00"
+      );
+
+
+    const periodDays =
+      Math.floor(
+        (
+          endObject -
+          startObject
+        ) /
+        86400000
+      ) + 1;
+
+
+    const previousEnd =
+      new Date(
+        startObject
+      );
+
+
+    previousEnd.setDate(
+      previousEnd.getDate() - 1
+    );
+
+
+    const previousStart =
+      new Date(
+        previousEnd
+      );
+
+
+    previousStart.setDate(
+      previousStart.getDate() -
+      periodDays +
+      1
+    );
+
+
+    const previousCount =
+      countBetween(
+        patients,
+        formatDateInput(
+          previousStart
+        ),
+        formatDateInput(
+          previousEnd
+        )
+      );
+
+
+    let growth =
+      0;
+
+
+    if (
+      previousCount > 0
+    ) {
+
+      growth =
+        (
+          (
+            periodCount -
+            previousCount
+          ) /
+          previousCount
+        ) *
+        100;
+
+    } else if (
+      periodCount > 0
+    ) {
+
+      growth =
+        100;
+
+    }
+
+
+    const todayCount =
+      countBetween(
+        patients,
+        todayString,
+        todayString
+      );
+
+
+    const sevenDayCount =
+      countBetween(
+        patients,
+        formatDateInput(
+          sevenDaysAgo
+        ),
+        todayString
+      );
+
+
+    const thisMonthCount =
+      countBetween(
+        patients,
+        thisMonthStart,
+        todayString
+      );
+
+
+    const previousMonthCount =
+      countBetween(
+        patients,
+        formatDateInput(
+          previousMonthStart
+        ),
+        formatDateInput(
+          previousMonthEnd
+        )
+      );
+
+
+    document
+      .getElementById(
+        "totalPatients"
+      )
+      .textContent =
+        patients.length;
+
+
+    document
+      .getElementById(
+        "periodPatients"
+      )
+      .textContent =
+        periodCount;
+
+
+    document
+      .getElementById(
+        "todayPatients"
+      )
+      .textContent =
+        todayCount;
+
+
+    document
+      .getElementById(
+        "thisMonthPatients"
+      )
+      .textContent =
+        thisMonthCount;
+
+
+    document
+      .getElementById(
+        "growthPercent"
+      )
+      .textContent =
+        growth.toFixed(1) +
+        "%";
+
+
+    document
+      .getElementById(
+        "growthCurrent"
+      )
+      .textContent =
+        periodCount;
+
+
+    document
+      .getElementById(
+        "growthPrevious"
+      )
+      .textContent =
+        previousCount;
+
+
+    document
+      .getElementById(
+        "growthDifference"
+      )
+      .textContent =
+        (
+          periodCount -
+          previousCount
+        );
+
+
+    document
+      .getElementById(
+        "summaryToday"
+      )
+      .textContent =
+        todayCount;
+
+
+    document
+      .getElementById(
+        "summarySevenDays"
+      )
+      .textContent =
+        sevenDayCount;
+
+
+    document
+      .getElementById(
+        "summaryThisMonth"
+      )
+      .textContent =
+        thisMonthCount;
+
+
+    document
+      .getElementById(
+        "summaryPreviousMonth"
+      )
+      .textContent =
+        previousMonthCount;
+
+
+    renderPatientChart(
+      patients
+    );
+
+
+    content.style.display =
+      "block";
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    alert(
+      error.message ||
+      "Unable to load patient analytics."
+    );
+
+
+  } finally {
+
+    loading.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================================================
+   CHART
+   ========================================================= */
+
+function renderPatientChart(
+  patients
+) {
+
+  const labels =
+    [];
+
+
+  const values =
+    [];
+
+
+  const today =
+    new Date();
+
+
+  for (
+    let i = 11;
+    i >= 0;
+    i--
+  ) {
+
+    const month =
+      new Date(
+        today.getFullYear(),
+        today.getMonth() - i,
+        1
+      );
+
+
+    const year =
+      month.getFullYear();
+
+
+    const monthNumber =
+      month.getMonth();
+
+
+    const count =
+      patients.filter(
+        function(patient) {
+
+          if (
+            !patient.created_at
+          ) {
+            return false;
+          }
+
+
+          const date =
+            new Date(
+              patient.created_at
+            );
+
+
+          return (
+            date.getFullYear() ===
+              year &&
+            date.getMonth() ===
+              monthNumber
+          );
+
+        }
+      ).length;
+
+
+    labels.push(
+      month.toLocaleDateString(
+        "en-IN",
+        {
+          month: "short",
+          year: "2-digit"
+        }
+      )
+    );
+
+
+    values.push(
+      count
+    );
+
+  }
+
+
+  if (
+    patientChart
+  ) {
+
+    patientChart.destroy();
+
+  }
+
+
+  patientChart =
+    new Chart(
+      document.getElementById(
+        "patientRegistrationChart"
+      ),
+      {
+
+        type:
+          "line",
+
+        data: {
+
+          labels:
+            labels,
+
+          datasets: [
+
+            {
+
+              label:
+                "Patient Registrations",
+
+              data:
+                values,
+
+              tension:
+                0.35,
+
+              fill:
+                true
+
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive:
+            true,
+
+          maintainAspectRatio:
+            false,
+
+          plugins: {
+
+            legend: {
+              display:
+                false
+            }
+
+          },
+
+          scales: {
+
+            y: {
+
+              beginAtZero:
+                true,
+
+              ticks: {
+
+                precision:
+                  0
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+document
+  .getElementById(
+    "togglePeriodButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .toggle(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "closePeriodButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .remove(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "applyPeriodButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      updatePeriodDisplay(
+        "Custom analytics period"
+      );
+
+
+      await loadAnalytics();
+
+
+      document
+        .getElementById(
+          "periodControls"
+        )
+        .classList
+        .remove(
+          "open"
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "refreshButton"
+  )
+  .addEventListener(
+    "click",
+    loadAnalytics
+  );
+
+
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+
+      window.location.href =
+        "doctor-login.html";
+
+    }
+  );
+
+
+window.setQuickPeriod =
+  setQuickPeriod;
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+(async function initializePage() {
+
+  const loggedIn =
+    await checkDoctorLogin();
+
+
+  if (!loggedIn) {
+    return;
+  }
+
+
+  setDefaultPeriod();
+
+
+  await loadAnalytics();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
