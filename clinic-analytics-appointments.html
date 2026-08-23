@@ -504,11 +504,11 @@ input {
 .chart-wrap {
   position: relative;
   width: 100%;
-  min-height: 320px;
+  min-height: 330px;
 }
 
 .chart-wrap canvas {
-  max-height: 340px;
+  max-height: 350px;
 }
 
 
@@ -572,7 +572,7 @@ input {
   }
 
   .chart-wrap {
-    min-height: 360px;
+    min-height: 380px;
   }
 
 }
@@ -605,10 +605,15 @@ Appointment status, completion and visit patterns
 </header>
 
 
+<!-- =====================================================
+     BACK
+     ===================================================== -->
+
 <div class="action-row top-actions">
 
 <a
   href="clinic-analytics.html"
+  id="backToAnalyticsLink"
   class="portal-button light-button">
 
 ← Back to Clinic Analytics
@@ -771,6 +776,10 @@ Loading appointment analytics...
 
 </div>
 
+
+<!-- =====================================================
+     ANALYTICS CONTENT
+     ===================================================== -->
 
 <div
   id="analyticsContent"
@@ -964,7 +973,7 @@ Appointment Types
 
 
 <!-- =====================================================
-     APPOINTMENT TYPE DISTRIBUTION
+     DISTRIBUTION
      ===================================================== -->
 
 <div class="section-title">
@@ -974,9 +983,11 @@ Appointment Distribution
 
 <div class="portal-card">
 
+
 <h2 class="chart-title">
 🩺 Appointment Type Distribution
 </h2>
+
 
 <p class="chart-description">
 Distribution of appointment types in the selected period — count and percentage
@@ -997,7 +1008,7 @@ Distribution of appointment types in the selected period — count and percentag
 
 
 <!-- =====================================================
-     BOTTOM ACTIONS
+     BOTTOM
      ===================================================== -->
 
 <div class="action-row bottom-actions">
@@ -1186,6 +1197,156 @@ function setDefaultPeriod() {
 
 
 /* =========================================================
+   RECEIVE PERIOD FROM MAIN ANALYTICS
+   ========================================================= */
+
+function loadPeriodFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const start =
+    params.get(
+      "start"
+    );
+
+
+  const end =
+    params.get(
+      "end"
+    );
+
+
+  if (
+    !start ||
+    !end
+  ) {
+
+    return false;
+
+  }
+
+
+  const datePattern =
+    /^\d{4}-\d{2}-\d{2}$/;
+
+
+  if (
+    !datePattern.test(
+      start
+    ) ||
+    !datePattern.test(
+      end
+    )
+  ) {
+
+    return false;
+
+  }
+
+
+  if (
+    start >
+    end
+  ) {
+
+    return false;
+
+  }
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      start;
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      end;
+
+
+  updatePeriodDisplay(
+    "Selected analytics period"
+  );
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   BACK TO ANALYTICS WITH SAME PERIOD
+   ========================================================= */
+
+function updateBackToAnalyticsLink() {
+
+  const start =
+    document
+      .getElementById(
+        "analyticsStartDate"
+      )
+      .value;
+
+
+  const end =
+    document
+      .getElementById(
+        "analyticsEndDate"
+      )
+      .value;
+
+
+  const link =
+    document
+      .getElementById(
+        "backToAnalyticsLink"
+      );
+
+
+  if (!link) {
+    return;
+  }
+
+
+  if (
+    !start ||
+    !end
+  ) {
+
+    link.href =
+      "clinic-analytics.html";
+
+
+    return;
+
+  }
+
+
+  link.href =
+    "clinic-analytics.html" +
+    "?start=" +
+    encodeURIComponent(
+      start
+    ) +
+    "&end=" +
+    encodeURIComponent(
+      end
+    );
+
+}
+
+
+/* =========================================================
    QUICK PERIOD
    ========================================================= */
 
@@ -1271,6 +1432,9 @@ function setQuickPeriod(
   updatePeriodDisplay(
     label
   );
+
+
+  updateBackToAnalyticsLink();
 
 
   loadAnalytics();
@@ -1610,6 +1774,7 @@ async function loadAnalytics() {
   } catch (error) {
 
     console.error(
+      "Appointment Analytics error:",
       error
     );
 
@@ -1756,6 +1921,7 @@ function renderAppointmentTypes(
 
           <div class="type-row">
 
+
             <div class="type-top">
 
               <span class="type-name">
@@ -1785,6 +1951,7 @@ function renderAppointmentTypes(
 
             </div>
 
+
           </div>
 
         `;
@@ -1797,8 +1964,7 @@ function renderAppointmentTypes(
 
 
 /* =========================================================
-   APPOINTMENT TYPE DISTRIBUTION
-   COUNT + PERCENTAGE
+   DOUGHNUT CHART
    ========================================================= */
 
 function renderAppointmentChart(
@@ -1896,8 +2062,7 @@ function renderAppointmentChart(
 
 
             /* =================================================
-               LEGEND:
-               coloured marker + name + count + percentage
+               LEGEND
                ================================================= */
 
             legend: {
@@ -1926,7 +2091,7 @@ function renderAppointmentChart(
                       chart.data.datasets[0];
 
 
-                    const defaultGenerator =
+                    const generator =
                       Chart.defaults
                         .plugins
                         .legend
@@ -1935,7 +2100,7 @@ function renderAppointmentChart(
 
 
                     const defaultLabels =
-                      defaultGenerator(
+                      generator(
                         chart
                       );
 
@@ -1992,8 +2157,7 @@ function renderAppointmentChart(
 
 
             /* =================================================
-               TOOLTIP:
-               tap / hover chart segment
+               TOOLTIP
                ================================================= */
 
             tooltip: {
@@ -2052,7 +2216,7 @@ function renderAppointmentChart(
 
 
 /* =========================================================
-   EVENTS
+   PERIOD CONTROLS
    ========================================================= */
 
 document
@@ -2110,6 +2274,9 @@ document
       );
 
 
+      updateBackToAnalyticsLink();
+
+
       await loadAnalytics();
 
 
@@ -2126,6 +2293,10 @@ document
   );
 
 
+/* =========================================================
+   REFRESH
+   ========================================================= */
+
 document
   .getElementById(
     "refreshButton"
@@ -2135,6 +2306,10 @@ document
     loadAnalytics
   );
 
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
 
 document
   .getElementById(
@@ -2156,6 +2331,10 @@ document
   );
 
 
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
 window.setQuickPeriod =
   setQuickPeriod;
 
@@ -2175,7 +2354,33 @@ window.setQuickPeriod =
   }
 
 
-  setDefaultPeriod();
+  /*
+     First attempt to use dates sent from
+     clinic-analytics.html
+  */
+
+  const periodLoadedFromURL =
+    loadPeriodFromURL();
+
+
+  /*
+     Otherwise use normal 30-day period.
+  */
+
+  if (
+    !periodLoadedFromURL
+  ) {
+
+    setDefaultPeriod();
+
+  }
+
+
+  /*
+     Back button carries same period.
+  */
+
+  updateBackToAnalyticsLink();
 
 
   await loadAnalytics();
