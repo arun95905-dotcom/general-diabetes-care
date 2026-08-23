@@ -19,10 +19,6 @@ All Clinic Patients | General & Diabetes Care
 
 <style>
 
-/* =========================================================
-   GENERAL
-   ========================================================= */
-
 * {
   box-sizing: border-box;
 }
@@ -49,19 +45,17 @@ input {
   padding: 16px 10px 45px;
 }
 
-.all-patients-page {
+.page-wrap {
   width: 100%;
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
 
-/* =========================================================
-   HEADER
-   ========================================================= */
+/* HEADER */
 
 .portal-header {
-  margin-bottom: 18px;
+  margin-bottom: 17px;
 }
 
 .section-label {
@@ -84,85 +78,10 @@ input {
 }
 
 
-/* =========================================================
-   CARD
-   ========================================================= */
-
-.portal-card {
-  margin-bottom: 14px;
-  padding: 18px;
-  background: #ffffff;
-  border: 1px solid #e4e9f0;
-  border-radius: 18px;
-  box-shadow:
-    0 5px 20px rgba(20,31,56,.06);
-}
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-.search-panel {
-  position: sticky;
-  top: 8px;
-  z-index: 20;
-}
-
-.search-row {
-  display: grid;
-  grid-template-columns:
-    minmax(0,1fr) 110px;
-  gap: 8px;
-}
-
-.search-input-wrap {
-  position: relative;
-}
-
-.search-input {
-  width: 100%;
-  height: 48px;
-  padding: 0 42px 0 13px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 11px;
-  font-size: 15px;
-  outline: none;
-}
-
-.search-input:focus {
-  border-color: #2563eb;
-  box-shadow:
-    0 0 0 3px rgba(37,99,235,.08);
-}
-
-.clear-search {
-  position: absolute;
-  right: 9px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 29px;
-  height: 29px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: #eef2f7;
-  color: #64748b;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
+/* BUTTONS */
 
 .portal-button {
-  min-height: 42px;
+  min-height: 43px;
   padding: 10px 14px;
   display: inline-flex;
   align-items: center;
@@ -177,12 +96,12 @@ input {
 
 .primary-button {
   background: #2563eb;
-  color: #ffffff;
+  color: #fff;
 }
 
 .secondary-button {
   background: #64748b;
-  color: #ffffff;
+  color: #fff;
 }
 
 .light-button {
@@ -191,170 +110,217 @@ input {
   border: 1px solid #dce3ec;
 }
 
-.action-row {
+.top-actions {
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
-  margin-top: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
 }
 
 
-/* =========================================================
-   SUMMARY
-   ========================================================= */
+/* CARD */
 
-.patient-summary {
-  margin-top: 14px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  background: #f8fafc;
-  border: 1px solid #e5eaf0;
-  border-radius: 12px;
+.portal-card {
+  margin-bottom: 14px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #e4e9f0;
+  border-radius: 18px;
+  box-shadow:
+    0 5px 20px rgba(20,31,56,.06);
 }
 
-.patient-count-label {
-  color: #64748b;
-  font-size: 13px;
-}
 
-.patient-count {
-  color: #2563eb;
+/* SEARCH */
+
+.search-title {
+  margin: 0 0 12px;
   font-size: 17px;
   font-weight: 850;
 }
 
-
-/* =========================================================
-   LIST HEADER
-   ========================================================= */
-
-.list-heading {
+.search-row {
   display: grid;
   grid-template-columns:
-    minmax(0,1fr) 95px 135px 28px;
-  gap: 10px;
-  padding: 10px 13px;
-  color: #7a8595;
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-
-/* =========================================================
-   PATIENT ROW
-   ========================================================= */
-
-.patient-list {
-  display: flex;
-  flex-direction: column;
+    minmax(0,1fr) 105px;
   gap: 8px;
 }
 
-.patient-row {
+.search-wrap {
+  position: relative;
+}
+
+.search-input {
   width: 100%;
-  padding: 0;
-  display: grid;
-  grid-template-columns:
-    minmax(0,1fr) 95px 135px 28px;
-  gap: 10px;
-  align-items: center;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  cursor: pointer;
-  text-align: left;
-  overflow: hidden;
-  transition:
-    transform .12s ease,
-    box-shadow .12s ease,
-    border-color .12s ease;
+  height: 48px;
+  padding: 0 42px 0 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 11px;
+  background: #fff;
+  font-size: 15px;
+  outline: none;
 }
 
-.patient-row:hover {
-  transform: translateY(-1px);
-  border-color: #cdd9e8;
+.search-input:focus {
+  border-color: #2563eb;
   box-shadow:
-    0 5px 16px rgba(20,31,56,.06);
+    0 0 0 3px rgba(37,99,235,.08);
 }
 
-.patient-row:active {
-  transform: scale(.995);
+.clear-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 29px;
+  height: 29px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #eef2f7;
+  color: #64748b;
+  cursor: pointer;
 }
 
-.patient-cell {
-  padding: 14px 13px;
+
+/* TOTAL PATIENT CARD */
+
+.total-patients-card {
+  width: 100%;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  background:
+    linear-gradient(
+      135deg,
+      #eef6ff,
+      #ffffff
+    );
+  border: 1px solid #d4e5fb;
+  border-radius: 17px;
+  cursor: pointer;
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease;
 }
 
-.patient-main {
-  min-width: 0;
+.total-patients-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 22px rgba(37,99,235,.08);
+}
+
+.total-left {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.total-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dbeafe;
+  border-radius: 15px;
+  font-size: 27px;
+}
+
+.total-title {
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.total-description {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.total-right {
+  text-align: right;
+}
+
+.total-number {
+  color: #2563eb;
+  font-size: 27px;
+  font-weight: 900;
+}
+
+.total-arrow {
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 20px;
+}
+
+
+/* SEARCH RESULTS */
+
+.results-title {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.patient-result {
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  cursor: pointer;
+}
+
+.patient-result:hover {
+  background: #f8fafc;
 }
 
 .patient-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   color: #172033;
   font-size: 15px;
   font-weight: 850;
 }
 
-.patient-phone {
-  margin-top: 3px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #778195;
+.patient-meta {
+  margin-top: 4px;
+  color: #667085;
   font-size: 12px;
-}
-
-.patient-id {
-  color: #475569;
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.patient-date {
-  color: #64748b;
-  font-size: 12px;
+  line-height: 1.6;
 }
 
 .patient-arrow {
-  padding-right: 10px;
   color: #94a3b8;
   font-size: 23px;
-  font-weight: 400;
 }
-
-
-/* =========================================================
-   MOBILE ROW
-   ========================================================= */
-
-.mobile-meta {
-  display: none;
-}
-
-
-/* =========================================================
-   STATES
-   ========================================================= */
 
 .portal-message {
-  padding: 24px 15px;
+  padding: 18px;
   text-align: center;
   color: #697386;
   background: #f8fafc;
-  border-radius: 13px;
+  border-radius: 12px;
 }
 
+
+/* LOADING */
+
 .loading-spinner {
-  width: 30px;
-  height: 30px;
-  margin: 0 auto 10px;
+  width: 27px;
+  height: 27px;
+  margin: 0 auto 9px;
   border: 3px solid #e2e8f0;
   border-top-color: #2563eb;
   border-radius: 50%;
@@ -362,19 +328,15 @@ input {
 }
 
 @keyframes spin {
-
   to {
     transform: rotate(360deg);
   }
-
 }
 
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+/* MOBILE */
 
-@media(max-width:700px) {
+@media(max-width:600px) {
 
   .doctor-dashboard {
     padding: 12px 8px 40px;
@@ -384,44 +346,31 @@ input {
     padding: 14px;
   }
 
-  .list-heading {
-    display: none;
-  }
-
-  .patient-row {
-    grid-template-columns:
-      minmax(0,1fr) 25px;
-    gap: 7px;
-  }
-
-  .patient-id,
-  .patient-date {
-    display: none;
-  }
-
-  .patient-main {
-    padding: 14px;
-  }
-
-  .patient-arrow {
-    padding: 0 9px 0 0;
-  }
-
-  .mobile-meta {
-    display: block;
-    margin-top: 5px;
-    color: #657084;
-    font-size: 12px;
-    line-height: 1.6;
+  .portal-header h1 {
+    font-size: 25px;
   }
 
 }
 
-@media(max-width:430px) {
+@media(max-width:420px) {
 
   .search-row {
     grid-template-columns:
-      minmax(0,1fr) 92px;
+      minmax(0,1fr) 90px;
+  }
+
+  .total-patients-card {
+    padding: 15px;
+  }
+
+  .total-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 24px;
+  }
+
+  .total-number {
+    font-size: 23px;
   }
 
 }
@@ -436,12 +385,10 @@ input {
 
 <section class="doctor-dashboard">
 
-<div class="all-patients-page">
+<div class="page-wrap">
 
 
-<!-- =====================================================
-     HEADER
-     ===================================================== -->
+<!-- HEADER -->
 
 <div class="portal-header">
 
@@ -460,17 +407,34 @@ Search and manage registered clinic patients
 </div>
 
 
+<!-- BACK ABOVE SEARCH -->
 
-<!-- =====================================================
-     SEARCH
-     ===================================================== -->
+<div class="top-actions">
 
-<div class="portal-card search-panel">
+<a
+  href="doctor-dashboard.html"
+  class="portal-button light-button">
+
+← Back to Dashboard
+
+</a>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="portal-card">
+
+<h2 class="search-title">
+🔎 Search Patient
+</h2>
+
 
 <div class="search-row">
 
 
-<div class="search-input-wrap">
+<div class="search-wrap">
 
 <input
   type="search"
@@ -479,11 +443,12 @@ Search and manage registered clinic patients
   placeholder="Patient ID / Name / Phone"
   autocomplete="off">
 
+
 <button
   type="button"
   id="clearSearchButton"
-  class="clear-search"
-  aria-label="Clear search">
+  class="clear-button"
+  aria-label="Clear">
 
 ✕
 
@@ -505,84 +470,73 @@ Search and manage registered clinic patients
 </div>
 
 
-<div class="patient-summary">
-
-<span class="patient-count-label">
-Registered patients
-</span>
-
-<span
-  id="patientCount"
-  class="patient-count">
-
-0
-
-</span>
-
-</div>
+<div
+  id="searchResults"
+  style="margin-top:14px; display:none;">
 
 </div>
 
 
+</div>
 
-<!-- =====================================================
-     PATIENT LIST
-     ===================================================== -->
+
+<!-- TOTAL REGISTERED PATIENTS -->
 
 <div class="portal-card">
 
+<button
+  type="button"
+  class="total-patients-card"
+  id="viewAllPatientsButton">
 
-<div class="list-heading">
+
+<div class="total-left">
+
+<div class="total-icon">
+👥
+</div>
+
 
 <div>
-Patient
+
+<div class="total-title">
+Total Registered Patients
 </div>
 
-<div>
-Patient ID
-</div>
-
-<div>
-Registered
-</div>
-
-<div>
+<div class="total-description">
+Tap to view all registered clinic patients
 </div>
 
 </div>
 
+</div>
+
+
+<div class="total-right">
 
 <div
-  id="patientsContainer"
-  class="patient-list">
+  id="totalPatientCount"
+  class="total-number">
 
-<div class="portal-message">
+—
 
-<div class="loading-spinner"></div>
+</div>
 
-Loading patients...
-
+<div class="total-arrow">
+›
 </div>
 
 </div>
 
+
+</button>
+
 </div>
 
 
+<!-- LOGOUT -->
 
-<!-- =====================================================
-     FOOTER ACTIONS
-     ===================================================== -->
-
-<div class="action-row">
-
-<a
-  href="doctor-dashboard.html"
-  class="portal-button light-button">
-
-← Back to Dashboard
-
-</a>
+<div class="top-actions">
 
 <button
   type="button"
@@ -599,7 +553,6 @@ Loading patients...
 </div>
 
 </section>
-
 
 
 <script
@@ -647,7 +600,6 @@ function escapeHTML(value) {
     return "";
   }
 
-
   return String(value)
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
@@ -664,10 +616,8 @@ function formatDate(value) {
     return "-";
   }
 
-
   const date =
     new Date(value);
-
 
   if (
     Number.isNaN(
@@ -676,7 +626,6 @@ function formatDate(value) {
   ) {
     return "-";
   }
-
 
   return date.toLocaleDateString(
     "en-IN",
@@ -691,7 +640,7 @@ function formatDate(value) {
 
 
 /* =========================================================
-   LOGIN
+   AUTH
    ========================================================= */
 
 async function checkDoctorLogin() {
@@ -715,7 +664,6 @@ async function checkDoctorLogin() {
 
   }
 
-
   return true;
 
 }
@@ -727,7 +675,6 @@ async function logoutDoctor() {
     .auth
     .signOut();
 
-
   window.location.href =
     "doctor-login.html";
 
@@ -735,29 +682,10 @@ async function logoutDoctor() {
 
 
 /* =========================================================
-   LOAD ALL PATIENTS
+   LOAD PATIENTS
    ========================================================= */
 
-async function loadAllPatients() {
-
-  const container =
-    document.getElementById(
-      "patientsContainer"
-    );
-
-
-  container.innerHTML = `
-
-    <div class="portal-message">
-
-      <div class="loading-spinner"></div>
-
-      Loading patients...
-
-    </div>
-
-  `;
-
+async function loadPatients() {
 
   const {
     data,
@@ -766,7 +694,7 @@ async function loadAllPatients() {
     await supabaseClient
       .from("patients")
       .select(
-        "id,patient_name,patient_phone,date_of_birth,age,gender,created_at"
+        "id,patient_name,patient_phone,created_at"
       )
       .order(
         "created_at",
@@ -783,23 +711,12 @@ async function loadAllPatients() {
       error
     );
 
-
-    container.innerHTML = `
-
-      <div class="portal-message">
-        Unable to load patients.
-      </div>
-
-    `;
-
-
     document
       .getElementById(
-        "patientCount"
+        "totalPatientCount"
       )
       .textContent =
         "0";
-
 
     return;
 
@@ -810,144 +727,12 @@ async function loadAllPatients() {
     data || [];
 
 
-  renderPatients(
-    allPatients
-  );
-
-}
-
-
-/* =========================================================
-   RENDER
-   ========================================================= */
-
-function renderPatients(
-  patients
-) {
-
-  const container =
-    document.getElementById(
-      "patientsContainer"
-    );
-
-
   document
     .getElementById(
-      "patientCount"
+      "totalPatientCount"
     )
     .textContent =
-      patients.length;
-
-
-  if (
-    !patients ||
-    patients.length === 0
-  ) {
-
-    container.innerHTML = `
-
-      <div class="portal-message">
-        No patients found.
-      </div>
-
-    `;
-
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    patients
-      .map(
-        function(patient) {
-
-          return `
-
-            <button
-              type="button"
-              class="patient-row"
-              onclick="openPatientAdmin(
-                ${Number(
-                  patient.id
-                )}
-              )">
-
-
-              <div class="patient-cell patient-main">
-
-                <div class="patient-name">
-
-                  👤
-                  ${escapeHTML(
-                    patient.patient_name ||
-                    "-"
-                  )}
-
-                </div>
-
-
-                <div class="patient-phone">
-
-                  ${escapeHTML(
-                    patient.patient_phone ||
-                    "-"
-                  )}
-
-                </div>
-
-
-                <div class="mobile-meta">
-
-                  Patient ID:
-                  ${escapeHTML(
-                    patient.id
-                  )}
-
-                  &nbsp; • &nbsp;
-
-                  ${formatDate(
-                    patient.created_at
-                  )}
-
-                </div>
-
-              </div>
-
-
-              <div class="patient-cell patient-id">
-
-                ${escapeHTML(
-                  patient.id
-                )}
-
-              </div>
-
-
-              <div class="patient-cell patient-date">
-
-                ${formatDate(
-                  patient.created_at
-                )}
-
-              </div>
-
-
-              <div class="patient-arrow">
-
-                ›
-
-              </div>
-
-
-            </button>
-
-          `;
-
-        }
-      )
-      .join("");
+      allPatients.length;
 
 }
 
@@ -956,16 +741,24 @@ function renderPatients(
    SEARCH
    ========================================================= */
 
-function filterPatients() {
+function searchPatients() {
+
+  const input =
+    document.getElementById(
+      "patientSearch"
+    );
+
 
   const search =
-    document
-      .getElementById(
-        "patientSearch"
-      )
-      .value
+    input.value
       .trim()
       .toLowerCase();
+
+
+  const results =
+    document.getElementById(
+      "searchResults"
+    );
 
 
   const clearButton =
@@ -982,63 +775,159 @@ function filterPatients() {
 
   if (!search) {
 
-    renderPatients(
-      allPatients
-    );
+    results.style.display =
+      "block";
+
+
+    results.innerHTML = `
+
+      <div class="portal-message">
+        Enter Patient ID, name or phone number.
+      </div>
+
+    `;
 
     return;
 
   }
 
 
-  const filtered =
-    allPatients
-      .filter(
-        function(patient) {
+  const matches =
+    allPatients.filter(
+      function(patient) {
 
-          const id =
-            String(
-              patient.id ||
-              ""
-            )
-            .toLowerCase();
+        const id =
+          String(
+            patient.id ||
+            ""
+          ).toLowerCase();
 
 
-          const name =
-            String(
-              patient.patient_name ||
-              ""
-            )
-            .toLowerCase();
+        const name =
+          String(
+            patient.patient_name ||
+            ""
+          ).toLowerCase();
 
 
-          const phone =
-            String(
-              patient.patient_phone ||
-              ""
-            )
-            .toLowerCase();
+        const phone =
+          String(
+            patient.patient_phone ||
+            ""
+          ).toLowerCase();
 
 
-          return (
-            id.includes(
-              search
-            ) ||
-            name.includes(
-              search
-            ) ||
-            phone.includes(
-              search
-            )
-          );
+        return (
+          id.includes(search) ||
+          name.includes(search) ||
+          phone.includes(search)
+        );
 
-        }
-      );
+      }
+    );
 
 
-  renderPatients(
-    filtered
-  );
+  results.style.display =
+    "block";
+
+
+  if (
+    matches.length === 0
+  ) {
+
+    results.innerHTML = `
+
+      <div class="portal-message">
+        No patients found.
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  results.innerHTML = `
+
+    <div class="results-title">
+
+      Search Results
+      (${matches.length})
+
+    </div>
+
+    ${
+      matches
+        .map(
+          function(patient) {
+
+            return `
+
+              <button
+                type="button"
+                class="patient-result"
+                onclick="openPatientAdmin(
+                  ${Number(
+                    patient.id
+                  )}
+                )">
+
+
+                <div>
+
+                  <div class="patient-name">
+
+                    👤
+                    ${escapeHTML(
+                      patient.patient_name ||
+                      "-"
+                    )}
+
+                  </div>
+
+
+                  <div class="patient-meta">
+
+                    Patient ID:
+                    ${escapeHTML(
+                      patient.id
+                    )}
+
+                    <br>
+
+                    📞
+                    ${escapeHTML(
+                      patient.patient_phone ||
+                      "-"
+                    )}
+
+                    &nbsp; • &nbsp;
+
+                    ${formatDate(
+                      patient.created_at
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <div class="patient-arrow">
+                  ›
+                </div>
+
+
+              </button>
+
+            `;
+
+          }
+        )
+        .join("")
+    }
+
+  `;
 
 }
 
@@ -1067,9 +956,12 @@ function clearSearch() {
       "none";
 
 
-  renderPatients(
-    allPatients
-  );
+  document
+    .getElementById(
+      "searchResults"
+    )
+    .style.display =
+      "none";
 
 
   input.focus();
@@ -1078,7 +970,7 @@ function clearSearch() {
 
 
 /* =========================================================
-   OPEN PATIENT ADMIN
+   NAVIGATION
    ========================================================= */
 
 function openPatientAdmin(
@@ -1095,6 +987,14 @@ function openPatientAdmin(
 }
 
 
+function openAllPatientsList() {
+
+  window.location.href =
+    "doctor-all-patients-list.html";
+
+}
+
+
 /* =========================================================
    EVENTS
    ========================================================= */
@@ -1105,17 +1005,7 @@ document
   )
   .addEventListener(
     "click",
-    filterPatients
-  );
-
-
-document
-  .getElementById(
-    "patientSearch"
-  )
-  .addEventListener(
-    "input",
-    filterPatients
+    searchPatients
   );
 
 
@@ -1134,7 +1024,44 @@ document
 
         event.preventDefault();
 
-        filterPatients();
+        searchPatients();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "patientSearch"
+  )
+  .addEventListener(
+    "input",
+    function() {
+
+      const value =
+        this.value.trim();
+
+
+      document
+        .getElementById(
+          "clearSearchButton"
+        )
+        .style.display =
+          value
+            ? "flex"
+            : "none";
+
+
+      if (!value) {
+
+        document
+          .getElementById(
+            "searchResults"
+          )
+          .style.display =
+            "none";
 
       }
 
@@ -1149,6 +1076,16 @@ document
   .addEventListener(
     "click",
     clearSearch
+  );
+
+
+document
+  .getElementById(
+    "viewAllPatientsButton"
+  )
+  .addEventListener(
+    "click",
+    openAllPatientsList
   );
 
 
@@ -1185,7 +1122,7 @@ window.openPatientAdmin =
   }
 
 
-  await loadAllPatients();
+  await loadPatients();
 
 })();
 
