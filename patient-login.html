@@ -835,32 +835,46 @@ async function verifyPatientOtpOnServer(
       patient portal token in the next backend step.
     */
 
-    sessionStorage.setItem(
-      "patientPortalPatientId",
-      String(
-        result.patient?.id ||
-        ""
-      )
-    );
+   if (
+  !result.portalToken
+) {
+
+  showStatus(
+    "Secure patient session could not be created.",
+    "error"
+  );
+
+  return;
+
+}
 
 
-    sessionStorage.setItem(
-      "patientPortalPatientName",
-      String(
-        result.patient?.name ||
-        ""
-      )
-    );
+sessionStorage.setItem(
+  "patientPortalToken",
+  result.portalToken
+);
 
 
-    sessionStorage.setItem(
-      "patientPortalVerifiedPhone",
-      phone
-    );
+sessionStorage.setItem(
+  "patientPortalPatientName",
+  String(
+    result.patient?.name ||
+    ""
+  )
+);
 
 
-    window.location.href =
-      "patient-portal.html";
+sessionStorage.setItem(
+  "patientPortalSessionExpiresAt",
+  String(
+    result.expiresAt ||
+    ""
+  )
+);
+
+
+window.location.href =
+  "patient-portal.html";
 
 
   } catch (error) {
