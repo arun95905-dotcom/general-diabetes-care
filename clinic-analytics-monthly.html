@@ -28,9 +28,9 @@ body {
   background:
     linear-gradient(
       135deg,
-      #f5f6ff,
-      #eff1ff,
-      #fafaff
+      #f8f9fd,
+      #f2f5fa,
+      #ffffff
     );
   color: #172033;
   font-family:
@@ -64,7 +64,7 @@ select {
 
 .section-label {
   margin: 0;
-  color: #5967c9;
+  color: #a5232d;
   font-size: 12px;
   font-weight: 850;
   letter-spacing: 1.3px;
@@ -72,13 +72,13 @@ select {
 
 .page-header h1 {
   margin: 5px 0 3px;
-  color: #303863;
+  color: #3f2930;
   font-size: 29px;
 }
 
 .page-subtitle {
   margin: 0;
-  color: #737995;
+  color: #737b86;
   font-size: 14px;
 }
 
@@ -106,15 +106,25 @@ select {
   background:
     linear-gradient(
       135deg,
-      #6672d7,
-      #4d59b5
+      #7a4fd0,
+      #5b3aae
+    );
+}
+
+.print-button {
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #a92631,
+      #861c25
     );
 }
 
 .light-button {
-  color: #4e5572;
-  background: #f3f4fb;
-  border: 1px solid #dde0ee;
+  color: #4f5966;
+  background: #f4f6f8;
+  border: 1px solid #dde3e8;
 }
 
 .secondary-button {
@@ -139,7 +149,7 @@ select {
 
 
 /* =========================================================
-   SEARCH CARD
+   SEARCH
    ========================================================= */
 
 .search-card {
@@ -148,18 +158,18 @@ select {
   background:
     linear-gradient(
       135deg,
-      #eef0ff,
+      #f5f1ff,
       #ffffff
     );
-  border: 1px solid #d9def6;
+  border: 1px solid #e1daf1;
   border-radius: 18px;
   box-shadow:
-    0 6px 20px rgba(55,65,130,.05);
+    0 6px 20px rgba(50,45,90,.05);
 }
 
 .search-title {
   margin: 0 0 13px;
-  color: #343b62;
+  color: #3f3852;
   font-size: 17px;
   font-weight: 850;
 }
@@ -178,7 +188,7 @@ select {
 
 .search-group label {
   margin-bottom: 5px;
-  color: #686f88;
+  color: #697281;
   font-size: 11px;
   font-weight: 850;
 }
@@ -187,13 +197,16 @@ select {
   width: 100%;
   padding: 11px 12px;
   background: #ffffff;
-  border: 1px solid #d2d7eb;
+  border: 1px solid #d6dce4;
   border-radius: 10px;
   font-size: 14px;
 }
 
 .search-actions {
   margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 
@@ -203,7 +216,7 @@ select {
 
 .section-title {
   margin: 22px 0 11px;
-  color: #81879e;
+  color: #79828d;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .8px;
@@ -214,10 +227,10 @@ select {
   margin-bottom: 14px;
   padding: 18px;
   background: #ffffff;
-  border: 1px solid #e1e4ef;
+  border: 1px solid #e3e7eb;
   border-radius: 18px;
   box-shadow:
-    0 6px 20px rgba(45,50,90,.05);
+    0 6px 20px rgba(30,45,60,.05);
 }
 
 
@@ -230,44 +243,51 @@ select {
   background:
     linear-gradient(
       135deg,
-      #edf0ff,
+      #fff5f5,
       #ffffff
     );
-  border: 1px solid #d9def6;
+  border: 1px solid #eed5d7;
   border-radius: 18px;
 }
 
+.month-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .month-name {
-  color: #343b62;
-  font-size: 24px;
+  color: #8d2029;
+  font-size: 25px;
   font-weight: 900;
 }
 
 .month-subtitle {
   margin-top: 5px;
-  color: #737995;
+  color: #737b86;
   font-size: 12px;
 }
 
 
 /* =========================================================
-   SUMMARY
+   MONTHLY OVERVIEW
    ========================================================= */
 
 .summary-grid {
   display: grid;
   grid-template-columns:
-    repeat(4,minmax(0,1fr));
-  gap: 10px;
+    repeat(3,minmax(0,1fr));
+  gap: 11px;
   margin-top: 12px;
 }
 
 .summary-card {
-  min-height: 115px;
-  padding: 15px;
+  min-height: 120px;
+  padding: 16px;
   background: #ffffff;
-  border: 1px solid #e0e4ef;
-  border-radius: 15px;
+  border: 1px solid #e2e7eb;
+  border-radius: 16px;
 }
 
 .summary-revenue {
@@ -292,16 +312,7 @@ select {
   background:
     linear-gradient(
       135deg,
-      #eaf8ff,
-      #ffffff
-    );
-}
-
-.summary-appointments {
-  background:
-    linear-gradient(
-      135deg,
-      #f1edff,
+      #eaf9f8,
       #ffffff
     );
 }
@@ -312,65 +323,196 @@ select {
 
 .summary-value {
   margin-top: 8px;
-  color: #242b46;
-  font-size: 24px;
+  color: #242d35;
+  font-size: 25px;
   font-weight: 900;
 }
 
 .summary-label {
   margin-top: 4px;
-  color: #727990;
+  color: #6f7984;
   font-size: 11px;
 }
 
 
 /* =========================================================
-   APPOINTMENT SUMMARY
+   REVENUE HERO
    ========================================================= */
 
-.status-grid {
-  display: grid;
-  grid-template-columns:
-    repeat(3,minmax(0,1fr));
-  gap: 10px;
+.revenue-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 23px;
+  background:
+    linear-gradient(
+      135deg,
+      #fff7f7,
+      #ffffff,
+      #f7fff9
+    );
+  border: 1px solid #eadbdd;
+  border-radius: 19px;
 }
 
-.status-card {
-  padding: 14px;
-  border-radius: 14px;
-  text-align: center;
-}
-
-.status-pending {
-  background: #fff7df;
-  border: 1px solid #f0dfac;
-}
-
-.status-completed {
-  background: #eaf9f0;
-  border: 1px solid #cee9d8;
-}
-
-.status-cancelled {
-  background: #fff0f0;
-  border: 1px solid #f0cccc;
-}
-
-.status-value {
-  font-size: 22px;
+.revenue-hero::after {
+  content: "₹";
+  position: absolute;
+  right: 16px;
+  top: -15px;
+  color: rgba(144,30,40,.05);
+  font-size: 130px;
   font-weight: 900;
 }
 
-.status-label {
-  margin-top: 4px;
-  color: #6f7585;
+.revenue-hero-label {
+  position: relative;
+  z-index: 1;
+  color: #7c7375;
   font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.revenue-hero-value {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  color: #8f2029;
+  font-size: 38px;
+  font-weight: 950;
+}
+
+.revenue-hero-subtitle {
+  position: relative;
+  z-index: 1;
+  margin-top: 4px;
+  color: #747c83;
+  font-size: 12px;
+}
+
+.revenue-mini-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.revenue-mini-card {
+  padding: 13px;
+  background: rgba(255,255,255,.85);
+  border: 1px solid #e3e7ea;
+  border-radius: 13px;
+}
+
+.revenue-mini-label {
+  color: #77808a;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.revenue-mini-value {
+  margin-top: 5px;
+  color: #29353d;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   COLLECTION BREAKDOWN
+   ========================================================= */
+
+.collection-title {
+  margin: 20px 0 11px;
+  color: #515d66;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.payment-list {
+  display: grid;
+  gap: 10px;
+}
+
+.payment-row {
+  padding: 12px 13px;
+  background: #fafbfc;
+  border: 1px solid #e7eaed;
+  border-radius: 12px;
+}
+
+.payment-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.payment-name {
+  color: #44525b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.payment-value-wrap {
+  text-align: right;
+}
+
+.payment-value {
+  color: #263840;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.payment-percent {
+  margin-top: 2px;
+  color: #8a949b;
+  font-size: 10px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 7px;
+  margin-top: 9px;
+  overflow: hidden;
+  background: #eceff1;
+  border-radius: 999px;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      #a82a34,
+      #d05259
+    );
 }
 
 
 /* =========================================================
    BILL TABLE
    ========================================================= */
+
+.bill-summary-line {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 7px;
+  color: #68727d;
+  font-size: 12px;
+}
+
+.bill-summary-total {
+  color: #8f2029;
+  font-weight: 900;
+}
 
 .bill-table-wrap {
   width: 100%;
@@ -386,26 +528,43 @@ select {
 .bill-table th,
 .bill-table td {
   padding: 11px 10px;
-  border-bottom: 1px solid #e5e8ef;
+  border-bottom: 1px solid #e5e8eb;
   text-align: left;
   font-size: 13px;
 }
 
 .bill-table th {
-  color: #747b91;
-  background: #f8f9fc;
+  color: #747e87;
+  background: #f8f9fa;
   font-size: 11px;
   text-transform: uppercase;
 }
 
+.bill-table th:last-child,
+.bill-table td:last-child {
+  text-align: right;
+}
+
 .patient-link {
   padding: 0;
-  color: #5360bd;
+  color: #8e2731;
   background: none;
   border: none;
   cursor: pointer;
   font-weight: 850;
   text-decoration: underline;
+}
+
+.bill-grand-total td {
+  padding-top: 14px;
+  border-top: 2px solid #c9ced2;
+  border-bottom: none;
+  color: #252f36;
+  font-weight: 900;
+}
+
+.bill-grand-total td:last-child {
+  color: #8f2029;
 }
 
 
@@ -436,7 +595,7 @@ select {
 
 .panel-subtitle {
   margin-top: 4px;
-  color: #777e91;
+  color: #777f88;
   font-size: 12px;
 }
 
@@ -445,22 +604,22 @@ select {
   background:
     linear-gradient(
       135deg,
-      #eef0ff,
+      #fff5f5,
       #ffffff
     );
-  border: 1px solid #dce0f4;
+  border: 1px solid #ead8da;
   border-radius: 14px;
 }
 
 .bill-clinic-title {
-  color: #3e488f;
+  color: #8f2029;
   font-size: 20px;
   font-weight: 900;
 }
 
 .bill-meta {
   margin-top: 7px;
-  color: #657087;
+  color: #657079;
   line-height: 1.7;
   font-size: 12px;
 }
@@ -476,8 +635,8 @@ select {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  background: #f8f9fc;
-  border: 1px solid #e5e8ef;
+  background: #f8f9fa;
+  border: 1px solid #e5e8eb;
   border-radius: 10px;
 }
 
@@ -487,24 +646,25 @@ select {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  background: #edf0ff;
-  border: 1px solid #d9def6;
+  background: #fff2f3;
+  border: 1px solid #e9d1d4;
   border-radius: 11px;
+  color: #861f28;
   font-weight: 900;
 }
 
 
 /* =========================================================
-   EMPTY / LOADING
+   LOADING
    ========================================================= */
 
 .loading-card,
 .empty-card {
   padding: 25px;
   text-align: center;
-  color: #747b91;
+  color: #747d87;
   background: #ffffff;
-  border: 1px solid #e1e4ef;
+  border: 1px solid #e1e5e9;
   border-radius: 16px;
 }
 
@@ -512,8 +672,8 @@ select {
   width: 29px;
   height: 29px;
   margin: 0 auto 8px;
-  border: 3px solid #e4e6f0;
-  border-top-color: #6672d7;
+  border: 3px solid #e4e7ea;
+  border-top-color: #9d2630;
   border-radius: 50%;
   animation: spin .7s linear infinite;
 }
@@ -526,19 +686,20 @@ select {
 
 
 /* =========================================================
+   PRINT-ONLY HEADER / FOOTER
+   ========================================================= */
+
+.print-report-header,
+.print-report-footer {
+  display: none;
+}
+
+
+/* =========================================================
    MOBILE
    ========================================================= */
 
-@media(max-width:850px) {
-
-  .summary-grid {
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
-  }
-
-}
-
-@media(max-width:650px) {
+@media(max-width:700px) {
 
   .analytics-page {
     padding: 12px 8px 40px;
@@ -548,8 +709,269 @@ select {
     grid-template-columns: 1fr;
   }
 
-  .status-grid {
+  .summary-grid {
     grid-template-columns: 1fr;
+  }
+
+  .revenue-mini-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .month-header-top {
+    flex-direction: column;
+  }
+
+}
+
+
+/* =========================================================
+   PRINT / SAVE PDF
+   ========================================================= */
+
+@media print {
+
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+
+  body {
+    background: #ffffff !important;
+    color: #222222;
+    font-family: Arial, sans-serif;
+  }
+
+
+  .analytics-page {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+
+  .page-header,
+  .top-actions,
+  .search-card,
+  .bottom-actions,
+  #loadingCard,
+  #billDetailPanel,
+  .screen-only {
+    display: none !important;
+  }
+
+
+  .print-report-header {
+    display: block;
+    margin-bottom: 18px;
+  }
+
+
+  .print-red-band {
+    padding: 15px 18px;
+    background: #8f2029 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color: #ffffff !important;
+  }
+
+
+  .print-clinic-name {
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: .5px;
+  }
+
+
+  .print-report-name {
+    margin-top: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .7px;
+  }
+
+
+  .print-report-meta {
+    padding: 10px 18px;
+    border: 1px solid #d8d8d8;
+    border-top: none;
+    font-size: 10px;
+    line-height: 1.7;
+  }
+
+
+  #reportContent {
+    display: block !important;
+  }
+
+
+  .month-header-card {
+    display: none;
+  }
+
+
+  .section-title {
+    margin: 15px 0 7px;
+    color: #333333;
+    font-size: 10px;
+  }
+
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(3,1fr);
+    gap: 7px;
+  }
+
+
+  .summary-card {
+    min-height: 78px;
+    padding: 10px;
+    box-shadow: none;
+    border: 1px solid #cfd2d4;
+    background: #ffffff !important;
+  }
+
+
+  .summary-icon {
+    display: none;
+  }
+
+
+  .summary-value {
+    margin-top: 0;
+    font-size: 19px;
+  }
+
+
+  .summary-label {
+    margin-top: 3px;
+    font-size: 9px;
+  }
+
+
+  .portal-card {
+    padding: 13px;
+    box-shadow: none;
+    border: 1px solid #cfd2d4;
+    break-inside: avoid;
+  }
+
+
+  .revenue-hero {
+    padding: 14px;
+    box-shadow: none;
+    border: 1px solid #c8cbcd;
+    background: #ffffff !important;
+  }
+
+
+  .revenue-hero::after {
+    display: none;
+  }
+
+
+  .revenue-hero-value {
+    font-size: 29px;
+    color: #8f2029 !important;
+  }
+
+
+  .revenue-mini-grid {
+    margin-top: 10px;
+  }
+
+
+  .revenue-mini-card {
+    padding: 8px;
+    border: 1px solid #d8dbdd;
+  }
+
+
+  .revenue-mini-value {
+    font-size: 14px;
+  }
+
+
+  .collection-title {
+    margin-top: 13px;
+  }
+
+
+  .payment-list {
+    gap: 6px;
+  }
+
+
+  .payment-row {
+    padding: 7px 9px;
+    background: #ffffff !important;
+  }
+
+
+  .payment-name,
+  .payment-value {
+    font-size: 10px;
+  }
+
+
+  .payment-percent {
+    font-size: 8px;
+  }
+
+
+  .progress-track {
+    height: 4px;
+  }
+
+
+  .progress-bar {
+    background: #9e2b34 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+
+  .bill-table-wrap {
+    overflow: visible;
+  }
+
+
+  .bill-table {
+    min-width: 0;
+  }
+
+
+  .bill-table th,
+  .bill-table td {
+    padding: 7px 6px;
+    color: #222222;
+    font-size: 9px;
+  }
+
+
+  .bill-table th {
+    background: #f1f1f1 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+
+  .patient-link {
+    color: #222222;
+    text-decoration: none;
+  }
+
+
+  .print-report-footer {
+    display: block;
+    margin-top: 18px;
+    padding-top: 8px;
+    border-top: 1px solid #bbbbbb;
+    text-align: center;
+    color: #666666;
+    font-size: 9px;
   }
 
 }
@@ -565,6 +987,10 @@ select {
 <div class="analytics-page">
 
 
+<!-- =====================================================
+     SCREEN HEADER
+     ===================================================== -->
+
 <header class="page-header">
 
 <p class="section-label">
@@ -576,7 +1002,7 @@ GENERAL &amp; DIABETES CARE
 </h1>
 
 <p class="page-subtitle">
-Review clinic performance and paid bills by month
+Revenue-focused monthly clinic performance report
 </p>
 
 </header>
@@ -596,7 +1022,7 @@ Review clinic performance and paid bills by month
 
 
 <!-- =====================================================
-     MONTH / YEAR SEARCH
+     SEARCH
      ===================================================== -->
 
 <div class="search-card">
@@ -617,53 +1043,18 @@ Month
 
 <select id="monthSelect">
 
-<option value="0">
-January
-</option>
-
-<option value="1">
-February
-</option>
-
-<option value="2">
-March
-</option>
-
-<option value="3">
-April
-</option>
-
-<option value="4">
-May
-</option>
-
-<option value="5">
-June
-</option>
-
-<option value="6">
-July
-</option>
-
-<option value="7">
-August
-</option>
-
-<option value="8">
-September
-</option>
-
-<option value="9">
-October
-</option>
-
-<option value="10">
-November
-</option>
-
-<option value="11">
-December
-</option>
+<option value="0">January</option>
+<option value="1">February</option>
+<option value="2">March</option>
+<option value="3">April</option>
+<option value="4">May</option>
+<option value="5">June</option>
+<option value="6">July</option>
+<option value="7">August</option>
+<option value="8">September</option>
+<option value="9">October</option>
+<option value="10">November</option>
+<option value="11">December</option>
 
 </select>
 
@@ -695,8 +1086,17 @@ Year
 
 </button>
 
-</div>
 
+<button
+  type="button"
+  id="printReportButton"
+  class="portal-button print-button">
+
+🖨️ Print / Save PDF
+
+</button>
+
+</div>
 
 </div>
 
@@ -717,6 +1117,42 @@ Loading monthly report...
 
 
 <!-- =====================================================
+     PRINT HEADER
+     ===================================================== -->
+
+<div class="print-report-header">
+
+<div class="print-red-band">
+
+<div class="print-clinic-name">
+GENERAL &amp; DIABETES CARE
+</div>
+
+<div class="print-report-name">
+MONTHLY CLINIC PERFORMANCE REPORT
+</div>
+
+</div>
+
+
+<div class="print-report-meta">
+
+<div>
+<strong>Reporting Period:</strong>
+<span id="printReportingPeriod">—</span>
+</div>
+
+<div>
+<strong>Generated:</strong>
+<span id="printGeneratedDateTime">—</span>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
      REPORT
      ===================================================== -->
 
@@ -725,7 +1161,13 @@ Loading monthly report...
   style="display:none;">
 
 
+<!-- MONTH HEADER -->
+
 <div class="month-header-card">
+
+<div class="month-header-top">
+
+<div>
 
 <div
   id="reportMonthName"
@@ -734,11 +1176,29 @@ Loading monthly report...
 </div>
 
 <div class="month-subtitle">
-Clinic performance summary
+Monthly clinic revenue performance
 </div>
 
 </div>
 
+
+<button
+  type="button"
+  class="portal-button print-button screen-only"
+  onclick="printMonthlyReport()">
+
+🖨️ Print / Save PDF
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     OVERVIEW
+     ===================================================== -->
 
 <div class="section-title">
 Monthly Overview
@@ -761,7 +1221,7 @@ Monthly Overview
 </div>
 
 <div class="summary-label">
-Paid revenue
+Paid Revenue
 </div>
 
 </div>
@@ -780,7 +1240,7 @@ Paid revenue
 </div>
 
 <div class="summary-label">
-Paid bills
+Paid Bills
 </div>
 
 </div>
@@ -799,26 +1259,7 @@ Paid bills
 </div>
 
 <div class="summary-label">
-New patients
-</div>
-
-</div>
-
-
-<div class="summary-card summary-appointments">
-
-<div class="summary-icon">
-📅
-</div>
-
-<div
-  id="monthlyAppointments"
-  class="summary-value">
-0
-</div>
-
-<div class="summary-label">
-Appointments
+New Patients
 </div>
 
 </div>
@@ -827,68 +1268,94 @@ Appointments
 </div>
 
 
-<!-- APPOINTMENT STATUS -->
+<!-- =====================================================
+     REVENUE DETAILS
+     ===================================================== -->
 
 <div class="section-title">
-Appointment Status
+Revenue Details
 </div>
 
 
-<div class="status-grid">
+<div class="portal-card">
 
 
-<div class="status-card status-pending">
+<div class="revenue-hero">
+
+<div class="revenue-hero-label">
+Total Paid Revenue
+</div>
 
 <div
-  id="pendingCount"
-  class="status-value">
-0
+  id="revenueHeroValue"
+  class="revenue-hero-value">
+₹0
 </div>
 
-<div class="status-label">
-⏳ Pending
-</div>
-
-</div>
-
-
-<div class="status-card status-completed">
-
-<div
-  id="completedCount"
-  class="status-value">
-0
-</div>
-
-<div class="status-label">
-✅ Completed
-</div>
-
+<div class="revenue-hero-subtitle">
+Revenue from bills marked Paid during the selected month
 </div>
 
 
-<div class="status-card status-cancelled">
-
-<div
-  id="cancelledCount"
-  class="status-value">
-0
-</div>
-
-<div class="status-label">
-❌ Cancelled
-</div>
-
-</div>
+<div class="revenue-mini-grid">
 
 
-</div>
+<div class="revenue-mini-card">
 
-
-<!-- PAID BILLS -->
-
-<div class="section-title">
+<div class="revenue-mini-label">
 Paid Bills
+</div>
+
+<div
+  id="revenueHeroBills"
+  class="revenue-mini-value">
+0
+</div>
+
+</div>
+
+
+<div class="revenue-mini-card">
+
+<div class="revenue-mini-label">
+Average Bill
+</div>
+
+<div
+  id="averageBill"
+  class="revenue-mini-value">
+₹0
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div class="collection-title">
+Collection Breakdown
+</div>
+
+
+<div
+  id="paymentMethodList"
+  class="payment-list">
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     PAID BILL DETAILS
+     ===================================================== -->
+
+<div class="section-title">
+Paid Bill Details
 </div>
 
 
@@ -902,12 +1369,13 @@ Paid Bills
 </div>
 
 
-<!-- BILL DETAIL -->
+<!-- =====================================================
+     BILL DETAIL
+     ===================================================== -->
 
 <div
   id="billDetailPanel"
   class="portal-card bill-detail-panel">
-
 
 <div class="panel-header">
 
@@ -938,12 +1406,30 @@ Individual patient bill
 
 <div id="billDetailContent"></div>
 
-
 </div>
 
 
 </div>
 
+
+<!-- =====================================================
+     PRINT FOOTER
+     ===================================================== -->
+
+<div class="print-report-footer">
+
+GENERAL &amp; DIABETES CARE
+•
+Monthly Clinic Performance Report
+•
+<span id="printFooterMonth">—</span>
+
+</div>
+
+
+<!-- =====================================================
+     BOTTOM ACTIONS
+     ===================================================== -->
 
 <div class="action-row bottom-actions">
 
@@ -1004,6 +1490,9 @@ let currentYear =
 let currentMonth =
   null;
 
+let currentMonthLabel =
+  "";
+
 
 /* =========================================================
    AUTH
@@ -1046,7 +1535,9 @@ function escapeHTML(value) {
     value === null ||
     value === undefined
   ) {
+
     return "";
+
   }
 
 
@@ -1067,11 +1558,17 @@ function formatDateInput(date) {
     "-" +
     String(
       date.getMonth() + 1
-    ).padStart(2,"0") +
+    ).padStart(
+      2,
+      "0"
+    ) +
     "-" +
     String(
       date.getDate()
-    ).padStart(2,"0")
+    ).padStart(
+      2,
+      "0"
+    )
   );
 
 }
@@ -1091,9 +1588,14 @@ function formatDisplayDate(value) {
   .toLocaleDateString(
     "en-IN",
     {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
+      day:
+        "2-digit",
+
+      month:
+        "short",
+
+      year:
+        "numeric"
     }
   );
 
@@ -1111,7 +1613,8 @@ function formatMoney(value) {
     .toLocaleString(
       "en-IN",
       {
-        maximumFractionDigits: 2
+        maximumFractionDigits:
+          2
       }
     )
   );
@@ -1130,6 +1633,187 @@ function getBillAmount(bill) {
 
 }
 
+
+function isPaid(bill) {
+
+  return (
+    String(
+      bill.payment_status ||
+      ""
+    )
+    .trim()
+    .toLowerCase() ===
+    "paid"
+  );
+
+}
+
+
+/* =========================================================
+   CORRECT PATIENT NAMES
+   billing.patient_id -> patients.id -> patient_name
+   ========================================================= */
+
+async function addPatientNamesToBills(
+  bills
+) {
+
+  if (
+    !Array.isArray(bills) ||
+    bills.length === 0
+  ) {
+
+    return [];
+
+  }
+
+
+  const patientIds =
+    [
+      ...new Set(
+        bills
+          .map(
+            function(bill) {
+
+              return bill.patient_id;
+
+            }
+          )
+          .filter(
+            function(id) {
+
+              return (
+                id !== null &&
+                id !== undefined &&
+                id !== ""
+              );
+
+            }
+          )
+      )
+    ];
+
+
+  if (
+    patientIds.length === 0
+  ) {
+
+    return bills.map(
+      function(bill) {
+
+        return {
+
+          ...bill,
+
+          resolved_patient_name:
+            bill.patient_name ||
+            "Patient"
+
+        };
+
+      }
+    );
+
+  }
+
+
+  const {
+    data:
+      patients,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select(
+        "id,patient_name"
+      )
+      .in(
+        "id",
+        patientIds
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Patient name resolution error:",
+      error
+    );
+
+
+    return bills.map(
+      function(bill) {
+
+        return {
+
+          ...bill,
+
+          resolved_patient_name:
+            bill.patient_name ||
+            "Patient"
+
+        };
+
+      }
+    );
+
+  }
+
+
+  const nameMap =
+    {};
+
+
+  (
+    patients ||
+    []
+  )
+  .forEach(
+    function(patient) {
+
+      nameMap[
+        String(
+          patient.id
+        )
+      ] =
+        patient.patient_name ||
+        "";
+
+    }
+  );
+
+
+  return bills.map(
+    function(bill) {
+
+      const resolvedName =
+        nameMap[
+          String(
+            bill.patient_id
+          )
+        ];
+
+
+      return {
+
+        ...bill,
+
+        resolved_patient_name:
+          resolvedName ||
+          bill.patient_name ||
+          "Patient"
+
+      };
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   MONTH RANGE
+   ========================================================= */
 
 function getMonthRange(
   year,
@@ -1170,7 +1854,7 @@ function getMonthRange(
 
 
 /* =========================================================
-   YEAR OPTIONS
+   YEAR SELECT
    ========================================================= */
 
 function buildYearOptions() {
@@ -1192,10 +1876,8 @@ function buildYearOptions() {
 
 
   for (
-    let year =
-      current;
-    year >=
-      current - 10;
+    let year = current;
+    year >= current - 10;
     year--
   ) {
 
@@ -1251,7 +1933,7 @@ function setDefaultMonth() {
 
 
 /* =========================================================
-   LOAD MONTH DATA
+   LOAD MONTHLY REPORT
    ========================================================= */
 
 async function loadMonthlyReport() {
@@ -1312,10 +1994,10 @@ async function loadMonthlyReport() {
 
     const [
       billingResult,
-      patientsResult,
-      appointmentsResult
+      newPatientsResult
     ] =
       await Promise.all([
+
 
         supabaseClient
           .from("billing")
@@ -1331,9 +2013,11 @@ async function loadMonthlyReport() {
           .order(
             "bill_date",
             {
-              ascending: true
+              ascending:
+                true
             }
           ),
+
 
         supabaseClient
           .from("patients")
@@ -1349,19 +2033,8 @@ async function loadMonthlyReport() {
             "created_at",
             range.end +
             "T23:59:59"
-          ),
+          )
 
-        supabaseClient
-          .from("appointments")
-          .select("*")
-          .gte(
-            "appointment_date",
-            range.start
-          )
-          .lte(
-            "appointment_date",
-            range.end
-          )
 
       ]);
 
@@ -1369,21 +2042,18 @@ async function loadMonthlyReport() {
     if (
       billingResult.error
     ) {
+
       throw billingResult.error;
+
     }
 
 
     if (
-      patientsResult.error
+      newPatientsResult.error
     ) {
-      throw patientsResult.error;
-    }
 
+      throw newPatientsResult.error;
 
-    if (
-      appointmentsResult.error
-    ) {
-      throw appointmentsResult.error;
     }
 
 
@@ -1392,36 +2062,29 @@ async function loadMonthlyReport() {
       [];
 
 
-    const patients =
-      patientsResult.data ||
+    const newPatients =
+      newPatientsResult.data ||
       [];
 
 
-    const appointments =
-      appointmentsResult.data ||
-      [];
-
-
-    currentPaidBills =
+    const paidBills =
       bills.filter(
-        function(bill) {
-
-          return (
-            String(
-              bill.payment_status ||
-              ""
-            )
-            .toLowerCase() ===
-            "paid"
-          );
-
-        }
+        isPaid
       );
 
 
-    const revenue =
+    currentPaidBills =
+      await addPatientNamesToBills(
+        paidBills
+      );
+
+
+    const totalRevenue =
       currentPaidBills.reduce(
-        function(total,bill) {
+        function(
+          total,
+          bill
+        ) {
 
           return (
             total +
@@ -1435,46 +2098,11 @@ async function loadMonthlyReport() {
       );
 
 
-    const pending =
-      appointments.filter(
-        function(appointment) {
-
-          return (
-            (
-              appointment.status ||
-              "Pending"
-            ) ===
-            "Pending"
-          );
-
-        }
-      );
-
-
-    const completed =
-      appointments.filter(
-        function(appointment) {
-
-          return (
-            appointment.status ===
-            "Completed"
-          );
-
-        }
-      );
-
-
-    const cancelled =
-      appointments.filter(
-        function(appointment) {
-
-          return (
-            appointment.status ===
-            "Cancelled"
-          );
-
-        }
-      );
+    const averageBill =
+      currentPaidBills.length > 0
+        ? totalRevenue /
+          currentPaidBills.length
+        : 0;
 
 
     const monthDate =
@@ -1485,22 +2113,30 @@ async function loadMonthlyReport() {
       );
 
 
-    const monthLabel =
-      monthDate.toLocaleDateString(
-        "en-IN",
-        {
-          month: "long",
-          year: "numeric"
-        }
-      );
+    currentMonthLabel =
+      monthDate
+        .toLocaleDateString(
+          "en-IN",
+          {
+            month:
+              "long",
 
+            year:
+              "numeric"
+          }
+        );
+
+
+    /* =====================================================
+       DISPLAY
+       ===================================================== */
 
     document
       .getElementById(
         "reportMonthName"
       )
       .textContent =
-        monthLabel;
+        currentMonthLabel;
 
 
     document
@@ -1509,7 +2145,7 @@ async function loadMonthlyReport() {
       )
       .textContent =
         formatMoney(
-          revenue
+          totalRevenue
         );
 
 
@@ -1526,43 +2162,62 @@ async function loadMonthlyReport() {
         "monthlyPatients"
       )
       .textContent =
-        patients.length;
+        newPatients.length;
 
 
     document
       .getElementById(
-        "monthlyAppointments"
+        "revenueHeroValue"
       )
       .textContent =
-        appointments.length;
+        formatMoney(
+          totalRevenue
+        );
 
 
     document
       .getElementById(
-        "pendingCount"
+        "revenueHeroBills"
       )
       .textContent =
-        pending.length;
+        currentPaidBills.length;
 
 
     document
       .getElementById(
-        "completedCount"
+        "averageBill"
       )
       .textContent =
-        completed.length;
+        formatMoney(
+          averageBill
+        );
 
 
     document
       .getElementById(
-        "cancelledCount"
+        "printReportingPeriod"
       )
       .textContent =
-        cancelled.length;
+        currentMonthLabel;
+
+
+    document
+      .getElementById(
+        "printFooterMonth"
+      )
+      .textContent =
+        currentMonthLabel;
+
+
+    renderPaymentMethods(
+      currentPaidBills,
+      totalRevenue
+    );
 
 
     renderPaidBills(
-      monthLabel
+      currentMonthLabel,
+      totalRevenue
     );
 
 
@@ -1572,10 +2227,14 @@ async function loadMonthlyReport() {
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "Monthly report error:",
+      error
+    );
 
 
     alert(
+      error.message ||
       "Unable to load monthly report."
     );
 
@@ -1591,11 +2250,222 @@ async function loadMonthlyReport() {
 
 
 /* =========================================================
-   PAID BILLS
+   PAYMENT METHODS
+   ========================================================= */
+
+function renderPaymentMethods(
+  paidBills,
+  totalRevenue
+) {
+
+  const methods = {
+
+    "Cash":
+      0,
+
+    "UPI":
+      0,
+
+    "Card":
+      0,
+
+    "Bank Transfer":
+      0,
+
+    "Other":
+      0
+
+  };
+
+
+  paidBills.forEach(
+    function(bill) {
+
+      const amount =
+        getBillAmount(
+          bill
+        );
+
+
+      const method =
+        String(
+          bill.payment_method ||
+          ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+      if (
+        method ===
+        "cash"
+      ) {
+
+        methods.Cash +=
+          amount;
+
+      } else if (
+        method ===
+        "upi"
+      ) {
+
+        methods.UPI +=
+          amount;
+
+      } else if (
+        method ===
+        "card"
+      ) {
+
+        methods.Card +=
+          amount;
+
+      } else if (
+        method ===
+        "bank transfer" ||
+        method ===
+        "bank" ||
+        method ===
+        "transfer"
+      ) {
+
+        methods[
+          "Bank Transfer"
+        ] +=
+          amount;
+
+      } else {
+
+        methods.Other +=
+          amount;
+
+      }
+
+    }
+  );
+
+
+  const icons = {
+
+    "Cash":
+      "💵",
+
+    "UPI":
+      "📱",
+
+    "Card":
+      "💳",
+
+    "Bank Transfer":
+      "🏦",
+
+    "Other":
+      "📋"
+
+  };
+
+
+  const container =
+    document
+      .getElementById(
+        "paymentMethodList"
+      );
+
+
+  container.innerHTML =
+    Object.entries(
+      methods
+    )
+    .map(
+      function(
+        [
+          method,
+          amount
+        ]
+      ) {
+
+        const percentage =
+          totalRevenue > 0
+            ? (
+                amount /
+                totalRevenue
+              ) *
+              100
+            : 0;
+
+
+        return `
+
+          <div class="payment-row">
+
+
+            <div class="payment-top">
+
+              <div class="payment-name">
+
+                ${icons[method]}
+                ${method}
+
+              </div>
+
+
+              <div class="payment-value-wrap">
+
+                <div class="payment-value">
+
+                  ${formatMoney(
+                    amount
+                  )}
+
+                </div>
+
+                <div class="payment-percent">
+
+                  ${percentage.toFixed(
+                    1
+                  )}%
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="progress-track">
+
+              <div
+                class="progress-bar"
+                style="
+                  width:
+                  ${Math.min(
+                    percentage,
+                    100
+                  )}%;
+                ">
+              </div>
+
+            </div>
+
+
+          </div>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+/* =========================================================
+   PAID BILL TABLE
    ========================================================= */
 
 function renderPaidBills(
-  monthLabel
+  monthLabel,
+  totalRevenue
 ) {
 
   const container =
@@ -1606,7 +2476,8 @@ function renderPaidBills(
 
 
   if (
-    currentPaidBills.length === 0
+    currentPaidBills.length ===
+    0
   ) {
 
     container.innerHTML = `
@@ -1628,44 +2499,31 @@ function renderPaidBills(
   }
 
 
-  const total =
-    currentPaidBills.reduce(
-      function(sum,bill) {
-
-        return (
-          sum +
-          getBillAmount(
-            bill
-          )
-        );
-
-      },
-      0
-    );
-
-
   container.innerHTML = `
 
-    <div
-      style="
-        margin-bottom:12px;
-        color:#70778e;
-        font-size:12px;
-      ">
+    <div class="bill-summary-line">
 
-      ${currentPaidBills.length}
-      ${
-        currentPaidBills.length === 1
-          ? "paid bill"
-          : "paid bills"
-      }
+      <span>
 
-      • Total:
-      <strong>
+        ${currentPaidBills.length}
+
+        ${
+          currentPaidBills.length === 1
+            ? "paid bill"
+            : "paid bills"
+        }
+
+      </span>
+
+
+      <span class="bill-summary-total">
+
+        Total:
         ${formatMoney(
-          total
+          totalRevenue
         )}
-      </strong>
+
+      </span>
 
     </div>
 
@@ -1709,13 +2567,16 @@ function renderPaidBills(
                       <button
                         type="button"
                         class="patient-link"
-                        onclick="openBillDetails(
-                          ${Number(
-                            bill.id
-                          )}
-                        )">
+                        onclick="
+                          openBillDetails(
+                            ${Number(
+                              bill.id
+                            )}
+                          )
+                        ">
 
                         ${escapeHTML(
+                          bill.resolved_patient_name ||
                           bill.patient_name ||
                           "Patient"
                         )}
@@ -1724,6 +2585,7 @@ function renderPaidBills(
 
                     </td>
 
+
                     <td>
 
                       ${formatDisplayDate(
@@ -1731,6 +2593,7 @@ function renderPaidBills(
                       )}
 
                     </td>
+
 
                     <td>
 
@@ -1750,6 +2613,31 @@ function renderPaidBills(
             )
             .join("")
         }
+
+
+        <tr class="bill-grand-total">
+
+          <td>
+
+            ${currentPaidBills.length}
+            PAID BILLS
+
+          </td>
+
+          <td>
+          </td>
+
+          <td>
+
+            TOTAL
+            ${formatMoney(
+              totalRevenue
+            )}
+
+          </td>
+
+        </tr>
+
 
       </tbody>
 
@@ -1810,12 +2698,20 @@ async function openBillDetails(
         "Unable to load bill details."
       );
 
+
       return;
 
     }
 
 
+    const resolved =
+      await addPatientNamesToBills([
+        data
+      ]);
+
+
     bill =
+      resolved[0] ||
       data;
 
   }
@@ -1851,8 +2747,11 @@ async function openBillDetails(
 
       <div class="bill-header-box">
 
+
         <div class="bill-clinic-title">
+
           GENERAL &amp; DIABETES CARE
+
         </div>
 
 
@@ -1868,6 +2767,7 @@ async function openBillDetails(
 
           <br>
 
+
           <strong>
             Date:
           </strong>
@@ -1878,16 +2778,19 @@ async function openBillDetails(
 
           <br>
 
+
           <strong>
             Patient:
           </strong>
 
           ${escapeHTML(
+            bill.resolved_patient_name ||
             bill.patient_name ||
             "-"
           )}
 
           <br>
+
 
           <strong>
             Patient ID:
@@ -1899,6 +2802,7 @@ async function openBillDetails(
           )}
 
         </div>
+
 
       </div>
 
@@ -1913,9 +2817,11 @@ async function openBillDetails(
           </span>
 
           <strong>
+
             ${formatMoney(
               consultationFee
             )}
+
           </strong>
 
         </div>
@@ -1928,9 +2834,11 @@ async function openBillDetails(
           </span>
 
           <strong>
+
             ${formatMoney(
               medicineCharges
             )}
+
           </strong>
 
         </div>
@@ -1943,9 +2851,11 @@ async function openBillDetails(
           </span>
 
           <strong>
+
             ${formatMoney(
               procedureCharges
             )}
+
           </strong>
 
         </div>
@@ -1958,11 +2868,13 @@ async function openBillDetails(
           </span>
 
           <span>
+
             ${formatMoney(
               getBillAmount(
                 bill
               )
             )}
+
           </span>
 
         </div>
@@ -1983,6 +2895,7 @@ async function openBillDetails(
         )}
 
         <br>
+
 
         <strong>
           Payment Method:
@@ -2013,23 +2926,141 @@ async function openBillDetails(
       "billDetailPanel"
     )
     .scrollIntoView({
-      behavior: "smooth",
-      block: "start"
+
+      behavior:
+        "smooth",
+
+      block:
+        "start"
+
     });
 
 }
 
 
+/* =========================================================
+   CLOSE BILL DETAILS
+   ========================================================= */
+
 function closeBillDetails() {
+
+  const panel =
+    document
+      .getElementById(
+        "billDetailPanel"
+      );
+
+
+  if (panel) {
+
+    panel.classList.remove(
+      "open"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   GENERATED DATE + TIME
+   ========================================================= */
+
+function updateGeneratedDateTime() {
+
+  const now =
+    new Date();
+
+
+  const generatedText =
+    now.toLocaleString(
+      "en-IN",
+      {
+        day:
+          "2-digit",
+
+        month:
+          "long",
+
+        year:
+          "numeric",
+
+        hour:
+          "2-digit",
+
+        minute:
+          "2-digit",
+
+        hour12:
+          true
+      }
+    );
+
 
   document
     .getElementById(
-      "billDetailPanel"
+      "printGeneratedDateTime"
     )
-    .classList
-    .remove(
-      "open"
+    .textContent =
+      generatedText;
+
+}
+
+
+/* =========================================================
+   PRINT / SAVE PDF
+   ========================================================= */
+
+function printMonthlyReport() {
+
+  const report =
+    document
+      .getElementById(
+        "reportContent"
+      );
+
+
+  if (
+    !report ||
+    report.style.display ===
+    "none"
+  ) {
+
+    alert(
+      "Please load a monthly report first."
     );
+
+
+    return;
+
+  }
+
+
+  closeBillDetails();
+
+
+  updateGeneratedDateTime();
+
+
+  document
+    .getElementById(
+      "printReportingPeriod"
+    )
+    .textContent =
+      currentMonthLabel ||
+      "Monthly Report";
+
+
+  document
+    .getElementById(
+      "printFooterMonth"
+    )
+    .textContent =
+      currentMonthLabel ||
+      "";
+
+
+  window.print();
 
 }
 
@@ -2045,6 +3076,16 @@ document
   .addEventListener(
     "click",
     loadMonthlyReport
+  );
+
+
+document
+  .getElementById(
+    "printReportButton"
+  )
+  .addEventListener(
+    "click",
+    printMonthlyReport
   );
 
 
@@ -2078,11 +3119,18 @@ document
   );
 
 
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
 window.openBillDetails =
   openBillDetails;
 
 window.closeBillDetails =
   closeBillDetails;
+
+window.printMonthlyReport =
+  printMonthlyReport;
 
 
 /* =========================================================
