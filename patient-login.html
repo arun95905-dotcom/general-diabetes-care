@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Patient Portal Login | General & Diabetes Care</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --red: #a12630;
+      --red-dark: #7f1b23;
+      --blue: #3c68d6;
+      --purple: #7455cf;
+      --green: #23855a;
+      --text: #1b2835;
+      --muted: #77828c;
+      --border: #e1e7ed;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+      color: var(--text);
+
+      background:
+        radial-gradient(
+          circle at top left,
+          #eef4ff,
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at top right,
+          #fff0f1,
+          transparent 30%
+        ),
+        #f7f9fc;
+    }
+
+    .login-shell {
+      width: 100%;
+      max-width: 430px;
+    }
+
+    .clinic-label {
+      margin-bottom: 8px;
+
+      color: var(--red);
+
+      text-align: center;
+
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+    }
+
+    .login-card {
+      padding: 25px 20px;
+
+      background: #ffffff;
+
+      border: 1px solid var(--border);
+      border-radius: 24px;
+
+      box-shadow:
+        0 18px 50px rgba(28,45,62,.09);
+    }
+
+    .portal-icon {
+      width: 58px;
+      height: 58px;
+
+      margin: 0 auto 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 18px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff1f2,
+          #eef4ff
+        );
+
+      font-size: 28px;
+    }
+
+    h1 {
+      margin: 0;
+
+      text-align: center;
+
+      color: #263542;
+
+      font-size: 25px;
+    }
+
+    .subtitle {
+      margin: 8px 0 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .field-label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #55626f;
+
+      font-size: 11px;
+      font-weight: 900;
+
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .phone-wrap {
+      display: flex;
+
+      overflow: hidden;
+
+      border: 1px solid #d9e1e7;
+      border-radius: 14px;
+
+      background: #ffffff;
+    }
+
+    .country-code {
+      padding: 13px 12px;
+
+      display: flex;
+      align-items: center;
+
+      color: #445461;
+
+      background: #f4f7f9;
+
+      border-right: 1px solid #dfe5ea;
+
+      font-weight: 900;
+    }
+
+    .phone-input {
+      width: 100%;
+
+      padding: 13px;
+
+      border: none;
+      outline: none;
+
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .action-button {
+      width: 100%;
+
+      margin-top: 14px;
+
+      min-height: 46px;
+
+      border: none;
+      border-radius: 14px;
+
+      cursor: pointer;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 900;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--blue),
+          var(--purple)
+        );
+
+      box-shadow:
+        0 8px 20px rgba(74,84,195,.18);
+    }
+
+    .action-button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .status-box {
+      display: none;
+
+      margin-top: 14px;
+
+      padding: 12px 13px;
+
+      border-radius: 12px;
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status-box.show {
+      display: block;
+    }
+
+    .status-info {
+      color: #36536d;
+      background: #eef6ff;
+      border: 1px solid #d7e7f5;
+    }
+
+    .status-success {
+      color: #216746;
+      background: #edf9f2;
+      border: 1px solid #d2eadb;
+    }
+
+    .status-error {
+      color: #8a2d34;
+      background: #fff1f2;
+      border: 1px solid #efd3d5;
+    }
+
+    .security-note {
+      margin-top: 18px;
+
+      padding-top: 15px;
+
+      border-top: 1px solid #edf0f2;
+
+      color: #7c8790;
+
+      text-align: center;
+
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .back-link {
+      display: block;
+
+      margin-top: 15px;
+
+      text-align: center;
+
+      color: #536270;
+
+      text-decoration: none;
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .loading {
+      display: none;
+
+      margin-top: 12px;
+
+      text-align: center;
+
+      color: #75808b;
+
+      font-size: 11px;
+    }
+
+    .loading.show {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="login-shell">
+
+    <div class="clinic-label">
+      GENERAL &amp; DIABETES CARE
+    </div>
+
+    <section class="login-card">
+
+      <div class="portal-icon">
+        👤
+      </div>
+
+      <h1>
+        Patient Portal
+      </h1>
+
+      <p class="subtitle">
+        Securely access your prescriptions and laboratory reports using your registered mobile number.
+      </p>
+
+      <label
+        for="patientPhone"
+        class="field-label">
+        Registered Mobile Number
+      </label>
+
+      <div class="phone-wrap">
+
+        <div class="country-code">
+          +91
+        </div>
+
+        <input
+          id="patientPhone"
+          class="phone-input"
+          type="tel"
+          inputmode="numeric"
+          maxlength="10"
+          autocomplete="tel"
+          placeholder="Enter 10-digit mobile number">
+
+      </div>
+
+      <button
+        type="button"
+        id="continueButton"
+        class="action-button">
+        Continue Securely
+      </button>
+
+      <div
+        id="loadingText"
+        class="loading">
+        Verifying registered mobile number...
+      </div>
+
+      <div
+        id="statusBox"
+        class="status-box">
+      </div>
+
+      <div class="security-note">
+        🔒 OTP verification is required before any medical records can be accessed.
+      </div>
+
+      <a
+        href="index.html"
+        class="back-link">
+        ← Back to Clinic Website
+      </a>
+
+    </section>
+
+  </main>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+
+/* =========================================================
+   MSG91 SETTINGS
+
+   Paste only the Widget Token here.
+   Do NOT paste your MSG91 AuthKey here.
+   ========================================================= */
+
+const MSG91_WIDGET_ID =
+  "366878674479323235303638";
+
+const MSG91_WIDGET_TOKEN =
+  " 563823TqUhqV9cmQ06a8c0973P1";
+
+
+ let currentPhone = "";
+
+
+/* =========================================================
+   UI HELPERS
+   ========================================================= */
+
+function showStatus(
+  message,
+  type
+) {
+
+  const box =
+    document.getElementById(
+      "statusBox"
+    );
+
+  box.className =
+    "status-box show " +
+    (
+      type === "success"
+        ? "status-success"
+        : type === "error"
+        ? "status-error"
+        : "status-info"
+    );
+
+  box.textContent =
+    message;
+
+}
+
+
+function clearStatus() {
+
+  const box =
+    document.getElementById(
+      "statusBox"
+    );
+
+  box.className =
+    "status-box";
+
+  box.textContent =
+    "";
+
+}
+
+
+function setLoading(
+  value
+) {
+
+  const loading =
+    document.getElementById(
+      "loadingText"
+    );
+
+  const button =
+    document.getElementById(
+      "continueButton"
+    );
+
+  loading.classList.toggle(
+    "show",
+    value
+  );
+
+  button.disabled =
+    value;
+
+}
+
+
+/* =========================================================
+   NORMALIZE PHONE
+   ========================================================= */
+
+function getEnteredPhone() {
+
+  return document
+    .getElementById(
+      "patientPhone"
+    )
+    .value
+    .replace(/\D/g, "");
+
+}
+
+
+/* =========================================================
+   CHECK REGISTERED PHONE
+   ========================================================= */
+
+async function checkRegisteredPhone(
+  phone
+) {
+
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      "/functions/v1/check-patient-phone",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json",
+
+          "apikey":
+            SUPABASE_PUBLISHABLE_KEY
+        },
+
+        body:
+          JSON.stringify({
+            phone:
+              phone
+          })
+      }
+    );
+
+
+  const result =
+    await response.json();
+
+
+  return result;
+
+}
+
+
+/* =========================================================
+   START MSG91 OTP
+   ========================================================= */
+
+function startMsg91Otp(
+  phone
+) {
+
+  currentPhone =
+    phone;
+
+
+  const configuration = {
+
+    widgetId:
+      MSG91_WIDGET_ID,
+
+    tokenAuth:
+      MSG91_WIDGET_TOKEN,
+
+    identifier:
+      "91" + phone,
+
+    exposeMethods:
+      false,
+
+
+    success:
+      async function(data) {
+
+        console.log(
+          "MSG91 OTP success"
+        );
+
+
+        showStatus(
+          "OTP verified successfully. Completing secure login...",
+          "success"
+        );
+
+
+        let accessToken = "";
+
+
+        if (
+          typeof data ===
+          "string"
+        ) {
+
+          accessToken =
+            data;
+
+        } else {
+
+          accessToken =
+            data?.accessToken ||
+            data?.access_token ||
+            data?.token ||
+            data?.jwt ||
+            "";
+
+        }
+
+
+        if (!accessToken) {
+
+          console.error(
+            "MSG91 response:",
+            data
+          );
+
+
+          showStatus(
+            "OTP was verified, but the secure verification token was not received.",
+            "error"
+          );
+
+
+          return;
+
+        }
+
+
+        await verifyPatientOtpOnServer(
+          accessToken,
+          phone
+        );
+
+      },
+
+
+    failure:
+      function(error) {
+
+        console.error(
+          "MSG91 OTP failure:",
+          error
+        );
+
+
+        showStatus(
+          "OTP verification could not be completed. Please try again.",
+          "error"
+        );
+
+      }
+
+  };
+
+
+  window.msg91Configuration =
+    configuration;
+
+
+  loadMsg91Script(
+    configuration
+  );
+
+}
+
+
+/* =========================================================
+   LOAD MSG91 WIDGET
+   ========================================================= */
+
+function loadMsg91Script(
+  configuration
+) {
+
+  if (
+    typeof window.initSendOTP ===
+    "function"
+  ) {
+
+    window.initSendOTP(
+      configuration
+    );
+
+    return;
+
+  }
+
+
+  const urls = [
+
+    "https://verify.msg91.com/otp-provider.js",
+
+    "https://verify.phone91.com/otp-provider.js"
+
+  ];
+
+
+  let index =
+    0;
+
+
+  function attemptLoad() {
+
+    const script =
+      document.createElement(
+        "script"
+      );
+
+
+    script.src =
+      urls[index];
+
+
+    script.async =
+      true;
+
+
+    script.onload =
+      function() {
+
+        if (
+          typeof window.initSendOTP ===
+          "function"
+        ) {
+
+          window.initSendOTP(
+            configuration
+          );
+
+
+        } else {
+
+          showStatus(
+            "OTP service could not initialize.",
+            "error"
+          );
+
+        }
+
+      };
+
+
+    script.onerror =
+      function() {
+
+        index++;
+
+
+        if (
+          index <
+          urls.length
+        ) {
+
+          attemptLoad();
+
+
+        } else {
+
+          showStatus(
+            "OTP service could not be loaded. Please try again.",
+            "error"
+          );
+
+        }
+
+      };
+
+
+    document.head.appendChild(
+      script
+    );
+
+  }
+
+
+  attemptLoad();
+
+}
+
+
+/* =========================================================
+   VERIFY OTP TOKEN ON SUPABASE SERVER
+   ========================================================= */
+
+async function verifyPatientOtpOnServer(
+  accessToken,
+  phone
+) {
+
+  try {
+
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/functions/v1/verify-patient-otp",
+        {
+          method:
+            "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            "apikey":
+              SUPABASE_PUBLISHABLE_KEY
+          },
+
+          body:
+            JSON.stringify({
+
+              accessToken:
+                accessToken,
+
+              phone:
+                phone
+
+            })
+        }
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+
+      showStatus(
+        result.message ||
+        "Secure OTP verification failed.",
+        "error"
+      );
+
+
+      return;
+
+    }
+
+
+    /*
+      TEMPORARY STORAGE
+
+      We will replace this with a proper short-lived
+      patient portal token in the next backend step.
+    */
+
+    sessionStorage.setItem(
+      "patientPortalPatientId",
+      String(
+        result.patient?.id ||
+        ""
+      )
+    );
+
+
+    sessionStorage.setItem(
+      "patientPortalPatientName",
+      String(
+        result.patient?.name ||
+        ""
+      )
+    );
+
+
+    sessionStorage.setItem(
+      "patientPortalVerifiedPhone",
+      phone
+    );
+
+
+    window.location.href =
+      "patient-portal.html";
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    showStatus(
+      "Unable to complete secure login. Please try again.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CONTINUE BUTTON
+   ========================================================= */
+
+document
+  .getElementById(
+    "continueButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      clearStatus();
+
+
+      const phone =
+        getEnteredPhone();
+
+
+      if (
+        phone.length !== 10 ||
+        !/^[6-9]\d{9}$/.test(
+          phone
+        )
+      ) {
+
+        showStatus(
+          "Please enter a valid 10-digit Indian mobile number.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      setLoading(
+        true
+      );
+
+
+      try {
+
+        const result =
+          await checkRegisteredPhone(
+            phone
+          );
+
+
+        if (
+          !result.allowed
+        ) {
+
+          showStatus(
+            result.message ||
+            "This mobile number is not registered with the clinic.",
+            "error"
+          );
+
+
+          return;
+
+        }
+
+
+        showStatus(
+          "Registered mobile number confirmed. Opening OTP verification...",
+          "success"
+        );
+
+
+        startMsg91Otp(
+          phone
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showStatus(
+          "Unable to verify the mobile number. Please try again.",
+          "error"
+        );
+
+
+      } finally {
+
+        setLoading(
+          false
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   INPUT CLEANUP
+   ========================================================= */
+
+document
+  .getElementById(
+    "patientPhone"
+  )
+  .addEventListener(
+    "input",
+    function() {
+
+      this.value =
+        this.value
+          .replace(/\D/g, "")
+          .slice(0,10);
+
+    }
+  );
+
+</script>
+
+
+</body>
+
+</html>
