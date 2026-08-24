@@ -8,7 +8,15 @@
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
+
+<meta
+  name="robots"
+  content="noindex, nofollow">
+
+<meta
+  name="theme-color"
+  content="#f7f9fc">
+
 <title>
 Patient Portal | General & Diabetes Care
 </title>
@@ -16,51 +24,79 @@ Patient Portal | General & Diabetes Care
 
 <style>
 
+/* =========================================================
+   BASE
+   ========================================================= */
+
 * {
   box-sizing: border-box;
 }
 
 :root {
-  --red: #a12630;
-  --red-dark: #7e1b24;
-  --blue: #3d68d6;
-  --purple: #7354cf;
-  --green: #23855a;
-  --green-dark: #176a45;
-  --text: #192735;
+  --primary: #9e2731;
+  --primary-dark: #761b24;
+  --primary-soft: #fff1f2;
+
+  --blue: #3768df;
+  --blue-dark: #2853bd;
+  --blue-soft: #edf3ff;
+
+  --green: #18845a;
+  --green-dark: #106844;
+  --green-soft: #ecf9f3;
+
+  --text: #1e2b36;
   --muted: #74818d;
-  --border: #e1e7ed;
+  --muted-dark: #596774;
+
+  --border: #e4e9ee;
   --surface: #ffffff;
+  --background: #f5f7fa;
+
+  --shadow:
+    0 12px 35px rgba(30, 43, 54, .07);
+
+  --shadow-soft:
+    0 6px 20px rgba(30, 43, 54, .05);
+}
+
+
+html {
+  scroll-behavior: smooth;
 }
 
 
 body {
 
-  margin:
-    0;
+  margin: 0;
 
-  color:
-    var(--text);
+  min-height: 100vh;
+
+  color: var(--text);
 
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
+    Roboto,
     Arial,
     sans-serif;
 
   background:
+
     radial-gradient(
-      circle at top left,
-      #eef4ff,
-      transparent 36%
-    ),
-    radial-gradient(
-      circle at top right,
-      #fff0f1,
+      circle at 0% 0%,
+      rgba(61,104,214,.10),
       transparent 30%
     ),
-    #f7f9fc;
+
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(161,38,48,.09),
+      transparent 27%
+    ),
+
+    var(--background);
 
 }
 
@@ -71,603 +107,224 @@ a {
 }
 
 
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
 .portal-page {
 
-  width:
-    100%;
+  width: 100%;
 
-  max-width:
-    1000px;
+  max-width: 980px;
 
-  margin:
-    0 auto;
+  margin: 0 auto;
 
   padding:
-    16px
-    10px
-    48px;
+    18px
+    14px
+    50px;
 
 }
 
 
 /* =========================================================
-   HEADER
+   TOP HEADER
    ========================================================= */
 
 .portal-header {
 
-  margin-bottom:
-    15px;
+  position: relative;
+
+  overflow: hidden;
+
+  margin-bottom: 15px;
+
+  padding:
+    22px
+    20px;
+
+  color: #ffffff;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #8e202a,
+      #a62d37 45%,
+      #435fc7
+    );
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 14px 36px rgba(74, 44, 93, .17);
+
+}
+
+
+.portal-header::after {
+
+  content: "✚";
+
+  position: absolute;
+
+  right: -7px;
+  top: -26px;
+
+  font-size: 125px;
+
+  font-weight: 900;
+
+  opacity: .07;
 
 }
 
 
 .clinic-label {
 
-  margin:
-    0;
+  position: relative;
 
-  color:
-    var(--red);
+  z-index: 1;
 
-  font-size:
-    11px;
+  margin: 0 0 7px;
 
-  font-weight:
-    900;
+  font-size: 10px;
 
-  letter-spacing:
-    1.2px;
+  font-weight: 900;
+
+  letter-spacing: 1.4px;
+
+  opacity: .82;
+
+}
+
+
+.portal-title-row {
+
+  position: relative;
+
+  z-index: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+
+.portal-icon {
+
+  width: 49px;
+  height: 49px;
+
+  flex: 0 0 49px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 23px;
+
+  background:
+    rgba(255,255,255,.15);
+
+  border:
+    1px solid rgba(255,255,255,.20);
+
+  border-radius: 15px;
+
+  backdrop-filter:
+    blur(8px);
 
 }
 
 
 .portal-header h1 {
 
-  margin:
-    6px
-    0
-    3px;
+  margin: 0;
 
-  color:
-    #283743;
+  font-size: 27px;
 
-  font-size:
-    29px;
+  line-height: 1.15;
 
 }
 
 
 .portal-subtitle {
 
+  position: relative;
+
+  z-index: 1;
+
   margin:
+    11px
+    0
     0;
 
-  color:
-    var(--muted);
+  max-width: 600px;
 
-  font-size:
+  color:
+    rgba(255,255,255,.82);
+
+  font-size: 12px;
+
+  line-height: 1.55;
+
+}
+
+
+/* =========================================================
+   SECURITY BADGE
+   ========================================================= */
+
+.secure-strip {
+
+  margin-bottom: 15px;
+
+  padding:
+    10px
     13px;
 
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #436051;
+
+  background:
+    rgba(239,250,244,.88);
+
+  border:
+    1px solid #d9eee3;
+
+  border-radius: 13px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
 }
 
 
-/* =========================================================
-   PATIENT CARD
-   ========================================================= */
+.secure-dot {
 
-.patient-card {
+  width: 8px;
+  height: 8px;
 
-  position:
-    relative;
+  flex: 0 0 8px;
 
-  overflow:
-    hidden;
+  background: #27a46e;
 
-  margin-bottom:
-    18px;
-
-  padding:
-    20px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff,
-      #fff7f7,
-      #f4f8ff
-    );
-
-  border:
-    1px solid #e4e6ed;
-
-  border-radius:
-    22px;
+  border-radius: 50%;
 
   box-shadow:
-    0 10px 30px rgba(35,48,62,.07);
-
-}
-
-
-.patient-card::after {
-
-  content:
-    "👤";
-
-  position:
-    absolute;
-
-  right:
-    15px;
-
-  top:
-    6px;
-
-  opacity:
-    .07;
-
-  font-size:
-    95px;
-
-}
-
-
-.patient-small {
-
-  position:
-    relative;
-
-  z-index:
-    1;
-
-  color:
-    #78838c;
-
-  font-size:
-    10px;
-
-  font-weight:
-    900;
-
-  text-transform:
-    uppercase;
-
-  letter-spacing:
-    .7px;
-
-}
-
-
-.patient-name {
-
-  position:
-    relative;
-
-  z-index:
-    1;
-
-  margin-top:
-    5px;
-
-  color:
-    #293743;
-
-  font-size:
-    24px;
-
-  font-weight:
-    950;
-
-}
-
-
-.patient-id {
-
-  position:
-    relative;
-
-  z-index:
-    1;
-
-  margin-top:
-    5px;
-
-  color:
-    #78838d;
-
-  font-size:
-    11px;
-
-}
-
-
-/* =========================================================
-   SECTION
-   ========================================================= */
-
-.section-title {
-
-  margin:
-    23px
-    2px
-    10px;
-
-  color:
-    #737f89;
-
-  font-size:
-    10px;
-
-  font-weight:
-    900;
-
-  text-transform:
-    uppercase;
-
-  letter-spacing:
-    1px;
-
-}
-
-
-.section-card {
-
-  margin-bottom:
-    17px;
-
-  padding:
-    17px;
-
-  background:
-    #ffffff;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    20px;
-
-  box-shadow:
-    0 9px 28px rgba(35,48,62,.055);
-
-}
-
-
-/* =========================================================
-   FILE GRID
-   ========================================================= */
-
-.file-grid {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    repeat(
-      2,
-      minmax(0,1fr)
-    );
-
-  gap:
-    12px;
-
-}
-
-
-.file-card {
-
-  overflow:
-    hidden;
-
-  background:
-    #ffffff;
-
-  border:
-    1px solid #e3e8ec;
-
-  border-radius:
-    17px;
-
-  box-shadow:
-    0 5px 17px rgba(40,55,70,.045);
-
-}
-
-
-.file-preview {
-
-  width:
-    100%;
-
-  height:
-    210px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  overflow:
-    hidden;
-
-  background:
-    linear-gradient(
-      135deg,
-      #f5f7fa,
-      #eef2f5
-    );
-
-}
-
-
-.file-preview img {
-
-  width:
-    100%;
-
-  height:
-    100%;
-
-  object-fit:
-    cover;
-
-}
-
-
-.file-icon {
-
-  font-size:
-    55px;
-
-}
-
-
-.file-info {
-
-  padding:
-    13px;
-
-}
-
-
-.file-type {
-
-  color:
-    #33434f;
-
-  font-size:
-    13px;
-
-  font-weight:
-    900;
-
-}
-
-
-.file-date {
-
-  margin-top:
-    4px;
-
-  color:
-    #7e8992;
-
-  font-size:
-    10px;
-
-}
-
-
-.file-name {
-
-  margin-top:
-    5px;
-
-  color:
-    #65717a;
-
-  font-size:
-    10px;
-
-  word-break:
-    break-word;
-
-}
-
-
-.file-actions {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    repeat(
-      2,
-      minmax(0,1fr)
-    );
-
-  gap:
-    7px;
-
-  margin-top:
-    12px;
-
-}
-
-
-.file-button {
-
-  min-height:
-    39px;
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  gap:
-    5px;
-
-  border:
-    none;
-
-  border-radius:
-    11px;
-
-  cursor:
-    pointer;
-
-  text-decoration:
-    none;
-
-  font-size:
-    11px;
-
-  font-weight:
-    900;
-
-}
-
-
-.view-button {
-
-  color:
-    #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--blue),
-      var(--purple)
-    );
-
-}
-
-
-.download-button {
-
-  color:
-    #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--green),
-      var(--green-dark)
-    );
-
-}
-
-
-/* =========================================================
-   EMPTY
-   ========================================================= */
-
-.empty-card {
-
-  padding:
-    30px
-    15px;
-
-  text-align:
-    center;
-
-  color:
-    #7d8992;
-
-  background:
-    #fafbfc;
-
-  border:
-    1px dashed #dce2e7;
-
-  border-radius:
-    15px;
-
-}
-
-
-.empty-icon {
-
-  margin-bottom:
-    8px;
-
-  font-size:
-    32px;
-
-}
-
-
-/* =========================================================
-   LOADING
-   ========================================================= */
-
-.loading-card {
-
-  padding:
-    35px;
-
-  text-align:
-    center;
-
-  color:
-    #727f89;
-
-  background:
-    #ffffff;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    20px;
-
-}
-
-
-.spinner {
-
-  width:
-    30px;
-
-  height:
-    30px;
-
-  margin:
-    0 auto 10px;
-
-  border:
-    3px solid #e5e9ed;
-
-  border-top-color:
-    var(--red);
-
-  border-radius:
-    50%;
-
-  animation:
-    spin .7s linear infinite;
-
-}
-
-
-@keyframes spin {
-
-  to {
-
-    transform:
-      rotate(360deg);
-
-  }
+    0 0 0 4px rgba(39,164,110,.11);
 
 }
 
@@ -678,114 +335,806 @@ a {
 
 .session-message {
 
-  display:
-    none;
+  display: none;
 
-  margin-bottom:
-    14px;
+  margin-bottom: 15px;
 
-  padding:
-    13px;
+  padding: 14px;
 
-  border-radius:
-    13px;
+  color: #8a3038;
 
-  color:
-    #8b3138;
-
-  background:
-    #fff1f2;
+  background: #fff1f2;
 
   border:
-    1px solid #edd0d3;
+    1px solid #edcfd2;
 
-  font-size:
-    11px;
+  border-radius: 14px;
 
-  line-height:
-    1.5;
+  font-size: 12px;
+
+  line-height: 1.5;
 
 }
 
 
 .session-message.show {
+  display: block;
+}
 
-  display:
-    block;
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-card {
+
+  padding:
+    44px
+    20px;
+
+  text-align: center;
+
+  color: var(--muted);
+
+  background:
+    rgba(255,255,255,.92);
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 22px;
+
+  box-shadow:
+    var(--shadow-soft);
+
+}
+
+
+.spinner {
+
+  width: 36px;
+  height: 36px;
+
+  margin:
+    0 auto
+    13px;
+
+  border:
+    3px solid #e6eaee;
+
+  border-top-color:
+    var(--primary);
+
+  border-radius: 50%;
+
+  animation:
+    spin .75s linear infinite;
+
+}
+
+
+@keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
 
 }
 
 
 /* =========================================================
-   FOOTER ACTIONS
+   PATIENT CARD
+   ========================================================= */
+
+.patient-card {
+
+  position: relative;
+
+  overflow: hidden;
+
+  margin-bottom: 18px;
+
+  padding:
+    20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #fffafb 50%,
+      #f6f8ff
+    );
+
+  border:
+    1px solid #e3e7ed;
+
+  border-radius: 22px;
+
+  box-shadow:
+    var(--shadow);
+
+}
+
+
+.patient-card::after {
+
+  content: "👤";
+
+  position: absolute;
+
+  right: 13px;
+  bottom: -18px;
+
+  font-size: 95px;
+
+  opacity: .055;
+
+}
+
+
+.patient-top {
+
+  position: relative;
+
+  z-index: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+
+.patient-avatar {
+
+  width: 48px;
+  height: 48px;
+
+  flex: 0 0 48px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff0f1,
+      #eef3ff
+    );
+
+  border:
+    1px solid #e5e2e8;
+
+  border-radius: 15px;
+
+  font-size: 22px;
+
+}
+
+
+.patient-small {
+
+  color: #78838d;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  letter-spacing: .9px;
+
+}
+
+
+.patient-name {
+
+  margin-top: 3px;
+
+  color: #263642;
+
+  font-size: 21px;
+
+  font-weight: 900;
+
+}
+
+
+.patient-id {
+
+  position: relative;
+
+  z-index: 1;
+
+  margin:
+    12px
+    0
+    0
+    60px;
+
+  color: #77848e;
+
+  font-size: 11px;
+
+}
+
+
+.verified-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  margin-left: 6px;
+
+  padding:
+    3px
+    7px;
+
+  color: #16724d;
+
+  background: #ebf8f2;
+
+  border:
+    1px solid #d2ecdf;
+
+  border-radius: 999px;
+
+  font-size: 9px;
+
+  font-weight: 850;
+
+}
+
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.section-heading {
+
+  margin:
+    24px
+    3px
+    10px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+}
+
+
+.section-heading-left {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+}
+
+
+.section-icon {
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 11px;
+
+  box-shadow:
+    var(--shadow-soft);
+
+  font-size: 16px;
+
+}
+
+
+.section-heading h2 {
+
+  margin: 0;
+
+  color: #34434f;
+
+  font-size: 16px;
+
+}
+
+
+.section-heading p {
+
+  margin:
+    2px
+    0
+    0;
+
+  color: #89949c;
+
+  font-size: 10px;
+
+}
+
+
+/* =========================================================
+   SECTION CARD
+   ========================================================= */
+
+.section-card {
+
+  padding: 14px;
+
+  background:
+    rgba(255,255,255,.92);
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 21px;
+
+  box-shadow:
+    var(--shadow-soft);
+
+}
+
+
+/* =========================================================
+   FILE GRID
+   ========================================================= */
+
+.file-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap: 13px;
+
+}
+
+
+.file-card {
+
+  position: relative;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border:
+    1px solid #e3e8ed;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 5px 18px rgba(40,55,70,.045);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+
+}
+
+
+@media (hover:hover) {
+
+  .file-card:hover {
+
+    transform:
+      translateY(-2px);
+
+    box-shadow:
+      0 11px 25px rgba(40,55,70,.09);
+
+  }
+
+}
+
+
+.file-preview {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 225px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f4f6f8,
+      #edf1f5
+    );
+
+}
+
+
+.file-preview img {
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition:
+    transform .25s ease;
+
+}
+
+
+@media (hover:hover) {
+
+  .file-card:hover
+  .file-preview img {
+
+    transform:
+      scale(1.025);
+
+  }
+
+}
+
+
+.file-preview-overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+
+  background:
+    rgba(20,30,40,.22);
+
+  transition:
+    opacity .18s ease;
+
+}
+
+
+@media (hover:hover) {
+
+  .file-card:hover
+  .file-preview-overlay {
+
+    opacity: 1;
+
+  }
+
+}
+
+
+.preview-badge {
+
+  padding:
+    7px
+    10px;
+
+  color: #ffffff;
+
+  background:
+    rgba(20,30,40,.72);
+
+  border-radius: 999px;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+}
+
+
+.file-icon {
+
+  width: 76px;
+  height: 76px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    rgba(255,255,255,.85);
+
+  border:
+    1px solid #e2e6ea;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 8px 22px rgba(30,40,50,.06);
+
+  font-size: 37px;
+
+}
+
+
+.file-info {
+
+  padding:
+    14px;
+
+}
+
+
+.file-type {
+
+  color: #31414d;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+}
+
+
+.file-date {
+
+  margin-top: 5px;
+
+  color: #7c8993;
+
+  font-size: 10px;
+
+}
+
+
+.file-name {
+
+  margin-top: 5px;
+
+  min-height: 14px;
+
+  color: #65727d;
+
+  font-size: 10px;
+
+  line-height: 1.4;
+
+  word-break: break-word;
+
+}
+
+
+.file-actions {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap: 8px;
+
+  margin-top: 13px;
+
+}
+
+
+.file-button {
+
+  min-height: 42px;
+
+  padding:
+    8px
+    9px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  font-weight: 850;
+
+  transition:
+    transform .12s ease,
+    opacity .12s ease;
+
+}
+
+
+.file-button:active {
+
+  transform:
+    scale(.97);
+
+}
+
+
+.file-button:disabled,
+.file-button.disabled {
+
+  cursor: default;
+
+  opacity: .42;
+
+}
+
+
+.view-button {
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--blue),
+      #7254d0
+    );
+
+  box-shadow:
+    0 5px 13px rgba(61,104,214,.17);
+
+}
+
+
+.download-button {
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--green),
+      var(--green-dark)
+    );
+
+  box-shadow:
+    0 5px 13px rgba(35,133,90,.16);
+
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.empty-card {
+
+  grid-column:
+    1 / -1;
+
+  padding:
+    35px
+    16px;
+
+  text-align: center;
+
+  color: #7b8791;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fafbfc,
+      #f7f9fb
+    );
+
+  border:
+    1px dashed #d8dfe5;
+
+  border-radius: 16px;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+}
+
+
+.empty-icon {
+
+  margin-bottom: 8px;
+
+  font-size: 32px;
+
+}
+
+
+/* =========================================================
+   BOTTOM ACTIONS
    ========================================================= */
 
 .portal-actions {
 
-  margin-top:
-    20px;
+  margin-top: 25px;
 
-  display:
-    flex;
+  display: grid;
 
-  justify-content:
-    center;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0,1fr)
+    );
 
-  gap:
-    9px;
-
-  flex-wrap:
-    wrap;
+  gap: 9px;
 
 }
 
 
 .portal-action {
 
-  min-height:
-    43px;
+  min-height: 46px;
 
   padding:
     10px
-    15px;
+    11px;
 
-  display:
-    inline-flex;
+  display: inline-flex;
 
-  align-items:
-    center;
+  align-items: center;
+  justify-content: center;
 
-  justify-content:
-    center;
+  border-radius: 13px;
 
-  border:
-    none;
+  cursor: pointer;
 
-  border-radius:
-    12px;
+  text-decoration: none;
 
-  cursor:
-    pointer;
+  font-size: 11px;
 
-  text-decoration:
-    none;
-
-  font-size:
-    12px;
-
-  font-weight:
-    850;
+  font-weight: 850;
 
 }
 
 
 .refresh-button {
 
-  color:
-    #4f5d69;
+  color: #4c5c68;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
   border:
     1px solid #dce3e8;
@@ -793,27 +1142,45 @@ a {
 }
 
 
-.logout-button {
+.home-button {
 
-  color:
-    #ffffff;
+  color: var(--primary);
 
-  background:
-    #64748b;
+  background: #fff5f6;
+
+  border:
+    1px solid #ecd7da;
 
 }
 
 
-.home-button {
+.logout-button {
 
-  color:
-    var(--red);
+  color: #ffffff;
 
-  background:
-    #fff5f6;
+  background: #596978;
 
   border:
-    1px solid #ecd7da;
+    1px solid #596978;
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.portal-footer {
+
+  margin-top: 25px;
+
+  text-align: center;
+
+  color: #96a0a8;
+
+  font-size: 9px;
+
+  line-height: 1.6;
 
 }
 
@@ -824,124 +1191,187 @@ a {
 
 .viewer {
 
-  display:
-    none;
+  display: none;
 
-  position:
-    fixed;
+  position: fixed;
 
-  inset:
-    0;
+  inset: 0;
 
-  z-index:
-    9999;
+  z-index: 9999;
 
-  padding:
-    15px;
+  padding: 13px;
+
+  align-items: center;
+
+  justify-content: center;
 
   background:
-    rgba(18,24,30,.88);
+    rgba(14,20,27,.91);
 
-  align-items:
-    center;
-
-  justify-content:
-    center;
+  backdrop-filter:
+    blur(5px);
 
 }
 
 
 .viewer.open {
-
-  display:
-    flex;
-
+  display: flex;
 }
 
 
 .viewer-content {
 
-  width:
-    100%;
+  width: 100%;
 
-  max-width:
-    900px;
+  max-width: 900px;
 
-  max-height:
-    92vh;
+  max-height: 94vh;
 
-  overflow:
-    auto;
+  overflow: auto;
 
-  padding:
-    12px;
+  padding: 10px;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
-  border-radius:
-    17px;
+  border-radius: 19px;
+
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.30);
 
 }
 
 
 .viewer-top {
 
-  margin-bottom:
-    10px;
+  position: sticky;
 
-  display:
-    flex;
+  top: 0;
 
-  justify-content:
-    flex-end;
+  z-index: 2;
+
+  margin-bottom: 9px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 8px;
+
+  background: #ffffff;
+
+}
+
+
+.viewer-label {
+
+  padding-left: 4px;
+
+  color: #63717c;
+
+  font-size: 11px;
+
+  font-weight: 800;
 
 }
 
 
 .close-viewer {
 
-  min-height:
-    38px;
+  min-height: 38px;
 
   padding:
     8px
     12px;
 
-  border:
-    none;
+  border: none;
 
-  border-radius:
-    10px;
+  border-radius: 10px;
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
-  color:
-    #ffffff;
+  color: #ffffff;
 
-  background:
-    #394957;
+  background: #344451;
 
-  font-weight:
-    850;
+  font-weight: 850;
 
 }
 
 
 .viewer-image {
 
-  width:
-    100%;
+  width: 100%;
+  height: auto;
 
-  height:
-    auto;
+  display: block;
 
-  display:
-    block;
+  border-radius: 11px;
 
-  border-radius:
-    10px;
+}
+
+
+/* =========================================================
+   DOWNLOAD TOAST
+   ========================================================= */
+
+.toast {
+
+  position: fixed;
+
+  left: 50%;
+  bottom: 25px;
+
+  z-index: 12000;
+
+  max-width:
+    calc(100% - 30px);
+
+  padding:
+    11px
+    15px;
+
+  color: #ffffff;
+
+  background:
+    rgba(38,52,63,.95);
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.18);
+
+  font-size: 11px;
+
+  font-weight: 750;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transform:
+    translate(
+      -50%,
+      15px
+    );
+
+  transition:
+    opacity .2s ease,
+    transform .2s ease;
+
+}
+
+
+.toast.show {
+
+  opacity: 1;
+
+  transform:
+    translate(
+      -50%,
+      0
+    );
 
 }
 
@@ -951,6 +1381,74 @@ a {
    ========================================================= */
 
 @media(max-width:700px) {
+
+  .portal-page {
+
+    padding:
+      11px
+      10px
+      35px;
+
+  }
+
+
+  .portal-header {
+
+    padding:
+      20px
+      17px;
+
+    border-radius:
+      20px;
+
+  }
+
+
+  .portal-header h1 {
+
+    font-size:
+      24px;
+
+  }
+
+
+  .portal-icon {
+
+    width:
+      45px;
+
+    height:
+      45px;
+
+    flex-basis:
+      45px;
+
+  }
+
+
+  .patient-card {
+
+    padding:
+      17px;
+
+  }
+
+
+  .patient-name {
+
+    font-size:
+      19px;
+
+  }
+
+
+  .patient-id {
+
+    margin-left:
+      57px;
+
+  }
+
 
   .file-grid {
 
@@ -963,12 +1461,63 @@ a {
   .file-preview {
 
     height:
-      250px;
+      270px;
+
+  }
+
+
+  .section-card {
+
+    padding:
+      11px;
+
+  }
+
+
+  .portal-actions {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .portal-action {
+
+    min-height:
+      45px;
 
   }
 
 }
 
+
+@media(max-width:400px) {
+
+  .file-preview {
+
+    height:
+      235px;
+
+  }
+
+
+  .file-actions {
+
+    gap:
+      6px;
+
+  }
+
+
+  .file-button {
+
+    font-size:
+      10px;
+
+  }
+
+}
 
 </style>
 
@@ -981,21 +1530,53 @@ a {
 <main class="portal-page">
 
 
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
 <header class="portal-header">
 
-<p class="clinic-label">
-GENERAL &amp; DIABETES CARE
-</p>
+  <p class="clinic-label">
+    GENERAL &amp; DIABETES CARE
+  </p>
 
-<h1>
-👤 Patient Portal
-</h1>
 
-<p class="portal-subtitle">
-Your prescriptions and laboratory reports in one secure place.
-</p>
+  <div class="portal-title-row">
+
+    <div class="portal-icon">
+      👤
+    </div>
+
+
+    <div>
+
+      <h1>
+        Patient Portal
+      </h1>
+
+    </div>
+
+  </div>
+
+
+  <p class="portal-subtitle">
+
+    Your prescriptions and laboratory reports,
+    securely available whenever you need them.
+
+  </p>
 
 </header>
+
+
+<div class="secure-strip">
+
+  <span class="secure-dot"></span>
+
+  Secure patient access • Your medical documents are shown
+  only after verified login
+
+</div>
 
 
 <div
@@ -1004,16 +1585,32 @@ Your prescriptions and laboratory reports in one secure place.
 </div>
 
 
+<!-- =====================================================
+     LOADING
+     ===================================================== -->
+
 <div
   id="loadingCard"
   class="loading-card">
 
-<div class="spinner"></div>
+  <div class="spinner"></div>
 
-Loading your medical records securely...
+  <strong>
+    Loading your records
+  </strong>
+
+  <div style="margin-top:5px;font-size:10px;">
+
+    Retrieving your medical documents securely...
+
+  </div>
 
 </div>
 
+
+<!-- =====================================================
+     CONTENT
+     ===================================================== -->
 
 <div
   id="portalContent"
@@ -1021,26 +1618,51 @@ Loading your medical records securely...
 
 
 <!-- =====================================================
-     PATIENT
+     PATIENT CARD
      ===================================================== -->
 
 <section class="patient-card">
 
-<div class="patient-small">
-Verified Patient
-</div>
+  <div class="patient-top">
 
-<div
-  id="patientName"
-  class="patient-name">
-—
-</div>
+    <div class="patient-avatar">
+      👤
+    </div>
 
-<div
-  id="patientId"
-  class="patient-id">
-Patient ID: —
-</div>
+
+    <div>
+
+      <div class="patient-small">
+
+        Verified Patient
+
+        <span class="verified-badge">
+          ✓ Verified
+        </span>
+
+      </div>
+
+
+      <div
+        id="patientName"
+        class="patient-name">
+
+        —
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="patientId"
+    class="patient-id">
+
+    Patient ID: —
+
+  </div>
 
 </section>
 
@@ -1049,17 +1671,38 @@ Patient ID: —
      PRESCRIPTIONS
      ===================================================== -->
 
-<div class="section-title">
-💊 Prescriptions
+<div class="section-heading">
+
+  <div class="section-heading-left">
+
+    <div class="section-icon">
+      💊
+    </div>
+
+
+    <div>
+
+      <h2>
+        Prescriptions
+      </h2>
+
+      <p>
+        Your consultation prescriptions
+      </p>
+
+    </div>
+
+  </div>
+
 </div>
 
 
 <section class="section-card">
 
-<div
-  id="prescriptionsContainer"
-  class="file-grid">
-</div>
+  <div
+    id="prescriptionsContainer"
+    class="file-grid">
+  </div>
 
 </section>
 
@@ -1068,17 +1711,38 @@ Patient ID: —
      LAB REPORTS
      ===================================================== -->
 
-<div class="section-title">
-🧪 Lab Reports
+<div class="section-heading">
+
+  <div class="section-heading-left">
+
+    <div class="section-icon">
+      🧪
+    </div>
+
+
+    <div>
+
+      <h2>
+        Lab Reports
+      </h2>
+
+      <p>
+        Laboratory reports uploaded to your record
+      </p>
+
+    </div>
+
+  </div>
+
 </div>
 
 
 <section class="section-card">
 
-<div
-  id="labReportsContainer"
-  class="file-grid">
-</div>
+  <div
+    id="labReportsContainer"
+    class="file-grid">
+  </div>
 
 </section>
 
@@ -1089,39 +1753,48 @@ Patient ID: —
 
 <div class="portal-actions">
 
-<button
-  type="button"
-  id="refreshButton"
-  class="portal-action refresh-button">
+  <button
+    type="button"
+    id="refreshButton"
+    class="portal-action refresh-button">
 
-🔄 Refresh
+    🔄 Refresh Records
 
-</button>
-
-
-<a
-  href="index.html"
-  class="portal-action home-button">
-
-🏠 Clinic Website
-
-</a>
+  </button>
 
 
-<button
-  type="button"
-  id="logoutButton"
-  class="portal-action logout-button">
+  <a
+    href="index.html"
+    class="portal-action home-button">
 
-🔒 Logout
+    🏠 Clinic Website
 
-</button>
+  </a>
 
-</div>
 
+  <button
+    type="button"
+    id="logoutButton"
+    class="portal-action logout-button">
+
+    🔒 Logout
+
+  </button>
 
 </div>
 
+
+<footer class="portal-footer">
+
+  General &amp; Diabetes Care
+  <br>
+
+  Secure Patient Portal
+
+</footer>
+
+
+</div>
 
 </main>
 
@@ -1134,30 +1807,42 @@ Patient ID: —
   id="imageViewer"
   class="viewer">
 
-<div class="viewer-content">
+  <div class="viewer-content">
 
-<div class="viewer-top">
+    <div class="viewer-top">
 
-<button
-  type="button"
-  class="close-viewer"
-  onclick="closeViewer()">
+      <div class="viewer-label">
+        Medical Document
+      </div>
 
-✕ Close
 
-</button>
+      <button
+        type="button"
+        class="close-viewer"
+        onclick="closeViewer()">
+
+        ✕ Close
+
+      </button>
+
+    </div>
+
+
+    <img
+      id="viewerImage"
+      class="viewer-image"
+      alt="Medical document">
+
+  </div>
 
 </div>
 
 
-<img
-  id="viewerImage"
-  class="viewer-image"
-  alt="Medical document">
-
+<div
+  id="toast"
+  class="toast">
 </div>
 
-</div>
 
 
 <script>
@@ -1249,7 +1934,6 @@ function formatDate(
       }
     );
 
-
   } catch {
 
     return value;
@@ -1291,6 +1975,81 @@ function isPdf(
 }
 
 
+function safeFileName(
+  value,
+  fallback
+) {
+
+  const name =
+    String(
+      value ||
+      fallback ||
+      "medical-document"
+    )
+    .trim()
+    .replace(
+      /[\\/:*?"<>|]+/g,
+      "-"
+    );
+
+
+  return (
+    name ||
+    "medical-document"
+  );
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer = null;
+
+
+function showToast(
+  message
+) {
+
+  const toast =
+    document
+      .getElementById(
+        "toast"
+      );
+
+
+  toast.textContent =
+    message;
+
+
+  toast.classList
+    .add(
+      "show"
+    );
+
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toastTimer =
+    setTimeout(
+      function() {
+
+        toast.classList
+          .remove(
+            "show"
+          );
+
+      },
+      2500
+    );
+
+}
+
+
 /* =========================================================
    SESSION
    ========================================================= */
@@ -1313,11 +2072,9 @@ function clearPatientSession() {
     "patientPortalToken"
   );
 
-
   sessionStorage.removeItem(
     "patientPortalPatientName"
   );
-
 
   sessionStorage.removeItem(
     "patientPortalSessionExpiresAt"
@@ -1353,6 +2110,216 @@ function showSessionMessage(
 }
 
 
+function clearSessionMessage() {
+
+  const element =
+    document
+      .getElementById(
+        "sessionMessage"
+      );
+
+
+  element.textContent =
+    "";
+
+
+  element.classList
+    .remove(
+      "show"
+    );
+
+}
+
+
+/* =========================================================
+   DOWNLOAD
+   ========================================================= */
+
+async function downloadMedicalFile(
+  url,
+  fileName
+) {
+
+  if (!url) {
+
+    showToast(
+      "Download is not available."
+    );
+
+    return;
+
+  }
+
+
+  showToast(
+    "Preparing download..."
+  );
+
+
+  try {
+
+    const response =
+      await fetch(
+        url,
+        {
+          method:
+            "GET",
+
+          cache:
+            "no-store"
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Unable to retrieve file."
+      );
+
+    }
+
+
+    const blob =
+      await response.blob();
+
+
+    const objectUrl =
+      URL.createObjectURL(
+        blob
+      );
+
+
+    const link =
+      document.createElement(
+        "a"
+      );
+
+
+    link.href =
+      objectUrl;
+
+
+    link.download =
+      safeFileName(
+        fileName,
+        "medical-document"
+      );
+
+
+    link.style.display =
+      "none";
+
+
+    document.body
+      .appendChild(
+        link
+      );
+
+
+    link.click();
+
+
+    link.remove();
+
+
+    setTimeout(
+      function() {
+
+        URL.revokeObjectURL(
+          objectUrl
+        );
+
+      },
+      1500
+    );
+
+
+    showToast(
+      "Download started."
+    );
+
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      "Medical file download error:",
+      error
+    );
+
+
+    /*
+      Some storage/CDN configurations may block
+      cross-origin fetch even though the URL itself
+      can be opened.
+
+      This fallback creates a normal download link
+      without deliberately opening a new tab.
+    */
+
+    try {
+
+      const fallbackLink =
+        document.createElement(
+          "a"
+        );
+
+
+      fallbackLink.href =
+        url;
+
+
+      fallbackLink.download =
+        safeFileName(
+          fileName,
+          "medical-document"
+        );
+
+
+      fallbackLink.style.display =
+        "none";
+
+
+      document.body
+        .appendChild(
+          fallbackLink
+        );
+
+
+      fallbackLink.click();
+
+
+      fallbackLink.remove();
+
+
+      showToast(
+        "Download requested."
+      );
+
+
+    } catch (
+      fallbackError
+    ) {
+
+      console.error(
+        "Download fallback error:",
+        fallbackError
+      );
+
+
+      alert(
+        "Unable to download this document. Please try again."
+      );
+
+    }
+
+  }
+
+}
+
+
 /* =========================================================
    LOAD DATA
    ========================================================= */
@@ -1375,6 +2342,9 @@ async function loadPortalData() {
       .getElementById(
         "portalContent"
       );
+
+
+  clearSessionMessage();
 
 
   if (!token) {
@@ -1406,22 +2376,28 @@ async function loadPortalData() {
         SUPABASE_URL +
         "/functions/v1/get-patient-portal-data",
         {
+
           method:
             "POST",
 
+
           headers: {
+
             "Content-Type":
               "application/json",
 
             "apikey":
               SUPABASE_PUBLISHABLE_KEY
+
           },
+
 
           body:
             JSON.stringify({
               portalToken:
                 token
             })
+
         }
       );
 
@@ -1434,6 +2410,7 @@ async function loadPortalData() {
       !response.ok ||
       !result.success
     ) {
+
 
       if (
         response.status ===
@@ -1557,7 +2534,16 @@ function renderPrescriptions(
           💊
         </div>
 
-        No prescription images are available yet.
+        <strong>
+          No prescriptions available
+        </strong>
+
+        <div style="margin-top:4px;">
+
+          Prescription images uploaded by the clinic
+          will appear here.
+
+        </div>
 
       </div>
 
@@ -1573,8 +2559,10 @@ function renderPrescriptions(
     prescriptions
       .map(
         function(
-          item
+          item,
+          index
         ) {
+
 
           const viewUrl =
             item.viewUrl ||
@@ -1586,14 +2574,32 @@ function renderPrescriptions(
             viewUrl;
 
 
+          const fileName =
+            "Prescription-" +
+            formatDate(
+              item.date
+            )
+            .replace(
+              /\s+/g,
+              "-"
+            ) +
+            "-" +
+            String(
+              index + 1
+            ) +
+            ".jpg";
+
+
           return `
 
             <article class="file-card">
+
 
               <div class="file-preview">
 
                 ${
                   viewUrl
+
                     ? `
 
                       <img
@@ -1603,7 +2609,16 @@ function renderPrescriptions(
                         alt="Prescription"
                         loading="lazy">
 
+                      <div class="file-preview-overlay">
+
+                        <span class="preview-badge">
+                          Prescription
+                        </span>
+
+                      </div>
+
                     `
+
                     : `
 
                       <div class="file-icon">
@@ -1617,6 +2632,7 @@ function renderPrescriptions(
 
 
               <div class="file-info">
+
 
                 <div class="file-type">
 
@@ -1636,11 +2652,19 @@ function renderPrescriptions(
                 </div>
 
 
+                <div class="file-name">
+
+                  Medical prescription
+
+                </div>
+
+
                 <div class="file-actions">
 
 
                   ${
                     viewUrl
+
                       ? `
 
                         <button
@@ -1657,6 +2681,7 @@ function renderPrescriptions(
                         </button>
 
                       `
+
                       : `
 
                         <button
@@ -1674,30 +2699,37 @@ function renderPrescriptions(
 
                   ${
                     downloadUrl
+
                       ? `
 
-                        <a
-                          href="${escapeHTML(
-                            downloadUrl
-                          )}"
+                        <button
+                          type="button"
                           class="file-button download-button"
-                          target="_blank"
-                          rel="noopener">
+                          onclick='downloadMedicalFile(
+                            ${JSON.stringify(
+                              downloadUrl
+                            )},
+                            ${JSON.stringify(
+                              fileName
+                            )}
+                          )'>
 
                           ⬇ Download
 
-                        </a>
+                        </button>
 
                       `
+
                       : `
 
-                        <span
+                        <button
+                          type="button"
                           class="file-button download-button"
-                          style="opacity:.45;">
+                          disabled>
 
                           ⬇ Download
 
-                        </span>
+                        </button>
 
                       `
                   }
@@ -1746,7 +2778,16 @@ function renderLabReports(
           🧪
         </div>
 
-        No laboratory reports are available yet.
+        <strong>
+          No lab reports available
+        </strong>
+
+        <div style="margin-top:4px;">
+
+          Laboratory reports uploaded by the clinic
+          will appear here.
+
+        </div>
 
       </div>
 
@@ -1762,8 +2803,10 @@ function renderLabReports(
     reports
       .map(
         function(
-          report
+          report,
+          index
         ) {
+
 
           const pdf =
             isPdf(
@@ -1781,14 +2824,39 @@ function renderLabReports(
             viewUrl;
 
 
+          let fileName =
+            report.fileName ||
+            (
+              "Lab-Report-" +
+              String(
+                index + 1
+              ) +
+              (
+                pdf
+                  ? ".pdf"
+                  : ".jpg"
+              )
+            );
+
+
+          fileName =
+            safeFileName(
+              fileName,
+              "Lab-Report"
+            );
+
+
           return `
 
             <article class="file-card">
 
+
               <div class="file-preview">
+
 
                 ${
                   pdf
+
                     ? `
 
                       <div class="file-icon">
@@ -1796,17 +2864,28 @@ function renderLabReports(
                       </div>
 
                     `
+
                     : viewUrl
+
                     ? `
 
                       <img
                         src="${escapeHTML(
                           viewUrl
                         )}"
-                        alt="Lab Report"
+                        alt="Laboratory Report"
                         loading="lazy">
 
+                      <div class="file-preview-overlay">
+
+                        <span class="preview-badge">
+                          Lab Report
+                        </span>
+
+                      </div>
+
                     `
+
                     : `
 
                       <div class="file-icon">
@@ -1816,10 +2895,12 @@ function renderLabReports(
                     `
                 }
 
+
               </div>
 
 
               <div class="file-info">
+
 
                 <div class="file-type">
 
@@ -1847,7 +2928,7 @@ function renderLabReports(
 
                   ${escapeHTML(
                     report.fileName ||
-                    "Report"
+                    "Laboratory report"
                   )}
 
                 </div>
@@ -1858,7 +2939,9 @@ function renderLabReports(
 
                   ${
                     viewUrl
+
                       ? pdf
+
                         ? `
 
                           <a
@@ -1874,6 +2957,7 @@ function renderLabReports(
                           </a>
 
                         `
+
                         : `
 
                           <button
@@ -1890,15 +2974,17 @@ function renderLabReports(
                           </button>
 
                         `
+
                       : `
 
-                        <span
+                        <button
+                          type="button"
                           class="file-button view-button"
-                          style="opacity:.45;">
+                          disabled>
 
                           👁 View
 
-                        </span>
+                        </button>
 
                       `
                   }
@@ -1906,30 +2992,37 @@ function renderLabReports(
 
                   ${
                     downloadUrl
+
                       ? `
 
-                        <a
-                          href="${escapeHTML(
-                            downloadUrl
-                          )}"
+                        <button
+                          type="button"
                           class="file-button download-button"
-                          target="_blank"
-                          rel="noopener">
+                          onclick='downloadMedicalFile(
+                            ${JSON.stringify(
+                              downloadUrl
+                            )},
+                            ${JSON.stringify(
+                              fileName
+                            )}
+                          )'>
 
                           ⬇ Download
 
-                        </a>
+                        </button>
 
                       `
+
                       : `
 
-                        <span
+                        <button
+                          type="button"
                           class="file-button download-button"
-                          style="opacity:.45;">
+                          disabled>
 
                           ⬇ Download
 
-                        </span>
+                        </button>
 
                       `
                   }
@@ -1959,9 +3052,7 @@ function openViewer(
 ) {
 
   if (!url) {
-
     return;
-
   }
 
 
@@ -1981,6 +3072,10 @@ function openViewer(
     .add(
       "open"
     );
+
+
+  document.body.style.overflow =
+    "hidden";
 
 }
 
@@ -2004,6 +3099,10 @@ function closeViewer() {
     .src =
       "";
 
+
+  document.body.style.overflow =
+    "";
+
 }
 
 
@@ -2017,7 +3116,16 @@ document
   )
   .addEventListener(
     "click",
-    loadPortalData
+    function() {
+
+      showToast(
+        "Refreshing records..."
+      );
+
+
+      loadPortalData();
+
+    }
   );
 
 
@@ -2062,12 +3170,36 @@ document
   );
 
 
+document
+  .addEventListener(
+    "keydown",
+    function(
+      event
+    ) {
+
+      if (
+        event.key ===
+        "Escape"
+      ) {
+
+        closeViewer();
+
+      }
+
+    }
+  );
+
+
 window.openViewer =
   openViewer;
 
 
 window.closeViewer =
   closeViewer;
+
+
+window.downloadMedicalFile =
+  downloadMedicalFile;
 
 
 /* =========================================================
