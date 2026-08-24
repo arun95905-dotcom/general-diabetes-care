@@ -595,24 +595,54 @@ function startMsg91Otp(
 
         }
 
+if (!accessToken) {
 
-        if (!accessToken) {
-
-          console.error(
-            "MSG91 response:",
-            data
-          );
-
-
-          showStatus(
-            "OTP was verified, but the secure verification token was not received.",
-            "error"
-          );
+  console.error(
+    "MSG91 response:",
+    data
+  );
 
 
-          return;
+  let responseInfo =
+    "";
 
-        }
+
+  if (
+    typeof data ===
+    "string"
+  ) {
+
+    responseInfo =
+      "MSG91 returned a text response.";
+
+  } else if (
+    data &&
+    typeof data ===
+    "object"
+  ) {
+
+    responseInfo =
+      "MSG91 response fields: " +
+      Object.keys(data)
+        .join(", ");
+
+  } else {
+
+    responseInfo =
+      "MSG91 returned an unknown response format.";
+
+  }
+
+
+  showStatus(
+    responseInfo,
+    "error"
+  );
+
+
+  return;
+}
+     
 
 
         await verifyPatientOtpOnServer(
