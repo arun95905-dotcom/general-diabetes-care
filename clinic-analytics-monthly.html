@@ -1696,11 +1696,10 @@ function formatMoney(value) {
    built-in jsPDF Helvetica font does not reliably
    contain the Indian Rupee glyph on every device.
 */
-
 function formatPdfMoney(value) {
 
   return (
-    "INR " +
+    "Rs. " +
     Number(
       value ||
       0
@@ -1714,6 +1713,7 @@ function formatPdfMoney(value) {
   );
 
 }
+
 
 
 function getBillAmount(bill) {
