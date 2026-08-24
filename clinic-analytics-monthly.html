@@ -17,22 +17,57 @@ Monthly Reports | General & Diabetes Care
   rel="stylesheet"
   href="styles.css">
 
+<script
+  src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js">
+</script>
+
 <style>
 
 * {
   box-sizing: border-box;
 }
 
+:root {
+  --red: #9f2530;
+  --red-dark: #7d1821;
+
+  --blue: #3e69d7;
+  --blue-dark: #294db5;
+
+  --green: #23875a;
+  --green-dark: #176a44;
+
+  --purple: #7554c9;
+
+  --text: #182432;
+  --muted: #74808c;
+
+  --border: #e2e8ee;
+  --surface: #ffffff;
+
+  --shadow:
+    0 10px 30px rgba(31,48,66,.07);
+}
+
+
 body {
   margin: 0;
+
   background:
-    linear-gradient(
-      135deg,
-      #f8f9fd,
-      #f2f5fa,
-      #ffffff
-    );
-  color: #172033;
+    radial-gradient(
+      circle at top left,
+      #eef4ff,
+      transparent 36%
+    ),
+    radial-gradient(
+      circle at top right,
+      #fff1f2,
+      transparent 30%
+    ),
+    #f7f9fc;
+
+  color: var(--text);
+
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -41,45 +76,88 @@ body {
     sans-serif;
 }
 
+
 button,
 select {
   font-family: inherit;
 }
 
+
+button {
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
 .analytics-page {
+
   width: 100%;
+
   max-width: 1050px;
+
   margin: 0 auto;
-  padding: 16px 10px 45px;
+
+  padding:
+    18px
+    12px
+    48px;
+
 }
 
 
 /* =========================================================
-   HEADER
+   PAGE HEADER
    ========================================================= */
 
 .page-header {
-  margin-bottom: 14px;
+
+  padding:
+    8px
+    2px
+    4px;
+
 }
+
 
 .section-label {
+
   margin: 0;
-  color: #a5232d;
-  font-size: 12px;
-  font-weight: 850;
+
+  color: var(--red);
+
+  font-size: 11px;
+
+  font-weight: 900;
+
   letter-spacing: 1.3px;
+
 }
+
 
 .page-header h1 {
-  margin: 5px 0 3px;
-  color: #3f2930;
-  font-size: 29px;
+
+  margin:
+    7px
+    0
+    4px;
+
+  color: #263443;
+
+  font-size: 30px;
+
+  line-height: 1.15;
+
 }
 
+
 .page-subtitle {
+
   margin: 0;
-  color: #737b86;
+
+  color: var(--muted);
+
   font-size: 14px;
+
 }
 
 
@@ -88,125 +166,507 @@ select {
    ========================================================= */
 
 .portal-button {
-  min-height: 43px;
-  padding: 10px 15px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 750;
+
+  min-height: 44px;
+
+  padding:
+    10px
+    15px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap: 7px;
+
+  border:
+    none;
+
+  border-radius:
+    13px;
+
+  cursor:
+    pointer;
+
+  text-decoration:
+    none;
+
+  font-size:
+    13px;
+
+  font-weight:
+    850;
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    opacity .15s ease;
+
 }
 
-.primary-button {
+
+.portal-button:active {
+
+  transform:
+    scale(.98);
+
+}
+
+
+.back-button {
+
+  color: #455667;
+
+  background: rgba(255,255,255,.85);
+
+  border:
+    1px solid #dce4eb;
+
+  box-shadow:
+    0 4px 14px rgba(30,45,60,.04);
+
+}
+
+
+.view-button {
+
+  width: 100%;
+
   color: #ffffff;
+
   background:
     linear-gradient(
       135deg,
-      #7a4fd0,
-      #5b3aae
+      var(--blue),
+      var(--purple)
     );
+
+  box-shadow:
+    0 8px 22px rgba(74,83,194,.20);
+
 }
+
 
 .print-button {
+
   color: #ffffff;
+
   background:
     linear-gradient(
       135deg,
-      #a92631,
-      #861c25
+      #42566d,
+      #27384a
     );
+
+  box-shadow:
+    0 7px 20px rgba(40,54,70,.16);
+
 }
 
-.light-button {
-  color: #4f5966;
-  background: #f4f6f8;
-  border: 1px solid #dde3e8;
-}
 
-.secondary-button {
+.download-button {
+
   color: #ffffff;
-  background: #64748b;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--green),
+      var(--green-dark)
+    );
+
+  box-shadow:
+    0 7px 20px rgba(32,130,85,.17);
+
 }
+
+
+.refresh-button {
+
+  color: #536272;
+
+  background: #ffffff;
+
+  border:
+    1px solid #dde5eb;
+
+}
+
+
+.logout-button {
+
+  color: #ffffff;
+
+  background: #64748b;
+
+}
+
 
 .action-row {
-  display: flex;
-  flex-wrap: wrap;
+
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
   gap: 8px;
+
 }
+
 
 .top-actions {
-  margin: 14px 0 16px;
+
+  margin:
+    15px
+    0
+    17px;
+
 }
 
+
 .bottom-actions {
-  margin-top: 20px;
-  justify-content: center;
+
+  margin-top:
+    22px;
+
+  justify-content:
+    center;
+
 }
 
 
 /* =========================================================
-   SEARCH
+   PERIOD SELECTOR
    ========================================================= */
 
-.search-card {
-  margin-bottom: 14px;
-  padding: 18px;
+.period-card {
+
+  margin-bottom:
+    17px;
+
+  padding:
+    18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.98),
+      rgba(247,249,255,.96)
+    );
+
+  border:
+    1px solid #e0e6ef;
+
+  border-radius:
+    21px;
+
+  box-shadow:
+    var(--shadow);
+
+}
+
+
+.period-heading {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap: 8px;
+
+  color: #334458;
+
+  font-size:
+    16px;
+
+  font-weight:
+    900;
+
+}
+
+
+.period-helper {
+
+  margin-top:
+    4px;
+
+  color:
+    #81909d;
+
+  font-size:
+    11px;
+
+}
+
+
+.period-selector-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:
+    11px;
+
+  margin-top:
+    16px;
+
+}
+
+
+.period-selector {
+
+  padding:
+    12px;
+
   background:
     linear-gradient(
       135deg,
-      #f5f1ff,
+      #f7f4ff,
       #ffffff
     );
-  border: 1px solid #e1daf1;
-  border-radius: 18px;
+
+  border:
+    1px solid #e1dcf2;
+
+  border-radius:
+    15px;
+
+}
+
+
+.period-selector.year {
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef6ff,
+      #ffffff
+    );
+
+  border-color:
+    #d8e6f5;
+
+}
+
+
+.period-selector label {
+
+  display:
+    block;
+
+  margin-bottom:
+    6px;
+
+  color:
+    #6e7887;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .6px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.period-selector select {
+
+  width:
+    100%;
+
+  padding:
+    8px
+    3px;
+
+  color:
+    #322b50;
+
+  background:
+    transparent;
+
+  border:
+    none;
+
+  outline:
+    none;
+
+  font-size:
+    17px;
+
+  font-weight:
+    900;
+
+}
+
+
+.period-selector.year select {
+
+  color:
+    #235d90;
+
+}
+
+
+.period-actions {
+
+  margin-top:
+    13px;
+
+}
+
+
+/* =========================================================
+   REPORT HEADER ON SCREEN
+   ========================================================= */
+
+.report-period-card {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  margin-bottom:
+    15px;
+
+  padding:
+    20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff8f8,
+      #ffffff
+    );
+
+  border:
+    1px solid #efdadd;
+
+  border-radius:
+    20px;
+
   box-shadow:
-    0 6px 20px rgba(50,45,90,.05);
+    0 7px 22px rgba(85,35,40,.05);
+
 }
 
-.search-title {
-  margin: 0 0 13px;
-  color: #3f3852;
-  font-size: 17px;
-  font-weight: 850;
+
+.report-period-card::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  width:
+    120px;
+
+  height:
+    120px;
+
+  right:
+    -48px;
+
+  top:
+    -50px;
+
+  background:
+    rgba(159,37,48,.06);
+
+  border-radius:
+    50%;
+
 }
 
-.search-grid {
-  display: grid;
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
-  gap: 10px;
+
+.report-small-label {
+
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  color:
+    #8a7477;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .9px;
+
+  text-transform:
+    uppercase;
+
 }
 
-.search-group {
-  display: flex;
-  flex-direction: column;
+
+.report-period-name {
+
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  margin-top:
+    5px;
+
+  color:
+    var(--red);
+
+  font-size:
+    28px;
+
+  font-weight:
+    950;
+
 }
 
-.search-group label {
-  margin-bottom: 5px;
-  color: #697281;
-  font-size: 11px;
-  font-weight: 850;
-}
 
-.search-group select {
-  width: 100%;
-  padding: 11px 12px;
-  background: #ffffff;
-  border: 1px solid #d6dce4;
-  border-radius: 10px;
-  font-size: 14px;
-}
+.report-period-caption {
 
-.search-actions {
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  margin-top:
+    5px;
+
+  color:
+    #7a858d;
+
+  font-size:
+    12px;
+
 }
 
 
@@ -215,123 +675,166 @@ select {
    ========================================================= */
 
 .section-title {
-  margin: 22px 0 11px;
-  color: #79828d;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: .8px;
-  text-transform: uppercase;
+
+  margin:
+    23px
+    2px
+    10px;
+
+  color:
+    #7a8590;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1px;
+
+  text-transform:
+    uppercase;
+
 }
+
 
 .portal-card {
-  margin-bottom: 14px;
-  padding: 18px;
-  background: #ffffff;
-  border: 1px solid #e3e7eb;
-  border-radius: 18px;
-  box-shadow:
-    0 6px 20px rgba(30,45,60,.05);
-}
 
+  margin-bottom:
+    15px;
 
-/* =========================================================
-   MONTH HEADER
-   ========================================================= */
+  padding:
+    18px;
 
-.month-header-card {
-  padding: 20px;
   background:
-    linear-gradient(
-      135deg,
-      #fff5f5,
-      #ffffff
-    );
-  border: 1px solid #eed5d7;
-  border-radius: 18px;
-}
+    #ffffff;
 
-.month-header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-}
+  border:
+    1px solid var(--border);
 
-.month-name {
-  color: #8d2029;
-  font-size: 25px;
-  font-weight: 900;
-}
+  border-radius:
+    20px;
 
-.month-subtitle {
-  margin-top: 5px;
-  color: #737b86;
-  font-size: 12px;
+  box-shadow:
+    var(--shadow);
+
 }
 
 
 /* =========================================================
-   MONTHLY OVERVIEW
+   SUMMARY
    ========================================================= */
 
 .summary-grid {
-  display: grid;
+
+  display:
+    grid;
+
   grid-template-columns:
-    repeat(3,minmax(0,1fr));
-  gap: 11px;
-  margin-top: 12px;
+    repeat(
+      3,
+      minmax(0,1fr)
+    );
+
+  gap:
+    10px;
+
 }
+
 
 .summary-card {
-  min-height: 120px;
-  padding: 16px;
-  background: #ffffff;
-  border: 1px solid #e2e7eb;
-  border-radius: 16px;
+
+  min-height:
+    116px;
+
+  padding:
+    15px;
+
+  border-radius:
+    17px;
+
+  border:
+    1px solid #e4e9ed;
+
 }
 
+
 .summary-revenue {
+
   background:
     linear-gradient(
       135deg,
       #eaf9f0,
       #ffffff
     );
+
 }
+
 
 .summary-bills {
+
   background:
     linear-gradient(
       135deg,
-      #edf5ff,
+      #eef5ff,
       #ffffff
     );
+
 }
+
 
 .summary-patients {
+
   background:
     linear-gradient(
       135deg,
-      #eaf9f8,
+      #f1edff,
       #ffffff
     );
+
 }
+
 
 .summary-icon {
-  font-size: 22px;
+
+  font-size:
+    21px;
+
 }
+
 
 .summary-value {
-  margin-top: 8px;
-  color: #242d35;
-  font-size: 25px;
-  font-weight: 900;
+
+  margin-top:
+    9px;
+
+  color:
+    #23313b;
+
+  font-size:
+    25px;
+
+  font-weight:
+    950;
+
 }
 
+
 .summary-label {
-  margin-top: 4px;
-  color: #6f7984;
-  font-size: 11px;
+
+  margin-top:
+    4px;
+
+  color:
+    #75818c;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
 }
 
 
@@ -339,159 +842,395 @@ select {
    REVENUE HERO
    ========================================================= */
 
-.revenue-hero {
-  position: relative;
-  overflow: hidden;
-  padding: 23px;
+.revenue-card {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  padding:
+    23px;
+
   background:
     linear-gradient(
-      135deg,
-      #fff7f7,
+      145deg,
       #ffffff,
-      #f7fff9
+      #fff8f8,
+      #f6fff9
     );
-  border: 1px solid #eadbdd;
-  border-radius: 19px;
+
+  border:
+    1px solid #eadfe0;
+
+  border-radius:
+    18px;
+
 }
 
-.revenue-hero::after {
-  content: "₹";
-  position: absolute;
-  right: 16px;
-  top: -15px;
-  color: rgba(144,30,40,.05);
-  font-size: 130px;
-  font-weight: 900;
+
+.revenue-card::after {
+
+  content:
+    "₹";
+
+  position:
+    absolute;
+
+  right:
+    13px;
+
+  top:
+    -31px;
+
+  color:
+    rgba(159,37,48,.045);
+
+  font-size:
+    150px;
+
+  font-weight:
+    900;
+
 }
 
-.revenue-hero-label {
-  position: relative;
-  z-index: 1;
-  color: #7c7375;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: .8px;
-  text-transform: uppercase;
+
+.revenue-label {
+
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  color:
+    #817276;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .8px;
+
+  text-transform:
+    uppercase;
+
 }
 
-.revenue-hero-value {
-  position: relative;
-  z-index: 1;
-  margin-top: 8px;
-  color: #8f2029;
-  font-size: 38px;
-  font-weight: 950;
+
+.revenue-total {
+
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  margin-top:
+    6px;
+
+  color:
+    var(--red);
+
+  font-size:
+    39px;
+
+  font-weight:
+    950;
+
 }
 
-.revenue-hero-subtitle {
-  position: relative;
-  z-index: 1;
-  margin-top: 4px;
-  color: #747c83;
-  font-size: 12px;
+
+.revenue-caption {
+
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  margin-top:
+    4px;
+
+  color:
+    #7b858d;
+
+  font-size:
+    11px;
+
 }
+
 
 .revenue-mini-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
+
+  position:
+    relative;
+
+  z-index:
+    1;
+
+  display:
+    grid;
+
   grid-template-columns:
-    repeat(2,minmax(0,1fr));
-  gap: 10px;
-  margin-top: 18px;
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:
+    10px;
+
+  margin-top:
+    17px;
+
 }
+
 
 .revenue-mini-card {
-  padding: 13px;
-  background: rgba(255,255,255,.85);
-  border: 1px solid #e3e7ea;
-  border-radius: 13px;
+
+  padding:
+    12px;
+
+  background:
+    rgba(255,255,255,.88);
+
+  border:
+    1px solid #e3e8eb;
+
+  border-radius:
+    13px;
+
 }
+
 
 .revenue-mini-label {
-  color: #77808a;
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
+
+  color:
+    #84909a;
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+  text-transform:
+    uppercase;
+
 }
 
+
 .revenue-mini-value {
-  margin-top: 5px;
-  color: #29353d;
-  font-size: 18px;
-  font-weight: 900;
+
+  margin-top:
+    5px;
+
+  color:
+    #2e3a43;
+
+  font-size:
+    18px;
+
+  font-weight:
+    950;
+
 }
 
 
 /* =========================================================
-   COLLECTION BREAKDOWN
+   PAYMENT BREAKDOWN
    ========================================================= */
 
-.collection-title {
-  margin: 20px 0 11px;
-  color: #515d66;
-  font-size: 13px;
-  font-weight: 900;
+.collection-heading {
+
+  margin:
+    21px
+    0
+    11px;
+
+  color:
+    #42515c;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
 }
+
 
 .payment-list {
-  display: grid;
-  gap: 10px;
+
+  display:
+    grid;
+
+  gap:
+    9px;
+
 }
+
 
 .payment-row {
-  padding: 12px 13px;
-  background: #fafbfc;
-  border: 1px solid #e7eaed;
-  border-radius: 12px;
+
+  padding:
+    12px;
+
+  background:
+    #fafbfc;
+
+  border:
+    1px solid #e6eaed;
+
+  border-radius:
+    13px;
+
 }
+
 
 .payment-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap:
+    10px;
+
 }
+
 
 .payment-name {
-  color: #44525b;
-  font-size: 13px;
-  font-weight: 800;
+
+  color:
+    #45535d;
+
+  font-size:
+    12px;
+
+  font-weight:
+    850;
+
 }
 
-.payment-value-wrap {
-  text-align: right;
+
+.payment-right {
+
+  text-align:
+    right;
+
 }
+
 
 .payment-value {
-  color: #263840;
-  font-size: 13px;
-  font-weight: 900;
+
+  color:
+    #26363f;
+
+  font-size:
+    12px;
+
+  font-weight:
+    950;
+
 }
+
 
 .payment-percent {
-  margin-top: 2px;
-  color: #8a949b;
-  font-size: 10px;
+
+  margin-top:
+    2px;
+
+  color:
+    #8c969d;
+
+  font-size:
+    9px;
+
 }
+
 
 .progress-track {
-  width: 100%;
-  height: 7px;
-  margin-top: 9px;
-  overflow: hidden;
-  background: #eceff1;
-  border-radius: 999px;
+
+  width:
+    100%;
+
+  height:
+    7px;
+
+  margin-top:
+    9px;
+
+  overflow:
+    hidden;
+
+  background:
+    #eceff1;
+
+  border-radius:
+    999px;
+
 }
 
+
 .progress-bar {
-  height: 100%;
-  border-radius: 999px;
+
+  height:
+    100%;
+
   background:
     linear-gradient(
       90deg,
-      #a82a34,
-      #d05259
+      var(--red),
+      #d95861
     );
+
+  border-radius:
+    999px;
+
+}
+
+
+/* =========================================================
+   REPORT ACTIONS
+   ========================================================= */
+
+.report-actions {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:
+    10px;
+
+  margin:
+    17px
+    0;
+
+}
+
+
+.report-actions .portal-button {
+
+  width:
+    100%;
+
 }
 
 
@@ -500,157 +1239,372 @@ select {
    ========================================================= */
 
 .bill-summary-line {
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 7px;
-  color: #68727d;
-  font-size: 12px;
+
+  margin-bottom:
+    12px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    7px;
+
+  color:
+    #6c7882;
+
+  font-size:
+    11px;
+
 }
 
-.bill-summary-total {
-  color: #8f2029;
-  font-weight: 900;
+
+.bill-summary-line strong {
+
+  color:
+    var(--red);
+
 }
+
 
 .bill-table-wrap {
-  width: 100%;
-  overflow-x: auto;
+
+  width:
+    100%;
+
+  overflow-x:
+    auto;
+
 }
 
+
 .bill-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 580px;
+
+  width:
+    100%;
+
+  min-width:
+    570px;
+
+  border-collapse:
+    collapse;
+
 }
+
 
 .bill-table th,
 .bill-table td {
-  padding: 11px 10px;
-  border-bottom: 1px solid #e5e8eb;
-  text-align: left;
-  font-size: 13px;
+
+  padding:
+    12px
+    10px;
+
+  border-bottom:
+    1px solid #e7eaed;
+
+  text-align:
+    left;
+
+  font-size:
+    12px;
+
 }
 
+
 .bill-table th {
-  color: #747e87;
-  background: #f8f9fa;
-  font-size: 11px;
-  text-transform: uppercase;
+
+  color:
+    #7a858e;
+
+  background:
+    #f7f9fa;
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .6px;
+
+  text-transform:
+    uppercase;
+
 }
+
 
 .bill-table th:last-child,
 .bill-table td:last-child {
-  text-align: right;
+
+  text-align:
+    right;
+
 }
+
 
 .patient-link {
-  padding: 0;
-  color: #8e2731;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-weight: 850;
-  text-decoration: underline;
+
+  padding:
+    0;
+
+  color:
+    var(--red);
+
+  background:
+    none;
+
+  border:
+    none;
+
+  cursor:
+    pointer;
+
+  font-weight:
+    900;
+
+  text-decoration:
+    underline;
+
 }
 
-.bill-grand-total td {
-  padding-top: 14px;
-  border-top: 2px solid #c9ced2;
-  border-bottom: none;
-  color: #252f36;
-  font-weight: 900;
+
+.total-row td {
+
+  padding-top:
+    14px;
+
+  background:
+    #fffafa;
+
+  border-top:
+    2px solid #ded4d5;
+
+  border-bottom:
+    none;
+
+  font-weight:
+    950;
+
 }
 
-.bill-grand-total td:last-child {
-  color: #8f2029;
+
+.total-row td:first-child {
+
+  color:
+    #3d4850;
+
+}
+
+
+.total-row td:last-child {
+
+  color:
+    var(--red);
+
 }
 
 
 /* =========================================================
-   BILL DETAIL
+   BILL DETAILS
    ========================================================= */
 
 .bill-detail-panel {
-  display: none;
+
+  display:
+    none;
+
 }
+
 
 .bill-detail-panel.open {
-  display: block;
+
+  display:
+    block;
+
 }
+
 
 .panel-header {
-  margin-bottom: 13px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
+
+  margin-bottom:
+    13px;
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap:
+    12px;
+
 }
+
 
 .panel-title {
+
   margin: 0;
-  font-size: 19px;
+
+  color:
+    #293843;
+
+  font-size:
+    18px;
+
 }
+
 
 .panel-subtitle {
-  margin-top: 4px;
-  color: #777f88;
-  font-size: 12px;
+
+  margin-top:
+    4px;
+
+  color:
+    #7c8790;
+
+  font-size:
+    11px;
+
 }
 
+
 .bill-header-box {
-  padding: 16px;
+
+  padding:
+    16px;
+
   background:
     linear-gradient(
       135deg,
       #fff5f5,
       #ffffff
     );
-  border: 1px solid #ead8da;
-  border-radius: 14px;
+
+  border:
+    1px solid #ead9db;
+
+  border-radius:
+    15px;
+
 }
+
 
 .bill-clinic-title {
-  color: #8f2029;
-  font-size: 20px;
-  font-weight: 900;
+
+  color:
+    var(--red);
+
+  font-size:
+    19px;
+
+  font-weight:
+    950;
+
 }
+
 
 .bill-meta {
-  margin-top: 7px;
-  color: #657079;
-  line-height: 1.7;
-  font-size: 12px;
+
+  margin-top:
+    8px;
+
+  color:
+    #65717a;
+
+  line-height:
+    1.75;
+
+  font-size:
+    11px;
+
 }
+
 
 .bill-items {
-  margin-top: 14px;
-  display: grid;
-  gap: 8px;
+
+  margin-top:
+    13px;
+
+  display:
+    grid;
+
+  gap:
+    8px;
+
 }
+
 
 .bill-item-row {
-  padding: 11px 12px;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  background: #f8f9fa;
-  border: 1px solid #e5e8eb;
-  border-radius: 10px;
+
+  padding:
+    11px;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  gap:
+    10px;
+
+  background:
+    #f8fafb;
+
+  border:
+    1px solid #e5e9ec;
+
+  border-radius:
+    10px;
+
 }
 
+
 .bill-total-row {
-  margin-top: 6px;
-  padding: 14px 12px;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  background: #fff2f3;
-  border: 1px solid #e9d1d4;
-  border-radius: 11px;
-  color: #861f28;
-  font-weight: 900;
+
+  margin-top:
+    5px;
+
+  padding:
+    13px
+    11px;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  gap:
+    10px;
+
+  color:
+    var(--red);
+
+  background:
+    #fff3f4;
+
+  border:
+    1px solid #ead4d7;
+
+  border-radius:
+    11px;
+
+  font-weight:
+    950;
+
 }
 
 
@@ -660,38 +1614,928 @@ select {
 
 .loading-card,
 .empty-card {
-  padding: 25px;
-  text-align: center;
-  color: #747d87;
-  background: #ffffff;
-  border: 1px solid #e1e5e9;
-  border-radius: 16px;
+
+  padding:
+    25px;
+
+  text-align:
+    center;
+
+  color:
+    #76818a;
+
+  background:
+    #ffffff;
+
+  border:
+    1px solid #e2e7eb;
+
+  border-radius:
+    17px;
+
 }
+
 
 .spinner {
-  width: 29px;
-  height: 29px;
-  margin: 0 auto 8px;
-  border: 3px solid #e4e7ea;
-  border-top-color: #9d2630;
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
+
+  width:
+    28px;
+
+  height:
+    28px;
+
+  margin:
+    0
+    auto
+    8px;
+
+  border:
+    3px solid #e5e8eb;
+
+  border-top-color:
+    var(--red);
+
+  border-radius:
+    50%;
+
+  animation:
+    spin .7s linear infinite;
+
 }
 
+
 @keyframes spin {
+
   to {
-    transform: rotate(360deg);
+    transform:
+      rotate(360deg);
   }
+
 }
 
 
 /* =========================================================
-   PRINT-ONLY HEADER / FOOTER
+   PDF CONTENT
    ========================================================= */
 
-.print-report-header,
-.print-report-footer {
-  display: none;
+#pdfReport {
+
+  position:
+    absolute;
+
+  left:
+    -10000px;
+
+  top:
+    0;
+
+  width:
+    780px;
+
+  padding:
+    35px
+    38px;
+
+  background:
+    #ffffff;
+
+  color:
+    #222222;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+}
+
+
+.pdf-clinic {
+
+  color:
+    var(--red);
+
+  font-size:
+    25px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .5px;
+
+}
+
+
+.pdf-report-title {
+
+  margin-top:
+    6px;
+
+  color:
+    #333333;
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .6px;
+
+}
+
+
+.pdf-divider {
+
+  width:
+    100%;
+
+  height:
+    2px;
+
+  margin:
+    14px
+    0
+    20px;
+
+  background:
+    var(--red);
+
+}
+
+
+.pdf-period-label {
+
+  color:
+    #777777;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.pdf-period-value {
+
+  margin-top:
+    5px;
+
+  color:
+    #222222;
+
+  font-size:
+    24px;
+
+  font-weight:
+    900;
+
+}
+
+
+.pdf-generated {
+
+  margin-top:
+    8px;
+
+  color:
+    #676767;
+
+  font-size:
+    10px;
+
+}
+
+
+.pdf-section {
+
+  margin-top:
+    22px;
+
+}
+
+
+.pdf-section-title {
+
+  margin-bottom:
+    10px;
+
+  color:
+    #555555;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .8px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.pdf-summary-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap:
+    9px;
+
+}
+
+
+.pdf-summary-card {
+
+  padding:
+    14px;
+
+  border:
+    1px solid #dddddd;
+
+  border-radius:
+    9px;
+
+}
+
+
+.pdf-summary-value {
+
+  color:
+    #262626;
+
+  font-size:
+    19px;
+
+  font-weight:
+    900;
+
+}
+
+
+.pdf-summary-label {
+
+  margin-top:
+    3px;
+
+  color:
+    #777777;
+
+  font-size:
+    9px;
+
+}
+
+
+.pdf-revenue-card {
+
+  padding:
+    17px;
+
+  border:
+    1px solid #dedede;
+
+  border-radius:
+    10px;
+
+}
+
+
+.pdf-revenue-total {
+
+  color:
+    var(--red);
+
+  font-size:
+    30px;
+
+  font-weight:
+    900;
+
+}
+
+
+.pdf-revenue-caption {
+
+  margin-top:
+    3px;
+
+  color:
+    #777777;
+
+  font-size:
+    9px;
+
+}
+
+
+.pdf-mini-row {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:
+    9px;
+
+  margin-top:
+    12px;
+
+}
+
+
+.pdf-mini {
+
+  padding:
+    9px;
+
+  background:
+    #f7f7f7;
+
+  border-radius:
+    7px;
+
+}
+
+
+.pdf-mini-label {
+
+  color:
+    #777777;
+
+  font-size:
+    8px;
+
+  font-weight:
+    700;
+
+}
+
+
+.pdf-mini-value {
+
+  margin-top:
+    3px;
+
+  font-size:
+    14px;
+
+  font-weight:
+    900;
+
+}
+
+
+.pdf-payment-row {
+
+  margin-bottom:
+    8px;
+
+}
+
+
+.pdf-payment-top {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  gap:
+    10px;
+
+  font-size:
+    9px;
+
+}
+
+
+.pdf-payment-track {
+
+  width:
+    100%;
+
+  height:
+    4px;
+
+  margin-top:
+    4px;
+
+  background:
+    #eeeeee;
+
+  border-radius:
+    999px;
+
+}
+
+
+.pdf-payment-bar {
+
+  height:
+    100%;
+
+  background:
+    var(--red);
+
+  border-radius:
+    999px;
+
+}
+
+
+.pdf-table {
+
+  width:
+    100%;
+
+  border-collapse:
+    collapse;
+
+}
+
+
+.pdf-table th,
+.pdf-table td {
+
+  padding:
+    8px
+    7px;
+
+  border-bottom:
+    1px solid #dddddd;
+
+  font-size:
+    9px;
+
+  text-align:
+    left;
+
+}
+
+
+.pdf-table th {
+
+  background:
+    #f5f5f5;
+
+  color:
+    #666666;
+
+  font-size:
+    8px;
+
+  font-weight:
+    900;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.pdf-table th:last-child,
+.pdf-table td:last-child {
+
+  text-align:
+    right;
+
+}
+
+
+.pdf-total-row td {
+
+  padding-top:
+    10px;
+
+  border-top:
+    2px solid #bbbbbb;
+
+  border-bottom:
+    none;
+
+  font-weight:
+    900;
+
+}
+
+
+.pdf-total-row td:last-child {
+
+  color:
+    var(--red);
+
+}
+
+
+.pdf-footer {
+
+  margin-top:
+    22px;
+
+  padding-top:
+    8px;
+
+  border-top:
+    1px solid #cccccc;
+
+  color:
+    #888888;
+
+  font-size:
+    8px;
+
+  text-align:
+    center;
+
+}
+
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+.print-only {
+
+  display:
+    none;
+
+}
+
+
+@media print {
+
+  @page {
+
+    size:
+      A4;
+
+    margin:
+      13mm;
+
+  }
+
+
+  body {
+
+    background:
+      #ffffff !important;
+
+    color:
+      #222222;
+
+  }
+
+
+  .page-header,
+  .top-actions,
+  .period-card,
+  .report-actions,
+  .bottom-actions,
+  #loadingCard,
+  #billDetailPanel {
+
+    display:
+      none !important;
+
+  }
+
+
+  .analytics-page {
+
+    max-width:
+      none;
+
+    padding:
+      0;
+
+  }
+
+
+  .print-only {
+
+    display:
+      block !important;
+
+  }
+
+
+  .report-period-card {
+
+    display:
+      none;
+
+  }
+
+
+  .section-title {
+
+    margin:
+      17px
+      0
+      8px;
+
+    color:
+      #444444;
+
+  }
+
+
+  .portal-card {
+
+    padding:
+      12px;
+
+    border:
+      1px solid #cccccc;
+
+    border-radius:
+      8px;
+
+    box-shadow:
+      none;
+
+  }
+
+
+  .summary-card {
+
+    min-height:
+      80px;
+
+    padding:
+      10px;
+
+    background:
+      #ffffff !important;
+
+    border:
+      1px solid #cccccc;
+
+    border-radius:
+      7px;
+
+  }
+
+
+  .summary-icon {
+
+    display:
+      none;
+
+  }
+
+
+  .summary-value {
+
+    margin-top:
+      0;
+
+    font-size:
+      19px;
+
+  }
+
+
+  .summary-label {
+
+    font-size:
+      9px;
+
+  }
+
+
+  .revenue-card {
+
+    padding:
+      13px;
+
+    background:
+      #ffffff !important;
+
+    border:
+      1px solid #cccccc;
+
+    border-radius:
+      8px;
+
+  }
+
+
+  .revenue-card::after {
+
+    display:
+      none;
+
+  }
+
+
+  .revenue-total {
+
+    color:
+      var(--red) !important;
+
+    font-size:
+      28px;
+
+  }
+
+
+  .payment-row {
+
+    padding:
+      7px;
+
+    background:
+      #ffffff !important;
+
+  }
+
+
+  .progress-bar {
+
+    background:
+      var(--red) !important;
+
+    -webkit-print-color-adjust:
+      exact;
+
+    print-color-adjust:
+      exact;
+
+  }
+
+
+  .bill-table-wrap {
+
+    overflow:
+      visible;
+
+  }
+
+
+  .bill-table {
+
+    min-width:
+      0;
+
+  }
+
+
+  .bill-table th,
+  .bill-table td {
+
+    padding:
+      7px
+      5px;
+
+    font-size:
+      9px;
+
+  }
+
+
+  .patient-link {
+
+    color:
+      #222222;
+
+    text-decoration:
+      none;
+
+  }
+
+
+  .print-header {
+
+    margin-bottom:
+      18px;
+
+  }
+
+
+  .print-clinic-name {
+
+    color:
+      var(--red) !important;
+
+    font-size:
+      22px;
+
+    font-weight:
+      900;
+
+  }
+
+
+  .print-report-title {
+
+    margin-top:
+      5px;
+
+    color:
+      #333333;
+
+    font-size:
+      13px;
+
+    font-weight:
+      800;
+
+  }
+
+
+  .print-line {
+
+    height:
+      2px;
+
+    margin:
+      12px
+      0
+      16px;
+
+    background:
+      var(--red) !important;
+
+    -webkit-print-color-adjust:
+      exact;
+
+    print-color-adjust:
+      exact;
+
+  }
+
+
+  .print-period-label {
+
+    color:
+      #777777;
+
+    font-size:
+      10px;
+
+    font-weight:
+      700;
+
+    text-transform:
+      uppercase;
+
+  }
+
+
+  .print-period-value {
+
+    margin-top:
+      4px;
+
+    color:
+      #222222;
+
+    font-size:
+      22px;
+
+    font-weight:
+      900;
+
+  }
+
+
+  .print-generated {
+
+    margin-top:
+      7px;
+
+    color:
+      #666666;
+
+    font-size:
+      9px;
+
+  }
+
 }
 
 
@@ -702,276 +2546,50 @@ select {
 @media(max-width:700px) {
 
   .analytics-page {
-    padding: 12px 8px 40px;
+
+    padding:
+      13px
+      8px
+      40px;
+
   }
 
-  .search-grid {
-    grid-template-columns: 1fr;
+
+  .period-selector-grid {
+
+    grid-template-columns:
+      1fr
+      1fr;
+
   }
+
 
   .summary-grid {
-    grid-template-columns: 1fr;
+
+    grid-template-columns:
+      1fr;
+
   }
 
-  .revenue-mini-grid {
-    grid-template-columns: 1fr 1fr;
-  }
 
-  .month-header-top {
-    flex-direction: column;
+  .report-actions {
+
+    grid-template-columns:
+      1fr
+      1fr;
+
   }
 
 }
 
 
-/* =========================================================
-   PRINT / SAVE PDF
-   ========================================================= */
+@media(max-width:430px) {
 
-@media print {
+  .report-actions {
 
-  @page {
-    size: A4;
-    margin: 12mm;
-  }
-
-
-  body {
-    background: #ffffff !important;
-    color: #222222;
-    font-family: Arial, sans-serif;
-  }
-
-
-  .analytics-page {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0;
-  }
-
-
-  .page-header,
-  .top-actions,
-  .search-card,
-  .bottom-actions,
-  #loadingCard,
-  #billDetailPanel,
-  .screen-only {
-    display: none !important;
-  }
-
-
-  .print-report-header {
-    display: block;
-    margin-bottom: 18px;
-  }
-
-
-  .print-red-band {
-    padding: 15px 18px;
-    background: #8f2029 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    color: #ffffff !important;
-  }
-
-
-  .print-clinic-name {
-    font-size: 21px;
-    font-weight: 900;
-    letter-spacing: .5px;
-  }
-
-
-  .print-report-name {
-    margin-top: 5px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: .7px;
-  }
-
-
-  .print-report-meta {
-    padding: 10px 18px;
-    border: 1px solid #d8d8d8;
-    border-top: none;
-    font-size: 10px;
-    line-height: 1.7;
-  }
-
-
-  #reportContent {
-    display: block !important;
-  }
-
-
-  .month-header-card {
-    display: none;
-  }
-
-
-  .section-title {
-    margin: 15px 0 7px;
-    color: #333333;
-    font-size: 10px;
-  }
-
-
-  .summary-grid {
     grid-template-columns:
-      repeat(3,1fr);
-    gap: 7px;
-  }
+      1fr;
 
-
-  .summary-card {
-    min-height: 78px;
-    padding: 10px;
-    box-shadow: none;
-    border: 1px solid #cfd2d4;
-    background: #ffffff !important;
-  }
-
-
-  .summary-icon {
-    display: none;
-  }
-
-
-  .summary-value {
-    margin-top: 0;
-    font-size: 19px;
-  }
-
-
-  .summary-label {
-    margin-top: 3px;
-    font-size: 9px;
-  }
-
-
-  .portal-card {
-    padding: 13px;
-    box-shadow: none;
-    border: 1px solid #cfd2d4;
-    break-inside: avoid;
-  }
-
-
-  .revenue-hero {
-    padding: 14px;
-    box-shadow: none;
-    border: 1px solid #c8cbcd;
-    background: #ffffff !important;
-  }
-
-
-  .revenue-hero::after {
-    display: none;
-  }
-
-
-  .revenue-hero-value {
-    font-size: 29px;
-    color: #8f2029 !important;
-  }
-
-
-  .revenue-mini-grid {
-    margin-top: 10px;
-  }
-
-
-  .revenue-mini-card {
-    padding: 8px;
-    border: 1px solid #d8dbdd;
-  }
-
-
-  .revenue-mini-value {
-    font-size: 14px;
-  }
-
-
-  .collection-title {
-    margin-top: 13px;
-  }
-
-
-  .payment-list {
-    gap: 6px;
-  }
-
-
-  .payment-row {
-    padding: 7px 9px;
-    background: #ffffff !important;
-  }
-
-
-  .payment-name,
-  .payment-value {
-    font-size: 10px;
-  }
-
-
-  .payment-percent {
-    font-size: 8px;
-  }
-
-
-  .progress-track {
-    height: 4px;
-  }
-
-
-  .progress-bar {
-    background: #9e2b34 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-
-  .bill-table-wrap {
-    overflow: visible;
-  }
-
-
-  .bill-table {
-    min-width: 0;
-  }
-
-
-  .bill-table th,
-  .bill-table td {
-    padding: 7px 6px;
-    color: #222222;
-    font-size: 9px;
-  }
-
-
-  .bill-table th {
-    background: #f1f1f1 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-
-  .patient-link {
-    color: #222222;
-    text-decoration: none;
-  }
-
-
-  .print-report-footer {
-    display: block;
-    margin-top: 18px;
-    padding-top: 8px;
-    border-top: 1px solid #bbbbbb;
-    text-align: center;
-    color: #666666;
-    font-size: 9px;
   }
 
 }
@@ -988,7 +2606,7 @@ select {
 
 
 <!-- =====================================================
-     SCREEN HEADER
+     PAGE HEADER
      ===================================================== -->
 
 <header class="page-header">
@@ -1002,7 +2620,7 @@ GENERAL &amp; DIABETES CARE
 </h1>
 
 <p class="page-subtitle">
-Revenue-focused monthly clinic performance report
+Modern monthly revenue and clinic performance report
 </p>
 
 </header>
@@ -1012,7 +2630,7 @@ Revenue-focused monthly clinic performance report
 
 <a
   href="clinic-analytics.html"
-  class="portal-button light-button">
+  class="portal-button back-button">
 
 ← Back to Clinic Analytics
 
@@ -1022,20 +2640,24 @@ Revenue-focused monthly clinic performance report
 
 
 <!-- =====================================================
-     SEARCH
+     PERIOD SELECTOR
      ===================================================== -->
 
-<div class="search-card">
+<div class="period-card">
 
-<h2 class="search-title">
-🔎 Search Month &amp; Year
-</h2>
+<div class="period-heading">
+📅 Select Reporting Period
+</div>
+
+<div class="period-helper">
+Choose the month and year to generate the clinic report.
+</div>
 
 
-<div class="search-grid">
+<div class="period-selector-grid">
 
 
-<div class="search-group">
+<div class="period-selector">
 
 <label>
 Month
@@ -1061,7 +2683,7 @@ Month
 </div>
 
 
-<div class="search-group">
+<div class="period-selector year">
 
 <label>
 Year
@@ -1075,24 +2697,14 @@ Year
 </div>
 
 
-<div class="search-actions">
+<div class="period-actions">
 
 <button
   type="button"
   id="viewReportButton"
-  class="portal-button primary-button">
+  class="portal-button view-button">
 
 🔎 View Monthly Report
-
-</button>
-
-
-<button
-  type="button"
-  id="printReportButton"
-  class="portal-button print-button">
-
-🖨️ Print / Save PDF
 
 </button>
 
@@ -1120,33 +2732,32 @@ Loading monthly report...
      PRINT HEADER
      ===================================================== -->
 
-<div class="print-report-header">
-
-<div class="print-red-band">
+<div class="print-only print-header">
 
 <div class="print-clinic-name">
 GENERAL &amp; DIABETES CARE
 </div>
 
-<div class="print-report-name">
+<div class="print-report-title">
 MONTHLY CLINIC PERFORMANCE REPORT
 </div>
 
+<div class="print-line"></div>
+
+<div class="print-period-label">
+Reporting Period
 </div>
 
-
-<div class="print-report-meta">
-
-<div>
-<strong>Reporting Period:</strong>
-<span id="printReportingPeriod">—</span>
+<div
+  id="printPeriodValue"
+  class="print-period-value">
+—
 </div>
 
-<div>
-<strong>Generated:</strong>
-<span id="printGeneratedDateTime">—</span>
-</div>
-
+<div
+  id="printGeneratedValue"
+  class="print-generated">
+—
 </div>
 
 </div>
@@ -1161,36 +2772,20 @@ MONTHLY CLINIC PERFORMANCE REPORT
   style="display:none;">
 
 
-<!-- MONTH HEADER -->
+<div class="report-period-card">
 
-<div class="month-header-card">
-
-<div class="month-header-top">
-
-<div>
+<div class="report-small-label">
+Reporting Period
+</div>
 
 <div
   id="reportMonthName"
-  class="month-name">
+  class="report-period-name">
 —
 </div>
 
-<div class="month-subtitle">
+<div class="report-period-caption">
 Monthly clinic revenue performance
-</div>
-
-</div>
-
-
-<button
-  type="button"
-  class="portal-button print-button screen-only"
-  onclick="printMonthlyReport()">
-
-🖨️ Print / Save PDF
-
-</button>
-
 </div>
 
 </div>
@@ -1280,20 +2875,20 @@ Revenue Details
 <div class="portal-card">
 
 
-<div class="revenue-hero">
+<div class="revenue-card">
 
-<div class="revenue-hero-label">
+<div class="revenue-label">
 Total Paid Revenue
 </div>
 
 <div
-  id="revenueHeroValue"
-  class="revenue-hero-value">
+  id="revenueTotal"
+  class="revenue-total">
 ₹0
 </div>
 
-<div class="revenue-hero-subtitle">
-Revenue from bills marked Paid during the selected month
+<div class="revenue-caption">
+Revenue from bills marked Paid during this reporting month
 </div>
 
 
@@ -1307,7 +2902,7 @@ Paid Bills
 </div>
 
 <div
-  id="revenueHeroBills"
+  id="revenueBillCount"
   class="revenue-mini-value">
 0
 </div>
@@ -1336,7 +2931,7 @@ Average Bill
 </div>
 
 
-<div class="collection-title">
+<div class="collection-heading">
 Collection Breakdown
 </div>
 
@@ -1351,7 +2946,35 @@ Collection Breakdown
 
 
 <!-- =====================================================
-     PAID BILL DETAILS
+     REPORT ACTIONS
+     ===================================================== -->
+
+<div class="report-actions">
+
+<button
+  type="button"
+  id="printReportButton"
+  class="portal-button print-button">
+
+🖨️ Print Report
+
+</button>
+
+
+<button
+  type="button"
+  id="downloadPdfButton"
+  class="portal-button download-button">
+
+⬇️ Download PDF
+
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     BILL DETAILS
      ===================================================== -->
 
 <div class="section-title">
@@ -1370,7 +2993,7 @@ Paid Bill Details
 
 
 <!-- =====================================================
-     BILL DETAIL
+     INDIVIDUAL BILL
      ===================================================== -->
 
 <div
@@ -1394,7 +3017,7 @@ Individual patient bill
 
 <button
   type="button"
-  class="portal-button light-button"
+  class="portal-button back-button"
   onclick="closeBillDetails()">
 
 ← Back to Monthly Bills
@@ -1413,21 +3036,6 @@ Individual patient bill
 
 
 <!-- =====================================================
-     PRINT FOOTER
-     ===================================================== -->
-
-<div class="print-report-footer">
-
-GENERAL &amp; DIABETES CARE
-•
-Monthly Clinic Performance Report
-•
-<span id="printFooterMonth">—</span>
-
-</div>
-
-
-<!-- =====================================================
      BOTTOM ACTIONS
      ===================================================== -->
 
@@ -1436,20 +3044,209 @@ Monthly Clinic Performance Report
 <button
   type="button"
   id="refreshButton"
-  class="portal-button light-button">
+  class="portal-button refresh-button">
 
 🔄 Refresh
 
 </button>
 
+
 <button
   type="button"
   id="logoutButton"
-  class="portal-button secondary-button">
+  class="portal-button logout-button">
 
 🔒 Logout
 
 </button>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     HIDDEN PDF REPORT
+     ===================================================== -->
+
+<div id="pdfReport">
+
+
+<div class="pdf-clinic">
+GENERAL &amp; DIABETES CARE
+</div>
+
+<div class="pdf-report-title">
+MONTHLY CLINIC PERFORMANCE REPORT
+</div>
+
+<div class="pdf-divider"></div>
+
+
+<div class="pdf-period-label">
+Reporting Period
+</div>
+
+<div
+  id="pdfPeriodValue"
+  class="pdf-period-value">
+—
+</div>
+
+<div
+  id="pdfGeneratedValue"
+  class="pdf-generated">
+—
+</div>
+
+
+<div class="pdf-section">
+
+<div class="pdf-section-title">
+Monthly Overview
+</div>
+
+<div class="pdf-summary-grid">
+
+
+<div class="pdf-summary-card">
+
+<div
+  id="pdfRevenue"
+  class="pdf-summary-value">
+₹0
+</div>
+
+<div class="pdf-summary-label">
+Paid Revenue
+</div>
+
+</div>
+
+
+<div class="pdf-summary-card">
+
+<div
+  id="pdfBills"
+  class="pdf-summary-value">
+0
+</div>
+
+<div class="pdf-summary-label">
+Paid Bills
+</div>
+
+</div>
+
+
+<div class="pdf-summary-card">
+
+<div
+  id="pdfPatients"
+  class="pdf-summary-value">
+0
+</div>
+
+<div class="pdf-summary-label">
+New Patients
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<div class="pdf-section">
+
+<div class="pdf-section-title">
+Revenue Details
+</div>
+
+
+<div class="pdf-revenue-card">
+
+<div
+  id="pdfRevenueTotal"
+  class="pdf-revenue-total">
+₹0
+</div>
+
+<div class="pdf-revenue-caption">
+Total Paid Revenue
+</div>
+
+
+<div class="pdf-mini-row">
+
+
+<div class="pdf-mini">
+
+<div class="pdf-mini-label">
+Paid Bills
+</div>
+
+<div
+  id="pdfRevenueBills"
+  class="pdf-mini-value">
+0
+</div>
+
+</div>
+
+
+<div class="pdf-mini">
+
+<div class="pdf-mini-label">
+Average Bill
+</div>
+
+<div
+  id="pdfAverageBill"
+  class="pdf-mini-value">
+₹0
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="pdf-section">
+
+<div class="pdf-section-title">
+Collection Breakdown
+</div>
+
+<div id="pdfPaymentMethods"></div>
+
+</div>
+
+
+<div class="pdf-section">
+
+<div class="pdf-section-title">
+Paid Bill Details
+</div>
+
+<div id="pdfBillTable"></div>
+
+</div>
+
+
+<div class="pdf-footer">
+
+GENERAL &amp; DIABETES CARE
+•
+Monthly Clinic Performance Report
 
 </div>
 
@@ -1484,14 +3281,26 @@ const supabaseClient =
 let currentPaidBills =
   [];
 
-let currentYear =
+let currentMonth =
   null;
 
-let currentMonth =
+let currentYear =
   null;
 
 let currentMonthLabel =
   "";
+
+let currentRevenue =
+  0;
+
+let currentAverageBill =
+  0;
+
+let currentNewPatients =
+  0;
+
+let currentPaymentMethods =
+  {};
 
 
 /* =========================================================
@@ -1577,7 +3386,9 @@ function formatDateInput(date) {
 function formatDisplayDate(value) {
 
   if (!value) {
+
     return "-";
+
   }
 
 
@@ -1650,8 +3461,7 @@ function isPaid(bill) {
 
 
 /* =========================================================
-   CORRECT PATIENT NAMES
-   billing.patient_id -> patients.id -> patient_name
+   PATIENT NAME RESOLUTION
    ========================================================= */
 
 async function addPatientNamesToBills(
@@ -1680,12 +3490,12 @@ async function addPatientNamesToBills(
             }
           )
           .filter(
-            function(id) {
+            function(value) {
 
               return (
-                id !== null &&
-                id !== undefined &&
-                id !== ""
+                value !== null &&
+                value !== undefined &&
+                value !== ""
               );
 
             }
@@ -1736,7 +3546,7 @@ async function addPatientNamesToBills(
   if (error) {
 
     console.error(
-      "Patient name resolution error:",
+      "Unable to resolve patient names:",
       error
     );
 
@@ -1786,7 +3596,7 @@ async function addPatientNamesToBills(
   return bills.map(
     function(bill) {
 
-      const resolvedName =
+      const linkedName =
         nameMap[
           String(
             bill.patient_id
@@ -1799,7 +3609,7 @@ async function addPatientNamesToBills(
         ...bill,
 
         resolved_patient_name:
-          resolvedName ||
+          linkedName ||
           bill.patient_name ||
           "Patient"
 
@@ -1854,7 +3664,7 @@ function getMonthRange(
 
 
 /* =========================================================
-   YEAR SELECT
+   YEARS
    ========================================================= */
 
 function buildYearOptions() {
@@ -1866,7 +3676,7 @@ function buildYearOptions() {
       );
 
 
-  const current =
+  const year =
     new Date()
       .getFullYear();
 
@@ -1876,9 +3686,9 @@ function buildYearOptions() {
 
 
   for (
-    let year = current;
-    year >= current - 10;
-    year--
+    let value = year;
+    value >= year - 10;
+    value--
   ) {
 
     const option =
@@ -1888,11 +3698,11 @@ function buildYearOptions() {
 
 
     option.value =
-      year;
+      value;
 
 
     option.textContent =
-      year;
+      value;
 
 
     select.appendChild(
@@ -1905,7 +3715,7 @@ function buildYearOptions() {
 
 
 /* =========================================================
-   DEFAULT MONTH
+   DEFAULT
    ========================================================= */
 
 function setDefaultMonth() {
@@ -1933,7 +3743,7 @@ function setDefaultMonth() {
 
 
 /* =========================================================
-   LOAD MONTHLY REPORT
+   LOAD REPORT
    ========================================================= */
 
 async function loadMonthlyReport() {
@@ -1945,7 +3755,7 @@ async function loadMonthlyReport() {
       );
 
 
-  const content =
+  const report =
     document
       .getElementById(
         "reportContent"
@@ -1956,7 +3766,7 @@ async function loadMonthlyReport() {
     "block";
 
 
-  content.style.display =
+  report.style.display =
     "none";
 
 
@@ -1994,7 +3804,7 @@ async function loadMonthlyReport() {
 
     const [
       billingResult,
-      newPatientsResult
+      patientResult
     ] =
       await Promise.all([
 
@@ -2049,10 +3859,10 @@ async function loadMonthlyReport() {
 
 
     if (
-      newPatientsResult.error
+      patientResult.error
     ) {
 
-      throw newPatientsResult.error;
+      throw patientResult.error;
 
     }
 
@@ -2063,23 +3873,19 @@ async function loadMonthlyReport() {
 
 
     const newPatients =
-      newPatientsResult.data ||
+      patientResult.data ||
       [];
-
-
-    const paidBills =
-      bills.filter(
-        isPaid
-      );
 
 
     currentPaidBills =
       await addPatientNamesToBills(
-        paidBills
+        bills.filter(
+          isPaid
+        )
       );
 
 
-    const totalRevenue =
+    currentRevenue =
       currentPaidBills.reduce(
         function(
           total,
@@ -2098,11 +3904,15 @@ async function loadMonthlyReport() {
       );
 
 
-    const averageBill =
-      currentPaidBills.length > 0
-        ? totalRevenue /
+    currentAverageBill =
+      currentPaidBills.length
+        ? currentRevenue /
           currentPaidBills.length
         : 0;
+
+
+    currentNewPatients =
+      newPatients.length;
 
 
     const monthDate =
@@ -2127,10 +3937,6 @@ async function loadMonthlyReport() {
         );
 
 
-    /* =====================================================
-       DISPLAY
-       ===================================================== */
-
     document
       .getElementById(
         "reportMonthName"
@@ -2145,7 +3951,7 @@ async function loadMonthlyReport() {
       )
       .textContent =
         formatMoney(
-          totalRevenue
+          currentRevenue
         );
 
 
@@ -2162,22 +3968,22 @@ async function loadMonthlyReport() {
         "monthlyPatients"
       )
       .textContent =
-        newPatients.length;
+        currentNewPatients;
 
 
     document
       .getElementById(
-        "revenueHeroValue"
+        "revenueTotal"
       )
       .textContent =
         formatMoney(
-          totalRevenue
+          currentRevenue
         );
 
 
     document
       .getElementById(
-        "revenueHeroBills"
+        "revenueBillCount"
       )
       .textContent =
         currentPaidBills.length;
@@ -2189,46 +3995,32 @@ async function loadMonthlyReport() {
       )
       .textContent =
         formatMoney(
-          averageBill
+          currentAverageBill
         );
 
 
-    document
-      .getElementById(
-        "printReportingPeriod"
-      )
-      .textContent =
-        currentMonthLabel;
+    currentPaymentMethods =
+      calculatePaymentMethods(
+        currentPaidBills
+      );
 
 
-    document
-      .getElementById(
-        "printFooterMonth"
-      )
-      .textContent =
-        currentMonthLabel;
+    renderPaymentMethods();
 
 
-    renderPaymentMethods(
-      currentPaidBills,
-      totalRevenue
-    );
+    renderBillTable();
 
 
-    renderPaidBills(
-      currentMonthLabel,
-      totalRevenue
-    );
+    updatePdfContent();
 
 
-    content.style.display =
+    report.style.display =
       "block";
 
 
   } catch (error) {
 
     console.error(
-      "Monthly report error:",
       error
     );
 
@@ -2253,39 +4045,32 @@ async function loadMonthlyReport() {
    PAYMENT METHODS
    ========================================================= */
 
-function renderPaymentMethods(
-  paidBills,
-  totalRevenue
+function calculatePaymentMethods(
+  bills
 ) {
 
-  const methods = {
+  const values = {
 
-    "Cash":
+    Cash:
       0,
 
-    "UPI":
+    UPI:
       0,
 
-    "Card":
+    Card:
       0,
 
     "Bank Transfer":
       0,
 
-    "Other":
+    Other:
       0
 
   };
 
 
-  paidBills.forEach(
+  bills.forEach(
     function(bill) {
-
-      const amount =
-        getBillAmount(
-          bill
-        );
-
 
       const method =
         String(
@@ -2296,47 +4081,50 @@ function renderPaymentMethods(
         .toLowerCase();
 
 
+      const amount =
+        getBillAmount(
+          bill
+        );
+
+
       if (
-        method ===
-        "cash"
+        method === "cash"
       ) {
 
-        methods.Cash +=
+        values.Cash +=
+          amount;
+
+      } else if (
+        method === "upi"
+      ) {
+
+        values.UPI +=
+          amount;
+
+      } else if (
+        method === "card"
+      ) {
+
+        values.Card +=
           amount;
 
       } else if (
         method ===
-        "upi"
+          "bank transfer" ||
+        method ===
+          "bank" ||
+        method ===
+          "transfer"
       ) {
 
-        methods.UPI +=
-          amount;
-
-      } else if (
-        method ===
-        "card"
-      ) {
-
-        methods.Card +=
-          amount;
-
-      } else if (
-        method ===
-        "bank transfer" ||
-        method ===
-        "bank" ||
-        method ===
-        "transfer"
-      ) {
-
-        methods[
+        values[
           "Bank Transfer"
         ] +=
           amount;
 
       } else {
 
-        methods.Other +=
+        values.Other +=
           amount;
 
       }
@@ -2345,128 +4133,127 @@ function renderPaymentMethods(
   );
 
 
-  const icons = {
-
-    "Cash":
-      "💵",
-
-    "UPI":
-      "📱",
-
-    "Card":
-      "💳",
-
-    "Bank Transfer":
-      "🏦",
-
-    "Other":
-      "📋"
-
-  };
-
-
-  const container =
-    document
-      .getElementById(
-        "paymentMethodList"
-      );
-
-
-  container.innerHTML =
-    Object.entries(
-      methods
-    )
-    .map(
-      function(
-        [
-          method,
-          amount
-        ]
-      ) {
-
-        const percentage =
-          totalRevenue > 0
-            ? (
-                amount /
-                totalRevenue
-              ) *
-              100
-            : 0;
-
-
-        return `
-
-          <div class="payment-row">
-
-
-            <div class="payment-top">
-
-              <div class="payment-name">
-
-                ${icons[method]}
-                ${method}
-
-              </div>
-
-
-              <div class="payment-value-wrap">
-
-                <div class="payment-value">
-
-                  ${formatMoney(
-                    amount
-                  )}
-
-                </div>
-
-                <div class="payment-percent">
-
-                  ${percentage.toFixed(
-                    1
-                  )}%
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="progress-track">
-
-              <div
-                class="progress-bar"
-                style="
-                  width:
-                  ${Math.min(
-                    percentage,
-                    100
-                  )}%;
-                ">
-              </div>
-
-            </div>
-
-
-          </div>
-
-        `;
-
-      }
-    )
-    .join("");
+  return values;
 
 }
 
 
 /* =========================================================
-   PAID BILL TABLE
+   RENDER PAYMENTS
    ========================================================= */
 
-function renderPaidBills(
-  monthLabel,
-  totalRevenue
-) {
+function renderPaymentMethods() {
+
+  const icons = {
+
+    Cash:
+      "💵",
+
+    UPI:
+      "📱",
+
+    Card:
+      "💳",
+
+    "Bank Transfer":
+      "🏦",
+
+    Other:
+      "📋"
+
+  };
+
+
+  document
+    .getElementById(
+      "paymentMethodList"
+    )
+    .innerHTML =
+      Object.entries(
+        currentPaymentMethods
+      )
+      .map(
+        function(
+          [
+            method,
+            amount
+          ]
+        ) {
+
+          const percent =
+            currentRevenue > 0
+              ? amount /
+                currentRevenue *
+                100
+              : 0;
+
+
+          return `
+
+            <div class="payment-row">
+
+              <div class="payment-top">
+
+                <div class="payment-name">
+
+                  ${icons[method]}
+                  ${method}
+
+                </div>
+
+
+                <div class="payment-right">
+
+                  <div class="payment-value">
+
+                    ${formatMoney(
+                      amount
+                    )}
+
+                  </div>
+
+                  <div class="payment-percent">
+
+                    ${percent.toFixed(1)}%
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div class="progress-track">
+
+                <div
+                  class="progress-bar"
+                  style="
+                    width:
+                    ${Math.min(
+                      percent,
+                      100
+                    )}%;
+                  ">
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   BILL TABLE
+   ========================================================= */
+
+function renderBillTable() {
 
   const container =
     document
@@ -2476,8 +4263,7 @@ function renderPaidBills(
 
 
   if (
-    currentPaidBills.length ===
-    0
+    currentPaidBills.length === 0
   ) {
 
     container.innerHTML = `
@@ -2486,7 +4272,7 @@ function renderPaidBills(
 
         No paid bills found for
         ${escapeHTML(
-          monthLabel
+          currentMonthLabel
         )}.
 
       </div>
@@ -2506,7 +4292,6 @@ function renderPaidBills(
       <span>
 
         ${currentPaidBills.length}
-
         ${
           currentPaidBills.length === 1
             ? "paid bill"
@@ -2515,15 +4300,13 @@ function renderPaidBills(
 
       </span>
 
+      <strong>
 
-      <span class="bill-summary-total">
-
-        Total:
         ${formatMoney(
-          totalRevenue
+          currentRevenue
         )}
 
-      </span>
+      </strong>
 
     </div>
 
@@ -2543,7 +4326,7 @@ function renderPaidBills(
           </th>
 
           <th>
-            Bill Amount
+            Amount
           </th>
 
         </tr>
@@ -2615,23 +4398,22 @@ function renderPaidBills(
         }
 
 
-        <tr class="bill-grand-total">
+        <tr class="total-row">
 
           <td>
 
+            Total Bills:
             ${currentPaidBills.length}
-            PAID BILLS
 
           </td>
 
-          <td>
-          </td>
+          <td></td>
 
           <td>
 
-            TOTAL
+            Total Amount:
             ${formatMoney(
-              totalRevenue
+              currentRevenue
             )}
 
           </td>
@@ -2695,7 +4477,7 @@ async function openBillDetails(
     ) {
 
       alert(
-        "Unable to load bill details."
+        "Unable to load bill."
       );
 
 
@@ -2746,7 +4528,6 @@ async function openBillDetails(
     .innerHTML = `
 
       <div class="bill-header-box">
-
 
         <div class="bill-clinic-title">
 
@@ -2802,7 +4583,6 @@ async function openBillDetails(
           )}
 
         </div>
-
 
       </div>
 
@@ -2915,8 +4695,7 @@ async function openBillDetails(
     .getElementById(
       "billDetailPanel"
     )
-    .classList
-    .add(
+    .classList.add(
       "open"
     );
 
@@ -2939,41 +4718,30 @@ async function openBillDetails(
 
 
 /* =========================================================
-   CLOSE BILL DETAILS
+   CLOSE BILL
    ========================================================= */
 
 function closeBillDetails() {
 
-  const panel =
-    document
-      .getElementById(
-        "billDetailPanel"
-      );
-
-
-  if (panel) {
-
-    panel.classList.remove(
+  document
+    .getElementById(
+      "billDetailPanel"
+    )
+    .classList.remove(
       "open"
     );
-
-  }
 
 }
 
 
 /* =========================================================
-   GENERATED DATE + TIME
+   GENERATED DATE TIME
    ========================================================= */
 
-function updateGeneratedDateTime() {
+function getGeneratedText() {
 
-  const now =
-    new Date();
-
-
-  const generatedText =
-    now.toLocaleString(
+  return new Date()
+    .toLocaleString(
       "en-IN",
       {
         day:
@@ -2996,34 +4764,17 @@ function updateGeneratedDateTime() {
       }
     );
 
-
-  document
-    .getElementById(
-      "printGeneratedDateTime"
-    )
-    .textContent =
-      generatedText;
-
 }
 
 
 /* =========================================================
-   PRINT / SAVE PDF
+   PRINT
    ========================================================= */
 
 function printMonthlyReport() {
 
-  const report =
-    document
-      .getElementById(
-        "reportContent"
-      );
-
-
   if (
-    !report ||
-    report.style.display ===
-    "none"
+    !currentMonthLabel
   ) {
 
     alert(
@@ -3039,28 +4790,436 @@ function printMonthlyReport() {
   closeBillDetails();
 
 
-  updateGeneratedDateTime();
+  document
+    .getElementById(
+      "printPeriodValue"
+    )
+    .textContent =
+      currentMonthLabel;
 
 
   document
     .getElementById(
-      "printReportingPeriod"
+      "printGeneratedValue"
     )
     .textContent =
-      currentMonthLabel ||
-      "Monthly Report";
-
-
-  document
-    .getElementById(
-      "printFooterMonth"
-    )
-    .textContent =
-      currentMonthLabel ||
-      "";
+      "Generated: " +
+      getGeneratedText();
 
 
   window.print();
+
+}
+
+
+/* =========================================================
+   PDF CONTENT
+   ========================================================= */
+
+function updatePdfContent() {
+
+  const generated =
+    getGeneratedText();
+
+
+  document
+    .getElementById(
+      "pdfPeriodValue"
+    )
+    .textContent =
+      currentMonthLabel;
+
+
+  document
+    .getElementById(
+      "pdfGeneratedValue"
+    )
+    .textContent =
+      "Generated: " +
+      generated;
+
+
+  document
+    .getElementById(
+      "pdfRevenue"
+    )
+    .textContent =
+      formatMoney(
+        currentRevenue
+      );
+
+
+  document
+    .getElementById(
+      "pdfBills"
+    )
+    .textContent =
+      currentPaidBills.length;
+
+
+  document
+    .getElementById(
+      "pdfPatients"
+    )
+    .textContent =
+      currentNewPatients;
+
+
+  document
+    .getElementById(
+      "pdfRevenueTotal"
+    )
+    .textContent =
+      formatMoney(
+        currentRevenue
+      );
+
+
+  document
+    .getElementById(
+      "pdfRevenueBills"
+    )
+    .textContent =
+      currentPaidBills.length;
+
+
+  document
+    .getElementById(
+      "pdfAverageBill"
+    )
+    .textContent =
+      formatMoney(
+        currentAverageBill
+      );
+
+
+  const paymentContainer =
+    document
+      .getElementById(
+        "pdfPaymentMethods"
+      );
+
+
+  paymentContainer.innerHTML =
+    Object.entries(
+      currentPaymentMethods
+    )
+    .map(
+      function(
+        [
+          method,
+          amount
+        ]
+      ) {
+
+        const percent =
+          currentRevenue > 0
+            ? amount /
+              currentRevenue *
+              100
+            : 0;
+
+
+        return `
+
+          <div class="pdf-payment-row">
+
+            <div class="pdf-payment-top">
+
+              <span>
+                ${escapeHTML(
+                  method
+                )}
+              </span>
+
+              <span>
+
+                ${formatMoney(
+                  amount
+                )}
+                •
+                ${percent.toFixed(1)}%
+
+              </span>
+
+            </div>
+
+
+            <div class="pdf-payment-track">
+
+              <div
+                class="pdf-payment-bar"
+                style="
+                  width:
+                  ${Math.min(
+                    percent,
+                    100
+                  )}%;
+                ">
+              </div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    )
+    .join("");
+
+
+  const billContainer =
+    document
+      .getElementById(
+        "pdfBillTable"
+      );
+
+
+  if (
+    currentPaidBills.length ===
+    0
+  ) {
+
+    billContainer.innerHTML =
+      "<div>No paid bills found.</div>";
+
+
+    return;
+
+  }
+
+
+  billContainer.innerHTML = `
+
+    <table class="pdf-table">
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Patient
+          </th>
+
+          <th>
+            Date
+          </th>
+
+          <th>
+            Amount
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        ${
+          currentPaidBills
+            .map(
+              function(bill) {
+
+                return `
+
+                  <tr>
+
+                    <td>
+
+                      ${escapeHTML(
+                        bill.resolved_patient_name ||
+                        bill.patient_name ||
+                        "Patient"
+                      )}
+
+                    </td>
+
+
+                    <td>
+
+                      ${formatDisplayDate(
+                        bill.bill_date
+                      )}
+
+                    </td>
+
+
+                    <td>
+
+                      ${formatMoney(
+                        getBillAmount(
+                          bill
+                        )
+                      )}
+
+                    </td>
+
+                  </tr>
+
+                `;
+
+              }
+            )
+            .join("")
+        }
+
+
+        <tr class="pdf-total-row">
+
+          <td>
+
+            Total Bills:
+            ${currentPaidBills.length}
+
+          </td>
+
+          <td></td>
+
+          <td>
+
+            Total Amount:
+            ${formatMoney(
+              currentRevenue
+            )}
+
+          </td>
+
+        </tr>
+
+
+      </tbody>
+
+    </table>
+
+  `;
+
+}
+
+
+/* =========================================================
+   DIRECT PDF DOWNLOAD
+   ========================================================= */
+
+async function downloadMonthlyPdf() {
+
+  if (
+    !currentMonthLabel
+  ) {
+
+    alert(
+      "Please load a monthly report first."
+    );
+
+
+    return;
+
+  }
+
+
+  updatePdfContent();
+
+
+  const element =
+    document
+      .getElementById(
+        "pdfReport"
+      );
+
+
+  const safeMonth =
+    currentMonthLabel
+      .replace(
+        /\s+/g,
+        "-"
+      );
+
+
+  const options = {
+
+    margin:
+      [8,8,8,8],
+
+    filename:
+      "General-Diabetes-Care-" +
+      safeMonth +
+      "-Monthly-Report.pdf",
+
+    image: {
+
+      type:
+        "jpeg",
+
+      quality:
+        0.98
+
+    },
+
+    html2canvas: {
+
+      scale:
+        2,
+
+      useCORS:
+        true,
+
+      backgroundColor:
+        "#ffffff"
+
+    },
+
+    jsPDF: {
+
+      unit:
+        "mm",
+
+      format:
+        "a4",
+
+      orientation:
+        "portrait"
+
+    },
+
+    pagebreak: {
+
+      mode:
+        [
+          "css",
+          "legacy"
+        ]
+
+    }
+
+  };
+
+
+  try {
+
+    await html2pdf()
+      .set(
+        options
+      )
+      .from(
+        element
+      )
+      .save();
+
+
+  } catch (error) {
+
+    console.error(
+      "PDF download error:",
+      error
+    );
+
+
+    alert(
+      "Unable to download PDF."
+    );
+
+  }
 
 }
 
@@ -3086,6 +5245,16 @@ document
   .addEventListener(
     "click",
     printMonthlyReport
+  );
+
+
+document
+  .getElementById(
+    "downloadPdfButton"
+  )
+  .addEventListener(
+    "click",
+    downloadMonthlyPdf
   );
 
 
@@ -3129,9 +5298,6 @@ window.openBillDetails =
 window.closeBillDetails =
   closeBillDetails;
 
-window.printMonthlyReport =
-  printMonthlyReport;
-
 
 /* =========================================================
    INITIALIZE
@@ -3144,7 +5310,9 @@ window.printMonthlyReport =
 
 
   if (!loggedIn) {
+
     return;
+
   }
 
 
