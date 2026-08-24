@@ -1252,7 +1252,92 @@ function setDefaultDates() {
 
 }
 
+/* =========================================================
+   LOAD RETURNED PERIOD FROM URL
+   ========================================================= */
 
+function loadPeriodFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const start =
+    params.get(
+      "start"
+    );
+
+
+  const end =
+    params.get(
+      "end"
+    );
+
+
+  if (
+    !start ||
+    !end
+  ) {
+
+    return false;
+
+  }
+
+
+  const datePattern =
+    /^\d{4}-\d{2}-\d{2}$/;
+
+
+  if (
+    !datePattern.test(
+      start
+    ) ||
+    !datePattern.test(
+      end
+    )
+  ) {
+
+    return false;
+
+  }
+
+
+  if (
+    start >
+    end
+  ) {
+
+    return false;
+
+  }
+
+
+  document
+    .getElementById(
+      "analyticsStartDate"
+    )
+    .value =
+      start;
+
+
+  document
+    .getElementById(
+      "analyticsEndDate"
+    )
+    .value =
+      end;
+
+
+  updatePeriodDisplay(
+    "Selected analytics period"
+  );
+
+
+  return true;
+
+  }
 /* =========================================================
    QUICK PERIOD
    ========================================================= */
@@ -2148,12 +2233,23 @@ document
   }
 
 
-  setDefaultDates();
+  const periodLoadedFromURL =
+    loadPeriodFromURL();
+
+
+  if (
+    !periodLoadedFromURL
+  ) {
+
+    setDefaultDates();
+
+  }
 
 
   await loadAnalytics();
 
 })();
+
 
 </script>
 
