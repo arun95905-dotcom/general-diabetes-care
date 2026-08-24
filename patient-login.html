@@ -574,26 +574,31 @@ function startMsg91Otp(
 
 
         let accessToken = "";
+if (
+  typeof data ===
+  "string"
+) {
 
+  accessToken =
+    data;
 
-        if (
-          typeof data ===
-          "string"
-        ) {
+} else {
 
-          accessToken =
-            data;
+  accessToken =
+    data?.accessToken ||
+    data?.access_token ||
+    data?.token ||
+    data?.jwt ||
+    (
+      data?.type === "success"
+        ? data?.message
+        : ""
+    ) ||
+    "";
 
-        } else {
+}
 
-          accessToken =
-            data?.accessToken ||
-            data?.access_token ||
-            data?.token ||
-            data?.jwt ||
-            "";
-
-        }
+        
 
 if (!accessToken) {
 
