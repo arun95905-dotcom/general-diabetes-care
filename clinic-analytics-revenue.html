@@ -1510,7 +1510,119 @@ function isPaid(bill) {
 
 }
 
+/* =========================================================
+   ADD PATIENT NAMES TO BILLING ROWS
+   ========================================================= */
 
+async function addPatientNamesToBills(
+  bills
+) {
+
+  if (
+    !bills ||
+    bills.length === 0
+  ) {
+
+    return [];
+
+  }
+
+
+  const patientIds =
+    [
+      ...new Set(
+        bills
+          .map(
+            function(bill) {
+
+              return bill.patient_id;
+
+            }
+          )
+          .filter(Boolean)
+      )
+    ];
+
+
+  if (
+    patientIds.length === 0
+  ) {
+
+    return bills;
+
+  }
+
+
+  const {
+    data:
+      patients,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select(
+        "id,patient_name"
+      )
+      .in(
+        "id",
+        patientIds
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Unable to load patient names:",
+      error
+    );
+
+
+    return bills;
+
+  }
+
+
+  const patientNameMap =
+    {};
+
+
+  (
+    patients ||
+    []
+  )
+  .forEach(
+    function(patient) {
+
+      patientNameMap[
+        patient.id
+      ] =
+        patient.patient_name ||
+        "";
+
+    }
+  );
+
+
+  return bills.map(
+    function(bill) {
+
+      return {
+
+        ...bill,
+
+        resolved_patient_name:
+          bill.patient_name ||
+          patientNameMap[
+            bill.patient_id
+          ] ||
+          "Patient"
+
+      };
+
+    }
+  );
+
+}
 /* =========================================================
    DEFAULT PERIOD
    ========================================================= */
@@ -2490,12 +2602,18 @@ async function getPaidBillsForMonth(
   }
 
 
-  return (
-    data ||
-    []
-  )
-  .filter(
-    isPaid
+    const paidBills =
+    (
+      data ||
+      []
+    )
+    .filter(
+      isPaid
+    );
+
+
+  return await addPatientNamesToBills(
+    paidBills
   );
 
 }
@@ -2867,7 +2985,7 @@ async function openMonthBills(
                               )">
 
                               ${escapeHTML(
-                                bill.patient_name ||
+                               bill.resolved_patient_name || bill.patient_name ||
                                 "Patient"
                               )}
 
@@ -3100,7 +3218,7 @@ async function openBillDetails(
           </strong>
 
           ${escapeHTML(
-            bill.patient_name ||
+           bill.resolved_patient_name || bill.patient_name ||
             "-"
           )}
 
