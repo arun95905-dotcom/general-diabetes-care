@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /doctor-login.html
+Disallow: /doctor-dashboard.html
+Disallow: /doctor-appointments.html
+Disallow: /doctor-patients.html
+Disallow: /patient-login.html
+Disallow: /patient-portal.html
+
+Sitemap: https://generalanddiabetescare.com/sitemap.xml
