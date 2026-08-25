@@ -2502,11 +2502,23 @@ function openPatientHistory(
   patientId
 ) {
 
+  const searchValue =
+    document
+      .getElementById(
+        "patientSearch"
+      )
+      .value
+      .trim();
+
   window.location.href =
     "doctor-patient-history.html" +
     "?patient_id=" +
     encodeURIComponent(
       patientId
+    ) +
+    "&search=" +
+    encodeURIComponent(
+      searchValue
     );
 
 }
