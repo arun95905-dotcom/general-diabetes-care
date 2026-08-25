@@ -6907,7 +6907,32 @@ async function handleURLParameters() {
 
   }
 
+  /*
+     Return from Patient History
+     → restore previous patient search
+  */
 
+  if (
+    view === "search" &&
+    search
+  ) {
+
+    showView(
+      "searchView"
+    );
+
+    document
+      .getElementById(
+        "patientSearch"
+      )
+      .value =
+        search;
+
+    await searchPatients();
+
+    return true;
+
+  }
   return false;
 
 }
