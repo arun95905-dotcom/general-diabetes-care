@@ -1225,11 +1225,38 @@ function goBackFromHistory() {
   }
 
 
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const search =
+    params.get(
+      "search"
+    );
+
+
+  if (
+    search
+  ) {
+
+    window.location.href =
+      "doctor-patients.html" +
+      "?view=search" +
+      "&search=" +
+      encodeURIComponent(
+        search
+      );
+
+    return;
+
+  }
+
+
   window.location.href =
     "doctor-patients.html";
 
-}
-
+  }
 
 /* =========================================================
    PATIENT ID
