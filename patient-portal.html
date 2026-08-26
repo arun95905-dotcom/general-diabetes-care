@@ -2849,11 +2849,15 @@ async function loadPatientBills(
 
     }
 
+patientBills =
+  result.bills ||
+  [];
 
-    renderBills(
-      result.bills ||
-      []
-    );
+
+renderBills(
+  patientBills
+);
+    
 
 
   } catch (
