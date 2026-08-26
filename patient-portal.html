@@ -2731,7 +2731,9 @@ async function loadPortalData() {
 
     );
 
-
+    await loadPatientBills(
+      token
+    );
     content.style.display =
       "block";
 
