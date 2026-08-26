@@ -3503,7 +3503,388 @@ function renderLabReports(
 }
 
 
+/* =========================================================
+   BILLS
+   ========================================================= */
 
+function renderBills(
+  bills
+) {
+
+  const container =
+    document
+      .getElementById(
+        "billsContainer"
+      );
+
+
+  if (
+    bills.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty-card">
+
+        <div class="empty-icon">
+          🧾
+        </div>
+
+        <strong>
+          No bills available
+        </strong>
+
+        <div
+          style="
+            margin-top:4px;
+          ">
+
+          Clinic bills and payment receipts
+          will appear here.
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+
+    bills
+
+      .map(
+
+        function(
+          bill,
+          index
+        ) {
+
+
+          const displayDate =
+            formatDate(
+              bill.date
+            );
+
+
+          const paymentStatus =
+            String(
+              bill.paymentStatus ||
+              "-"
+            );
+
+
+          const paymentMethod =
+            String(
+              bill.paymentMethod ||
+              "-"
+            );
+
+
+          return `
+
+            <article class="file-card">
+
+
+              <div class="file-header">
+
+
+                <div>
+
+                  <div class="file-title">
+
+                    🧾 Bill #${escapeHTML(
+                      bill.id
+                    )}
+
+                  </div>
+
+
+                  <div class="file-date">
+
+                    ${escapeHTML(
+                      displayDate
+                    )}
+
+                  </div>
+
+
+                  <div class="file-name">
+
+                    Clinic billing receipt
+
+                  </div>
+
+                </div>
+
+
+                <div class="document-number">
+
+                  ${
+                    index + 1
+                  }
+
+                </div>
+
+
+              </div>
+
+
+              <div
+                style="
+                  padding:18px 16px;
+                  background:#f8fafc;
+                ">
+
+
+                <div
+                  style="
+                    color:#73808c;
+                    font-size:10px;
+                    font-weight:850;
+                    text-transform:uppercase;
+                  ">
+
+                  Total Amount
+
+                </div>
+
+
+                <div
+                  style="
+                    margin-top:4px;
+                    color:#a12630;
+                    font-size:26px;
+                    font-weight:900;
+                  ">
+
+                  ₹${Number(
+                    bill.totalAmount ||
+                    0
+                  ).toFixed(2)}
+
+                </div>
+
+
+                <div
+                  style="
+                    margin-top:15px;
+                    display:grid;
+                    grid-template-columns:
+                      repeat(
+                        2,
+                        minmax(0,1fr)
+                      );
+                    gap:9px;
+                  ">
+
+
+                  <div
+                    style="
+                      padding:11px;
+                      background:#ffffff;
+                      border:1px solid #edf1f4;
+                      border-radius:11px;
+                    ">
+
+                    <div
+                      style="
+                        color:#73808c;
+                        font-size:9px;
+                        font-weight:850;
+                      ">
+
+                      Consultation Fee
+
+                    </div>
+
+                    <div
+                      style="
+                        margin-top:4px;
+                        font-size:12px;
+                        font-weight:800;
+                      ">
+
+                      ₹${Number(
+                        bill.consultationFee ||
+                        0
+                      ).toFixed(2)}
+
+                    </div>
+
+                  </div>
+
+
+                  <div
+                    style="
+                      padding:11px;
+                      background:#ffffff;
+                      border:1px solid #edf1f4;
+                      border-radius:11px;
+                    ">
+
+                    <div
+                      style="
+                        color:#73808c;
+                        font-size:9px;
+                        font-weight:850;
+                      ">
+
+                      Medicine Charges
+
+                    </div>
+
+                    <div
+                      style="
+                        margin-top:4px;
+                        font-size:12px;
+                        font-weight:800;
+                      ">
+
+                      ₹${Number(
+                        bill.medicineCharges ||
+                        0
+                      ).toFixed(2)}
+
+                    </div>
+
+                  </div>
+
+
+                  <div
+                    style="
+                      padding:11px;
+                      background:#ffffff;
+                      border:1px solid #edf1f4;
+                      border-radius:11px;
+                    ">
+
+                    <div
+                      style="
+                        color:#73808c;
+                        font-size:9px;
+                        font-weight:850;
+                      ">
+
+                      Procedure / Other
+
+                    </div>
+
+                    <div
+                      style="
+                        margin-top:4px;
+                        font-size:12px;
+                        font-weight:800;
+                      ">
+
+                      ₹${Number(
+                        bill.procedureCharges ||
+                        0
+                      ).toFixed(2)}
+
+                    </div>
+
+                  </div>
+
+
+                  <div
+                    style="
+                      padding:11px;
+                      background:#ffffff;
+                      border:1px solid #edf1f4;
+                      border-radius:11px;
+                    ">
+
+                    <div
+                      style="
+                        color:#73808c;
+                        font-size:9px;
+                        font-weight:850;
+                      ">
+
+                      Payment Status
+
+                    </div>
+
+                    <div
+                      style="
+                        margin-top:4px;
+                        font-size:12px;
+                        font-weight:800;
+                        color:${
+                          paymentStatus === "Paid"
+                            ? "#20835a"
+                            : "#b46a14"
+                        };
+                      ">
+
+                      ${escapeHTML(
+                        paymentStatus
+                      )}
+
+                    </div>
+
+                  </div>
+
+
+                  <div
+                    style="
+                      padding:11px;
+                      background:#ffffff;
+                      border:1px solid #edf1f4;
+                      border-radius:11px;
+                      grid-column:1 / -1;
+                    ">
+
+                    <div
+                      style="
+                        color:#73808c;
+                        font-size:9px;
+                        font-weight:850;
+                      ">
+
+                      Payment Method
+
+                    </div>
+
+                    <div
+                      style="
+                        margin-top:4px;
+                        font-size:12px;
+                        font-weight:800;
+                      ">
+
+                      ${escapeHTML(
+                        paymentMethod
+                      )}
+
+                    </div>
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+
+            </article>
+
+          `;
+
+        }
+
+      )
+
+      .join("");
+
+}
 /* =========================================================
    VIEWER
    ========================================================= */
