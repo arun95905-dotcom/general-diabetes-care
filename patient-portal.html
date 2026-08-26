@@ -3872,7 +3872,32 @@ function renderBills(
 
 
               </div>
+              <div class="file-actions">
 
+                <button
+                  type="button"
+                  class="file-button view-button"
+                  onclick="viewPatientBill(
+                    ${Number(bill.id)}
+                  )">
+
+                  👁 View Receipt
+
+                </button>
+
+
+                <button
+                  type="button"
+                  class="file-button download-button"
+                  onclick="downloadPatientBillPDF(
+                    ${Number(bill.id)}
+                  )">
+
+                  ⬇ Download PDF
+
+                </button>
+
+              </div>
 
             </article>
 
