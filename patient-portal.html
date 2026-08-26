@@ -21,6 +21,10 @@
 Patient Portal | General & Diabetes Care
 </title>
 
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>
+
 
 <style>
 
@@ -46,6 +50,12 @@ Patient Portal | General & Diabetes Care
   --green-dark: #176744;
   --green-soft: #edf8f3;
 
+  --purple: #6d5bd0;
+  --purple-soft: #f2efff;
+
+  --gold: #b7791f;
+  --gold-soft: #fff8e8;
+
   --text: #1e2c38;
   --muted: #73808c;
   --muted-light: #96a0a8;
@@ -58,10 +68,10 @@ Patient Portal | General & Diabetes Care
   --background: #f7f9fb;
 
   --shadow:
-    0 8px 26px rgba(30, 43, 54, .055);
+    0 8px 26px rgba(30,43,54,.055);
 
   --shadow-hover:
-    0 14px 35px rgba(30, 43, 54, .09);
+    0 16px 38px rgba(30,43,54,.10);
 
 }
 
@@ -91,7 +101,7 @@ body {
     linear-gradient(
       180deg,
       #ffffff 0,
-      #f8fafc 170px,
+      #f8fafc 190px,
       var(--background) 100%
     );
 
@@ -126,12 +136,12 @@ button {
 
 
 /* =========================================================
-   CLEAN HEADER
+   HEADER
    ========================================================= */
 
 .portal-header {
 
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 
   padding:
     8px
@@ -151,17 +161,13 @@ button {
     0
     8px;
 
-  color:
-    var(--clinic-red);
+  color: var(--clinic-red);
 
-  font-size:
-    12px;
+  font-size: 12px;
 
-  font-weight:
-    900;
+  font-weight: 900;
 
-  letter-spacing:
-    1.35px;
+  letter-spacing: 1.35px;
 
 }
 
@@ -179,14 +185,11 @@ button {
 
 .portal-icon {
 
-  width:
-    46px;
+  width: 46px;
 
-  height:
-    46px;
+  height: 46px;
 
-  flex:
-    0 0 46px;
+  flex: 0 0 46px;
 
   display: flex;
 
@@ -194,20 +197,15 @@ button {
 
   justify-content: center;
 
-  color:
-    var(--clinic-red);
+  color: var(--clinic-red);
 
-  background:
-    var(--clinic-red-soft);
+  background: var(--clinic-red-soft);
 
-  border:
-    1px solid #f0d9dc;
+  border: 1px solid #f0d9dc;
 
-  border-radius:
-    14px;
+  border-radius: 14px;
 
-  font-size:
-    22px;
+  font-size: 22px;
 
 }
 
@@ -216,17 +214,13 @@ button {
 
   margin: 0;
 
-  color:
-    #263744;
+  color: #263744;
 
-  font-size:
-    28px;
+  font-size: 28px;
 
-  font-weight:
-    900;
+  font-weight: 900;
 
-  letter-spacing:
-    -.4px;
+  letter-spacing: -.4px;
 
 }
 
@@ -239,29 +233,24 @@ button {
     0
     57px;
 
-  max-width:
-    600px;
+  max-width: 600px;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  font-size:
-    12px;
+  font-size: 12px;
 
-  line-height:
-    1.55;
+  line-height: 1.55;
 
 }
 
 
 /* =========================================================
-   SECURITY STRIP
+   SECURITY
    ========================================================= */
 
 .secure-strip {
 
-  margin-bottom:
-    18px;
+  margin-bottom: 18px;
 
   padding:
     10px
@@ -271,46 +260,34 @@ button {
 
   align-items: center;
 
-  gap:
-    8px;
+  gap: 8px;
 
-  color:
-    #426553;
+  color: #426553;
 
-  background:
-    #f1faf5;
+  background: #f1faf5;
 
-  border:
-    1px solid #d9eee2;
+  border: 1px solid #d9eee2;
 
-  border-radius:
-    12px;
+  border-radius: 12px;
 
-  font-size:
-    11px;
+  font-size: 11px;
 
-  font-weight:
-    750;
+  font-weight: 750;
 
 }
 
 
 .secure-dot {
 
-  width:
-    8px;
+  width: 8px;
 
-  height:
-    8px;
+  height: 8px;
 
-  flex:
-    0 0 8px;
+  flex: 0 0 8px;
 
-  background:
-    #27a46e;
+  background: #27a46e;
 
-  border-radius:
-    50%;
+  border-radius: 50%;
 
   box-shadow:
     0 0 0 4px rgba(39,164,110,.10);
@@ -324,39 +301,29 @@ button {
 
 .session-message {
 
-  display:
-    none;
+  display: none;
 
-  margin-bottom:
-    16px;
+  margin-bottom: 16px;
 
-  padding:
-    13px;
+  padding: 13px;
 
-  color:
-    #8a3038;
+  color: #8a3038;
 
-  background:
-    #fff1f2;
+  background: #fff1f2;
 
-  border:
-    1px solid #edcfd2;
+  border: 1px solid #edcfd2;
 
-  border-radius:
-    12px;
+  border-radius: 12px;
 
-  font-size:
-    12px;
+  font-size: 12px;
 
-  line-height:
-    1.5;
+  line-height: 1.5;
 
 }
 
 
 .session-message.show {
-  display:
-    block;
+  display: block;
 }
 
 
@@ -366,41 +333,32 @@ button {
 
 .loading-card {
 
-  margin-top:
-    15px;
+  margin-top: 15px;
 
   padding:
     48px
     20px;
 
-  text-align:
-    center;
+  text-align: center;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  background:
-    var(--white);
+  background: var(--white);
 
-  border:
-    1px solid var(--border);
+  border: 1px solid var(--border);
 
-  border-radius:
-    18px;
+  border-radius: 18px;
 
-  box-shadow:
-    var(--shadow);
+  box-shadow: var(--shadow);
 
 }
 
 
 .spinner {
 
-  width:
-    36px;
+  width: 36px;
 
-  height:
-    36px;
+  height: 36px;
 
   margin:
     0 auto
@@ -412,8 +370,7 @@ button {
   border-top-color:
     var(--clinic-red);
 
-  border-radius:
-    50%;
+  border-radius: 50%;
 
   animation:
     spin .75s linear infinite;
@@ -424,8 +381,49 @@ button {
 @keyframes spin {
 
   to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =========================================================
+   PAGE TRANSITIONS
+   ========================================================= */
+
+.portal-view {
+
+  display: none;
+
+  animation:
+    pageEnter .25s ease;
+
+}
+
+
+.portal-view.active {
+  display: block;
+}
+
+
+@keyframes pageEnter {
+
+  from {
+
+    opacity: 0;
+
     transform:
-      rotate(360deg);
+      translateY(7px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
   }
 
 }
@@ -437,8 +435,7 @@ button {
 
 .patient-card {
 
-  margin-bottom:
-    30px;
+  margin-bottom: 24px;
 
   padding:
     18px
@@ -451,20 +448,15 @@ button {
   justify-content:
     space-between;
 
-  gap:
-    14px;
+  gap: 14px;
 
-  background:
-    var(--white);
+  background: var(--white);
 
-  border:
-    1px solid var(--border);
+  border: 1px solid var(--border);
 
-  border-radius:
-    17px;
+  border-radius: 18px;
 
-  box-shadow:
-    var(--shadow);
+  box-shadow: var(--shadow);
 
 }
 
@@ -475,25 +467,20 @@ button {
 
   align-items: center;
 
-  gap:
-    13px;
+  gap: 13px;
 
-  min-width:
-    0;
+  min-width: 0;
 
 }
 
 
 .patient-avatar {
 
-  width:
-    52px;
+  width: 52px;
 
-  height:
-    52px;
+  height: 52px;
 
-  flex:
-    0 0 52px;
+  flex: 0 0 52px;
 
   display: flex;
 
@@ -501,142 +488,208 @@ button {
 
   justify-content: center;
 
-  color:
-    var(--clinic-red);
+  color: var(--clinic-red);
 
-  background:
-    var(--clinic-red-soft);
+  background: var(--clinic-red-soft);
 
-  border:
-    1px solid #eddadd;
+  border: 1px solid #eddadd;
 
-  border-radius:
-    15px;
+  border-radius: 15px;
 
-  font-size:
-    24px;
+  font-size: 24px;
 
 }
 
 
 .patient-small {
 
-  margin-bottom:
-    2px;
+  margin-bottom: 2px;
 
-  color:
-    #8a959e;
+  color: #8a959e;
 
-  font-size:
-    9px;
+  font-size: 9px;
 
-  font-weight:
-    900;
+  font-weight: 900;
 
-  text-transform:
-    uppercase;
+  text-transform: uppercase;
 
-  letter-spacing:
-    .85px;
+  letter-spacing: .85px;
 
 }
 
 
 .patient-name {
 
-  color:
-    #22343f;
+  color: #22343f;
 
-  font-size:
-    25px;
+  font-size: 25px;
 
-  font-weight:
-    900;
+  font-weight: 900;
 
-  line-height:
-    1.18;
+  line-height: 1.18;
 
-  word-break:
-    break-word;
+  word-break: break-word;
 
 }
 
 
 .patient-id {
 
-  margin-top:
-    5px;
+  margin-top: 5px;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  font-size:
-    12px;
+  font-size: 12px;
 
-  font-weight:
-    650;
+  font-weight: 650;
 
 }
 
 
 .verified-badge {
 
-  flex:
-    0 0 auto;
+  flex: 0 0 auto;
 
   padding:
     6px
     9px;
 
-  color:
-    #176f4c;
+  color: #176f4c;
 
-  background:
-    #ebf8f1;
+  background: #ebf8f1;
 
-  border:
-    1px solid #d0ebdd;
+  border: 1px solid #d0ebdd;
 
-  border-radius:
-    999px;
+  border-radius: 999px;
 
-  font-size:
-    10px;
+  font-size: 10px;
 
-  font-weight:
-    850;
+  font-weight: 850;
 
 }
 
 
 /* =========================================================
-   SECTION TITLES
+   MAIN DASHBOARD
    ========================================================= */
 
-.section-heading {
+.records-heading {
 
   margin:
-    27px
+    0
     2px
-    13px;
+    14px;
+
+}
+
+
+.records-heading h2 {
+
+  margin: 0;
+
+  color: #2b3e49;
+
+  font-size: 19px;
+
+  font-weight: 900;
+
+}
+
+
+.records-heading p {
+
+  margin:
+    4px
+    0
+    0;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+}
+
+
+.record-menu {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 13px;
+
+}
+
+
+.record-card {
+
+  width: 100%;
+
+  min-height: 112px;
+
+  padding:
+    17px
+    18px;
 
   display: flex;
 
   align-items: center;
 
-  gap:
-    10px;
+  gap: 15px;
+
+  text-align: left;
+
+  color: inherit;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 18px;
+
+  cursor: pointer;
+
+  box-shadow: var(--shadow);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease;
 
 }
 
 
-.section-icon {
+.record-card:hover {
 
-  width:
-    35px;
+  transform:
+    translateY(-2px);
 
-  height:
-    35px;
+  box-shadow:
+    var(--shadow-hover);
+
+  border-color:
+    #d6dde4;
+
+}
+
+
+.record-card:active {
+
+  transform:
+    scale(.99);
+
+}
+
+
+.record-card-icon {
+
+  width: 58px;
+
+  height: 58px;
+
+  flex: 0 0 58px;
 
   display: flex;
 
@@ -644,86 +697,257 @@ button {
 
   justify-content: center;
 
-  background:
-    var(--white);
+  border-radius: 17px;
 
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    11px;
-
-  font-size:
-    16px;
+  font-size: 27px;
 
 }
 
 
-.section-heading h2 {
+.prescription-card-icon {
 
-  margin: 0;
+  background: var(--blue-soft);
 
-  color:
-    #2e404c;
-
-  font-size:
-    19px;
-
-  font-weight:
-    900;
+  color: var(--blue);
 
 }
 
 
-.section-heading p {
+.lab-card-icon {
 
-  margin:
-    2px
-    0
-    0;
+  background: var(--green-soft);
 
-  color:
-    var(--muted);
+  color: var(--green);
 
-  font-size:
-    10px;
+}
+
+
+.bill-card-icon {
+
+  background: var(--gold-soft);
+
+  color: var(--gold);
+
+}
+
+
+.record-card-content {
+
+  flex: 1;
+
+  min-width: 0;
+
+}
+
+
+.record-card-title {
+
+  color: #273945;
+
+  font-size: 17px;
+
+  font-weight: 900;
+
+}
+
+
+.record-card-description {
+
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  line-height: 1.45;
+
+}
+
+
+.record-count {
+
+  margin-top: 8px;
+
+  display: inline-flex;
+
+  padding:
+    4px
+    8px;
+
+  color: #65717c;
+
+  background: #f5f7f9;
+
+  border-radius: 999px;
+
+  font-size: 9px;
+
+  font-weight: 850;
+
+}
+
+
+.record-arrow {
+
+  flex: 0 0 auto;
+
+  color: #a0a9b1;
+
+  font-size: 24px;
+
+  font-weight: 400;
 
 }
 
 
 /* =========================================================
-   SINGLE COLUMN DOCUMENT LIST
+   HISTORY PAGE HEADER
+   ========================================================= */
+
+.history-top {
+
+  margin-bottom: 17px;
+
+}
+
+
+.back-button {
+
+  min-height: 40px;
+
+  margin-bottom: 16px;
+
+  padding:
+    8px
+    12px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #52616d;
+
+  background: #ffffff;
+
+  border: 1px solid #dce3e8;
+
+  border-radius: 11px;
+
+  cursor: pointer;
+
+  font-size: 11px;
+
+  font-weight: 850;
+
+  box-shadow:
+    0 3px 10px rgba(30,43,54,.035);
+
+}
+
+
+.back-button:hover {
+
+  background: #f8fafc;
+
+}
+
+
+.history-heading {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+
+.history-icon {
+
+  width: 46px;
+
+  height: 46px;
+
+  flex: 0 0 46px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  font-size: 21px;
+
+  box-shadow:
+    0 4px 14px rgba(30,43,54,.04);
+
+}
+
+
+.history-heading h2 {
+
+  margin: 0;
+
+  color: #2b3e49;
+
+  font-size: 22px;
+
+  font-weight: 900;
+
+}
+
+
+.history-heading p {
+
+  margin:
+    3px
+    0
+    0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   FILE LIST
    ========================================================= */
 
 .file-list {
 
   display: flex;
 
-  flex-direction:
-    column;
+  flex-direction: column;
 
-  gap:
-    18px;
+  gap: 18px;
 
 }
 
 
 .file-card {
 
-  overflow:
-    hidden;
+  overflow: hidden;
 
-  background:
-    var(--white);
+  background: var(--white);
 
-  border:
-    1px solid var(--border);
+  border: 1px solid var(--border);
 
-  border-radius:
-    18px;
+  border-radius: 18px;
 
-  box-shadow:
-    var(--shadow);
+  box-shadow: var(--shadow);
 
   transition:
     transform .18s ease,
@@ -747,10 +971,6 @@ button {
 }
 
 
-/* =========================================================
-   DOCUMENT TOP INFO
-   ========================================================= */
-
 .file-header {
 
   padding:
@@ -760,14 +980,12 @@ button {
 
   display: flex;
 
-  align-items:
-    flex-start;
+  align-items: flex-start;
 
   justify-content:
     space-between;
 
-  gap:
-    10px;
+  gap: 10px;
 
   border-bottom:
     1px solid var(--border-light);
@@ -777,180 +995,138 @@ button {
 
 .file-title {
 
-  color:
-    #293c48;
+  color: #293c48;
 
-  font-size:
-    15px;
+  font-size: 15px;
 
-  font-weight:
-    900;
+  font-weight: 900;
 
 }
 
 
 .file-date {
 
-  margin-top:
-    5px;
+  margin-top: 5px;
 
-  color:
-    var(--clinic-red);
+  color: var(--clinic-red);
 
-  font-size:
-    15px;
+  font-size: 15px;
 
-  font-weight:
-    850;
+  font-weight: 850;
 
-  line-height:
-    1.25;
+  line-height: 1.25;
 
 }
 
 
 .file-name {
 
-  margin-top:
-    4px;
+  margin-top: 4px;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  font-size:
-    10px;
+  font-size: 10px;
 
-  line-height:
-    1.4;
+  line-height: 1.4;
 
-  word-break:
-    break-word;
+  word-break: break-word;
 
 }
 
 
 .document-number {
 
-  flex:
-    0 0 auto;
+  flex: 0 0 auto;
 
   padding:
     5px
     8px;
 
-  color:
-    #7c8892;
+  color: #7c8892;
 
-  background:
-    #f5f7f9;
+  background: #f5f7f9;
 
-  border:
-    1px solid #e8ecef;
+  border: 1px solid #e8ecef;
 
-  border-radius:
-    999px;
+  border-radius: 999px;
 
-  font-size:
-    9px;
+  font-size: 9px;
 
-  font-weight:
-    800;
+  font-weight: 800;
 
 }
 
 
 /* =========================================================
-   DOCUMENT PREVIEW
+   PREVIEW
    ========================================================= */
 
 .file-preview {
 
-  position:
-    relative;
+  position: relative;
 
-  width:
-    100%;
+  width: 100%;
 
-  min-height:
-    260px;
+  min-height: 260px;
 
-  max-height:
-    500px;
+  max-height: 500px;
 
   display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  justify-content:
-    center;
+  justify-content: center;
 
-  overflow:
-    hidden;
+  overflow: hidden;
 
-  background:
-    #f2f4f6;
+  background: #f2f4f6;
 
 }
 
 
 .file-preview img {
 
-  width:
-    100%;
+  width: 100%;
 
-  max-height:
-    500px;
+  max-height: 500px;
 
-  display:
-    block;
+  display: block;
 
-  object-fit:
-    contain;
+  object-fit: contain;
 
-  background:
-    #f7f8f9;
+  background: #f7f8f9;
 
 }
 
 
 .file-icon {
 
-  width:
-    82px;
+  width: 82px;
 
-  height:
-    82px;
+  height: 82px;
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  justify-content:
-    center;
+  justify-content: center;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
-  border:
-    1px solid #e0e5e9;
+  border: 1px solid #e0e5e9;
 
-  border-radius:
-    22px;
+  border-radius: 22px;
 
   box-shadow:
     0 8px 20px rgba(30,40,50,.06);
 
-  font-size:
-    38px;
+  font-size: 38px;
 
 }
 
 
 /* =========================================================
-   BUTTONS
+   FILE BUTTONS
    ========================================================= */
 
 .file-actions {
@@ -960,62 +1136,45 @@ button {
     14px
     15px;
 
-  display:
-    grid;
+  display: grid;
 
   grid-template-columns:
-    repeat(
-      2,
-      minmax(0,1fr)
-    );
+    repeat(2,minmax(0,1fr));
 
-  gap:
-    9px;
+  gap: 9px;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
 }
 
 
 .file-button {
 
-  min-height:
-    44px;
+  min-height: 44px;
 
   padding:
     9px
     10px;
 
-  display:
-    inline-flex;
+  display: inline-flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  justify-content:
-    center;
+  justify-content: center;
 
-  gap:
-    6px;
+  gap: 6px;
 
-  border:
-    none;
+  border: none;
 
-  border-radius:
-    12px;
+  border-radius: 12px;
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
-  text-decoration:
-    none;
+  text-decoration: none;
 
-  font-size:
-    12px;
+  font-size: 12px;
 
-  font-weight:
-    850;
+  font-weight: 850;
 
   transition:
     transform .12s ease,
@@ -1025,28 +1184,22 @@ button {
 
 
 .file-button:active {
-
-  transform:
-    scale(.97);
-
+  transform: scale(.97);
 }
 
 
 .file-button:disabled {
 
-  cursor:
-    default;
+  cursor: default;
 
-  opacity:
-    .4;
+  opacity: .4;
 
 }
 
 
 .view-button {
 
-  color:
-    #ffffff;
+  color: #ffffff;
 
   background:
     linear-gradient(
@@ -1063,8 +1216,7 @@ button {
 
 .download-button {
 
-  color:
-    #ffffff;
+  color: #ffffff;
 
   background:
     linear-gradient(
@@ -1080,6 +1232,183 @@ button {
 
 
 /* =========================================================
+   BILL LIST
+   ========================================================= */
+
+.bill-list {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+}
+
+
+.patient-bill-card {
+
+  padding: 17px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 18px;
+
+  box-shadow: var(--shadow);
+
+}
+
+
+.bill-top-row {
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-start;
+
+  gap: 12px;
+
+}
+
+
+.bill-date {
+
+  color: var(--clinic-red);
+
+  font-size: 15px;
+
+  font-weight: 900;
+
+}
+
+
+.bill-number {
+
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+}
+
+
+.bill-status {
+
+  padding:
+    5px
+    9px;
+
+  border-radius: 999px;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+}
+
+
+.bill-status.paid {
+
+  color: #176f4c;
+
+  background: #ebf8f1;
+
+  border: 1px solid #d0ebdd;
+
+}
+
+
+.bill-status.pending {
+
+  color: #9a6416;
+
+  background: #fff8e8;
+
+  border: 1px solid #f0e1bd;
+
+}
+
+
+.bill-status.partial {
+
+  color: #275ea9;
+
+  background: #eef4ff;
+
+  border: 1px solid #d8e5fb;
+
+}
+
+
+.bill-total-row {
+
+  margin-top: 15px;
+
+  padding:
+    13px
+    14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  background: #f8fafc;
+
+  border: 1px solid #e8edf1;
+
+  border-radius: 12px;
+
+}
+
+
+.bill-total-label {
+
+  color: #64727d;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+}
+
+
+.bill-total {
+
+  color: #233744;
+
+  font-size: 19px;
+
+  font-weight: 900;
+
+}
+
+
+.bill-actions {
+
+  margin-top: 13px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap: 9px;
+
+}
+
+
+/* =========================================================
    EMPTY
    ========================================================= */
 
@@ -1089,64 +1418,49 @@ button {
     35px
     17px;
 
-  text-align:
-    center;
+  text-align: center;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  background:
-    var(--white);
+  background: var(--white);
 
   border:
     1px dashed #d5dde3;
 
-  border-radius:
-    16px;
+  border-radius: 16px;
 
-  font-size:
-    11px;
+  font-size: 11px;
 
-  line-height:
-    1.5;
+  line-height: 1.5;
 
 }
 
 
 .empty-icon {
 
-  margin-bottom:
-    8px;
+  margin-bottom: 8px;
 
-  font-size:
-    31px;
+  font-size: 31px;
 
 }
 
 
 /* =========================================================
-   BOTTOM ACTIONS
+   DASHBOARD ACTIONS
    ========================================================= */
 
 .portal-actions {
 
-  margin-top:
-    32px;
+  margin-top: 28px;
 
-  padding-top:
-    19px;
+  padding-top: 19px;
 
-  display:
-    grid;
+  display: grid;
 
   grid-template-columns:
-    repeat(
-      3,
-      minmax(0,1fr)
-    );
+    repeat(3,minmax(0,1fr));
 
-  gap:
-    9px;
+  gap: 9px;
 
   border-top:
     1px solid var(--border-light);
@@ -1156,78 +1470,60 @@ button {
 
 .portal-action {
 
-  min-height:
-    45px;
+  min-height: 45px;
 
   padding:
     9px
     10px;
 
-  display:
-    inline-flex;
+  display: inline-flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  justify-content:
-    center;
+  justify-content: center;
 
-  border-radius:
-    12px;
+  border-radius: 12px;
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
-  text-decoration:
-    none;
+  text-decoration: none;
 
-  font-size:
-    11px;
+  font-size: 11px;
 
-  font-weight:
-    850;
+  font-weight: 850;
 
 }
 
 
 .refresh-button {
 
-  color:
-    #4d5d68;
+  color: #4d5d68;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
-  border:
-    1px solid #dce2e7;
+  border: 1px solid #dce2e7;
 
 }
 
 
 .clinic-button {
 
-  color:
-    var(--clinic-red);
+  color: var(--clinic-red);
 
-  background:
-    var(--clinic-red-soft);
+  background: var(--clinic-red-soft);
 
-  border:
-    1px solid #ead6d8;
+  border: 1px solid #ead6d8;
 
 }
 
 
 .logout-button {
 
-  color:
-    #ffffff;
+  color: #ffffff;
 
-  background:
-    #566776;
+  background: #566776;
 
-  border:
-    1px solid #566776;
+  border: 1px solid #566776;
 
 }
 
@@ -1238,50 +1534,38 @@ button {
 
 .portal-footer {
 
-  margin-top:
-    24px;
+  margin-top: 24px;
 
-  text-align:
-    center;
+  text-align: center;
 
-  color:
-    var(--muted-light);
+  color: var(--muted-light);
 
-  font-size:
-    9px;
+  font-size: 9px;
 
-  line-height:
-    1.6;
+  line-height: 1.6;
 
 }
 
 
 /* =========================================================
-   VIEWER
+   IMAGE VIEWER
    ========================================================= */
 
 .viewer {
 
-  display:
-    none;
+  display: none;
 
-  position:
-    fixed;
+  position: fixed;
 
-  inset:
-    0;
+  inset: 0;
 
-  z-index:
-    9999;
+  z-index: 9999;
 
-  padding:
-    12px;
+  padding: 12px;
 
-  align-items:
-    center;
+  align-items: center;
 
-  justify-content:
-    center;
+  justify-content: center;
 
   background:
     rgba(12,18,24,.92);
@@ -1293,35 +1577,25 @@ button {
 
 
 .viewer.open {
-
-  display:
-    flex;
-
+  display: flex;
 }
 
 
 .viewer-content {
 
-  width:
-    100%;
+  width: 100%;
 
-  max-width:
-    920px;
+  max-width: 920px;
 
-  max-height:
-    95vh;
+  max-height: 95vh;
 
-  overflow:
-    auto;
+  overflow: auto;
 
-  padding:
-    10px;
+  padding: 10px;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
-  border-radius:
-    16px;
+  border-radius: 16px;
 
   box-shadow:
     0 25px 70px rgba(0,0,0,.30);
@@ -1331,96 +1605,73 @@ button {
 
 .viewer-top {
 
-  position:
-    sticky;
+  position: sticky;
 
-  top:
-    0;
+  top: 0;
 
-  z-index:
-    2;
+  z-index: 2;
 
-  margin-bottom:
-    9px;
+  margin-bottom: 9px;
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
   justify-content:
     space-between;
 
-  gap:
-    8px;
+  gap: 8px;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
 }
 
 
 .viewer-label {
 
-  padding-left:
-    4px;
+  padding-left: 4px;
 
-  color:
-    #596873;
+  color: #596873;
 
-  font-size:
-    11px;
+  font-size: 11px;
 
-  font-weight:
-    850;
+  font-weight: 850;
 
 }
 
 
 .close-viewer {
 
-  min-height:
-    38px;
+  min-height: 38px;
 
   padding:
     8px
     12px;
 
-  border:
-    none;
+  border: none;
 
-  border-radius:
-    10px;
+  border-radius: 10px;
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
-  color:
-    #ffffff;
+  color: #ffffff;
 
-  background:
-    #344450;
+  background: #344450;
 
-  font-weight:
-    850;
+  font-weight: 850;
 
 }
 
 
 .viewer-image {
 
-  width:
-    100%;
+  width: 100%;
 
-  height:
-    auto;
+  height: auto;
 
-  display:
-    block;
+  display: block;
 
-  border-radius:
-    9px;
+  border-radius: 9px;
 
 }
 
@@ -1431,17 +1682,13 @@ button {
 
 .toast {
 
-  position:
-    fixed;
+  position: fixed;
 
-  left:
-    50%;
+  left: 50%;
 
-  bottom:
-    24px;
+  bottom: 24px;
 
-  z-index:
-    12000;
+  z-index: 12000;
 
   max-width:
     calc(100% - 30px);
@@ -1450,35 +1697,26 @@ button {
     11px
     15px;
 
-  color:
-    #ffffff;
+  color: #ffffff;
 
   background:
     rgba(38,52,63,.96);
 
-  border-radius:
-    12px;
+  border-radius: 12px;
 
   box-shadow:
     0 10px 30px rgba(0,0,0,.18);
 
-  font-size:
-    11px;
+  font-size: 11px;
 
-  font-weight:
-    750;
+  font-weight: 750;
 
-  opacity:
-    0;
+  opacity: 0;
 
-  pointer-events:
-    none;
+  pointer-events: none;
 
   transform:
-    translate(
-      -50%,
-      15px
-    );
+    translate(-50%,15px);
 
   transition:
     opacity .2s ease,
@@ -1489,14 +1727,10 @@ button {
 
 .toast.show {
 
-  opacity:
-    1;
+  opacity: 1;
 
   transform:
-    translate(
-      -50%,
-      0
-    );
+    translate(-50%,0);
 
 }
 
@@ -1524,115 +1758,95 @@ button {
       4px
       17px;
 
-    margin-bottom:
-      15px;
+    margin-bottom: 15px;
 
   }
 
 
   .clinic-label {
-
-    font-size:
-      11px;
-
+    font-size: 11px;
   }
 
 
   .portal-header h1 {
-
-    font-size:
-      25px;
-
+    font-size: 25px;
   }
 
 
   .portal-subtitle {
 
-    margin-left:
-      0;
+    margin-left: 0;
 
-    margin-top:
-      10px;
+    margin-top: 10px;
 
-    font-size:
-      11px;
+    font-size: 11px;
 
   }
 
 
   .portal-icon {
 
-    width:
-      43px;
+    width: 43px;
 
-    height:
-      43px;
+    height: 43px;
 
-    flex-basis:
-      43px;
+    flex-basis: 43px;
 
   }
 
 
   .patient-card {
-
-    padding:
-      16px;
-
+    padding: 16px;
   }
 
 
   .patient-avatar {
 
-    width:
-      48px;
+    width: 48px;
 
-    height:
-      48px;
+    height: 48px;
 
-    flex-basis:
-      48px;
+    flex-basis: 48px;
 
   }
 
 
   .patient-name {
+    font-size: 23px;
+  }
 
-    font-size:
-      24px;
+
+  .record-card {
+
+    min-height: 105px;
+
+    padding:
+      15px
+      14px;
 
   }
 
 
-  .file-date {
+  .record-card-icon {
 
-    font-size:
-      15px;
+    width: 53px;
+
+    height: 53px;
+
+    flex-basis: 53px;
+
+    font-size: 25px;
 
   }
 
 
   .file-preview {
-
-    min-height:
-      230px;
-
+    min-height: 230px;
   }
 
 
   .portal-actions {
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .portal-action {
-
-    min-height:
-      45px;
-
+    grid-template-columns: 1fr;
   }
 
 }
@@ -1641,18 +1855,12 @@ button {
 @media(max-width:420px) {
 
   .patient-card {
-
-    align-items:
-      flex-start;
-
+    align-items: flex-start;
   }
 
 
   .patient-left {
-
-    gap:
-      10px;
-
+    gap: 10px;
   }
 
 
@@ -1662,17 +1870,23 @@ button {
       5px
       7px;
 
-    font-size:
-      9px;
+    font-size: 9px;
 
   }
 
 
   .patient-name {
+    font-size: 21px;
+  }
 
-    font-size:
-      22px;
 
+  .record-card-title {
+    font-size: 16px;
+  }
+
+
+  .record-card-description {
+    font-size: 10px;
   }
 
 
@@ -1687,10 +1901,7 @@ button {
 
 
   .file-date {
-
-    font-size:
-      14px;
-
+    font-size: 14px;
   }
 
 
@@ -1701,6 +1912,11 @@ button {
       12px
       13px;
 
+  }
+
+
+  .bill-actions {
+    grid-template-columns: 1fr;
   }
 
 }
@@ -1722,51 +1938,48 @@ button {
 
 <header class="portal-header">
 
-  <p class="clinic-label">
-    GENERAL &amp; DIABETES CARE
-  </p>
+<p class="clinic-label">
+GENERAL &amp; DIABETES CARE
+</p>
 
 
-  <div class="portal-title-row">
+<div class="portal-title-row">
 
-    <div class="portal-icon">
-      👤
-    </div>
+<div class="portal-icon">
+👤
+</div>
+
+<h1>
+Patient Portal
+</h1>
+
+</div>
 
 
-    <h1>
-      Patient Portal
-    </h1>
+<p class="portal-subtitle">
 
-  </div>
+Secure access to your prescriptions,
+laboratory reports and billing receipts.
 
-
-  <p class="portal-subtitle">
-
-    Secure access to your prescriptions and laboratory reports.
-
-  </p>
+</p>
 
 </header>
 
 
-
 <div class="secure-strip">
 
-  <span class="secure-dot"></span>
+<span class="secure-dot"></span>
 
-  Secure patient access • Medical records are available only
-  after verified mobile OTP login
+Secure patient access • Medical records are available only
+after verified mobile OTP login
 
 </div>
-
 
 
 <div
   id="sessionMessage"
   class="session-message">
 </div>
-
 
 
 <!-- =====================================================
@@ -1777,28 +1990,27 @@ button {
   id="loadingCard"
   class="loading-card">
 
-  <div class="spinner"></div>
+<div class="spinner"></div>
 
-  <strong>
-    Loading your records
-  </strong>
+<strong>
+Loading your records
+</strong>
 
-  <div
-    style="
-      margin-top:5px;
-      font-size:10px;
-    ">
+<div
+  style="
+    margin-top:5px;
+    font-size:10px;
+  ">
 
-    Retrieving your medical documents securely...
+Retrieving your medical records securely...
 
-  </div>
+</div>
 
 </div>
 
 
-
 <!-- =====================================================
-     CONTENT
+     PORTAL CONTENT
      ===================================================== -->
 
 <div
@@ -1806,84 +2018,276 @@ button {
   style="display:none;">
 
 
-
 <!-- =====================================================
-     PATIENT
+     PATIENT SUMMARY
      ===================================================== -->
 
 <section class="patient-card">
 
-  <div class="patient-left">
+<div class="patient-left">
 
-    <div class="patient-avatar">
-      👤
-    </div>
-
-
-    <div>
-
-      <div class="patient-small">
-        Patient
-      </div>
+<div class="patient-avatar">
+👤
+</div>
 
 
-      <div
-        id="patientName"
-        class="patient-name">
+<div>
 
-        —
+<div class="patient-small">
+Patient
+</div>
 
-      </div>
+<div
+  id="patientName"
+  class="patient-name">
+—
+</div>
+
+<div
+  id="patientId"
+  class="patient-id">
+Patient ID: —
+</div>
+
+</div>
+
+</div>
 
 
-      <div
-        id="patientId"
-        class="patient-id">
-
-        Patient ID: —
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="verified-badge">
-
-    ✓ Verified
-
-  </div>
+<div class="verified-badge">
+✓ Verified
+</div>
 
 </section>
 
 
-
 <!-- =====================================================
-     PRESCRIPTIONS
+     MAIN PATIENT PORTAL
      ===================================================== -->
 
-<div class="section-heading">
-
-  <div class="section-icon">
-    💊
-  </div>
+<section
+  id="dashboardView"
+  class="portal-view active">
 
 
-  <div>
+<div class="records-heading">
 
-    <h2>
-      Prescriptions
-    </h2>
+<h2>
+Your Medical Records
+</h2>
 
-    <p>
-      Consultation prescriptions uploaded by the clinic
-    </p>
-
-  </div>
+<p>
+Select a section to securely view your medical history.
+</p>
 
 </div>
 
+
+<div class="record-menu">
+
+
+<button
+  type="button"
+  class="record-card"
+  onclick="openPortalSection('prescriptionsView')">
+
+<div
+  class="
+    record-card-icon
+    prescription-card-icon
+  ">
+💊
+</div>
+
+
+<div class="record-card-content">
+
+<div class="record-card-title">
+Prescriptions
+</div>
+
+<div class="record-card-description">
+View your consultation prescription history
+</div>
+
+<div
+  id="prescriptionCount"
+  class="record-count">
+0 prescriptions
+</div>
+
+</div>
+
+
+<div class="record-arrow">
+›
+</div>
+
+</button>
+
+
+<button
+  type="button"
+  class="record-card"
+  onclick="openPortalSection('labReportsView')">
+
+<div
+  class="
+    record-card-icon
+    lab-card-icon
+  ">
+🧪
+</div>
+
+
+<div class="record-card-content">
+
+<div class="record-card-title">
+Lab Reports
+</div>
+
+<div class="record-card-description">
+View your laboratory report history
+</div>
+
+<div
+  id="labReportCount"
+  class="record-count">
+0 reports
+</div>
+
+</div>
+
+
+<div class="record-arrow">
+›
+</div>
+
+</button>
+
+
+<button
+  type="button"
+  class="record-card"
+  onclick="openPortalSection('billsView')">
+
+<div
+  class="
+    record-card-icon
+    bill-card-icon
+  ">
+🧾
+</div>
+
+
+<div class="record-card-content">
+
+<div class="record-card-title">
+Bills &amp; Receipts
+</div>
+
+<div class="record-card-description">
+View and download your clinic billing receipts
+</div>
+
+<div
+  id="billCount"
+  class="record-count">
+0 bills
+</div>
+
+</div>
+
+
+<div class="record-arrow">
+›
+</div>
+
+</button>
+
+
+</div>
+
+
+<div class="portal-actions">
+
+
+<button
+  type="button"
+  id="refreshButton"
+  class="portal-action refresh-button">
+
+🔄 Refresh Records
+
+</button>
+
+
+<a
+  href="index.html"
+  class="portal-action clinic-button">
+
+🏥 Clinic Website
+
+</a>
+
+
+<button
+  type="button"
+  id="logoutButton"
+  class="portal-action logout-button">
+
+🔒 Logout
+
+</button>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     PRESCRIPTION HISTORY
+     ===================================================== -->
+
+<section
+  id="prescriptionsView"
+  class="portal-view">
+
+
+<div class="history-top">
+
+<button
+  type="button"
+  class="back-button"
+  onclick="showPatientPortal()">
+
+← Back to Patient Portal
+
+</button>
+
+
+<div class="history-heading">
+
+<div class="history-icon">
+💊
+</div>
+
+<div>
+
+<h2>
+Prescription History
+</h2>
+
+<p>
+Consultation prescriptions uploaded by the clinic
+</p>
+
+</div>
+
+</div>
+
+</div>
 
 
 <div
@@ -1891,33 +2295,51 @@ button {
   class="file-list">
 </div>
 
+</section>
 
 
 <!-- =====================================================
-     LAB REPORTS
+     LAB REPORT HISTORY
      ===================================================== -->
 
-<div class="section-heading">
-
-  <div class="section-icon">
-    🧪
-  </div>
+<section
+  id="labReportsView"
+  class="portal-view">
 
 
-  <div>
+<div class="history-top">
 
-    <h2>
-      Lab Reports
-    </h2>
+<button
+  type="button"
+  class="back-button"
+  onclick="showPatientPortal()">
 
-    <p>
-      Laboratory reports uploaded to your medical record
-    </p>
+← Back to Patient Portal
 
-  </div>
+</button>
+
+
+<div class="history-heading">
+
+<div class="history-icon">
+🧪
+</div>
+
+<div>
+
+<h2>
+Lab Report History
+</h2>
+
+<p>
+Laboratory reports uploaded to your medical record
+</p>
 
 </div>
 
+</div>
+
+</div>
 
 
 <div
@@ -1925,97 +2347,75 @@ button {
   class="file-list">
 </div>
 
+</section>
+
+
 <!-- =====================================================
-     BILLS & RECEIPTS
+     BILL HISTORY
      ===================================================== -->
 
-<div class="section-heading">
+<section
+  id="billsView"
+  class="portal-view">
 
-  <div class="section-icon">
-    🧾
-  </div>
 
-  <div>
+<div class="history-top">
 
-    <h2>
-      Bills &amp; Receipts
-    </h2>
+<button
+  type="button"
+  class="back-button"
+  onclick="showPatientPortal()">
 
-    <p>
-      Clinic bills and payment receipts
-    </p>
+← Back to Patient Portal
 
-  </div>
+</button>
+
+
+<div class="history-heading">
+
+<div class="history-icon">
+🧾
+</div>
+
+<div>
+
+<h2>
+Bills &amp; Receipts
+</h2>
+
+<p>
+Your clinic billing and receipt history
+</p>
+
+</div>
+
+</div>
 
 </div>
 
 
 <div
   id="billsContainer"
-  class="file-list">
-
-  <div class="empty-card">
-    Loading bills...
-  </div>
-
+  class="bill-list">
 </div>
 
-<!-- =====================================================
-     ACTIONS
-     ===================================================== -->
-
-<div class="portal-actions">
-
-
-  <button
-    type="button"
-    id="refreshButton"
-    class="portal-action refresh-button">
-
-    🔄 Refresh Records
-
-  </button>
-
-
-  <a
-    href="index.html"
-    class="portal-action clinic-button">
-
-    🏥 Clinic Website
-
-  </a>
-
-
-  <button
-    type="button"
-    id="logoutButton"
-    class="portal-action logout-button">
-
-    🔒 Logout
-
-  </button>
-
-
-</div>
-
+</section>
 
 
 <footer class="portal-footer">
 
-  General &amp; Diabetes Care
+General &amp; Diabetes Care
 
-  <br>
+<br>
 
-  Secure Patient Portal
+Secure Patient Portal
 
 </footer>
 
 
 </div>
 
-
 </main>
-
 
 
 <!-- =====================================================
@@ -2026,38 +2426,34 @@ button {
   id="imageViewer"
   class="viewer">
 
-  <div class="viewer-content">
+<div class="viewer-content">
 
-    <div class="viewer-top">
+<div class="viewer-top">
 
-      <div class="viewer-label">
+<div class="viewer-label">
+Medical Document
+</div>
 
-        Medical Document
+<button
+  type="button"
+  class="close-viewer"
+  onclick="closeViewer()">
 
-      </div>
+✕ Close
 
-
-      <button
-        type="button"
-        class="close-viewer"
-        onclick="closeViewer()">
-
-        ✕ Close
-
-      </button>
-
-    </div>
-
-
-    <img
-      id="viewerImage"
-      class="viewer-image"
-      alt="Medical document">
-
-  </div>
+</button>
 
 </div>
 
+
+<img
+  id="viewerImage"
+  class="viewer-image"
+  alt="Medical document">
+
+</div>
+
+</div>
 
 
 <div
@@ -2065,9 +2461,6 @@ button {
   class="toast">
 </div>
 
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
-</script>
 
 <script>
 
@@ -2083,82 +2476,86 @@ const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
 
 
+const DOCTOR_SIGNATURE_IMAGE =
+  "doctor-signature.png";
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let portalPatient =
+  null;
+
+
+let portalPrescriptions =
+  [];
+
+
+let portalLabReports =
+  [];
+
+
+let patientBills =
+  [];
+
 
 /* =========================================================
    HELPERS
    ========================================================= */
 
-function escapeHTML(
-  value
-) {
+function escapeHTML(value) {
 
   if (
     value === null ||
     value === undefined
   ) {
-
     return "";
-
   }
 
 
-  return String(
-    value
-  )
-  .replace(
-    /&/g,
-    "&amp;"
-  )
-  .replace(
-    /</g,
-    "&lt;"
-  )
-  .replace(
-    />/g,
-    "&gt;"
-  )
-  .replace(
-    /"/g,
-    "&quot;"
-  )
-  .replace(
-    /'/g,
-    "&#039;"
-  );
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
-
-function formatDate(
-  value
-) {
+function formatDate(value) {
 
   if (!value) {
-
     return "Date not available";
-
   }
 
 
   try {
 
-    return new Date(
-      value
-    )
-    .toLocaleDateString(
+    const date =
+      new Date(
+        String(value).length === 10
+          ? value + "T00:00:00"
+          : value
+      );
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+      return value;
+    }
+
+
+    return date.toLocaleDateString(
       "en-IN",
       {
-
-        day:
-          "2-digit",
-
-        month:
-          "long",
-
-        year:
-          "numeric"
-
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
       }
     );
 
@@ -2171,41 +2568,28 @@ function formatDate(
 }
 
 
-
-function isPdf(
-  report
-) {
-
-  const type =
-    String(
-      report.fileType ||
-      ""
-    )
-    .toLowerCase();
-
-
-  const name =
-    String(
-      report.fileName ||
-      ""
-    )
-    .toLowerCase();
-
+function currency(value) {
 
   return (
-
-    type.includes(
-      "pdf"
-    ) ||
-
-    name.endsWith(
-      ".pdf"
-    )
-
+    "₹" +
+    Number(
+      value || 0
+    ).toFixed(2)
   );
 
 }
 
+
+function pdfCurrency(value) {
+
+  return (
+    "Rs. " +
+    Number(
+      value || 0
+    ).toFixed(2)
+  );
+
+}
 
 
 function safeFileName(
@@ -2234,6 +2618,86 @@ function safeFileName(
 }
 
 
+function isPdf(report) {
+
+  const type =
+    String(
+      report.fileType ||
+      ""
+    )
+    .toLowerCase();
+
+
+  const name =
+    String(
+      report.fileName ||
+      ""
+    )
+    .toLowerCase();
+
+
+  return (
+    type.includes("pdf") ||
+    name.endsWith(".pdf")
+  );
+
+}
+
+
+/* =========================================================
+   INTERNAL PAGE NAVIGATION
+   ========================================================= */
+
+function openPortalSection(
+  sectionId
+) {
+
+  document
+    .querySelectorAll(
+      ".portal-view"
+    )
+    .forEach(
+      function(view) {
+
+        view.classList.remove(
+          "active"
+        );
+
+      }
+    );
+
+
+  const section =
+    document.getElementById(
+      sectionId
+    );
+
+
+  if (section) {
+
+    section.classList.add(
+      "active"
+    );
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+function showPatientPortal() {
+
+  openPortalSection(
+    "dashboardView"
+  );
+
+}
+
 
 /* =========================================================
    TOAST
@@ -2248,20 +2712,18 @@ function showToast(
 ) {
 
   const toast =
-    document
-      .getElementById(
-        "toast"
-      );
+    document.getElementById(
+      "toast"
+    );
 
 
   toast.textContent =
     message;
 
 
-  toast.classList
-    .add(
-      "show"
-    );
+  toast.classList.add(
+    "show"
+  );
 
 
   clearTimeout(
@@ -2273,17 +2735,15 @@ function showToast(
     setTimeout(
       function() {
 
-        toast.classList
-          .remove(
-            "show"
-          );
+        toast.classList.remove(
+          "show"
+        );
 
       },
       2500
     );
 
 }
-
 
 
 /* =========================================================
@@ -2300,7 +2760,6 @@ function getPortalToken() {
   );
 
 }
-
 
 
 function clearPatientSession() {
@@ -2320,7 +2779,6 @@ function clearPatientSession() {
 }
 
 
-
 /* =========================================================
    MESSAGE
    ========================================================= */
@@ -2330,49 +2788,43 @@ function showSessionMessage(
 ) {
 
   const element =
-    document
-      .getElementById(
-        "sessionMessage"
-      );
+    document.getElementById(
+      "sessionMessage"
+    );
 
 
   element.textContent =
     message;
 
 
-  element.classList
-    .add(
-      "show"
-    );
+  element.classList.add(
+    "show"
+  );
 
 }
-
 
 
 function clearSessionMessage() {
 
   const element =
-    document
-      .getElementById(
-        "sessionMessage"
-      );
+    document.getElementById(
+      "sessionMessage"
+    );
 
 
   element.textContent =
     "";
 
 
-  element.classList
-    .remove(
-      "show"
-    );
+  element.classList.remove(
+    "show"
+  );
 
 }
 
 
-
 /* =========================================================
-   DOWNLOAD
+   DOWNLOAD MEDICAL FILE
    ========================================================= */
 
 async function downloadMedicalFile(
@@ -2402,13 +2854,8 @@ async function downloadMedicalFile(
       await fetch(
         url,
         {
-
-          method:
-            "GET",
-
-          cache:
-            "no-store"
-
+          method: "GET",
+          cache: "no-store"
         }
       );
 
@@ -2453,14 +2900,12 @@ async function downloadMedicalFile(
       "none";
 
 
-    document.body
-      .appendChild(
-        link
-      );
+    document.body.appendChild(
+      link
+    );
 
 
     link.click();
-
 
     link.remove();
 
@@ -2482,9 +2927,7 @@ async function downloadMedicalFile(
     );
 
 
-  } catch (
-    error
-  ) {
+  } catch (error) {
 
     console.error(
       "Medical file download error:",
@@ -2515,14 +2958,12 @@ async function downloadMedicalFile(
         "none";
 
 
-      document.body
-        .appendChild(
-          fallbackLink
-        );
+      document.body.appendChild(
+        fallbackLink
+      );
 
 
       fallbackLink.click();
-
 
       fallbackLink.remove();
 
@@ -2551,11 +2992,8 @@ async function downloadMedicalFile(
   }
 
 }
-
-
-
 /* =========================================================
-   LOAD DATA
+   LOAD MAIN PORTAL DATA
    ========================================================= */
 
 async function loadPortalData() {
@@ -2565,17 +3003,15 @@ async function loadPortalData() {
 
 
   const loading =
-    document
-      .getElementById(
-        "loadingCard"
-      );
+    document.getElementById(
+      "loadingCard"
+    );
 
 
   const content =
-    document
-      .getElementById(
-        "portalContent"
-      );
+    document.getElementById(
+      "portalContent"
+    );
 
 
   clearSessionMessage();
@@ -2585,10 +3021,8 @@ async function loadPortalData() {
 
     clearPatientSession();
 
-
     window.location.href =
       "patient-login.html";
-
 
     return;
 
@@ -2605,6 +3039,12 @@ async function loadPortalData() {
 
   try {
 
+    /*
+      -------------------------------------------------------
+      LOAD PRESCRIPTIONS + LAB REPORTS + PATIENT INFORMATION
+      -------------------------------------------------------
+    */
+
     const response =
       await fetch(
 
@@ -2616,7 +3056,6 @@ async function loadPortalData() {
           method:
             "POST",
 
-
           headers: {
 
             "Content-Type":
@@ -2626,7 +3065,6 @@ async function loadPortalData() {
               SUPABASE_PUBLISHABLE_KEY
 
           },
-
 
           body:
             JSON.stringify({
@@ -2649,7 +3087,6 @@ async function loadPortalData() {
       !response.ok ||
       !result.success
     ) {
-
 
       if (
         response.status ===
@@ -2688,16 +3125,43 @@ async function loadPortalData() {
     }
 
 
+    /*
+      SAVE PATIENT INFORMATION
+    */
+
+    portalPatient =
+      result.patient ||
+      {};
+
+
+    portalPrescriptions =
+      result.prescriptions ||
+      [];
+
+
+    portalLabReports =
+      result.labReports ||
+      [];
+
+
+    /*
+      PATIENT NAME
+    */
+
     document
       .getElementById(
         "patientName"
       )
       .textContent =
 
-        result.patient?.name ||
+        portalPatient.name ||
 
         "Patient";
 
+
+    /*
+      PATIENT ID
+    */
 
     document
       .getElementById(
@@ -2709,33 +3173,56 @@ async function loadPortalData() {
 
         String(
 
-          result.patient?.id ||
+          portalPatient.id ||
 
           "-"
 
         );
 
 
+    /*
+      RENDER PRESCRIPTIONS
+    */
+
     renderPrescriptions(
-
-      result.prescriptions ||
-
-      []
-
+      portalPrescriptions
     );
 
+
+    /*
+      RENDER LAB REPORTS
+    */
 
     renderLabReports(
-
-      result.labReports ||
-
-      []
-
+      portalLabReports
     );
+
+
+    /*
+      UPDATE COUNTS
+    */
+
+    updatePrescriptionCount();
+
+    updateLabReportCount();
+
+
+    /*
+      LOAD BILLS SEPARATELY
+    */
 
     await loadPatientBills(
       token
     );
+
+
+    /*
+      ALWAYS START AT MAIN PATIENT PORTAL
+    */
+
+    showPatientPortal();
+
+
     content.style.display =
       "block";
 
@@ -2770,125 +3257,90 @@ async function loadPortalData() {
 
 
 /* =========================================================
-   LOAD PATIENT BILLS
+   DASHBOARD COUNTS
    ========================================================= */
 
-async function loadPatientBills(
-  token
-) {
+function updatePrescriptionCount() {
 
-  const container =
+  const element =
     document.getElementById(
-      "billsContainer"
+      "prescriptionCount"
     );
 
 
-  if (!container) {
-    return;
-  }
+  const count =
+    portalPrescriptions.length;
 
 
-  container.innerHTML = `
+  element.textContent =
 
-    <div class="empty-card">
-      Loading bills...
-    </div>
+    count +
 
-  `;
+    (
 
+      count === 1
+        ? " prescription"
+        : " prescriptions"
 
-  try {
-
-    const response =
-      await fetch(
-
-        SUPABASE_URL +
-        "/functions/v1/get-patient-portal-bills",
-
-        {
-
-          method:
-            "POST",
-
-          headers: {
-
-            "Content-Type":
-              "application/json",
-
-            "apikey":
-              SUPABASE_PUBLISHABLE_KEY
-
-          },
-
-          body:
-            JSON.stringify({
-
-              portalToken:
-                token
-
-            })
-
-        }
-
-      );
-
-
-    const result =
-      await response.json();
-
-
-    if (
-      !response.ok ||
-      !result.success
-    ) {
-
-      throw new Error(
-
-        result.message ||
-        "Unable to load bills."
-
-      );
-
-    }
-
-patientBills =
-  result.bills ||
-  [];
-
-
-renderBills(
-  patientBills
-);
-    
-
-
-  } catch (
-    error
-  ) {
-
-    console.error(
-      "Patient bills error:",
-      error
     );
-
-
-    container.innerHTML = `
-
-      <div class="empty-card">
-
-        <div class="empty-icon">
-          🧾
-        </div>
-
-        Unable to load bills.
-
-      </div>
-
-    `;
-
-  }
 
 }
+
+
+function updateLabReportCount() {
+
+  const element =
+    document.getElementById(
+      "labReportCount"
+    );
+
+
+  const count =
+    portalLabReports.length;
+
+
+  element.textContent =
+
+    count +
+
+    (
+
+      count === 1
+        ? " report"
+        : " reports"
+
+    );
+
+}
+
+
+function updateBillCount() {
+
+  const element =
+    document.getElementById(
+      "billCount"
+    );
+
+
+  const count =
+    patientBills.length;
+
+
+  element.textContent =
+
+    count +
+
+    (
+
+      count === 1
+        ? " bill"
+        : " bills"
+
+    );
+
+}
+
+
 /* =========================================================
    PRESCRIPTIONS
    ========================================================= */
@@ -2898,15 +3350,14 @@ function renderPrescriptions(
 ) {
 
   const container =
-    document
-      .getElementById(
-        "prescriptionsContainer"
-      );
+    document.getElementById(
+      "prescriptionsContainer"
+    );
 
 
   if (
-    prescriptions.length ===
-    0
+    !prescriptions ||
+    prescriptions.length === 0
   ) {
 
     container.innerHTML = `
@@ -3166,7 +3617,6 @@ function renderPrescriptions(
 }
 
 
-
 /* =========================================================
    LAB REPORTS
    ========================================================= */
@@ -3176,15 +3626,14 @@ function renderLabReports(
 ) {
 
   const container =
-    document
-      .getElementById(
-        "labReportsContainer"
-      );
+    document.getElementById(
+      "labReportsContainer"
+    );
 
 
   if (
-    reports.length ===
-    0
+    !reports ||
+    reports.length === 0
   ) {
 
     container.innerHTML = `
@@ -3278,9 +3727,7 @@ function renderLabReports(
               (
 
                 pdf
-
                   ? ".pdf"
-
                   : ".jpg"
 
               )
@@ -3510,21 +3957,481 @@ function renderLabReports(
 
 
 /* =========================================================
-   BILLS
+   LOAD PATIENT BILLS
    ========================================================= */
 
-function renderBills(
+async function loadPatientBills(
+  token
+) {
+
+  const container =
+    document.getElementById(
+      "billsContainer"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="empty-card">
+
+      <div class="spinner"></div>
+
+      <strong>
+        Loading bills
+      </strong>
+
+    </div>
+
+  `;
+
+
+  try {
+
+    const response =
+      await fetch(
+
+        SUPABASE_URL +
+        "/functions/v1/get-patient-portal-bills",
+
+        {
+
+          method:
+            "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            "apikey":
+              SUPABASE_PUBLISHABLE_KEY
+
+          },
+
+          body:
+            JSON.stringify({
+
+              portalToken:
+                token
+
+            })
+
+        }
+
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      response.status === 401
+    ) {
+
+      clearPatientSession();
+
+
+      alert(
+
+        result.message ||
+
+        "Your patient portal session has expired. Please login again."
+
+      );
+
+
+      window.location.href =
+        "patient-login.html";
+
+
+      return;
+
+    }
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+
+      throw new Error(
+
+        result.message ||
+
+        "Unable to load patient bills."
+
+      );
+
+    }
+
+
+    /*
+      The Edge Function may return:
+      result.bills
+      or
+      result.billing
+
+      This allows either response name safely.
+    */
+
+    patientBills =
+
+      result.bills ||
+
+      result.billing ||
+
+      [];
+
+
+    /*
+      Newest bill first
+    */
+
+    patientBills.sort(
+
+      function(
+        a,
+        b
+      ) {
+
+        const dateA =
+          new Date(
+            a.bill_date ||
+            a.date ||
+            0
+          )
+          .getTime();
+
+
+        const dateB =
+          new Date(
+            b.bill_date ||
+            b.date ||
+            0
+          )
+          .getTime();
+
+
+        if (
+          dateB !==
+          dateA
+        ) {
+
+          return (
+            dateB -
+            dateA
+          );
+
+        }
+
+
+        return (
+
+          Number(
+            b.id ||
+            0
+          ) -
+
+          Number(
+            a.id ||
+            0
+          )
+
+        );
+
+      }
+
+    );
+
+
+    updateBillCount();
+
+
+    renderPatientBills(
+      patientBills
+    );
+
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      "Patient bills error:",
+      error
+    );
+
+
+    patientBills =
+      [];
+
+
+    updateBillCount();
+
+
+    container.innerHTML = `
+
+      <div class="empty-card">
+
+        <div class="empty-icon">
+          🧾
+        </div>
+
+        <strong>
+          Unable to load bills
+        </strong>
+
+        <div
+          style="
+            margin-top:5px;
+          ">
+
+          ${
+            escapeHTML(
+              error.message ||
+              "Please refresh and try again."
+            )
+          }
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   BILL VALUE HELPER
+   ========================================================= */
+
+function getBillValue(
+  bill,
+  keys,
+  fallback
+) {
+
+  for (
+    const key of keys
+  ) {
+
+    if (
+      bill[key] !== undefined &&
+      bill[key] !== null
+    ) {
+
+      return bill[key];
+
+    }
+
+  }
+
+
+  return fallback;
+
+}
+
+
+/* =========================================================
+   NORMALIZE BILL
+   ========================================================= */
+
+function normalizePatientBill(
+  bill
+) {
+
+  return {
+
+    id:
+      getBillValue(
+        bill,
+        [
+          "id",
+          "bill_id",
+          "billId"
+        ],
+        ""
+      ),
+
+
+    patient_id:
+      getBillValue(
+        bill,
+        [
+          "patient_id",
+          "patientId"
+        ],
+        portalPatient?.id ||
+        ""
+      ),
+
+
+    bill_date:
+      getBillValue(
+        bill,
+        [
+          "bill_date",
+          "billDate",
+          "date"
+        ],
+        ""
+      ),
+
+
+    consultation_fee:
+      Number(
+        getBillValue(
+          bill,
+          [
+            "consultation_fee",
+            "consultationFee"
+          ],
+          0
+        ) ||
+        0
+      ),
+
+
+    medicine_charges:
+      Number(
+        getBillValue(
+          bill,
+          [
+            "medicine_charges",
+            "medicineCharges"
+          ],
+          0
+        ) ||
+        0
+      ),
+
+
+    procedure_charges:
+      Number(
+        getBillValue(
+          bill,
+          [
+            "procedure_charges",
+            "procedureCharges"
+          ],
+          0
+        ) ||
+        0
+      ),
+
+
+    total_amount:
+      Number(
+        getBillValue(
+          bill,
+          [
+            "total_amount",
+            "totalAmount",
+            "total"
+          ],
+          0
+        ) ||
+        0
+      ),
+
+
+    payment_status:
+      getBillValue(
+        bill,
+        [
+          "payment_status",
+          "paymentStatus"
+        ],
+        "-"
+      ),
+
+
+    payment_method:
+      getBillValue(
+        bill,
+        [
+          "payment_method",
+          "paymentMethod"
+        ],
+        "-"
+      ),
+
+
+    notes:
+      getBillValue(
+        bill,
+        [
+          "notes",
+          "billing_notes",
+          "billingNotes"
+        ],
+        ""
+      )
+
+  };
+
+}
+
+
+/* =========================================================
+   FIND BILL
+   ========================================================= */
+
+function findPatientBill(
+  billId
+) {
+
+  return patientBills.find(
+
+    function(
+      bill
+    ) {
+
+      const normalized =
+        normalizePatientBill(
+          bill
+        );
+
+
+      return (
+
+        String(
+          normalized.id
+        ) ===
+
+        String(
+          billId
+        )
+
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   RENDER PATIENT BILLS
+   ========================================================= */
+
+function renderPatientBills(
   bills
 ) {
 
   const container =
-    document
-      .getElementById(
-        "billsContainer"
-      );
+    document.getElementById(
+      "billsContainer"
+    );
 
 
   if (
+    !bills ||
     bills.length === 0
   ) {
 
@@ -3545,7 +4452,7 @@ function renderBills(
             margin-top:4px;
           ">
 
-          Clinic bills and payment receipts
+          Your clinic bills and receipts
           will appear here.
 
         </div>
@@ -3567,73 +4474,84 @@ function renderBills(
       .map(
 
         function(
-          bill,
-          index
+          originalBill
         ) {
 
 
-          const displayDate =
-            formatDate(
-              bill.date
+          const bill =
+            normalizePatientBill(
+              originalBill
             );
 
 
-          const paymentStatus =
-            String(
-              bill.paymentStatus ||
-              "-"
-            );
+          let statusClass =
+            "pending";
 
 
-          const paymentMethod =
-            String(
-              bill.paymentMethod ||
-              "-"
-            );
+          if (
+            bill.payment_status ===
+            "Paid"
+          ) {
+
+            statusClass =
+              "paid";
+
+          } else if (
+            bill.payment_status ===
+            "Partially Paid"
+          ) {
+
+            statusClass =
+              "partial";
+
+          }
 
 
           return `
 
-            <article class="file-card">
+            <article class="patient-bill-card">
 
 
-              <div class="file-header">
+              <div class="bill-top-row">
 
 
                 <div>
 
-                  <div class="file-title">
 
-                    🧾 Bill #${escapeHTML(
+                  <div class="bill-date">
+
+                    ${escapeHTML(
+                      formatDate(
+                        bill.bill_date
+                      )
+                    )}
+
+                  </div>
+
+
+                  <div class="bill-number">
+
+                    Receipt / Bill #
+                    ${escapeHTML(
                       bill.id
                     )}
 
                   </div>
 
 
-                  <div class="file-date">
-
-                    ${escapeHTML(
-                      displayDate
-                    )}
-
-                  </div>
-
-
-                  <div class="file-name">
-
-                    Clinic billing receipt
-
-                  </div>
-
                 </div>
 
 
-                <div class="document-number">
+                <div
+                  class="
+                    bill-status
+                    ${statusClass}
+                  ">
 
-                  ${
-                    index + 1
-                  }
+                  ${escapeHTML(
+                    bill.payment_status ||
+                    "-"
+                  )}
 
                 </div>
 
@@ -3641,251 +4559,44 @@ function renderBills(
               </div>
 
 
-              <div
-                style="
-                  padding:18px 16px;
-                  background:#f8fafc;
-                ">
+              <div class="bill-total-row">
 
 
-                <div
-                  style="
-                    color:#73808c;
-                    font-size:10px;
-                    font-weight:850;
-                    text-transform:uppercase;
-                  ">
+                <div class="bill-total-label">
 
                   Total Amount
 
                 </div>
 
 
-                <div
-                  style="
-                    margin-top:4px;
-                    color:#a12630;
-                    font-size:26px;
-                    font-weight:900;
-                  ">
+                <div class="bill-total">
 
-                  ₹${Number(
-                    bill.totalAmount ||
-                    0
-                  ).toFixed(2)}
-
-                </div>
-
-
-                <div
-                  style="
-                    margin-top:15px;
-                    display:grid;
-                    grid-template-columns:
-                      repeat(
-                        2,
-                        minmax(0,1fr)
-                      );
-                    gap:9px;
-                  ">
-
-
-                  <div
-                    style="
-                      padding:11px;
-                      background:#ffffff;
-                      border:1px solid #edf1f4;
-                      border-radius:11px;
-                    ">
-
-                    <div
-                      style="
-                        color:#73808c;
-                        font-size:9px;
-                        font-weight:850;
-                      ">
-
-                      Consultation Fee
-
-                    </div>
-
-                    <div
-                      style="
-                        margin-top:4px;
-                        font-size:12px;
-                        font-weight:800;
-                      ">
-
-                      ₹${Number(
-                        bill.consultationFee ||
-                        0
-                      ).toFixed(2)}
-
-                    </div>
-
-                  </div>
-
-
-                  <div
-                    style="
-                      padding:11px;
-                      background:#ffffff;
-                      border:1px solid #edf1f4;
-                      border-radius:11px;
-                    ">
-
-                    <div
-                      style="
-                        color:#73808c;
-                        font-size:9px;
-                        font-weight:850;
-                      ">
-
-                      Medicine Charges
-
-                    </div>
-
-                    <div
-                      style="
-                        margin-top:4px;
-                        font-size:12px;
-                        font-weight:800;
-                      ">
-
-                      ₹${Number(
-                        bill.medicineCharges ||
-                        0
-                      ).toFixed(2)}
-
-                    </div>
-
-                  </div>
-
-
-                  <div
-                    style="
-                      padding:11px;
-                      background:#ffffff;
-                      border:1px solid #edf1f4;
-                      border-radius:11px;
-                    ">
-
-                    <div
-                      style="
-                        color:#73808c;
-                        font-size:9px;
-                        font-weight:850;
-                      ">
-
-                      Procedure / Other
-
-                    </div>
-
-                    <div
-                      style="
-                        margin-top:4px;
-                        font-size:12px;
-                        font-weight:800;
-                      ">
-
-                      ₹${Number(
-                        bill.procedureCharges ||
-                        0
-                      ).toFixed(2)}
-
-                    </div>
-
-                  </div>
-
-
-                  <div
-                    style="
-                      padding:11px;
-                      background:#ffffff;
-                      border:1px solid #edf1f4;
-                      border-radius:11px;
-                    ">
-
-                    <div
-                      style="
-                        color:#73808c;
-                        font-size:9px;
-                        font-weight:850;
-                      ">
-
-                      Payment Status
-
-                    </div>
-
-                    <div
-                      style="
-                        margin-top:4px;
-                        font-size:12px;
-                        font-weight:800;
-                        color:${
-                          paymentStatus === "Paid"
-                            ? "#20835a"
-                            : "#b46a14"
-                        };
-                      ">
-
-                      ${escapeHTML(
-                        paymentStatus
-                      )}
-
-                    </div>
-
-                  </div>
-
-
-                  <div
-                    style="
-                      padding:11px;
-                      background:#ffffff;
-                      border:1px solid #edf1f4;
-                      border-radius:11px;
-                      grid-column:1 / -1;
-                    ">
-
-                    <div
-                      style="
-                        color:#73808c;
-                        font-size:9px;
-                        font-weight:850;
-                      ">
-
-                      Payment Method
-
-                    </div>
-
-                    <div
-                      style="
-                        margin-top:4px;
-                        font-size:12px;
-                        font-weight:800;
-                      ">
-
-                      ${escapeHTML(
-                        paymentMethod
-                      )}
-
-                    </div>
-
-                  </div>
-
+                  ${currency(
+                    bill.total_amount
+                  )}
 
                 </div>
 
 
               </div>
-              <div class="file-actions">
+
+
+              <div class="bill-actions">
+
 
                 <button
                   type="button"
-                  class="file-button view-button"
-                  onclick="viewPatientBill(
-                    ${Number(bill.id)}
-                  )">
+                  class="
+                    file-button
+                    view-button
+                  "
+                  onclick='viewPatientBill(
+                    ${JSON.stringify(
+                      String(
+                        bill.id
+                      )
+                    )}
+                  )'>
 
                   👁 View Receipt
 
@@ -3894,16 +4605,25 @@ function renderBills(
 
                 <button
                   type="button"
-                  class="file-button download-button"
-                  onclick="downloadPatientBillPDF(
-                    ${Number(bill.id)}
-                  )">
+                  class="
+                    file-button
+                    download-button
+                  "
+                  onclick='downloadPatientBillPDF(
+                    ${JSON.stringify(
+                      String(
+                        bill.id
+                      )
+                    )}
+                  )'>
 
                   ⬇ Download PDF
 
                 </button>
 
+
               </div>
+
 
             </article>
 
@@ -3917,28 +4637,204 @@ function renderBills(
 
 }
 
+
+/* =========================================================
+   IMAGE VIEWER
+   ========================================================= */
+
+function openViewer(
+  url
+) {
+
+  if (!url) {
+    return;
+  }
+
+
+  document
+    .getElementById(
+      "viewerImage"
+    )
+    .src =
+      url;
+
+
+  document
+    .getElementById(
+      "imageViewer"
+    )
+    .classList
+    .add(
+      "open"
+    );
+
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+function closeViewer() {
+
+  document
+    .getElementById(
+      "imageViewer"
+    )
+    .classList
+    .remove(
+      "open"
+    );
+
+
+  document
+    .getElementById(
+      "viewerImage"
+    )
+    .src =
+      "";
+
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+/* =========================================================
+   LOAD IMAGE AS DATA URL
+   Used for doctor signature in downloaded PDF.
+   ========================================================= */
+
+function loadImageAsDataURL(
+  imageUrl
+) {
+
+  return new Promise(
+
+    function(
+      resolve
+    ) {
+
+      const image =
+        new Image();
+
+
+      image.crossOrigin =
+        "anonymous";
+
+
+      image.onload =
+        function() {
+
+          try {
+
+            const canvas =
+              document.createElement(
+                "canvas"
+              );
+
+
+            canvas.width =
+              image.naturalWidth ||
+              image.width;
+
+
+            canvas.height =
+              image.naturalHeight ||
+              image.height;
+
+
+            const context =
+              canvas.getContext(
+                "2d"
+              );
+
+
+            context.drawImage(
+              image,
+              0,
+              0
+            );
+
+
+            resolve(
+              canvas.toDataURL(
+                "image/png"
+              )
+            );
+
+
+          } catch (
+            error
+          ) {
+
+            console.warn(
+              "Unable to convert signature image:",
+              error
+            );
+
+
+            resolve(
+              null
+            );
+
+          }
+
+        };
+
+
+      image.onerror =
+        function() {
+
+          console.warn(
+            "Unable to load doctor signature."
+          );
+
+
+          resolve(
+            null
+          );
+
+        };
+
+
+      image.src =
+        imageUrl +
+
+        (
+          imageUrl.includes("?")
+            ? "&"
+            : "?"
+        ) +
+
+        "v=" +
+
+        Date.now();
+
+    }
+
+  );
+
+}
+
   /* =========================================================
-   VIEW PATIENT BILL RECEIPT
+   VIEW PATIENT BILL
    ========================================================= */
 
 function viewPatientBill(
   billId
 ) {
 
-  const bill =
-    patientBills.find(
-      function(item) {
-
-        return Number(item.id) ===
-          Number(billId);
-
-      }
+  const originalBill =
+    findPatientBill(
+      billId
     );
 
 
-  if (!bill) {
+  if (!originalBill) {
 
-    showToast(
+    alert(
       "Unable to find this bill."
     );
 
@@ -3947,33 +4843,17 @@ function viewPatientBill(
   }
 
 
+  const bill =
+    normalizePatientBill(
+      originalBill
+    );
+
+
   const patientName =
-    document
-      .getElementById(
-        "patientName"
-      )
-      ?.textContent
-      ?.trim() ||
+
+    portalPatient?.name ||
+
     "Patient";
-
-
-  const patientIdText =
-    document
-      .getElementById(
-        "patientId"
-      )
-      ?.textContent ||
-    "";
-
-
-  const patientId =
-    patientIdText
-      .replace(
-        "Patient ID:",
-        ""
-      )
-      .trim() ||
-    "-";
 
 
   const receiptWindow =
@@ -3996,7 +4876,9 @@ function viewPatientBill(
 
 
   const notesHTML =
+
     bill.notes
+
       ? `
 
         <div class="receipt-notes">
@@ -4014,6 +4896,7 @@ function viewPatientBill(
         </div>
 
       `
+
       : "";
 
 
@@ -4044,185 +4927,665 @@ Receipt #${escapeHTML(
   box-sizing: border-box;
 }
 
+
 body {
+
   margin: 0;
+
   padding: 28px;
+
   font-family:
     Arial,
     Helvetica,
     sans-serif;
+
   color: #172033;
-  background: #ffffff;
+
+  background: #f5f7fb;
+
 }
+
 
 .receipt {
+
   width: 100%;
+
   max-width: 720px;
+
   margin: 0 auto;
-  border: 1px solid #dbe5ef;
-  border-radius: 14px;
+
   overflow: hidden;
+
   background: #ffffff;
+
+  border:
+    1px solid #dbe5ef;
+
+  border-radius:
+    14px;
+
+  box-shadow:
+    0 8px 28px rgba(20,31,56,.08);
+
 }
 
+
+/* =====================================================
+   CLINIC HEADER
+   ===================================================== */
+
 .clinic-header {
-  text-align: center;
-  padding: 24px 22px 19px;
+
+  padding:
+    24px
+    22px
+    19px;
+
+  text-align:
+    center;
+
   background:
     linear-gradient(
       135deg,
       #eef6ff,
       #ffffff
     );
+
   border-bottom:
     2px solid #2563eb;
+
 }
+
 
 .clinic-name {
+
   margin: 0;
-  color: #1556a8;
-  font-size: 23px;
-  line-height: 1.2;
-  font-weight: 800;
-  letter-spacing: .5px;
+
+  color:
+    #1556a8;
+
+  font-size:
+    23px;
+
+  line-height:
+    1.2;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .5px;
+
 }
+
 
 .clinic-address {
-  margin-top: 9px;
-  color: #475569;
-  font-size: 12.5px;
-  line-height: 1.6;
+
+  margin-top:
+    9px;
+
+  color:
+    #475569;
+
+  font-size:
+    12.5px;
+
+  line-height:
+    1.6;
+
 }
+
+
+/* =====================================================
+   RECEIPT TITLE
+   ===================================================== */
 
 .receipt-title {
-  text-align: center;
-  padding: 15px;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
+
+  padding:
+    15px;
+
+  text-align:
+    center;
+
+  font-size:
+    18px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.2px;
+
   border-bottom:
     1px solid #e2e8f0;
+
 }
+
+
+/* =====================================================
+   CONTENT
+   ===================================================== */
 
 .content {
-  padding: 20px 24px 24px;
+
+  padding:
+    20px
+    24px
+    24px;
+
 }
+
 
 .info-grid {
-  display: grid;
+
+  display:
+    grid;
+
   grid-template-columns:
-    repeat(2,minmax(0,1fr));
-  gap: 10px 24px;
-  margin-bottom: 20px;
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap:
+    10px
+    24px;
+
+  margin-bottom:
+    20px;
+
 }
+
 
 .info-label {
-  display: block;
-  margin-bottom: 2px;
-  color: #64748b;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
+
+  display:
+    block;
+
+  margin-bottom:
+    2px;
+
+  color:
+    #64748b;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
 }
+
 
 .info-value {
-  font-weight: 700;
+
+  font-weight:
+    700;
+
 }
+
+
+/* =====================================================
+   TABLE
+   ===================================================== */
 
 table {
-  width: 100%;
-  border-collapse: collapse;
+
+  width:
+    100%;
+
+  border-collapse:
+    collapse;
+
 }
 
+
 thead {
-  background: #eef6ff;
+
+  background:
+    #eef6ff;
+
 }
+
 
 th,
 td {
-  padding: 11px 12px;
+
+  padding:
+    11px
+    12px;
+
   border-bottom:
     1px solid #edf0f4;
-  font-size: 13px;
+
+  font-size:
+    13px;
+
 }
 
+
 th {
-  color: #315b89;
-  text-align: left;
+
+  color:
+    #315b89;
+
+  text-align:
+    left;
+
 }
+
 
 th:last-child,
 td:last-child {
-  text-align: right;
+
+  text-align:
+    right;
+
 }
+
 
 .total-row td {
-  padding-top: 14px;
-  padding-bottom: 14px;
-  background: #f0f7ff;
-  color: #1556a8;
-  font-size: 16px;
-  font-weight: 800;
+
+  padding-top:
+    14px;
+
+  padding-bottom:
+    14px;
+
+  color:
+    #1556a8;
+
+  background:
+    #f0f7ff;
+
   border-top:
     2px solid #bcd6ef;
+
+  font-size:
+    16px;
+
+  font-weight:
+    800;
+
 }
+
+
+/* =====================================================
+   PAYMENT
+   ===================================================== */
 
 .payment-box {
-  margin-top: 18px;
-  padding: 14px 15px;
-  background: #f8fafc;
+
+  margin-top:
+    18px;
+
+  padding:
+    14px
+    15px;
+
+  background:
+    #f8fafc;
+
   border:
     1px solid #e2e8f0;
-  border-radius: 10px;
+
+  border-radius:
+    10px;
+
 }
+
 
 .payment-line {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 5px 0;
-  font-size: 13px;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  gap:
+    20px;
+
+  padding:
+    5px 0;
+
+  font-size:
+    13px;
+
 }
+
+
+/* =====================================================
+   NOTES
+   ===================================================== */
 
 .receipt-notes {
-  margin-top: 15px;
-  padding: 12px 14px;
-  background: #fffdf5;
+
+  margin-top:
+    15px;
+
+  padding:
+    12px
+    14px;
+
+  background:
+    #fffdf5;
+
   border:
     1px solid #f3e7bd;
-  border-radius: 9px;
-  font-size: 12px;
-  line-height: 1.6;
+
+  border-radius:
+    9px;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.6;
+
 }
+
+
+/* =====================================================
+   DOCTOR SIGNATURE
+   ===================================================== */
+
+.doctor-signature {
+
+  margin-top:
+    24px;
+
+  display:
+    flex;
+
+  justify-content:
+    flex-end;
+
+}
+
+
+.signature-block {
+
+  width:
+    250px;
+
+  text-align:
+    center;
+
+}
+
+
+.signature-image {
+
+  display:
+    block;
+
+  width:
+    145px;
+
+  height:
+    62px;
+
+  margin:
+    0 auto 2px;
+
+  object-fit:
+    contain;
+
+}
+
+
+.doctor-name {
+
+  margin-top:
+    1px;
+
+  color:
+    #172033;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+}
+
+
+.doctor-registration {
+
+  margin-top:
+    2px;
+
+  color:
+    #475569;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+}
+
+
+.doctor-qualification {
+
+  margin-top:
+    2px;
+
+  color:
+    #475569;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.4;
+
+}
+
+
+.doctor-designation {
+
+  margin-top:
+    2px;
+
+  color:
+    #1556a8;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
 
 .footer {
-  padding: 19px 20px 21px;
-  text-align: center;
+
+  padding:
+    19px
+    20px
+    21px;
+
+  text-align:
+    center;
+
+  background:
+    #fbfcfe;
+
   border-top:
     1px solid #e2e8f0;
-  background: #fbfcfe;
+
 }
+
 
 .thanks {
-  color: #1556a8;
-  font-size: 14px;
-  font-weight: 700;
+
+  color:
+    #1556a8;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
 }
 
+
 .footer-clinic {
-  margin-top: 3px;
-  font-size: 14px;
-  font-weight: 800;
+
+  margin-top:
+    3px;
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
 }
+
+
+/* =====================================================
+   PRINT
+   ===================================================== */
+
+.print-actions {
+
+  width:
+    100%;
+
+  max-width:
+    720px;
+
+  margin:
+    15px auto 0;
+
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+}
+
+
+.print-button {
+
+  min-height:
+    42px;
+
+  padding:
+    10px
+    18px;
+
+  color:
+    #ffffff;
+
+  background:
+    #2563eb;
+
+  border:
+    none;
+
+  border-radius:
+    10px;
+
+  cursor:
+    pointer;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+}
+
+
+@media print {
+
+  body {
+
+    padding:
+      0;
+
+    background:
+      #ffffff;
+
+  }
+
+
+  .receipt {
+
+    border:
+      none;
+
+    border-radius:
+      0;
+
+    box-shadow:
+      none;
+
+  }
+
+
+  .print-actions {
+
+    display:
+      none;
+
+  }
+
+}
+
 
 @media(max-width:600px) {
 
   body {
-    padding: 10px;
+
+    padding:
+      10px;
+
   }
 
+
   .content {
-    padding: 17px 14px 20px;
+
+    padding:
+      17px
+      15px
+      20px;
+
+  }
+
+
+  .info-grid {
+
+    gap:
+      10px
+      15px;
+
+  }
+
+
+  .doctor-signature {
+
+    justify-content:
+      center;
+
   }
 
 }
@@ -4238,16 +5601,25 @@ td:last-child {
 <div class="receipt">
 
 
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
 <div class="clinic-header">
 
+
 <h1 class="clinic-name">
+
 GENERAL &amp; DIABETES CARE
+
 </h1>
+
 
 <div class="clinic-address">
 
 No. 78, VV Kovil Street,
 Thiruvalleswarar Nagar,
+
 <br>
 
 Thirumangalam,
@@ -4256,13 +5628,26 @@ Chennai - 600040
 
 </div>
 
+
 </div>
 
+
+
+<!-- =====================================================
+     RECEIPT TITLE
+     ===================================================== -->
 
 <div class="receipt-title">
+
 RECEIPT
+
 </div>
 
+
+
+<!-- =====================================================
+     CONTENT
+     ===================================================== -->
 
 <div class="content">
 
@@ -4277,12 +5662,15 @@ Bill No.
 </span>
 
 <span class="info-value">
+
 ${escapeHTML(
   bill.id
 )}
+
 </span>
 
 </div>
+
 
 
 <div>
@@ -4292,14 +5680,17 @@ Date
 </span>
 
 <span class="info-value">
+
 ${escapeHTML(
   formatDate(
-    bill.date
+    bill.bill_date
   )
 )}
+
 </span>
 
 </div>
+
 
 
 <div>
@@ -4309,12 +5700,15 @@ Patient
 </span>
 
 <span class="info-value">
+
 ${escapeHTML(
   patientName
 )}
+
 </span>
 
 </div>
+
 
 
 <div>
@@ -4324,9 +5718,11 @@ Patient ID
 </span>
 
 <span class="info-value">
+
 ${escapeHTML(
-  patientId
+  bill.patient_id
 )}
+
 </span>
 
 </div>
@@ -4335,7 +5731,13 @@ ${escapeHTML(
 </div>
 
 
+
+<!-- =====================================================
+     CHARGES
+     ===================================================== -->
+
 <table>
+
 
 <thead>
 
@@ -4364,13 +5766,15 @@ Consultation Fee
 </td>
 
 <td>
-₹${Number(
-  bill.consultationFee ||
-  0
-).toFixed(2)}
+
+${currency(
+  bill.consultation_fee
+)}
+
 </td>
 
 </tr>
+
 
 
 <tr>
@@ -4380,13 +5784,15 @@ Medicine Charges
 </td>
 
 <td>
-₹${Number(
-  bill.medicineCharges ||
-  0
-).toFixed(2)}
+
+${currency(
+  bill.medicine_charges
+)}
+
 </td>
 
 </tr>
+
 
 
 <tr>
@@ -4396,13 +5802,15 @@ Procedure / Other Charges
 </td>
 
 <td>
-₹${Number(
-  bill.procedureCharges ||
-  0
-).toFixed(2)}
+
+${currency(
+  bill.procedure_charges
+)}
+
 </td>
 
 </tr>
+
 
 
 <tr class="total-row">
@@ -4412,10 +5820,11 @@ TOTAL
 </td>
 
 <td>
-₹${Number(
-  bill.totalAmount ||
-  0
-).toFixed(2)}
+
+${currency(
+  bill.total_amount
+)}
+
 </td>
 
 </tr>
@@ -4423,8 +5832,14 @@ TOTAL
 
 </tbody>
 
+
 </table>
 
+
+
+<!-- =====================================================
+     PAYMENT
+     ===================================================== -->
 
 <div class="payment-box">
 
@@ -4436,13 +5851,16 @@ Payment Status
 </strong>
 
 <span>
+
 ${escapeHTML(
-  bill.paymentStatus ||
+  bill.payment_status ||
   "-"
 )}
+
 </span>
 
 </div>
+
 
 
 <div class="payment-line">
@@ -4452,10 +5870,12 @@ Payment Method
 </strong>
 
 <span>
+
 ${escapeHTML(
-  bill.paymentMethod ||
+  bill.payment_method ||
   "-"
 )}
+
 </span>
 
 </div>
@@ -4464,24 +5884,103 @@ ${escapeHTML(
 </div>
 
 
+
 ${notesHTML}
 
 
+
+<!-- =====================================================
+     DOCTOR SIGNATURE
+     ===================================================== -->
+
+<div class="doctor-signature">
+
+
+<div class="signature-block">
+
+
+<img
+  src="${DOCTOR_SIGNATURE_URL}"
+  class="signature-image"
+  alt="Doctor Signature">
+
+
+<div class="doctor-name">
+
+Dr. A. ARUNKUMAR
+
 </div>
 
+
+<div class="doctor-registration">
+
+Reg. No. 133356
+
+</div>
+
+
+<div class="doctor-qualification">
+
+MBBS, FIDM, CCEBDM, CCGDM
+
+</div>
+
+
+<div class="doctor-designation">
+
+General Physician &amp; Diabetologist
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
 
 <div class="footer">
 
+
 <div class="thanks">
+
 Thank you for visiting
+
 </div>
+
 
 <div class="footer-clinic">
+
 GENERAL &amp; DIABETES CARE
-</div>
 
 </div>
 
+
+</div>
+
+
+</div>
+
+
+
+<div class="print-actions">
+
+<button
+  type="button"
+  class="print-button"
+  onclick="window.print()">
+
+🖨️ Print Receipt
+
+</button>
 
 </div>
 
@@ -4497,34 +5996,43 @@ GENERAL &amp; DIABETES CARE
 
 }
 
-  /* =========================================================
+
+/* =========================================================
    DOWNLOAD PATIENT BILL PDF
    ========================================================= */
 
-function downloadPatientBillPDF(
+async function downloadPatientBillPDF(
   billId
 ) {
 
-  const bill =
-    patientBills.find(
-      function(item) {
-
-        return Number(item.id) ===
-          Number(billId);
-
-      }
+  const originalBill =
+    findPatientBill(
+      billId
     );
 
 
-  if (!bill) {
+  if (!originalBill) {
 
-    showToast(
+    alert(
       "Unable to find this bill."
     );
 
     return;
 
   }
+
+
+  const bill =
+    normalizePatientBill(
+      originalBill
+    );
+
+
+  const patientName =
+
+    portalPatient?.name ||
+
+    "Patient";
 
 
   if (
@@ -4541,33 +6049,9 @@ function downloadPatientBillPDF(
   }
 
 
-  const patientName =
-    document
-      .getElementById(
-        "patientName"
-      )
-      ?.textContent
-      ?.trim() ||
-    "Patient";
-
-
-  const patientIdText =
-    document
-      .getElementById(
-        "patientId"
-      )
-      ?.textContent ||
-    "";
-
-
-  const patientId =
-    patientIdText
-      .replace(
-        "Patient ID:",
-        ""
-      )
-      .trim() ||
-    "-";
+  showToast(
+    "Preparing receipt..."
+  );
 
 
   const {
@@ -4578,11 +6062,13 @@ function downloadPatientBillPDF(
 
   const doc =
     new jsPDF({
+
       unit:
         "mm",
 
       format:
         "a4"
+
     });
 
 
@@ -4631,24 +6117,9 @@ function downloadPatientBillPDF(
   ];
 
 
-  function pdfMoney(
-    value
-  ) {
-
-    return (
-      "Rs. " +
-      Number(
-        value ||
-        0
-      ).toFixed(2)
-    );
-
-  }
-
-
-  /* =====================================================
-     HEADER
-     ===================================================== */
+/* =========================================================
+   HEADER
+   ========================================================= */
 
   doc.setFillColor(
     ...lightBlue
@@ -4731,9 +6202,9 @@ function downloadPatientBillPDF(
   );
 
 
-  /* =====================================================
-     RECEIPT
-     ===================================================== */
+/* =========================================================
+   RECEIPT TITLE
+   ========================================================= */
 
   doc.setDrawColor(
     ...clinicBlue
@@ -4788,9 +6259,9 @@ function downloadPatientBillPDF(
   );
 
 
-  /* =====================================================
-     BILL INFORMATION
-     ===================================================== */
+/* =========================================================
+   BILL INFORMATION
+   ========================================================= */
 
   let y =
     82;
@@ -4851,7 +6322,7 @@ function downloadPatientBillPDF(
 
   doc.text(
     formatDate(
-      bill.date
+      bill.bill_date
     ),
     112,
     y
@@ -4912,17 +6383,17 @@ function downloadPatientBillPDF(
   );
 
 
-  const patientNameLines =
+  const patientLines =
     doc.splitTextToSize(
       String(
         patientName
       ),
-      80
+      75
     );
 
 
   doc.text(
-    patientNameLines,
+    patientLines,
     left,
     y
   );
@@ -4930,24 +6401,19 @@ function downloadPatientBillPDF(
 
   doc.text(
     String(
-      patientId
+      bill.patient_id
     ),
     112,
     y
   );
 
 
-  /* =====================================================
-     TABLE
-     ===================================================== */
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
 
   y +=
-    Math.max(
-      14,
-      patientNameLines.length *
-      5 +
-      7
-    );
+    14;
 
 
   doc.setFillColor(
@@ -5004,6 +6470,10 @@ function downloadPatientBillPDF(
     16;
 
 
+/* =========================================================
+   CHARGE ROW FUNCTION
+   ========================================================= */
+
   function addChargeRow(
     label,
     amount
@@ -5033,7 +6503,7 @@ function downloadPatientBillPDF(
 
 
     doc.text(
-      pdfMoney(
+      pdfCurrency(
         amount
       ),
       right - 4,
@@ -5073,25 +6543,25 @@ function downloadPatientBillPDF(
 
   addChargeRow(
     "Consultation Fee",
-    bill.consultationFee
+    bill.consultation_fee
   );
 
 
   addChargeRow(
     "Medicine Charges",
-    bill.medicineCharges
+    bill.medicine_charges
   );
 
 
   addChargeRow(
     "Procedure / Other Charges",
-    bill.procedureCharges
+    bill.procedure_charges
   );
 
 
-  /* =====================================================
-     TOTAL
-     ===================================================== */
+/* =========================================================
+   TOTAL
+   ========================================================= */
 
   y +=
     2;
@@ -5137,8 +6607,8 @@ function downloadPatientBillPDF(
 
 
   doc.text(
-    pdfMoney(
-      bill.totalAmount
+    pdfCurrency(
+      bill.total_amount
     ),
     right - 4,
     y + 3,
@@ -5149,9 +6619,9 @@ function downloadPatientBillPDF(
   );
 
 
-  /* =====================================================
-     PAYMENT
-     ===================================================== */
+/* =========================================================
+   PAYMENT
+   ========================================================= */
 
   y +=
     20;
@@ -5188,7 +6658,7 @@ function downloadPatientBillPDF(
 
   doc.text(
     String(
-      bill.paymentStatus ||
+      bill.payment_status ||
       "-"
     ),
     left + 38,
@@ -5221,7 +6691,7 @@ function downloadPatientBillPDF(
 
   doc.text(
     String(
-      bill.paymentMethod ||
+      bill.payment_method ||
       "-"
     ),
     left + 38,
@@ -5229,9 +6699,9 @@ function downloadPatientBillPDF(
   );
 
 
-  /* =====================================================
-     NOTES
-     ===================================================== */
+/* =========================================================
+   NOTES
+   ========================================================= */
 
   if (
     bill.notes
@@ -5299,12 +6769,175 @@ function downloadPatientBillPDF(
       y
     );
 
+
+    y +=
+      (
+        notesLines.length *
+        5
+      );
+
   }
 
 
-  /* =====================================================
-     FOOTER
-     ===================================================== */
+/* =========================================================
+   DOCTOR SIGNATURE
+   ========================================================= */
+
+  const signatureData =
+    await loadImageAsDataURL(
+      DOCTOR_SIGNATURE_URL
+    );
+
+
+  const signatureCenterX =
+    151;
+
+
+  let signatureY =
+    Math.max(
+      y + 18,
+      202
+    );
+
+
+  /*
+    Prevent signature from moving into footer.
+  */
+
+  if (
+    signatureY >
+    221
+  ) {
+
+    signatureY =
+      221;
+
+  }
+
+
+  if (
+    signatureData
+  ) {
+
+    try {
+
+      doc.addImage(
+        signatureData,
+        "PNG",
+        signatureCenterX - 21,
+        signatureY,
+        42,
+        18
+      );
+
+    } catch (
+      error
+    ) {
+
+      console.warn(
+        "Unable to add signature to PDF:",
+        error
+      );
+
+    }
+
+  }
+
+
+  const doctorTextY =
+    signatureY + 21;
+
+
+  doc.setTextColor(
+    ...darkText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.setFontSize(
+    9.5
+  );
+
+
+  doc.text(
+    "Dr. A. ARUNKUMAR",
+    signatureCenterX,
+    doctorTextY,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.setTextColor(
+    ...mutedText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+
+  doc.setFontSize(
+    8
+  );
+
+
+  doc.text(
+    "Reg. No. 133356",
+    signatureCenterX,
+    doctorTextY + 4.5,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.text(
+    "MBBS, FIDM, CCEBDM, CCGDM",
+    signatureCenterX,
+    doctorTextY + 9,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.setTextColor(
+    ...clinicBlue
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.text(
+    "General Physician & Diabetologist",
+    signatureCenterX,
+    doctorTextY + 13.5,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
   const footerY =
     258;
@@ -5368,14 +7001,18 @@ function downloadPatientBillPDF(
   );
 
 
-  /* =====================================================
-     DOWNLOAD
-     ===================================================== */
+/* =========================================================
+   SAVE PDF
+   ========================================================= */
 
   doc.save(
+
     "General-Diabetes-Care-Receipt-" +
+
     bill.id +
+
     ".pdf"
+
   );
 
 
@@ -5384,148 +7021,474 @@ function downloadPatientBillPDF(
   );
 
 }
-/* =========================================================
-   VIEWER
+
+  /* =========================================================
+   PAGE NAVIGATION
    ========================================================= */
 
-function openViewer(
-  url
-) {
+function hideAllPortalPages() {
 
-  if (!url) {
-
-    return;
-
-  }
-
-
-  document
-    .getElementById(
-      "viewerImage"
-    )
-    .src =
-      url;
+  const pages = [
+    "portalHomePage",
+    "prescriptionsPage",
+    "labReportsPage",
+    "billsPage"
+  ];
 
 
-  document
-    .getElementById(
-      "imageViewer"
-    )
-    .classList
-    .add(
-      "open"
-    );
-
-
-  document.body.style.overflow =
-    "hidden";
-
-}
-
-
-
-function closeViewer() {
-
-  document
-    .getElementById(
-      "imageViewer"
-    )
-    .classList
-    .remove(
-      "open"
-    );
-
-
-  document
-    .getElementById(
-      "viewerImage"
-    )
-    .src =
-      "";
-
-
-  document.body.style.overflow =
-    "";
-
-}
-
-
-
-/* =========================================================
-   EVENTS
-   ========================================================= */
-
-document
-  .getElementById(
-    "refreshButton"
-  )
-  .addEventListener(
-
-    "click",
-
-    function() {
-
-      showToast(
-        "Refreshing records..."
-      );
-
-
-      loadPortalData();
-
-    }
-
-  );
-
-
-
-document
-  .getElementById(
-    "logoutButton"
-  )
-  .addEventListener(
-
-    "click",
-
-    function() {
-
-      clearPatientSession();
-
-
-      window.location.href =
-        "patient-login.html";
-
-    }
-
-  );
-
-
-
-document
-  .getElementById(
-    "imageViewer"
-  )
-  .addEventListener(
-
-    "click",
-
+  pages.forEach(
     function(
-      event
+      pageId
     ) {
 
+      const page =
+        document.getElementById(
+          pageId
+        );
+
+
       if (
-        event.target ===
-        this
+        page
       ) {
 
-        closeViewer();
+        page.style.display =
+          "none";
 
       }
 
     }
+  );
+
+}
+
+
+
+/* =========================================================
+   SHOW PATIENT PORTAL HOME
+   ========================================================= */
+
+function showPatientPortal() {
+
+  hideAllPortalPages();
+
+
+  const page =
+    document.getElementById(
+      "portalHomePage"
+    );
+
+
+  if (
+    page
+  ) {
+
+    page.style.display =
+      "block";
+
+  }
+
+
+  window.scrollTo({
+
+    top:
+      0,
+
+    behavior:
+      "smooth"
+
+  });
+
+}
+
+
+
+/* =========================================================
+   SHOW PRESCRIPTIONS
+   ========================================================= */
+
+function showPrescriptionsPage() {
+
+  hideAllPortalPages();
+
+
+  const page =
+    document.getElementById(
+      "prescriptionsPage"
+    );
+
+
+  if (
+    page
+  ) {
+
+    page.style.display =
+      "block";
+
+  }
+
+
+  renderPrescriptions(
+    portalPrescriptions
+  );
+
+
+  window.scrollTo({
+
+    top:
+      0,
+
+    behavior:
+      "smooth"
+
+  });
+
+}
+
+
+
+/* =========================================================
+   SHOW LAB REPORTS
+   ========================================================= */
+
+function showLabReportsPage() {
+
+  hideAllPortalPages();
+
+
+  const page =
+    document.getElementById(
+      "labReportsPage"
+    );
+
+
+  if (
+    page
+  ) {
+
+    page.style.display =
+      "block";
+
+  }
+
+
+  renderLabReports(
+    portalLabReports
+  );
+
+
+  window.scrollTo({
+
+    top:
+      0,
+
+    behavior:
+      "smooth"
+
+  });
+
+}
+
+
+
+/* =========================================================
+   SHOW BILLS
+   ========================================================= */
+
+function showBillsPage() {
+
+  hideAllPortalPages();
+
+
+  const page =
+    document.getElementById(
+      "billsPage"
+    );
+
+
+  if (
+    page
+  ) {
+
+    page.style.display =
+      "block";
+
+  }
+
+
+  renderBills(
+    portalBills
+  );
+
+
+  window.scrollTo({
+
+    top:
+      0,
+
+    behavior:
+      "smooth"
+
+  });
+
+}
+
+
+
+/* =========================================================
+   REFRESH PORTAL
+   ========================================================= */
+
+async function refreshPortalRecords() {
+
+  showToast(
+    "Refreshing records..."
+  );
+
+
+  await loadPortalData();
+
+
+  showPatientPortal();
+
+
+  showToast(
+    "Records refreshed."
+  );
+
+}
+
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+function logoutPatientPortal() {
+
+  clearPatientSession();
+
+
+  window.location.href =
+    "patient-login.html";
+
+}
+
+
+
+/* =========================================================
+   HOME CARD EVENTS
+   ========================================================= */
+
+const prescriptionsCard =
+  document.getElementById(
+    "prescriptionsCard"
+  );
+
+
+if (
+  prescriptionsCard
+) {
+
+  prescriptionsCard
+    .addEventListener(
+
+      "click",
+
+      function() {
+
+        showPrescriptionsPage();
+
+      }
+
+    );
+
+}
+
+
+
+const labReportsCard =
+  document.getElementById(
+    "labReportsCard"
+  );
+
+
+if (
+  labReportsCard
+) {
+
+  labReportsCard
+    .addEventListener(
+
+      "click",
+
+      function() {
+
+        showLabReportsPage();
+
+      }
+
+    );
+
+}
+
+
+
+const billsCard =
+  document.getElementById(
+    "billsCard"
+  );
+
+
+if (
+  billsCard
+) {
+
+  billsCard
+    .addEventListener(
+
+      "click",
+
+      function() {
+
+        showBillsPage();
+
+      }
+
+    );
+
+}
+
+
+
+/* =========================================================
+   BACK BUTTON EVENTS
+   ========================================================= */
+
+document
+  .querySelectorAll(
+    ".back-to-portal"
+  )
+  .forEach(
+
+    function(
+      button
+    ) {
+
+      button.addEventListener(
+
+        "click",
+
+        function() {
+
+          showPatientPortal();
+
+        }
+
+      );
+
+    }
 
   );
 
 
+
+/* =========================================================
+   REFRESH BUTTON
+   ========================================================= */
+
+const refreshButton =
+  document.getElementById(
+    "refreshButton"
+  );
+
+
+if (
+  refreshButton
+) {
+
+  refreshButton
+    .addEventListener(
+
+      "click",
+
+      refreshPortalRecords
+
+    );
+
+}
+
+
+
+/* =========================================================
+   LOGOUT BUTTON
+   ========================================================= */
+
+const logoutButton =
+  document.getElementById(
+    "logoutButton"
+  );
+
+
+if (
+  logoutButton
+) {
+
+  logoutButton
+    .addEventListener(
+
+      "click",
+
+      logoutPatientPortal
+
+    );
+
+}
+
+
+
+/* =========================================================
+   IMAGE VIEWER BACKGROUND CLICK
+   ========================================================= */
+
+const imageViewer =
+  document.getElementById(
+    "imageViewer"
+  );
+
+
+if (
+  imageViewer
+) {
+
+  imageViewer
+    .addEventListener(
+
+      "click",
+
+      function(
+        event
+      ) {
+
+        if (
+          event.target ===
+          this
+        ) {
+
+          closeViewer();
+
+        }
+
+      }
+
+    );
+
+}
+
+
+
+/* =========================================================
+   ESCAPE KEY CLOSES IMAGE VIEWER
+   ========================================================= */
 
 document
   .addEventListener(
@@ -5551,6 +7514,29 @@ document
 
 
 
+/* =========================================================
+   BROWSER BACK BUTTON
+   ========================================================= */
+
+window
+  .addEventListener(
+
+    "popstate",
+
+    function() {
+
+      showPatientPortal();
+
+    }
+
+  );
+
+
+
+/* =========================================================
+   GLOBAL FUNCTIONS
+   ========================================================= */
+
 window.openViewer =
   openViewer;
 
@@ -5562,16 +7548,85 @@ window.closeViewer =
 window.downloadMedicalFile =
   downloadMedicalFile;
 
-  window.viewPatientBill =
+
+window.showPatientPortal =
+  showPatientPortal;
+
+
+window.showPrescriptionsPage =
+  showPrescriptionsPage;
+
+
+window.showLabReportsPage =
+  showLabReportsPage;
+
+
+window.showBillsPage =
+  showBillsPage;
+
+
+window.viewPatientBill =
   viewPatientBill;
+
 
 window.downloadPatientBillPDF =
   downloadPatientBillPDF;
+
+
+window.refreshPortalRecords =
+  refreshPortalRecords;
+
+
+window.logoutPatientPortal =
+  logoutPatientPortal;
+
+
+
 /* =========================================================
-   START
+   INITIALIZE PATIENT PORTAL
    ========================================================= */
 
-loadPortalData();
+(async function initializePatientPortal() {
+
+  const token =
+    getPortalToken();
+
+
+  if (
+    !token
+  ) {
+
+    clearPatientSession();
+
+
+    window.location.href =
+      "patient-login.html";
+
+
+    return;
+
+  }
+
+
+  try {
+
+    await loadPortalData();
+
+
+    showPatientPortal();
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      "Unable to initialize patient portal:",
+      error
+    );
+
+  }
+
+})();
 
 </script>
 
