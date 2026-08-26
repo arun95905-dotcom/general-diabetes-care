@@ -2767,7 +2767,122 @@ async function loadPortalData() {
 }
 
 
+/* =========================================================
+   LOAD PATIENT BILLS
+   ========================================================= */
 
+async function loadPatientBills(
+  token
+) {
+
+  const container =
+    document.getElementById(
+      "billsContainer"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  container.innerHTML = `
+
+    <div class="empty-card">
+      Loading bills...
+    </div>
+
+  `;
+
+
+  try {
+
+    const response =
+      await fetch(
+
+        SUPABASE_URL +
+        "/functions/v1/get-patient-portal-bills",
+
+        {
+
+          method:
+            "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            "apikey":
+              SUPABASE_PUBLISHABLE_KEY
+
+          },
+
+          body:
+            JSON.stringify({
+
+              portalToken:
+                token
+
+            })
+
+        }
+
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+
+      throw new Error(
+
+        result.message ||
+        "Unable to load bills."
+
+      );
+
+    }
+
+
+    renderBills(
+      result.bills ||
+      []
+    );
+
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      "Patient bills error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="empty-card">
+
+        <div class="empty-icon">
+          🧾
+        </div>
+
+        Unable to load bills.
+
+      </div>
+
+    `;
+
+  }
+
+}
 /* =========================================================
    PRESCRIPTIONS
    ========================================================= */
