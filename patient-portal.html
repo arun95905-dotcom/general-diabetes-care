@@ -2065,7 +2065,9 @@ button {
   class="toast">
 </div>
 
-
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>
 
 <script>
 
@@ -4494,6 +4496,894 @@ GENERAL &amp; DIABETES CARE
   receiptWindow.document.close();
 
 }
+
+  /* =========================================================
+   DOWNLOAD PATIENT BILL PDF
+   ========================================================= */
+
+function downloadPatientBillPDF(
+  billId
+) {
+
+  const bill =
+    patientBills.find(
+      function(item) {
+
+        return Number(item.id) ===
+          Number(billId);
+
+      }
+    );
+
+
+  if (!bill) {
+
+    showToast(
+      "Unable to find this bill."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !window.jspdf ||
+    !window.jspdf.jsPDF
+  ) {
+
+    alert(
+      "PDF library is not available. Please refresh and try again."
+    );
+
+    return;
+
+  }
+
+
+  const patientName =
+    document
+      .getElementById(
+        "patientName"
+      )
+      ?.textContent
+      ?.trim() ||
+    "Patient";
+
+
+  const patientIdText =
+    document
+      .getElementById(
+        "patientId"
+      )
+      ?.textContent ||
+    "";
+
+
+  const patientId =
+    patientIdText
+      .replace(
+        "Patient ID:",
+        ""
+      )
+      .trim() ||
+    "-";
+
+
+  const {
+    jsPDF
+  } =
+    window.jspdf;
+
+
+  const doc =
+    new jsPDF({
+      unit:
+        "mm",
+
+      format:
+        "a4"
+    });
+
+
+  const pageWidth =
+    doc.internal.pageSize
+      .getWidth();
+
+
+  const left =
+    18;
+
+
+  const right =
+    pageWidth - 18;
+
+
+  const contentWidth =
+    right - left;
+
+
+  const clinicBlue = [
+    21,
+    86,
+    168
+  ];
+
+
+  const darkText = [
+    23,
+    32,
+    51
+  ];
+
+
+  const mutedText = [
+    100,
+    116,
+    139
+  ];
+
+
+  const lightBlue = [
+    239,
+    247,
+    255
+  ];
+
+
+  function pdfMoney(
+    value
+  ) {
+
+    return (
+      "Rs. " +
+      Number(
+        value ||
+        0
+      ).toFixed(2)
+    );
+
+  }
+
+
+  /* =====================================================
+     HEADER
+     ===================================================== */
+
+  doc.setFillColor(
+    ...lightBlue
+  );
+
+
+  doc.roundedRect(
+    left,
+    14,
+    contentWidth,
+    36,
+    3,
+    3,
+    "F"
+  );
+
+
+  doc.setTextColor(
+    ...clinicBlue
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.setFontSize(
+    18
+  );
+
+
+  doc.text(
+    "GENERAL & DIABETES CARE",
+    pageWidth / 2,
+    25,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.setTextColor(
+    ...mutedText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+
+  doc.setFontSize(
+    9.5
+  );
+
+
+  doc.text(
+    "No. 78, VV Kovil Street, Thiruvalleswarar Nagar,",
+    pageWidth / 2,
+    33,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.text(
+    "Thirumangalam, Anna Nagar West, Chennai - 600040",
+    pageWidth / 2,
+    39,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  /* =====================================================
+     RECEIPT
+     ===================================================== */
+
+  doc.setDrawColor(
+    ...clinicBlue
+  );
+
+
+  doc.setLineWidth(
+    .6
+  );
+
+
+  doc.line(
+    left,
+    57,
+    right,
+    57
+  );
+
+
+  doc.setTextColor(
+    ...darkText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.setFontSize(
+    15
+  );
+
+
+  doc.text(
+    "RECEIPT",
+    pageWidth / 2,
+    66,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.line(
+    left,
+    71,
+    right,
+    71
+  );
+
+
+  /* =====================================================
+     BILL INFORMATION
+     ===================================================== */
+
+  let y =
+    82;
+
+
+  doc.setFontSize(
+    9
+  );
+
+
+  doc.setTextColor(
+    ...mutedText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.text(
+    "BILL NO.",
+    left,
+    y
+  );
+
+
+  doc.text(
+    "DATE",
+    112,
+    y
+  );
+
+
+  y +=
+    6;
+
+
+  doc.setTextColor(
+    ...darkText
+  );
+
+
+  doc.setFontSize(
+    11
+  );
+
+
+  doc.text(
+    String(
+      bill.id
+    ),
+    left,
+    y
+  );
+
+
+  doc.text(
+    formatDate(
+      bill.date
+    ),
+    112,
+    y
+  );
+
+
+  y +=
+    13;
+
+
+  doc.setFontSize(
+    9
+  );
+
+
+  doc.setTextColor(
+    ...mutedText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.text(
+    "PATIENT",
+    left,
+    y
+  );
+
+
+  doc.text(
+    "PATIENT ID",
+    112,
+    y
+  );
+
+
+  y +=
+    6;
+
+
+  doc.setFontSize(
+    11
+  );
+
+
+  doc.setTextColor(
+    ...darkText
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+
+  const patientNameLines =
+    doc.splitTextToSize(
+      String(
+        patientName
+      ),
+      80
+    );
+
+
+  doc.text(
+    patientNameLines,
+    left,
+    y
+  );
+
+
+  doc.text(
+    String(
+      patientId
+    ),
+    112,
+    y
+  );
+
+
+  /* =====================================================
+     TABLE
+     ===================================================== */
+
+  y +=
+    Math.max(
+      14,
+      patientNameLines.length *
+      5 +
+      7
+    );
+
+
+  doc.setFillColor(
+    ...lightBlue
+  );
+
+
+  doc.roundedRect(
+    left,
+    y,
+    contentWidth,
+    10,
+    2,
+    2,
+    "F"
+  );
+
+
+  doc.setTextColor(
+    ...clinicBlue
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.setFontSize(
+    10
+  );
+
+
+  doc.text(
+    "Particulars",
+    left + 4,
+    y + 6.5
+  );
+
+
+  doc.text(
+    "Amount",
+    right - 4,
+    y + 6.5,
+    {
+      align:
+        "right"
+    }
+  );
+
+
+  y +=
+    16;
+
+
+  function addChargeRow(
+    label,
+    amount
+  ) {
+
+    doc.setTextColor(
+      ...darkText
+    );
+
+
+    doc.setFont(
+      "helvetica",
+      "normal"
+    );
+
+
+    doc.setFontSize(
+      10
+    );
+
+
+    doc.text(
+      label,
+      left + 4,
+      y
+    );
+
+
+    doc.text(
+      pdfMoney(
+        amount
+      ),
+      right - 4,
+      y,
+      {
+        align:
+          "right"
+      }
+    );
+
+
+    doc.setDrawColor(
+      230,
+      234,
+      239
+    );
+
+
+    doc.setLineWidth(
+      .25
+    );
+
+
+    doc.line(
+      left,
+      y + 4,
+      right,
+      y + 4
+    );
+
+
+    y +=
+      10;
+
+  }
+
+
+  addChargeRow(
+    "Consultation Fee",
+    bill.consultationFee
+  );
+
+
+  addChargeRow(
+    "Medicine Charges",
+    bill.medicineCharges
+  );
+
+
+  addChargeRow(
+    "Procedure / Other Charges",
+    bill.procedureCharges
+  );
+
+
+  /* =====================================================
+     TOTAL
+     ===================================================== */
+
+  y +=
+    2;
+
+
+  doc.setFillColor(
+    ...lightBlue
+  );
+
+
+  doc.roundedRect(
+    left,
+    y - 5,
+    contentWidth,
+    13,
+    2,
+    2,
+    "F"
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.setFontSize(
+    13
+  );
+
+
+  doc.setTextColor(
+    ...clinicBlue
+  );
+
+
+  doc.text(
+    "TOTAL",
+    left + 4,
+    y + 3
+  );
+
+
+  doc.text(
+    pdfMoney(
+      bill.totalAmount
+    ),
+    right - 4,
+    y + 3,
+    {
+      align:
+        "right"
+    }
+  );
+
+
+  /* =====================================================
+     PAYMENT
+     ===================================================== */
+
+  y +=
+    20;
+
+
+  doc.setTextColor(
+    ...darkText
+  );
+
+
+  doc.setFontSize(
+    10
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.text(
+    "Payment Status:",
+    left,
+    y
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+
+  doc.text(
+    String(
+      bill.paymentStatus ||
+      "-"
+    ),
+    left + 38,
+    y
+  );
+
+
+  y +=
+    8;
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.text(
+    "Payment Method:",
+    left,
+    y
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+
+  doc.text(
+    String(
+      bill.paymentMethod ||
+      "-"
+    ),
+    left + 38,
+    y
+  );
+
+
+  /* =====================================================
+     NOTES
+     ===================================================== */
+
+  if (
+    bill.notes
+  ) {
+
+    y +=
+      12;
+
+
+    doc.setFont(
+      "helvetica",
+      "bold"
+    );
+
+
+    doc.setFontSize(
+      9
+    );
+
+
+    doc.setTextColor(
+      ...mutedText
+    );
+
+
+    doc.text(
+      "NOTES",
+      left,
+      y
+    );
+
+
+    y +=
+      6;
+
+
+    doc.setFont(
+      "helvetica",
+      "normal"
+    );
+
+
+    doc.setFontSize(
+      10
+    );
+
+
+    doc.setTextColor(
+      ...darkText
+    );
+
+
+    const notesLines =
+      doc.splitTextToSize(
+        String(
+          bill.notes
+        ),
+        contentWidth
+      );
+
+
+    doc.text(
+      notesLines,
+      left,
+      y
+    );
+
+  }
+
+
+  /* =====================================================
+     FOOTER
+     ===================================================== */
+
+  const footerY =
+    258;
+
+
+  doc.setDrawColor(
+    218,
+    225,
+    233
+  );
+
+
+  doc.line(
+    left,
+    footerY,
+    right,
+    footerY
+  );
+
+
+  doc.setTextColor(
+    ...clinicBlue
+  );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+
+  doc.setFontSize(
+    11
+  );
+
+
+  doc.text(
+    "Thank you for visiting",
+    pageWidth / 2,
+    footerY + 10,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  doc.setFontSize(
+    12
+  );
+
+
+  doc.text(
+    "GENERAL & DIABETES CARE",
+    pageWidth / 2,
+    footerY + 17,
+    {
+      align:
+        "center"
+    }
+  );
+
+
+  /* =====================================================
+     DOWNLOAD
+     ===================================================== */
+
+  doc.save(
+    "General-Diabetes-Care-Receipt-" +
+    bill.id +
+    ".pdf"
+  );
+
+
+  showToast(
+    "Receipt downloaded."
+  );
+
+}
 /* =========================================================
    VIEWER
    ========================================================= */
@@ -4675,7 +5565,8 @@ window.downloadMedicalFile =
   window.viewPatientBill =
   viewPatientBill;
 
-
+window.downloadPatientBillPDF =
+  downloadPatientBillPDF;
 /* =========================================================
    START
    ========================================================= */
