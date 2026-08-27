@@ -940,7 +940,6 @@ File
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-
 <script>
 
 /* =========================================================
@@ -2597,50 +2596,25 @@ function renderBillHistory() {
 
   <button
     type="button"
-    id="fullBillButton-${Number(
-      bill.id
-    )}"
     class="portal-button primary-button small-button"
-    onclick="toggleFullBill(
+    onclick="openBillInBillingPage(
       ${Number(
         bill.id
-      )}
+      )},
+      ${
+        bill.consultation_id
+          ? Number(
+              bill.consultation_id
+            )
+          : "null"
+      }
     )">
 
-    ▶ View Full Bill
-
-  </button>
-
-
-  <button
-    type="button"
-    class="portal-button light-button small-button"
-    onclick="printBill(
-      ${Number(
-        bill.id
-      )}
-    )">
-
-    🖨 Print
-
-  </button>
-
-
-  <button
-    type="button"
-    class="portal-button success-button small-button"
-    onclick="downloadBillPDF(
-      ${Number(
-        bill.id
-      )}
-    )">
-
-    ⬇ Download PDF
+    👁 View Bill
 
   </button>
 
 </div>
-
 
 
             </div>
@@ -2799,35 +2773,19 @@ function toggleFullBill(
 
 }
 
-/* =========================================================
-   PRINT BILL
+  /* =========================================================
+   OPEN BILL IN BILLING PAGE
    ========================================================= */
 
-function printBill(
-  billId
+function openBillInBillingPage(
+  billId,
+  consultationId
 ) {
 
-  const bill =
-    allBills.find(
-      function(item) {
-
-        return (
-          Number(
-            item.id
-          ) ===
-          Number(
-            billId
-          )
-        );
-
-      }
-    );
-
-
-  if (!bill) {
+  if (!currentPatientId) {
 
     alert(
-      "Bill not found."
+      "Patient information is unavailable."
     );
 
     return;
@@ -2835,510 +2793,51 @@ function printBill(
   }
 
 
-  const printWindow =
-    window.open(
-      "",
-      "_blank"
+  const returnURL =
+    window.location.pathname +
+    window.location.search;
+
+
+  let billingURL =
+    "doctor-billing.html" +
+    "?patient_id=" +
+    encodeURIComponent(
+      currentPatientId
+    ) +
+    "&bill_id=" +
+    encodeURIComponent(
+      billId
     );
 
 
-  if (!printWindow) {
+  if (
+    consultationId !== null &&
+    consultationId !== undefined
+  ) {
 
-    alert(
-      "Unable to open print window."
-    );
-
-    return;
+    billingURL +=
+      "&consultation_id=" +
+      encodeURIComponent(
+        consultationId
+      );
 
   }
 
 
-  printWindow.document.write(`
-
-    <!DOCTYPE html>
-
-    <html>
-
-    <head>
-
-      <title>
-        Bill #${escapeHTML(
-          bill.id
-        )}
-      </title>
-
-      <style>
-
-        body {
-          font-family: Arial, sans-serif;
-          padding: 30px;
-          color: #111827;
-        }
-
-        h2 {
-          margin-bottom: 5px;
-        }
-
-        .clinic {
-          text-align: center;
-          margin-bottom: 25px;
-        }
-
-        .bill-row {
-          display: flex;
-          justify-content: space-between;
-          padding: 8px 0;
-          border-bottom: 1px solid #e5e7eb;
-        }
-
-        .total {
-          font-size: 18px;
-          font-weight: bold;
-        }
-
-      </style>
-
-    </head>
-
-    <body>
-
-
-      <div class="clinic">
-
-        <h2>
-          GENERAL &amp; DIABETES CARE
-        </h2>
-
-        <div>
-          Bill #${escapeHTML(
-            bill.id
-          )}
-        </div>
-
-        <div>
-          ${formatDate(
-            bill.bill_date
-          )}
-        </div>
-
-      </div>
-
-
-      <div class="bill-row">
-
-        <span>
-          Patient
-        </span>
-
-        <strong>
-          ${escapeHTML(
-            currentPatient
-              ? currentPatient.patient_name
-              : "-"
-          )}
-        </strong>
-
-      </div>
-
-
-      <div class="bill-row">
-
-        <span>
-          Patient ID
-        </span>
-
-        <strong>
-          ${escapeHTML(
-            currentPatientId
-          )}
-        </strong>
-
-      </div>
-
-
-      <div class="bill-row">
-
-        <span>
-          Consultation Fee
-        </span>
-
-        <strong>
-          ₹${Number(
-            bill.consultation_fee ||
-            0
-          ).toFixed(2)}
-        </strong>
-
-      </div>
-
-
-      <div class="bill-row">
-
-        <span>
-          Medicine Charges
-        </span>
-
-        <strong>
-          ₹${Number(
-            bill.medicine_charges ||
-            0
-          ).toFixed(2)}
-        </strong>
-
-      </div>
-
-
-      <div class="bill-row">
-
-        <span>
-          Procedure Charges
-        </span>
-
-        <strong>
-          ₹${Number(
-            bill.procedure_charges ||
-            0
-          ).toFixed(2)}
-        </strong>
-
-      </div>
-
-
-      <div class="bill-row total">
-
-        <span>
-          Total
-        </span>
-
-        <strong>
-          ₹${Number(
-            bill.total_amount ||
-            0
-          ).toFixed(2)}
-        </strong>
-
-      </div>
-
-
-      <div class="bill-row">
-
-        <span>
-          Payment Status
-        </span>
-
-        <strong>
-          ${escapeHTML(
-            bill.payment_status ||
-            "-"
-          )}
-        </strong>
-
-      </div>
-
-
-      <div class="bill-row">
-
-        <span>
-          Payment Method
-        </span>
-
-        <strong>
-          ${escapeHTML(
-            bill.payment_method ||
-            "-"
-          )}
-        </strong>
-
-      </div>
-
-
-      <div class="bill-row">
-
-        <span>
-          Notes
-        </span>
-
-        <strong>
-          ${escapeHTML(
-            bill.notes ||
-            "-"
-          )}
-        </strong>
-
-      </div>
-
-
-    </body>
-
-    </html>
-
-  `);
-
-
-  printWindow.document.close();
-
-
-  printWindow.focus();
-
-
-  setTimeout(
-    function() {
-
-      printWindow.print();
-
-    },
-    300
-  );
+  billingURL +=
+    "&return_to=" +
+    encodeURIComponent(
+      returnURL
+    );
+
+
+  window.location.href =
+    billingURL;
 
 }
 
-/* =========================================================
-   DOWNLOAD BILL PDF
-   ========================================================= */
 
-function downloadBillPDF(
-  billId
-) {
 
-  const bill =
-    allBills.find(
-      function(item) {
-
-        return (
-          Number(
-            item.id
-          ) ===
-          Number(
-            billId
-          )
-        );
-
-      }
-    );
-
-
-  if (!bill) {
-
-    alert(
-      "Bill not found."
-    );
-
-    return;
-
-  }
-
-
-  const {
-    jsPDF
-  } =
-    window.jspdf;
-
-
-  const pdf =
-    new jsPDF();
-
-
-  let y =
-    20;
-
-
-  pdf.setFontSize(
-    16
-  );
-
-
-  pdf.text(
-    "GENERAL & DIABETES CARE",
-    105,
-    y,
-    {
-      align: "center"
-    }
-  );
-
-
-  y += 10;
-
-
-  pdf.setFontSize(
-    11
-  );
-
-
-  pdf.text(
-    "Bill #" +
-    String(
-      bill.id
-    ),
-    20,
-    y
-  );
-
-
-  y += 7;
-
-
-  pdf.text(
-    "Date: " +
-    formatDate(
-      bill.bill_date
-    ),
-    20,
-    y
-  );
-
-
-  y += 7;
-
-
-  pdf.text(
-    "Patient: " +
-    (
-      currentPatient
-        ? currentPatient.patient_name
-        : "-"
-    ),
-    20,
-    y
-  );
-
-
-  y += 7;
-
-
-  pdf.text(
-    "Patient ID: " +
-    String(
-      currentPatientId
-    ),
-    20,
-    y
-  );
-
-
-  y += 12;
-
-
-  pdf.text(
-    "Consultation Fee: Rs. " +
-    Number(
-      bill.consultation_fee ||
-      0
-    ).toFixed(2),
-    20,
-    y
-  );
-
-
-  y += 8;
-
-
-  pdf.text(
-    "Medicine Charges: Rs. " +
-    Number(
-      bill.medicine_charges ||
-      0
-    ).toFixed(2),
-    20,
-    y
-  );
-
-
-  y += 8;
-
-
-  pdf.text(
-    "Procedure Charges: Rs. " +
-    Number(
-      bill.procedure_charges ||
-      0
-    ).toFixed(2),
-    20,
-    y
-  );
-
-
-  y += 10;
-
-
-  pdf.setFontSize(
-    13
-  );
-
-
-  pdf.text(
-    "Total: Rs. " +
-    Number(
-      bill.total_amount ||
-      0
-    ).toFixed(2),
-    20,
-    y
-  );
-
-
-  y += 10;
-
-
-  pdf.setFontSize(
-    11
-  );
-
-
-  pdf.text(
-    "Payment Status: " +
-    (
-      bill.payment_status ||
-      "-"
-    ),
-    20,
-    y
-  );
-
-
-  y += 8;
-
-
-  pdf.text(
-    "Payment Method: " +
-    (
-      bill.payment_method ||
-      "-"
-    ),
-    20,
-    y
-  );
-
-
-  y += 8;
-
-
-  const notes =
-    pdf.splitTextToSize(
-      "Notes: " +
-      (
-        bill.notes ||
-        "-"
-      ),
-      170
-    );
-
-
-  pdf.text(
-    notes,
-    20,
-    y
-  );
-
-
-  pdf.save(
-    "Bill-" +
-    bill.id +
-    ".pdf"
-  );
-
-}  
-  
 /* =========================================================
    VIEW PRESCRIPTION
    ========================================================= */
@@ -4809,11 +4308,10 @@ window.toggleFullConsultation =
   window.toggleFullBill =
   toggleFullBill;
 
-  window.printBill =
-  printBill;
+  window.openBillInBillingPage =
+  openBillInBillingPage;
 
-  window.downloadBillPDF =
-  downloadBillPDF;
+
 
 window.openEditConsultation =
   openEditConsultation;
