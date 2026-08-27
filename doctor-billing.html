@@ -2310,7 +2310,8 @@ async function loadPatientFromURL() {
     await showSavedBill(
       Number(
         billId
-      )
+      ),
+    true
     );
 
     return true;
@@ -2925,9 +2926,9 @@ function renderBillDetails(
 /* =========================================================
    SAVED BILL
    ========================================================= */
-
 async function showSavedBill(
-  billId
+  billId,
+  viewingExistingBill = false
 ) {
 
   const result =
@@ -2935,11 +2936,9 @@ async function showSavedBill(
       billId
     );
 
-
   if (!result) {
     return;
   }
-
 
   const bill =
     result.bill;
@@ -2947,17 +2946,19 @@ async function showSavedBill(
   const patient =
     result.patient;
 
-
   const container =
     document.getElementById(
       "savedBillContent"
     );
 
-
   container.innerHTML = `
 
-    <h2 style="color:#15803d;">
-      ✅ Bill Saved Successfully
+    <h2>
+      ${
+        viewingExistingBill
+          ? "🧾 Bill Details"
+          : "✅ Bill Saved Successfully"
+      }
     </h2>
 
 
@@ -3009,7 +3010,6 @@ async function showSavedBill(
 
     <div class="billing-actions">
 
-
       <button
         type="button"
         class="billing-button primary"
@@ -3047,7 +3047,7 @@ async function showSavedBill(
               class="billing-button light"
               onclick="goBackFromBilling()">
 
-              ← Back to Consultation
+              ← Back to Patient Details
 
             </button>
 
@@ -3069,7 +3069,6 @@ async function showSavedBill(
     </div>
 
   `;
-
 
   showView(
     "savedBillView"
