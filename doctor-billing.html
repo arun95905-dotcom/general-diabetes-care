@@ -887,10 +887,47 @@ Search for a patient to create a bill.
   class="selected-patient-meta">
 </div>
 
+<div class="billing-actions">
+
+<button
+  type="button"
+  class="billing-button light small"
+  id="linkConsultationButton">
+
+🩺 Link to Consultation
+
+</button>
+
+</div>
+
+</div>
+
+
+<div
+  id="consultationLinkArea"
+  class="form-section"
+  style="display:none;">
+
+<h3>
+🩺 Select Consultation
+</h3>
+
+<div id="consultationLinkResults">
+
+<div class="billing-message">
+Loading consultations...
+</div>
+
+</div>
+
 </div>
 
 
 <div class="form-section">
+
+<h3>
+🧾 Bill Details
+</h3>
 
 <h3>
 🧾 Bill Details
@@ -1983,6 +2020,207 @@ async function selectPatient(
 
 }
 
+/* =========================================================
+   LINK CONSULTATION
+   ========================================================= */
+
+async function loadPatientConsultations() {
+
+  if (!selectedPatient) {
+
+    alert(
+      "Please select a patient first."
+    );
+
+    return;
+  }
+
+
+  const area =
+    document.getElementById(
+      "consultationLinkArea"
+    );
+
+  const container =
+    document.getElementById(
+      "consultationLinkResults"
+    );
+
+
+  area.style.display =
+    "block";
+
+
+  container.innerHTML = `
+
+    <div class="billing-message">
+      Loading consultations...
+    </div>
+
+  `;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("consultations")
+      .select(
+        "id,created_at,diagnosis,chief_complaints"
+      )
+      .eq(
+        "patient_id",
+        selectedPatient.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    container.innerHTML = `
+
+      <div class="billing-error">
+        Unable to load consultations.
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="billing-message">
+        No consultations found for this patient.
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    data
+      .map(
+        function(consultation) {
+
+          const selected =
+            Number(selectedConsultationId) ===
+            Number(consultation.id);
+
+
+          return `
+
+            <div class="patient-card">
+
+              <div class="patient-name">
+
+                🩺 Consultation #
+                ${escapeHTML(
+                  consultation.id
+                )}
+
+              </div>
+
+              <div class="patient-meta">
+
+                Date:
+                ${formatDate(
+                  consultation.created_at
+                )}
+
+                ${
+                  consultation.diagnosis
+                    ? `
+
+                      <br>
+
+                      Diagnosis:
+                      ${escapeHTML(
+                        consultation.diagnosis
+                      )}
+
+                    `
+                    : ""
+                }
+
+              </div>
+
+
+              <div class="billing-actions">
+
+                <button
+                  type="button"
+                  class="billing-button ${
+                    selected
+                      ? "success"
+                      : "primary"
+                  } small"
+                  onclick="linkConsultation(
+                    ${Number(
+                      consultation.id
+                    )}
+                  )">
+
+                  ${
+                    selected
+                      ? "✓ Linked"
+                      : "🔗 Link Consultation"
+                  }
+
+                </button>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+async function linkConsultation(
+  consultationId
+) {
+
+  selectedConsultationId =
+    Number(
+      consultationId
+    );
+
+
+  await showLinkedConsultation(
+    selectedConsultationId
+  );
+
+
+  document
+    .getElementById(
+      "consultationLinkArea"
+    )
+    .style.display =
+      "none";
+
+}  
 
 /* =========================================================
    CLEAR PATIENT
@@ -5255,6 +5493,9 @@ function resetBillForm() {
 window.selectPatient =
   selectPatient;
 
+  window.linkConsultation =
+  linkConsultation;
+
 window.clearSelectedPatient =
   clearSelectedPatient;
 
@@ -5322,7 +5563,12 @@ document
         )
         .style.display =
           "none";
-
+document
+  .getElementById(
+    "consultationLinkArea"
+  )
+  .style.display =
+    "none";
 
       openCreateBill();
 
@@ -5355,7 +5601,15 @@ document
     loadTodayBills
   );
 
-
+document
+  .getElementById(
+    "linkConsultationButton"
+  )
+  .addEventListener(
+    "click",
+    loadPatientConsultations
+  );
+  
 document
   .getElementById(
     "patientSearchButton"
