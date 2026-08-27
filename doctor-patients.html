@@ -2760,11 +2760,7 @@ async function editPatient(
         <button
           type="button"
           class="portal-button light-button"
-          onclick="viewPatientDetails(
-            ${Number(
-              patient.id
-            )}
-          )">
+                    onclick="showView('searchView')">
 
           ↩ Cancel
 
@@ -2991,11 +2987,7 @@ async function editPatient(
         <button
           type="button"
           class="portal-button light-button"
-          onclick="viewPatientDetails(
-            ${Number(
-              patient.id
-            )}
-          )">
+                    onclick="showView('searchView')">
 
           ↩ Cancel
 
@@ -4983,7 +4975,6 @@ async function openSavedConsultation(
 
           </button>
 
-
           ${
             consultationReturnURL
               ? `
@@ -4998,8 +4989,20 @@ async function openSavedConsultation(
                 </button>
 
               `
-              : ""
+              : `
+
+                <button
+                  type="button"
+                  class="portal-button light-button"
+                  onclick="showView('searchView')">
+
+                  ← Back to Patient Search
+
+                </button>
+
+              `
           }
+          
 
         </div>
 
