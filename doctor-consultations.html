@@ -5859,6 +5859,7 @@ async function toggleBillHistory(
 
 }
 
+
 /* =========================================================
    OPEN EXISTING BILL
    ========================================================= */
@@ -5879,6 +5880,14 @@ function openBillInBillingPage(
   }
 
 
+  const returnURL =
+    window.location.pathname +
+    "?patient_id=" +
+    encodeURIComponent(
+      currentPatientId
+    );
+
+
   const billingURL =
     "doctor-billing.html" +
     "?patient_id=" +
@@ -5892,6 +5901,10 @@ function openBillInBillingPage(
     "&bill_id=" +
     encodeURIComponent(
       billId
+    ) +
+    "&return_to=" +
+    encodeURIComponent(
+      returnURL
     );
 
 
