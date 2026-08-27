@@ -2585,12 +2585,7 @@ function renderBillHistory() {
 
               </div>
 
-<div
-  id="fullBill-${Number(
-    bill.id
-  )}"
-  class="full-consultation">
-</div>
+
 
 <div class="file-actions">
 
@@ -2628,150 +2623,7 @@ function renderBillHistory() {
 }
 
 
-  /* =========================================================
-   FULL BILL
-   ========================================================= */
-
-function toggleFullBill(
-  billId
-) {
-
-  const container =
-    document.getElementById(
-      "fullBill-" +
-      billId
-    );
-
-
-  const button =
-    document.getElementById(
-      "fullBillButton-" +
-      billId
-    );
-
-
-  if (
-    !container ||
-    !button
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    container.classList.contains(
-      "open"
-    )
-  ) {
-
-    container.classList.remove(
-      "open"
-    );
-
-
-    button.textContent =
-      "▶ View Full Bill";
-
-
-    return;
-
-  }
-
-
-  const bill =
-    allBills.find(
-      function(item) {
-
-        return (
-          Number(
-            item.id
-          ) ===
-          Number(
-            billId
-          )
-        );
-
-      }
-    );
-
-
-  if (!bill) {
-
-    return;
-
-  }
-
-
-  container.innerHTML = `
-
-    ${detailBox(
-      "🩺 Consultation Fee",
-      "₹" +
-      Number(
-        bill.consultation_fee ||
-        0
-      ).toFixed(2)
-    )}
-
-    ${detailBox(
-      "💊 Medicine Charges",
-      "₹" +
-      Number(
-        bill.medicine_charges ||
-        0
-      ).toFixed(2)
-    )}
-
-    ${detailBox(
-      "🩹 Procedure Charges",
-      "₹" +
-      Number(
-        bill.procedure_charges ||
-        0
-      ).toFixed(2)
-    )}
-
-    ${detailBox(
-      "💰 Total Amount",
-      "₹" +
-      Number(
-        bill.total_amount ||
-        0
-      ).toFixed(2)
-    )}
-
-    ${detailBox(
-      "💳 Payment Status",
-      bill.payment_status ||
-      "-"
-    )}
-
-    ${detailBox(
-      "💵 Payment Method",
-      bill.payment_method ||
-      "-"
-    )}
-
-    ${detailBox(
-      "📝 Notes",
-      bill.notes ||
-      "-"
-    )}
-
-  `;
-
-
-  container.classList.add(
-    "open"
-  );
-
-
-  button.textContent =
-    "▲ Hide Full Bill";
-
-}
+ 
 
   /* =========================================================
    OPEN BILL IN BILLING PAGE
@@ -4305,8 +4157,7 @@ window.closeMainSection =
 window.toggleFullConsultation =
   toggleFullConsultation;
 
-  window.toggleFullBill =
-  toggleFullBill;
+ 
 
   window.openBillInBillingPage =
   openBillInBillingPage;
