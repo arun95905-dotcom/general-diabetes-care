@@ -30,15 +30,15 @@
   <link
     rel="canonical"
     href="https://generalanddiabetescare.com/">
-  
-<!-- FAVICON -->
 
-<link
-  rel="icon"
-  type="image/png"
-  href="/IMG_20250712_024249.png">
+  <!-- FAVICON -->
 
-  <!-- OPEN GRAPH / SOCIAL SHARING -->
+  <link
+    rel="icon"
+    type="image/png"
+    href="/IMG_20250712_024249.png">
+
+  <!-- OPEN GRAPH -->
 
   <meta
     property="og:title"
@@ -60,44 +60,47 @@
     property="og:site_name"
     content="General & Diabetes Care">
 
-<meta
-  property="og:image"
-  content="https://generalanddiabetescare.com/IMG_20250712_024249.png">
+  <meta
+    property="og:image"
+    content="https://generalanddiabetescare.com/IMG_20250712_024249.png">
 
-  <!-- TWITTER / X CARD -->
+  <!-- TWITTER -->
 
-<meta
-  name="twitter:card"
-  content="summary_large_image">
+  <meta
+    name="twitter:card"
+    content="summary_large_image">
 
-<meta
-  name="twitter:title"
-  content="General & Diabetes Care | Dr. Arunkumar">
+  <meta
+    name="twitter:title"
+    content="General & Diabetes Care | Dr. Arunkumar">
 
-<meta
-  name="twitter:description"
-  content="General Physician & Diabetologist in Anna Nagar West, Chennai. Comprehensive general medical and diabetes care.">
+  <meta
+    name="twitter:description"
+    content="General Physician & Diabetologist in Anna Nagar West, Chennai. Comprehensive general medical and diabetes care.">
 
-<meta
-  name="twitter:image"
-  content="https://generalanddiabetescare.com/IMG_20250712_024249.png">
+  <meta
+    name="twitter:image"
+    content="https://generalanddiabetescare.com/IMG_20250712_024249.png">
+
 
   <!-- WEBSITE STRUCTURED DATA -->
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": "https://generalanddiabetescare.com/#website",
-  "name": "General & Diabetes Care",
-  "alternateName": [
-    "General and Diabetes Care",
-    "generalanddiabetescare.com"
-  ],
-  "url": "https://generalanddiabetescare.com/"
-}
-</script>
-  <!-- LOCAL CLINIC STRUCTURED DATA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://generalanddiabetescare.com/#website",
+    "name": "General & Diabetes Care",
+    "alternateName": [
+      "General and Diabetes Care",
+      "generalanddiabetescare.com"
+    ],
+    "url": "https://generalanddiabetescare.com/"
+  }
+  </script>
+
+
+  <!-- CLINIC STRUCTURED DATA -->
 
   <script type="application/ld+json">
   {
@@ -117,10 +120,10 @@
       "addressCountry": "IN"
     },
     "geo": {
-  "@type": "GeoCoordinates",
-  "latitude": 13.085676,
-  "longitude": 80.195382
-},
+      "@type": "GeoCoordinates",
+      "latitude": 13.085676,
+      "longitude": 80.195382
+    },
     "areaServed": [
       "Anna Nagar West",
       "Thirumangalam",
@@ -154,46 +157,267 @@
 
   <!-- DOCTOR STRUCTURED DATA -->
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Physician",
-  "@id": "https://generalanddiabetescare.com/#doctor",
-  "name": "Dr. Arunkumar",
-  "url": "https://generalanddiabetescare.com/",
-  "telephone": "+91-9486365896",
-  "jobTitle": "General Physician & Diabetologist",
-  "description": "Dr. Arunkumar provides general medical and diabetes care at General & Diabetes Care in Anna Nagar West, Chennai.",
-  "medicalSpecialty": [
-    "General Practice",
-    "Diabetology"
-  ],
-  "hasCredential": [
-    {
-      "@type": "EducationalOccupationalCredential",
-      "credentialCategory": "MBBS"
-    },
-    {
-      "@type": "EducationalOccupationalCredential",
-      "credentialCategory": "FIDM"
-    },
-    {
-      "@type": "EducationalOccupationalCredential",
-      "credentialCategory": "CCEBDM"
-    },
-    {
-      "@type": "EducationalOccupationalCredential",
-      "credentialCategory": "CCGDM"
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    "@id": "https://generalanddiabetescare.com/#doctor",
+    "name": "Dr. Arunkumar",
+    "url": "https://generalanddiabetescare.com/",
+    "image": "https://generalanddiabetescare.com/dr-arunkumar.JPG",
+    "telephone": "+91-9486365896",
+    "jobTitle": "General Physician & Diabetologist",
+    "description": "Dr. Arunkumar provides general medical and diabetes care at General & Diabetes Care in Anna Nagar West, Chennai.",
+    "medicalSpecialty": [
+      "General Practice",
+      "Diabetology"
+    ],
+    "hasCredential": [
+      {
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "MBBS"
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "FIDM"
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "CCEBDM"
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "CCGDM"
+      }
+    ],
+    "worksFor": {
+      "@id": "https://generalanddiabetescare.com/#clinic"
     }
-  ],
-  "worksFor": {
-    "@id": "https://generalanddiabetescare.com/#clinic"
   }
-}
-</script>
+  </script>
+
 
   <link rel="stylesheet" href="styles.css">
+
+
+  <!-- NEW PAGE-SPECIFIC STYLES -->
+
+  <style>
+
+    #appointmentForm,
+    #appointmentForm * {
+      box-sizing: border-box;
+    }
+
+
+    #appointmentForm .form-row {
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+      gap: 18px;
+
+      width: 100%;
+
+    }
+
+
+    #appointmentForm .form-row .form-group {
+
+      width: 100%;
+
+      min-width: 0;
+
+    }
+
+
+    #appointmentForm input,
+    #appointmentForm select,
+    #appointmentForm textarea {
+
+      width: 100%;
+
+      min-width: 0;
+
+      max-width: 100%;
+
+      box-sizing: border-box;
+
+    }
+
+
+    .doctor-summary {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 20px;
+
+    }
+
+
+    .doctor-photo-wrapper {
+
+      width: 135px;
+
+      min-width: 135px;
+
+      height: 165px;
+
+      overflow: hidden;
+
+      border-radius: 18px;
+
+      background: white;
+
+      border: 3px solid white;
+
+      box-shadow:
+        0 8px 24px
+        rgba(15, 23, 42, 0.14);
+
+    }
+
+
+    .doctor-profile-photo {
+
+      display: block;
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      object-position: center top;
+
+    }
+
+
+    .booking-status {
+
+      display: none;
+
+      margin-top: 16px;
+
+      padding: 15px 16px;
+
+      border-radius: 12px;
+
+      line-height: 1.6;
+
+      font-size: 14px;
+
+    }
+
+
+    .booking-status.success {
+
+      display: block;
+
+      background: #edf9f1;
+
+      border:
+        1px solid
+        #b7dfc4;
+
+      color: #166534;
+
+    }
+
+
+    .booking-status.error {
+
+      display: block;
+
+      background: #fff2f2;
+
+      border:
+        1px solid
+        #efc1c1;
+
+      color: #a52222;
+
+    }
+
+
+    #appointmentSubmitButton:disabled {
+
+      opacity: 0.7;
+
+      cursor: not-allowed;
+
+    }
+
+
+    @media
+    (max-width: 700px) {
+
+
+      #appointmentForm .form-row {
+
+        grid-template-columns:
+          1fr;
+
+        gap: 0;
+
+      }
+
+
+      .doctor-summary {
+
+        align-items:
+          flex-start;
+
+        gap: 14px;
+
+      }
+
+
+      .doctor-photo-wrapper {
+
+        width: 105px;
+
+        min-width: 105px;
+
+        height: 135px;
+
+        border-radius: 15px;
+
+      }
+
+    }
+
+
+    @media
+    (max-width: 480px) {
+
+
+      .doctor-summary {
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .doctor-photo-wrapper {
+
+        width: 140px;
+
+        min-width: 140px;
+
+        height: 175px;
+
+      }
+
+    }
+
+  </style>
 
 </head>
 
@@ -201,31 +425,41 @@
 <body>
 
 
+<!-- HEADER -->
+
 <header class="header">
 
+
   <div class="logo">
+
 
     <img
       src="IMG_20250712_024249.png"
       alt="General & Diabetes Care Clinic Logo"
       class="clinic-logo">
 
+
     <div>
+
 
       <h1>
         GENERAL &amp; DIABETES CARE
       </h1>
 
+
       <p>
         General Physician &amp; Diabetologist
       </p>
 
+
     </div>
+
 
   </div>
 
 
   <div class="header-actions">
+
 
     <a
       href="patient-login.html"
@@ -236,25 +470,20 @@
     </a>
 
 
-    <a
-      class="whatsapp"
-      href="https://wa.me/919486365896"
-      target="_blank"
-      rel="noopener">
-
-      WhatsApp Appointment
-
-    </a>
-
   </div>
+
 
 </header>
 
 
 
+<!-- HERO -->
+
 <section class="hero">
 
+
   <div class="hero-content">
+
 
     <p class="welcome">
       WELCOME TO
@@ -262,36 +491,51 @@
 
 
     <h2>
-      General &amp;<br>
+
+      General &amp;
+
+      <br>
+
       Diabetes Care
+
     </h2>
 
 
     <p class="doctor">
 
+
       <strong>
         Dr ARUNKUMAR
       </strong>
 
+
       <br>
+
 
       MBBS, FIDM, CCEBDM, CCGDM
 
+
       <br>
+
 
       General Physician &amp; Diabetologist
 
+
     </p>
+
 
     <p>
 
-  Trusted, comprehensive medical care in Anna Nagar West, Chennai,
-  with a special focus on diabetes, hypertension, thyroid disorders
-  and general medical conditions.
+      Trusted, comprehensive medical care in
+      Anna Nagar West, Chennai, with a special
+      focus on diabetes, hypertension, thyroid
+      disorders and general medical conditions.
 
     </p>
 
+
     <div class="hero-buttons">
+
 
       <a
         href="tel:+919486365896"
@@ -303,37 +547,52 @@
 
 
       <a
-        href="https://wa.me/919486365896"
-        target="_blank"
-        rel="noopener"
-        class="button whatsapp-button">
+        href="#appointmentBooking"
+        class="button">
 
-        💬 WhatsApp
+        📅 Book Appointment
 
       </a>
 
+
     </div>
 
+
   </div>
+
 
 </section>
 
 
 
+<!-- ABOUT DOCTOR -->
+
 <section class="doctor-profile">
+
 
   <details class="doctor-details">
 
+
     <summary>
+
 
       <div class="doctor-summary">
 
-        <div class="doctor-profile-icon">
-          👨‍⚕️
+
+        <div class="doctor-photo-wrapper">
+
+
+          <img
+            src="dr-arunkumar.JPG"
+            alt="Dr. Arunkumar - General Physician and Diabetologist"
+            class="doctor-profile-photo">
+
+
         </div>
 
 
         <div>
+
 
           <p class="section-label">
             ABOUT THE DOCTOR
@@ -346,22 +605,31 @@
 
 
           <p class="doctor-credentials">
+
             MBBS, FIDM, CCEBDM, CCGDM
+
           </p>
 
 
           <p class="doctor-title">
+
             General Physician &amp; Diabetologist
+
           </p>
 
+
         </div>
+
 
       </div>
 
 
       <span class="doctor-toggle">
+
         View Doctor Profile ▼
+
       </span>
+
 
     </summary>
 
@@ -369,81 +637,118 @@
 
     <div class="doctor-profile-content">
 
+
       <p>
 
-        General &amp; Diabetes Care is led by Dr. ARUNKUMAR,
-        a General Physician and Diabetologist with nearly
-        8 years of experience in general medical care and
-        around 4 years of focused experience in diabetes care.
+        General &amp; Diabetes Care is led by
+        Dr. ARUNKUMAR, a General Physician and
+        Diabetologist with nearly 8 years of
+        experience in general medical care and
+        around 4 years of focused experience
+        in diabetes care.
 
       </p>
 
 
 
       <h3 class="doctor-subheading">
+
         Education &amp; Qualifications
+
       </h3>
 
 
 
       <div class="qualification">
 
+
         <strong>
           MBBS
         </strong>
 
+
         <span>
+
           Government Thiruvarur Medical College
+
         </span>
 
+
         <small>
+
           Completed in 2018
+
         </small>
+
 
       </div>
 
 
 
       <div class="qualification">
+
 
         <strong>
           CCEBDM
         </strong>
 
-        <span>
-          Certificate Course in Evidence-Based Diabetes Management
-        </span>
 
         <span>
+
+          Certificate Course in Evidence-Based
+          Diabetes Management
+
+        </span>
+
+
+        <span>
+
           Dr. Mohan's Diabetes Education Academy /
           Dr. Mohan's Diabetes Centre
+
         </span>
 
+
         <small>
+
           Completed in 2022
+
         </small>
+
 
       </div>
 
 
 
       <div class="qualification">
+
 
         <strong>
           CCGDM
         </strong>
 
-        <span>
-          Certificate Course in Gestational Diabetes Management
-        </span>
 
         <span>
-          Dr. Mohan's Diabetes Centre
+
+          Certificate Course in Gestational
+          Diabetes Management
+
         </span>
+
+
+        <span>
+
+          Dr. Mohan's Diabetes Centre
+
+        </span>
+
 
         <small>
+
           Completed in 2025
+
         </small>
+
 
       </div>
 
@@ -451,37 +756,52 @@
 
       <div class="qualification">
 
+
         <strong>
           FIDM
         </strong>
 
-        <span>
-          Fellowship in Diabetes Mellitus
-        </span>
 
         <span>
-          Apollo Hospitals
+
+          Fellowship in Diabetes Mellitus
+
         </span>
+
+
+        <span>
+
+          Apollo Hospitals
+
+        </span>
+
 
         <small>
-          Specialized fellowship training in Diabetes Mellitus
-          and its comprehensive management.
+
+          Specialized fellowship training in
+          Diabetes Mellitus and its comprehensive
+          management.
+
         </small>
+
 
       </div>
 
 
 
       <h3 class="doctor-subheading">
+
         Clinical Experience
+
       </h3>
 
 
       <p>
 
-        Dr. ARUNKUMAR has nearly 8 years of experience in
-        general medical practice, providing evaluation and
-        management of a broad range of acute and chronic
+        Dr. ARUNKUMAR has nearly 8 years of
+        experience in general medical practice,
+        providing evaluation and management of
+        a broad range of acute and chronic
         medical conditions.
 
       </p>
@@ -489,8 +809,9 @@
 
       <p>
 
-        With around 4 years of focused experience in diabetes
-        care, particular clinical interest includes:
+        With around 4 years of focused experience
+        in diabetes care, particular clinical
+        interest includes:
 
       </p>
 
@@ -498,65 +819,93 @@
 
       <ul class="doctor-interests">
 
+
         <li>
           Diabetes mellitus and prediabetes
         </li>
+
 
         <li>
           Gestational diabetes
         </li>
 
+
         <li>
           Diabetes prevention and lifestyle management
         </li>
+
 
         <li>
           Individualized diabetes treatment
         </li>
 
-        <li>
-          Monitoring and prevention of diabetes-related complications
-        </li>
 
         <li>
-          Hypertension and cardiovascular risk assessment
+          Monitoring and prevention of
+          diabetes-related complications
         </li>
+
+
+        <li>
+          Hypertension and cardiovascular
+          risk assessment
+        </li>
+
 
         <li>
           Thyroid and other metabolic disorders
         </li>
 
+
       </ul>
+
 
     </div>
 
+
   </details>
+
 
 </section>
 
 
 
+<!-- CLINIC INFORMATION -->
+
 <section class="clinic-info">
 
 
-<section class="appointment-section">
+
+<!-- APPOINTMENT BOOKING -->
+
+<section
+  class="appointment-section"
+  id="appointmentBooking">
+
 
   <div class="appointment-card">
 
+
     <p class="section-label">
+
       BOOK A VISIT
+
     </p>
 
 
     <h2>
+
       Appointment Booking
+
     </h2>
 
 
     <p class="appointment-intro">
 
-      Request an appointment at General &amp; Diabetes Care.
-      Our clinic will confirm the appointment through WhatsApp.
+      Choose an available appointment slot.
+      Your booking will be saved directly in the
+      clinic appointment system.
+      WhatsApp will open after successful booking.
 
     </p>
 
@@ -565,11 +914,16 @@
     <form id="appointmentForm">
 
 
+
       <div class="form-group">
 
+
         <label for="patientName">
+
           Patient Name
+
         </label>
+
 
         <input
           type="text"
@@ -577,21 +931,31 @@
           placeholder="Enter patient name"
           required>
 
+
       </div>
 
 
 
       <div class="form-group">
 
+
         <label for="patientPhone">
+
           Phone Number
+
         </label>
+
 
         <input
           type="tel"
           id="patientPhone"
-          placeholder="Enter phone number"
+          placeholder="Enter 10-digit mobile number"
+          inputmode="numeric"
+          autocomplete="tel"
+          maxlength="10"
+          pattern="[0-9]{10}"
           required>
+
 
       </div>
 
@@ -600,16 +964,22 @@
       <div class="form-row">
 
 
+
         <div class="form-group">
 
+
           <label for="appointmentDate">
+
             Preferred Date
+
           </label>
+
 
           <input
             type="date"
             id="appointmentDate"
             required>
+
 
         </div>
 
@@ -617,8 +987,11 @@
 
         <div class="form-group">
 
+
           <label for="appointmentTime">
+
             Preferred Time
+
           </label>
 
 
@@ -626,37 +999,61 @@
             id="appointmentTime"
             required>
 
+
             <option value="">
+
               Select time
+
             </option>
+
 
             <option value="18:00">
+
               6:00 PM – 6:30 PM
+
             </option>
+
 
             <option value="18:30">
+
               6:30 PM – 7:00 PM
+
             </option>
+
 
             <option value="19:00">
+
               7:00 PM – 7:30 PM
+
             </option>
+
 
             <option value="19:30">
+
               7:30 PM – 8:00 PM
+
             </option>
+
 
             <option value="20:00">
+
               8:00 PM – 8:30 PM
+
             </option>
 
+
             <option value="20:30">
+
               8:30 PM – 9:00 PM
+
             </option>
+
 
           </select>
 
+
         </div>
+
 
       </div>
 
@@ -664,8 +1061,11 @@
 
       <div class="form-group">
 
+
         <label for="patientType">
+
           Patient Type
+
         </label>
 
 
@@ -673,19 +1073,30 @@
           id="patientType"
           required>
 
+
           <option value="">
+
             Select
+
           </option>
 
-          <option>
+
+          <option value="New Patient">
+
             New Patient
+
           </option>
 
-          <option>
+
+          <option value="Existing Patient">
+
             Existing Patient
+
           </option>
+
 
         </select>
+
 
       </div>
 
@@ -693,8 +1104,11 @@
 
       <div class="form-group">
 
+
         <label for="reason">
+
           Reason for Consultation
+
         </label>
 
 
@@ -703,17 +1117,28 @@
           rows="4"
           placeholder="Briefly mention the reason for your visit"></textarea>
 
+
       </div>
 
 
 
       <button
         type="submit"
-        class="appointment-button">
+        class="appointment-button"
+        id="appointmentSubmitButton">
 
-        📅 Book Appointment on WhatsApp
+        📅 Book Appointment
 
       </button>
+
+
+      <div
+        id="bookingStatus"
+        class="booking-status"
+        role="status"
+        aria-live="polite">
+      </div>
+
 
     </form>
 
@@ -721,33 +1146,53 @@
 
     <p class="appointment-note">
 
+
       ⏰ Clinic hours:
       6:00 PM – 9:00 PM,
       Monday–Saturday
 
+
+      <br>
+
+
+      For today's date, time slots that have
+      already started are automatically hidden.
+
+
     </p>
 
+
   </div>
+
 
 </section>
 
 
 
+<!-- LOCATION -->
+
 <div class="info-card">
 
+
   <h3>
+
     📍 Clinic Location
+
   </h3>
+
 
   <p>
 
     No. 78, V V Kovil Street,
+
     <br>
 
     Thiruvalleswarar Nagar,
+
     <br>
 
     Thirumangalam, Anna Nagar West,
+
     <br>
 
     Chennai – 40
@@ -755,41 +1200,40 @@
   </p>
 
 
-  <a
-    href="https://maps.app.goo.gl/f71tM4NpLjqqnvhV6?g_st=ac"
-    target="_blank"
-    rel="noopener"
-    class="map-button">
-
-    📍 Get Directions
-
-  </a>
-
 </div>
 
 
 
+<!-- MAP -->
+
 <section class="map-section">
 
+
   <p class="section-label">
+
     FIND US
+
   </p>
 
 
   <h2>
+
     Visit Our Clinic
+
   </h2>
 
 
   <p class="map-intro">
 
-    Find General &amp; Diabetes Care easily on Google Maps.
+    Find General &amp; Diabetes Care
+    easily on Google Maps.
 
   </p>
 
 
 
   <div class="map-container">
+
 
     <iframe
       src="https://www.google.com/maps?q=General%20and%20Diabetes%20Care%20-%20Dr%20ARUNKUMAR%20A%20%7C%20General%20Physician%20%7C%20Diabetologist&output=embed"
@@ -800,6 +1244,7 @@
       loading="lazy"
       referrerpolicy="no-referrer-when-downgrade">
     </iframe>
+
 
   </div>
 
@@ -814,54 +1259,82 @@
 
   </a>
 
+
 </section>
 
 
 
+<!-- CONSULTATION HOURS -->
+
 <div class="info-card">
 
+
   <h3>
+
     🕐 Consultation Hours
+
   </h3>
 
 
   <p>
 
+
     <strong>
+
       6:00 PM – 9:00 PM
+
     </strong>
 
+
     <br>
+
 
     Monday – Saturday
 
+
     <br>
+
 
     Closed on Sunday
 
+
   </p>
+
 
 </div>
 
 
 
+<!-- CONTACT -->
+
 <div class="info-card">
 
+
   <h3>
+
     📞 Contact
+
   </h3>
+
 
   <p>
 
+
     <strong>
+
       9486365896
+
     </strong>
+
 
     <br>
 
+
     Phone &amp; WhatsApp
 
+
   </p>
+
 
 </div>
 
@@ -870,22 +1343,29 @@
 
 
 
+<!-- SERVICES -->
+
 <section class="section">
 
+
   <p class="section-label">
+
     OUR SERVICES
+
   </p>
 
 
   <h2>
+
     Comprehensive Medical Care
+
   </h2>
 
 
   <p class="section-intro">
 
-    Evaluation, diagnosis, treatment and follow-up for a wide range
-    of common medical conditions.
+    Evaluation, diagnosis, treatment and follow-up
+    for a wide range of common medical conditions.
 
   </p>
 
@@ -894,20 +1374,29 @@
   <div class="services">
 
 
+
     <div class="service">
 
-      <span>🩺</span>
+
+      <span>
+        🩺
+      </span>
+
 
       <h3>
+
         General Medicine
+
       </h3>
+
 
       <p>
 
-        Evaluation and treatment of common acute and chronic medical
-        conditions in adults.
+        Evaluation and treatment of common acute
+        and chronic medical conditions in adults.
 
       </p>
+
 
     </div>
 
@@ -915,43 +1404,63 @@
 
     <div class="service">
 
-      <span>🩸</span>
+
+      <span>
+        🩸
+      </span>
+
 
       <h3>
+
         Diabetes Care
+
       </h3>
+
 
       <p>
 
-        Diabetes diagnosis, treatment, medication adjustment,
-        glucose monitoring and complication screening.
+        Diabetes diagnosis, treatment,
+        medication adjustment, glucose monitoring
+        and complication screening.
 
       </p>
-<a
-  href="diabetes-care-anna-nagar.html"
-  class="map-button">
 
-  Learn More About Diabetes Care →
 
-</a>
+      <a
+        href="diabetes-care-anna-nagar.html"
+        class="map-button">
+
+        Learn More About Diabetes Care →
+
+      </a>
+
+
     </div>
 
 
 
     <div class="service">
 
-      <span>❤️</span>
+
+      <span>
+        ❤️
+      </span>
+
 
       <h3>
+
         Hypertension
+
       </h3>
+
 
       <p>
 
-        Blood pressure evaluation, treatment and cardiovascular
-        risk assessment.
+        Blood pressure evaluation, treatment
+        and cardiovascular risk assessment.
 
       </p>
+
 
     </div>
 
@@ -959,11 +1468,18 @@
 
     <div class="service">
 
-      <span>🦋</span>
+
+      <span>
+        🦋
+      </span>
+
 
       <h3>
+
         Thyroid Disorders
+
       </h3>
+
 
       <p>
 
@@ -972,24 +1488,33 @@
 
       </p>
 
+
     </div>
 
 
 
     <div class="service">
 
-      <span>🤒</span>
+
+      <span>
+        🤒
+      </span>
+
 
       <h3>
+
         Fever &amp; Infections
+
       </h3>
+
 
       <p>
 
-        Assessment of fever, respiratory infections, urinary
-        infections and other common infections.
+        Assessment of fever, respiratory infections,
+        urinary infections and other common infections.
 
       </p>
+
 
     </div>
 
@@ -997,18 +1522,27 @@
 
     <div class="service">
 
-      <span>🫁</span>
+
+      <span>
+        🫁
+      </span>
+
 
       <h3>
+
         Respiratory Problems
+
       </h3>
+
 
       <p>
 
-        Evaluation of cough, breathing difficulty, asthma,
-        bronchitis and other common respiratory conditions.
+        Evaluation of cough, breathing difficulty,
+        asthma, bronchitis and other common
+        respiratory conditions.
 
       </p>
+
 
     </div>
 
@@ -1016,18 +1550,26 @@
 
     <div class="service">
 
-      <span>🫘</span>
+
+      <span>
+        🫘
+      </span>
+
 
       <h3>
+
         Kidney &amp; Urinary Health
+
       </h3>
+
 
       <p>
 
-        Assessment and follow-up of kidney function, urinary
-        problems and chronic kidney disease risk.
+        Assessment and follow-up of kidney function,
+        urinary problems and chronic kidney disease risk.
 
       </p>
+
 
     </div>
 
@@ -1035,18 +1577,27 @@
 
     <div class="service">
 
-      <span>🦴</span>
+
+      <span>
+        🦴
+      </span>
+
 
       <h3>
+
         Joint &amp; Musculoskeletal Problems
+
       </h3>
+
 
       <p>
 
-        Evaluation of common joint pain, arthritis, back pain
-        and musculoskeletal conditions.
+        Evaluation of common joint pain,
+        arthritis, back pain and
+        musculoskeletal conditions.
 
       </p>
+
 
     </div>
 
@@ -1054,18 +1605,27 @@
 
     <div class="service">
 
-      <span>🍽️</span>
+
+      <span>
+        🍽️
+      </span>
+
 
       <h3>
+
         Digestive Problems
+
       </h3>
+
 
       <p>
 
-        Evaluation of acidity, gastritis, abdominal discomfort,
-        constipation, diarrhoea and other common digestive problems.
+        Evaluation of acidity, gastritis,
+        abdominal discomfort, constipation,
+        diarrhoea and other common digestive problems.
 
       </p>
+
 
     </div>
 
@@ -1073,18 +1633,26 @@
 
     <div class="service">
 
-      <span>👴</span>
+
+      <span>
+        👴
+      </span>
+
 
       <h3>
+
         Chronic Disease Care
+
       </h3>
+
 
       <p>
 
-        Long-term monitoring and treatment of multiple chronic
-        medical conditions.
+        Long-term monitoring and treatment
+        of multiple chronic medical conditions.
 
       </p>
+
 
     </div>
 
@@ -1092,18 +1660,27 @@
 
     <div class="service">
 
-      <span>🧠</span>
+
+      <span>
+        🧠
+      </span>
+
 
       <h3>
+
         Neurological Symptoms
+
       </h3>
+
 
       <p>
 
-        Initial assessment of headache, dizziness, numbness,
-        weakness and other common neurological symptoms.
+        Initial assessment of headache,
+        dizziness, numbness, weakness
+        and other common neurological symptoms.
 
       </p>
+
 
     </div>
 
@@ -1111,47 +1688,67 @@
 
     <div class="service">
 
-      <span>📋</span>
+
+      <span>
+        📋
+      </span>
+
 
       <h3>
+
         Preventive Health
+
       </h3>
+
 
       <p>
 
-        Health assessment, risk-factor evaluation and preventive
-        screening recommendations.
+        Health assessment, risk-factor evaluation
+        and preventive screening recommendations.
 
       </p>
 
+
     </div>
+
 
   </div>
+
 
 </section>
 
 
 
+<!-- DIABETES SPECIAL FOCUS -->
+
 <section class="diabetes-section">
+
 
   <div>
 
+
     <p class="section-label">
+
       SPECIAL FOCUS
+
     </p>
 
 
     <h2>
+
       Comprehensive Diabetes Care
+
     </h2>
 
 
     <p>
 
-      Personalized diabetes management with regular monitoring
-      and treatment planning.
+      Personalized diabetes management
+      with regular monitoring and
+      treatment planning.
 
     </p>
+
 
   </div>
 
@@ -1159,89 +1756,121 @@
 
   <div class="diabetes-list">
 
+
     <div>
       ✓ Diabetes diagnosis &amp; classification
     </div>
+
 
     <div>
       ✓ Blood glucose monitoring
     </div>
 
+
     <div>
       ✓ HbA1c monitoring
     </div>
+
 
     <div>
       ✓ Oral diabetes medications
     </div>
 
+
     <div>
       ✓ Insulin therapy
     </div>
+
 
     <div>
       ✓ Blood pressure management
     </div>
 
+
     <div>
       ✓ Diabetic kidney disease screening
     </div>
+
 
     <div>
       ✓ Diabetic neuropathy screening
     </div>
 
+
     <div>
       ✓ Cardiovascular risk assessment
     </div>
+
 
     <div>
       ✓ Lifestyle &amp; dietary counselling
     </div>
 
+
   </div>
+
 
 </section>
 
 
+
+<!-- REVIEWS -->
 
 <section class="reviews-section">
 
 
   <div class="google-rating">
 
+
     <div class="google-rating-stars">
+
       ★★★★★
+
     </div>
 
+
     <div class="google-rating-score">
+
       5.0
+
     </div>
+
 
     <div class="google-rating-text">
 
+
       <strong>
+
         Google Reviews
+
       </strong>
 
+
       <span>
+
         9 Google Reviews
+
       </span>
 
+
     </div>
+
 
   </div>
 
 
 
   <h2>
+
     What Our Patients Say
+
   </h2>
 
 
   <p class="reviews-intro">
 
-    Thank you to our patients for sharing their experiences.
+    Thank you to our patients
+    for sharing their experiences.
 
   </p>
 
@@ -1276,26 +1905,39 @@
     <div class="reviews-track">
 
 
+
       <div class="review-card active">
 
+
         <div class="stars">
+
           ★★★★★
+
         </div>
+
 
         <p>
 
-          “Good Diabetologist....i went to consult for my grandma...
-          sugar is controlled now and she is doing good..”
+          “Good Diabetologist....i went to consult
+          for my grandma... sugar is controlled now
+          and she is doing good..”
 
         </p>
 
+
         <h3>
+
           M.r Vinoth
+
         </h3>
 
+
         <small>
+
           Google Review
+
         </small>
+
 
       </div>
 
@@ -1303,24 +1945,35 @@
 
       <div class="review-card">
 
+
         <div class="stars">
+
           ★★★★★
+
         </div>
+
 
         <p>
 
-          “I am very happy with the hospitality, caring staff.
-          Doctor also amazing.”
+          “I am very happy with the hospitality,
+          caring staff. Doctor also amazing.”
 
         </p>
 
+
         <h3>
+
           23UCO039 C G SAMYUKTHA
+
         </h3>
 
+
         <small>
+
           Google Review
+
         </small>
+
 
       </div>
 
@@ -1328,28 +1981,40 @@
 
       <div class="review-card">
 
+
         <div class="stars">
+
           ★★★★★
+
         </div>
+
 
         <p>
 
-          “Dr Arunkumar provided outstanding service, empathy and
-          delivering information with clarity.
+          “Dr Arunkumar provided outstanding service,
+          empathy and delivering information with clarity.
 
           Highly Recommended”
 
         </p>
 
+
         <h3>
+
           Vishalraj M
+
         </h3>
 
+
         <small>
+
           Google Review
+
         </small>
 
+
       </div>
+
 
     </div>
 
@@ -1364,11 +2029,13 @@
 
     </button>
 
+
   </div>
 
 
 
   <div class="review-dots">
+
 
     <button
       onclick="showReview(0)"
@@ -1376,17 +2043,20 @@
       aria-label="Review 1">
     </button>
 
+
     <button
       onclick="showReview(1)"
       class="dot"
       aria-label="Review 2">
     </button>
 
+
     <button
       onclick="showReview(2)"
       class="dot"
       aria-label="Review 3">
     </button>
+
 
   </div>
 
@@ -1403,79 +2073,34 @@
 
   </a>
 
-</section>
-
-
-
-<section class="appointment">
-
-  <p class="section-label">
-    BOOK A CONSULTATION
-  </p>
-
-
-  <h2>
-    Need a Medical Consultation?
-  </h2>
-
-
-  <p>
-
-    Contact the clinic to enquire about consultation and appointments.
-
-  </p>
-
-
-
-  <div class="hero-buttons">
-
-    <a
-      href="tel:+919486365896"
-      class="button">
-
-      📞 9486365896
-
-    </a>
-
-
-    <a
-      href="https://wa.me/919486365896"
-      target="_blank"
-      rel="noopener"
-      class="button whatsapp-button">
-
-      💬 WhatsApp Us
-
-    </a>
-
-  </div>
 
 </section>
 
 
+
+<!-- SIMPLIFIED FOOTER -->
 
 <footer>
 
+
   <h3>
+
     GENERAL &amp; DIABETES CARE
+
   </h3>
 
 
   <p>
-    Dr ARUNKUMAR, MBBS, FIDM, CCEBDM, CCGDM
-  </p>
 
-
-  <p>
-
-    No. 78, V V Kovil Street, Thiruvalleswarar Nagar,
-    Thirumangalam, Anna Nagar West, Chennai – 40
+    Dr ARUNKUMAR
 
   </p>
 
 
   <p>
-    📞 9486365896
+
+    General Physician &amp; Diabetologist
+
   </p>
 
 
@@ -1495,11 +2120,18 @@
 
   </a>
 
+
 </footer>
 
 
 
+<!-- EXISTING WEBSITE JS -->
+
 <script src="script.js"></script>
+
+
+
+<!-- SUPABASE -->
 
 <script
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
@@ -1508,6 +2140,7 @@
 
 
 <script>
+
 
 const SUPABASE_URL =
   "https://twdmvdqqckcpwoccvtkj.supabase.co";
@@ -1523,194 +2156,639 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
+
 </script>
 
 
 
+<!-- PUBLIC APPOINTMENT SYSTEM -->
+
 <script>
 
+
+const appointmentForm =
+  document.getElementById(
+    "appointmentForm"
+  );
+
+
 const appointmentDate =
-  document.getElementById("appointmentDate");
+  document.getElementById(
+    "appointmentDate"
+  );
 
 
 const appointmentTime =
-  document.getElementById("appointmentTime");
+  document.getElementById(
+    "appointmentTime"
+  );
 
 
-const today =
-  new Date();
+const appointmentSubmitButton =
+  document.getElementById(
+    "appointmentSubmitButton"
+  );
 
 
-const year =
-  today.getFullYear();
+const bookingStatus =
+  document.getElementById(
+    "bookingStatus"
+  );
 
 
-const month =
-  String(
-    today.getMonth() + 1
-  ).padStart(2, "0");
-
-
-const day =
-  String(
-    today.getDate()
-  ).padStart(2, "0");
-
-
-appointmentDate.min =
-  `${year}-${month}-${day}`;
+const MAX_PER_SLOT = 5;
 
 
 
-appointmentDate.addEventListener(
-  "change",
-  async function() {
+const timeLabels = {
 
 
-    const selectedDate =
-      this.value;
+  "18:00":
+    "6:00 PM – 6:30 PM",
 
 
-    if (!selectedDate) {
-      return;
-    }
+  "18:30":
+    "6:30 PM – 7:00 PM",
 
 
-    const selectedDateObject =
-      new Date(
-        selectedDate + "T00:00:00"
-      );
+  "19:00":
+    "7:00 PM – 7:30 PM",
 
 
-    if (
-      selectedDateObject.getDay() === 0
-    ) {
+  "19:30":
+    "7:30 PM – 8:00 PM",
 
-      alert(
-        "Sunday appointments are not available. Please select another date."
-      );
 
-      this.value = "";
+  "20:00":
+    "8:00 PM – 8:30 PM",
 
-      return;
 
-    }
+  "20:30":
+    "8:30 PM – 9:00 PM"
+
+
+};
 
 
 
-    const { data, error } =
-      await supabaseClient
-        .from("appointments")
-        .select("appointment_time")
-        .eq(
-          "appointment_date",
-          selectedDate
-        );
+function getIndiaDateTimeParts() {
 
 
-    if (error) {
+  const formatter =
+    new Intl.DateTimeFormat(
+      "en-CA",
+      {
 
-      console.error(error);
+        timeZone:
+          "Asia/Kolkata",
 
-      return;
+        year:
+          "numeric",
 
-    }
+        month:
+          "2-digit",
 
+        day:
+          "2-digit",
 
+        hour:
+          "2-digit",
 
-    const slotCounts = {};
+        minute:
+          "2-digit",
 
-
-    data.forEach(
-      function(appointment) {
-
-        const time =
-          appointment
-            .appointment_time
-            .substring(0, 5);
-
-
-        slotCounts[time] =
-          (slotCounts[time] || 0) + 1;
+        hourCycle:
+          "h23"
 
       }
     );
 
 
+  const values = {};
 
-    Array.from(
-      appointmentTime.options
-    ).forEach(
-      function(option) {
+
+  formatter
+    .formatToParts(
+      new Date()
+    )
+    .forEach(
+      function(part) {
 
 
         if (
-          option.value === ""
+          part.type !==
+          "literal"
         ) {
-          return;
+
+
+          values[
+            part.type
+          ] =
+            part.value;
+
+
         }
 
-
-        const count =
-          slotCounts[option.value] || 0;
-
-
-        const timeLabels = {
-
-          "18:00":
-            "6:00 PM – 6:30 PM",
-
-          "18:30":
-            "6:30 PM – 7:00 PM",
-
-          "19:00":
-            "7:00 PM – 7:30 PM",
-
-          "19:30":
-            "7:30 PM – 8:00 PM",
-
-          "20:00":
-            "8:00 PM – 8:30 PM",
-
-          "20:30":
-            "8:30 PM – 9:00 PM"
-
-        };
-
-
-        option.textContent =
-          timeLabels[option.value] +
-          " — " +
-          count +
-          "/5" +
-          (
-            count >= 5
-              ? " FULL"
-              : ""
-          );
-
-
-        option.disabled =
-          count >= 5;
 
       }
     );
 
-  }
-);
+
+  return {
+
+
+    date:
+
+      values.year +
+      "-" +
+      values.month +
+      "-" +
+      values.day,
+
+
+    hour:
+
+      Number(
+        values.hour
+      ),
+
+
+    minute:
+
+      Number(
+        values.minute
+      )
+
+
+  };
+
+
+}
 
 
 
-document
-  .getElementById(
-    "appointmentForm"
+function setMinimumAppointmentDate() {
+
+
+  appointmentDate.min =
+    getIndiaDateTimeParts()
+      .date;
+
+
+}
+
+
+
+function normalizePhone(
+  value
+) {
+
+
+  return String(
+    value || ""
   )
+  .replace(
+    /\D/g,
+    ""
+  );
+
+
+}
+
+
+
+function hasSlotStarted(
+  selectedDate,
+  slotTime
+) {
+
+
+  const indiaNow =
+    getIndiaDateTimeParts();
+
+
+  if (
+    selectedDate !==
+    indiaNow.date
+  ) {
+
+
+    return false;
+
+
+  }
+
+
+  const parts =
+    slotTime.split(
+      ":"
+    );
+
+
+  const slotMinutes =
+
+    Number(
+      parts[0]
+    ) * 60 +
+
+    Number(
+      parts[1]
+    );
+
+
+  const currentMinutes =
+
+    indiaNow.hour * 60 +
+
+    indiaNow.minute;
+
+
+  return (
+    slotMinutes <=
+    currentMinutes
+  );
+
+
+}
+
+
+
+function resetTimeOptions() {
+
+
+  appointmentTime.value =
+    "";
+
+
+  Array.from(
+    appointmentTime.options
+  )
+  .forEach(
+    function(option) {
+
+
+      if (
+        !option.value
+      ) {
+
+
+        option.disabled =
+          false;
+
+
+        option.hidden =
+          false;
+
+
+        option.textContent =
+          "Select time";
+
+
+        return;
+
+
+      }
+
+
+      option.disabled =
+        false;
+
+
+      option.hidden =
+        false;
+
+
+      option.textContent =
+        timeLabels[
+          option.value
+        ];
+
+
+    }
+  );
+
+
+}
+
+
+
+async function loadAvailableSlots() {
+
+
+  resetTimeOptions();
+
+
+  bookingStatus.className =
+    "booking-status";
+
+
+  bookingStatus.textContent =
+    "";
+
+
+  const selectedDate =
+    appointmentDate.value;
+
+
+  if (
+    !selectedDate
+  ) {
+
+
+    return;
+
+
+  }
+
+
+
+  const selectedDateObject =
+    new Date(
+      selectedDate +
+      "T00:00:00"
+    );
+
+
+  if (
+    selectedDateObject
+      .getDay() === 0
+  ) {
+
+
+    alert(
+      "Sunday appointments are not available. Please select another date."
+    );
+
+
+    appointmentDate.value =
+      "";
+
+
+    resetTimeOptions();
+
+
+    return;
+
+
+  }
+
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "get_public_slot_counts",
+        {
+
+          p_date:
+            selectedDate
+
+        }
+      );
+
+
+
+  if (
+    error
+  ) {
+
+
+    console.error(
+      "Unable to load appointment slots:",
+      error
+    );
+
+
+    bookingStatus.className =
+      "booking-status error";
+
+
+    bookingStatus.textContent =
+      "Unable to check appointment availability. Please try again.";
+
+
+    return;
+
+
+  }
+
+
+
+  const slotCounts =
+    {};
+
+
+
+  (
+    data || []
+  )
+  .forEach(
+    function(slot) {
+
+
+      const time =
+        String(
+
+          slot.appointment_time ||
+
+          slot.slot_time ||
+
+          ""
+
+        )
+        .substring(
+          0,
+          5
+        );
+
+
+      if (
+        !time
+      ) {
+
+
+        return;
+
+
+      }
+
+
+      slotCounts[
+        time
+      ] =
+        Number(
+
+          slot.booking_count ??
+
+          slot.slot_count ??
+
+          slot.appointment_count ??
+
+          slot.count ??
+
+          0
+
+        );
+
+
+    }
+  );
+
+
+
+  Array.from(
+    appointmentTime.options
+  )
+  .forEach(
+    function(option) {
+
+
+      if (
+        !option.value
+      ) {
+
+
+        return;
+
+
+      }
+
+
+      const count =
+        slotCounts[
+          option.value
+        ] || 0;
+
+
+
+      /*
+        TODAY'S PAST SLOTS
+
+        Example:
+
+        If current time is 7:30 PM,
+
+        6:00
+        6:30
+        7:00
+        7:30
+
+        will not be shown.
+      */
+
+
+      if (
+        hasSlotStarted(
+          selectedDate,
+          option.value
+        )
+      ) {
+
+
+        option.disabled =
+          true;
+
+
+        option.hidden =
+          true;
+
+
+        return;
+
+
+      }
+
+
+
+      if (
+        count >=
+        MAX_PER_SLOT
+      ) {
+
+
+        option.disabled =
+          true;
+
+
+        option.hidden =
+          false;
+
+
+        option.textContent =
+
+          timeLabels[
+            option.value
+          ] +
+
+          " — FULL";
+
+
+        return;
+
+
+      }
+
+
+
+      option.disabled =
+        false;
+
+
+      option.hidden =
+        false;
+
+
+      option.textContent =
+
+        timeLabels[
+          option.value
+        ] +
+
+        " — " +
+
+        count +
+
+        "/" +
+
+        MAX_PER_SLOT;
+
+
+    }
+  );
+
+
+}
+
+
+
+appointmentDate
+  .addEventListener(
+    "change",
+    loadAvailableSlots
+  );
+
+
+
+appointmentForm
   .addEventListener(
     "submit",
-    function(event) {
+    async function(event) {
 
 
       event.preventDefault();
+
+
+
+      bookingStatus.className =
+        "booking-status";
+
+
+      bookingStatus.textContent =
+        "";
+
 
 
       const name =
@@ -1722,29 +2800,28 @@ document
           .trim();
 
 
+
       const phone =
-        document
-          .getElementById(
-            "patientPhone"
-          )
-          .value
-          .trim();
+        normalizePhone(
+
+          document
+            .getElementById(
+              "patientPhone"
+            )
+            .value
+
+        );
+
 
 
       const date =
-        document
-          .getElementById(
-            "appointmentDate"
-          )
-          .value;
+        appointmentDate.value;
+
 
 
       const time =
-        document
-          .getElementById(
-            "appointmentTime"
-          )
-          .value;
+        appointmentTime.value;
+
 
 
       const patientType =
@@ -1753,6 +2830,7 @@ document
             "patientType"
           )
           .value;
+
 
 
       const reason =
@@ -1765,35 +2843,397 @@ document
 
 
 
-      const message =
+      if (
+
+        !name ||
+
+        !phone ||
+
+        !date ||
+
+        !time ||
+
+        !patientType
+
+      ) {
+
+
+        bookingStatus.className =
+          "booking-status error";
+
+
+        bookingStatus.textContent =
+          "Please complete all required appointment details.";
+
+
+        return;
+
+
+      }
+
+
+
+      if (
+        !/^[0-9]{10}$/
+          .test(
+            phone
+          )
+      ) {
+
+
+        bookingStatus.className =
+          "booking-status error";
+
+
+        bookingStatus.textContent =
+          "Please enter a valid 10-digit mobile number.";
+
+
+        return;
+
+
+      }
+
+
+
+      if (
+        hasSlotStarted(
+          date,
+          time
+        )
+      ) {
+
+
+        bookingStatus.className =
+          "booking-status error";
+
+
+        bookingStatus.textContent =
+          "This appointment time is no longer available. Please select another time.";
+
+
+        await loadAvailableSlots();
+
+
+        return;
+
+
+      }
+
+
+
+      appointmentSubmitButton.disabled =
+        true;
+
+
+      appointmentSubmitButton.textContent =
+        "Booking Appointment...";
+
+
+
+      const appointmentType =
+
+        patientType ===
+        "Existing Patient"
+
+          ?
+
+        "Follow-up"
+
+          :
+
+        "New Consultation";
+
+
+
+      const notes =
+        [];
+
+
+
+      if (
+        reason
+      ) {
+
+
+        notes.push(
+          reason
+        );
+
+
+      }
+
+
+
+      notes.push(
+
+        "Patient Type: " +
+        patientType
+
+      );
+
+
+
+      notes.push(
+
+        "Booked from clinic website"
+
+      );
+
+
+
+      /*
+        THIS IS THE IMPORTANT NEW PART.
+
+        The appointment is saved to the clinic
+        appointment system FIRST.
+
+        Therefore the doctor appointment portal
+        can show the website booking.
+
+        WhatsApp is opened only AFTER
+        successful database booking.
+      */
+
+
+      const {
+        data: appointmentId,
+        error
+      } =
+        await supabaseClient
+          .rpc(
+            "book_public_appointment",
+            {
+
+
+              p_patient_name:
+                name,
+
+
+              p_patient_phone:
+                phone,
+
+
+              p_appointment_date:
+                date,
+
+
+              p_appointment_time:
+                time,
+
+
+              p_appointment_type:
+                appointmentType,
+
+
+              p_notes:
+                notes.join(
+                  "\n"
+                )
+
+
+            }
+          );
+
+
+
+      if (
+        error
+      ) {
+
+
+        console.error(
+          "Appointment booking error:",
+          error
+        );
+
+
+        let message =
+
+          error.message ||
+
+          "Unable to book appointment.";
+
+
+
+        const lower =
+          message.toLowerCase();
+
+
+
+        if (
+          lower.includes(
+            "full"
+          )
+        ) {
+
+
+          message =
+            "This appointment time is full. Please select another time.";
+
+
+        }
+
+
+        else if (
+          lower.includes(
+            "sunday"
+          )
+        ) {
+
+
+          message =
+            "The clinic is closed on Sundays. Please select another date.";
+
+
+        }
+
+
+        else if (
+          lower.includes(
+            "past"
+          )
+        ) {
+
+
+          message =
+            "This appointment time is no longer available.";
+
+
+        }
+
+
+
+        bookingStatus.className =
+          "booking-status error";
+
+
+        bookingStatus.textContent =
+          message;
+
+
+
+        appointmentSubmitButton.disabled =
+          false;
+
+
+        appointmentSubmitButton.textContent =
+          "📅 Book Appointment";
+
+
+
+        await loadAvailableSlots();
+
+
+        return;
+
+
+      }
+
+
+
+      /*
+        SUCCESS MESSAGE
+      */
+
+
+      bookingStatus.className =
+        "booking-status success";
+
+
+      bookingStatus.innerHTML =
+        `
+
+          ✅ <strong>
+            Appointment booked successfully.
+          </strong>
+
+          <br>
+
+          Appointment ID:
+          ${appointmentId}
+
+          <br>
+
+          Patient:
+          ${name}
+
+          <br>
+
+          Date:
+          ${date}
+
+          <br>
+
+          Time:
+          ${timeLabels[time]}
+
+          <br>
+
+          Status:
+          Pending
+
+        `;
+
+
+
+      /*
+        WHATSAPP CONFIRMATION
+
+        This occurs only after the database
+        appointment has been successfully created.
+      */
+
+
+      const whatsappMessage =
 `Hello General & Diabetes Care,
 
-I would like to request an appointment.
+I have booked an appointment through the clinic website.
 
+Appointment ID: ${appointmentId}
 Patient Name: ${name}
 Phone Number: ${phone}
-Preferred Date: ${date}
-Preferred Time: ${time}
+Appointment Date: ${date}
+Appointment Time: ${timeLabels[time]}
 Patient Type: ${patientType}
 Reason for Consultation: ${reason || "Not specified"}
 
-Please confirm the appointment.
+Appointment Status: Pending
 
 Thank you.`;
 
 
 
-      const whatsappNumber =
-        "919486365896";
-
-
       const whatsappURL =
-        "https://wa.me/" +
-        whatsappNumber +
-        "?text=" +
+
+        "https://wa.me/919486365896?text=" +
+
         encodeURIComponent(
-          message
+          whatsappMessage
         );
+
+
+
+      appointmentForm.reset();
+
+
+
+      setMinimumAppointmentDate();
+
+
+
+      resetTimeOptions();
+
+
+
+      appointmentSubmitButton.disabled =
+        false;
+
+
+
+      appointmentSubmitButton.textContent =
+        "📅 Book Appointment";
+
 
 
       window.open(
@@ -1801,8 +3241,14 @@ Thank you.`;
         "_blank"
       );
 
+
     }
   );
+
+
+
+setMinimumAppointmentDate();
+
 
 </script>
 
