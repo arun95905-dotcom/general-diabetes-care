@@ -9,7 +9,10 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0">
 
-  <!-- PRIMARY SEO -->
+
+  <!-- =====================================================
+       PRIMARY SEO
+       ===================================================== -->
 
   <title>
     General & Diabetes Care | General Physician & Diabetologist in Anna Nagar, Chennai
@@ -23,22 +26,32 @@
     name="keywords"
     content="General Physician Anna Nagar, Diabetologist Anna Nagar, Diabetes Doctor Anna Nagar, General Physician Chennai, Diabetologist Chennai, Diabetes Clinic Anna Nagar, General and Diabetes Care, Dr Arunkumar Chennai">
 
-  <meta name="author" content="General & Diabetes Care">
+  <meta
+    name="author"
+    content="General & Diabetes Care">
 
-  <meta name="robots" content="index, follow">
+  <meta
+    name="robots"
+    content="index, follow">
 
   <link
     rel="canonical"
     href="https://generalanddiabetescare.com/">
 
-  <!-- FAVICON -->
+
+  <!-- =====================================================
+       FAVICON
+       ===================================================== -->
 
   <link
     rel="icon"
     type="image/png"
     href="/IMG_20250712_024249.png">
 
-  <!-- OPEN GRAPH -->
+
+  <!-- =====================================================
+       OPEN GRAPH
+       ===================================================== -->
 
   <meta
     property="og:title"
@@ -62,9 +75,12 @@
 
   <meta
     property="og:image"
-    content="https://generalanddiabetescare.com/IMG_20250712_024249.png">
+    content="https://generalanddiabetescare.com/dr-arunkumar.JPG">
 
-  <!-- TWITTER -->
+
+  <!-- =====================================================
+       TWITTER / X
+       ===================================================== -->
 
   <meta
     name="twitter:card"
@@ -80,10 +96,12 @@
 
   <meta
     name="twitter:image"
-    content="https://generalanddiabetescare.com/IMG_20250712_024249.png">
+    content="https://generalanddiabetescare.com/dr-arunkumar.JPG">
 
 
-  <!-- WEBSITE STRUCTURED DATA -->
+  <!-- =====================================================
+       WEBSITE STRUCTURED DATA
+       ===================================================== -->
 
   <script type="application/ld+json">
   {
@@ -100,7 +118,9 @@
   </script>
 
 
-  <!-- CLINIC STRUCTURED DATA -->
+  <!-- =====================================================
+       CLINIC STRUCTURED DATA
+       ===================================================== -->
 
   <script type="application/ld+json">
   {
@@ -155,7 +175,9 @@
   </script>
 
 
-  <!-- DOCTOR STRUCTURED DATA -->
+  <!-- =====================================================
+       DOCTOR STRUCTURED DATA
+       ===================================================== -->
 
   <script type="application/ld+json">
   {
@@ -197,12 +219,188 @@
   </script>
 
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css">
 
 
-  <!-- NEW PAGE-SPECIFIC STYLES -->
+  <!-- =====================================================
+       PAGE-SPECIFIC STYLES
+       ===================================================== -->
 
   <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       NEW HERO WITH LARGE DOCTOR IMAGE
+       ===================================================== */
+
+    .hero {
+      overflow: hidden;
+    }
+
+
+    .hero-layout {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1.15fr)
+        minmax(300px, 0.85fr);
+
+      align-items: center;
+
+      gap: 42px;
+    }
+
+
+    .hero-layout .hero-content {
+      width: 100%;
+      max-width: none;
+    }
+
+
+    .hero-doctor-column {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+
+    .hero-doctor-card {
+      position: relative;
+
+      width: 100%;
+      max-width: 425px;
+
+      overflow: hidden;
+
+      border-radius: 28px;
+
+      background: #ffffff;
+
+      border:
+        5px solid
+        rgba(255,255,255,.88);
+
+      box-shadow:
+        0 20px 48px
+        rgba(15,23,42,.18);
+    }
+
+
+    .hero-doctor-image {
+      display: block;
+
+      width: 100%;
+
+      aspect-ratio: 4 / 5;
+
+      object-fit: cover;
+
+      object-position: center top;
+    }
+
+
+    .hero-doctor-overlay {
+      position: absolute;
+
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+
+      padding: 13px 16px;
+
+      text-align: center;
+
+      background:
+        rgba(255,255,255,.93);
+
+      backdrop-filter:
+        blur(8px);
+
+      border-radius: 15px;
+
+      box-shadow:
+        0 5px 18px
+        rgba(15,23,42,.12);
+    }
+
+
+    .hero-doctor-overlay strong {
+      display: block;
+
+      color: #172033;
+
+      font-size: 17px;
+
+      font-weight: 800;
+    }
+
+
+    .hero-doctor-overlay span {
+      display: block;
+
+      margin-top: 3px;
+
+      color: #64748b;
+
+      font-size: 13px;
+    }
+
+
+    /* =====================================================
+       ABOUT DOCTOR — STETHOSCOPE ICON
+       ===================================================== */
+
+    .doctor-summary {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+
+    .doctor-stethoscope-icon {
+      width: 76px;
+      min-width: 76px;
+      height: 76px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #eef6ff,
+          #ffffff
+        );
+
+      border:
+        1px solid
+        #d9e8fb;
+
+      border-radius: 18px;
+
+      font-size: 38px;
+
+      box-shadow:
+        0 6px 18px
+        rgba(15,23,42,.08);
+    }
+
+
+    /* =====================================================
+       APPOINTMENT FORM
+       ===================================================== */
 
     #appointmentForm,
     #appointmentForm * {
@@ -211,6 +409,7 @@
 
 
     #appointmentForm .form-row {
+      width: 100%;
 
       display: grid;
 
@@ -219,87 +418,26 @@
         minmax(0, 1fr);
 
       gap: 18px;
-
-      width: 100%;
-
     }
 
 
     #appointmentForm .form-row .form-group {
-
       width: 100%;
-
       min-width: 0;
-
     }
 
 
     #appointmentForm input,
     #appointmentForm select,
     #appointmentForm textarea {
-
       width: 100%;
-
       min-width: 0;
-
       max-width: 100%;
-
       box-sizing: border-box;
-
-    }
-
-
-    .doctor-summary {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 20px;
-
-    }
-
-
-    .doctor-photo-wrapper {
-
-      width: 135px;
-
-      min-width: 135px;
-
-      height: 165px;
-
-      overflow: hidden;
-
-      border-radius: 18px;
-
-      background: white;
-
-      border: 3px solid white;
-
-      box-shadow:
-        0 8px 24px
-        rgba(15, 23, 42, 0.14);
-
-    }
-
-
-    .doctor-profile-photo {
-
-      display: block;
-
-      width: 100%;
-
-      height: 100%;
-
-      object-fit: cover;
-
-      object-position: center top;
-
     }
 
 
     .booking-status {
-
       display: none;
 
       margin-top: 16px;
@@ -311,12 +449,10 @@
       line-height: 1.6;
 
       font-size: 14px;
-
     }
 
 
     .booking-status.success {
-
       display: block;
 
       background: #edf9f1;
@@ -326,12 +462,10 @@
         #b7dfc4;
 
       color: #166534;
-
     }
 
 
     .booking-status.error {
-
       display: block;
 
       background: #fff2f2;
@@ -341,78 +475,95 @@
         #efc1c1;
 
       color: #a52222;
-
     }
 
 
     #appointmentSubmitButton:disabled {
-
-      opacity: 0.7;
-
+      opacity: .7;
       cursor: not-allowed;
+    }
+
+
+    /* =====================================================
+       TABLET / MOBILE
+       ===================================================== */
+
+    @media(max-width:850px) {
+
+      .hero-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+
+      .hero-doctor-column {
+        justify-content: flex-start;
+      }
+
+
+      .hero-doctor-card {
+        max-width: 390px;
+      }
 
     }
 
 
-    @media
-    (max-width: 700px) {
-
+    @media(max-width:700px) {
 
       #appointmentForm .form-row {
-
-        grid-template-columns:
-          1fr;
-
+        grid-template-columns: 1fr;
         gap: 0;
-
       }
 
 
       .doctor-summary {
-
-        align-items:
-          flex-start;
-
+        align-items: flex-start;
         gap: 14px;
-
       }
 
 
-      .doctor-photo-wrapper {
+      .doctor-stethoscope-icon {
+        width: 64px;
+        min-width: 64px;
+        height: 64px;
 
-        width: 105px;
-
-        min-width: 105px;
-
-        height: 135px;
+        font-size: 31px;
 
         border-radius: 15px;
+      }
 
+
+      .hero-doctor-card {
+        max-width: 100%;
+        border-radius: 22px;
       }
 
     }
 
 
-    @media
-    (max-width: 480px) {
+    @media(max-width:480px) {
 
-
-      .doctor-summary {
-
-        flex-direction:
-          column;
-
+      .hero-layout {
+        gap: 24px;
       }
 
 
-      .doctor-photo-wrapper {
+      .hero-doctor-overlay {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
 
-        width: 140px;
+        padding: 11px 12px;
+      }
 
-        min-width: 140px;
 
-        height: 175px;
+      .hero-doctor-overlay strong {
+        font-size: 15px;
+      }
 
+
+      .hero-doctor-overlay span {
+        font-size: 12px;
       }
 
     }
@@ -425,13 +576,13 @@
 <body>
 
 
-<!-- HEADER -->
+<!-- =======================================================
+     HEADER
+     ======================================================= -->
 
 <header class="header">
 
-
   <div class="logo">
-
 
     <img
       src="IMG_20250712_024249.png"
@@ -440,7 +591,6 @@
 
 
     <div>
-
 
       <h1>
         GENERAL &amp; DIABETES CARE
@@ -451,15 +601,12 @@
         General Physician &amp; Diabetologist
       </p>
 
-
     </div>
-
 
   </div>
 
 
   <div class="header-actions">
-
 
     <a
       href="patient-login.html"
@@ -469,109 +616,137 @@
 
     </a>
 
-
   </div>
-
 
 </header>
 
 
 
-<!-- HERO -->
+<!-- =======================================================
+     NEW HERO
+     ======================================================= -->
 
 <section class="hero">
 
-
-  <div class="hero-content">
-
-
-    <p class="welcome">
-      WELCOME TO
-    </p>
+  <div class="hero-layout">
 
 
-    <h2>
+    <!-- HERO TEXT -->
 
-      General &amp;
+    <div class="hero-content">
 
-      <br>
-
-      Diabetes Care
-
-    </h2>
+      <p class="welcome">
+        WELCOME TO
+      </p>
 
 
-    <p class="doctor">
+      <h2>
+
+        General &amp;
+
+        <br>
+
+        Diabetes Care
+
+      </h2>
 
 
-      <strong>
-        Dr ARUNKUMAR
-      </strong>
+      <p class="doctor">
+
+        <strong>
+          Dr ARUNKUMAR
+        </strong>
+
+        <br>
+
+        MBBS, FIDM, CCEBDM, CCGDM
+
+        <br>
+
+        General Physician &amp; Diabetologist
+
+      </p>
 
 
-      <br>
+      <p>
+
+        Trusted, comprehensive medical care in
+        Anna Nagar West, Chennai, with a special
+        focus on diabetes, hypertension, thyroid
+        disorders and general medical conditions.
+
+      </p>
 
 
-      MBBS, FIDM, CCEBDM, CCGDM
+      <div class="hero-buttons">
+
+        <a
+          href="tel:+919486365896"
+          class="button">
+
+          📞 Call Clinic
+
+        </a>
 
 
-      <br>
+        <a
+          href="https://wa.me/919486365896"
+          target="_blank"
+          rel="noopener"
+          class="button whatsapp-button">
+
+          💬 WhatsApp
+
+        </a>
+
+      </div>
+
+    </div>
 
 
-      General Physician &amp; Diabetologist
+
+    <!-- LARGE HERO DOCTOR IMAGE -->
+
+    <div class="hero-doctor-column">
+
+      <div class="hero-doctor-card">
+
+        <img
+          src="dr-arunkumar.JPG"
+          alt="Dr. Arunkumar - General Physician and Diabetologist at General & Diabetes Care"
+          class="hero-doctor-image">
 
 
-    </p>
+        <div class="hero-doctor-overlay">
 
+          <strong>
+            Dr. ARUNKUMAR
+          </strong>
 
-    <p>
+          <span>
+            General Physician &amp; Diabetologist
+          </span>
 
-      Trusted, comprehensive medical care in
-      Anna Nagar West, Chennai, with a special
-      focus on diabetes, hypertension, thyroid
-      disorders and general medical conditions.
+        </div>
 
-    </p>
-
-
-    <div class="hero-buttons">
-
-
-      <a
-        href="tel:+919486365896"
-        class="button">
-
-        📞 Call Clinic
-
-      </a>
-
-
-      <a
-        href="#appointmentBooking"
-        class="button">
-
-        📅 Book Appointment
-
-      </a>
-
+      </div>
 
     </div>
 
 
   </div>
 
-
 </section>
 
 
 
-<!-- ABOUT DOCTOR -->
+<!-- =======================================================
+     ABOUT THE DOCTOR
+     ======================================================= -->
 
 <section class="doctor-profile">
 
-
   <details class="doctor-details">
-
 
     <summary>
 
@@ -579,20 +754,18 @@
       <div class="doctor-summary">
 
 
-        <div class="doctor-photo-wrapper">
+        <!-- STETHOSCOPE INSTEAD OF DOCTOR PHOTO -->
 
+        <div
+          class="doctor-stethoscope-icon"
+          aria-hidden="true">
 
-          <img
-            src="dr-arunkumar.JPG"
-            alt="Dr. Arunkumar - General Physician and Diabetologist"
-            class="doctor-profile-photo">
-
+          🩺
 
         </div>
 
 
         <div>
-
 
           <p class="section-label">
             ABOUT THE DOCTOR
@@ -605,38 +778,28 @@
 
 
           <p class="doctor-credentials">
-
             MBBS, FIDM, CCEBDM, CCGDM
-
           </p>
 
 
           <p class="doctor-title">
-
             General Physician &amp; Diabetologist
-
           </p>
 
-
         </div>
-
 
       </div>
 
 
       <span class="doctor-toggle">
-
         View Doctor Profile ▼
-
       </span>
-
 
     </summary>
 
 
 
     <div class="doctor-profile-content">
-
 
       <p>
 
@@ -652,103 +815,69 @@
 
 
       <h3 class="doctor-subheading">
-
         Education &amp; Qualifications
-
       </h3>
 
 
 
       <div class="qualification">
 
-
         <strong>
           MBBS
         </strong>
 
-
         <span>
-
           Government Thiruvarur Medical College
-
         </span>
 
-
         <small>
-
           Completed in 2018
-
         </small>
-
 
       </div>
 
 
 
       <div class="qualification">
-
 
         <strong>
           CCEBDM
         </strong>
 
-
         <span>
-
-          Certificate Course in Evidence-Based
-          Diabetes Management
-
+          Certificate Course in Evidence-Based Diabetes Management
         </span>
 
-
         <span>
-
           Dr. Mohan's Diabetes Education Academy /
           Dr. Mohan's Diabetes Centre
-
         </span>
 
-
         <small>
-
           Completed in 2022
-
         </small>
-
 
       </div>
 
 
 
       <div class="qualification">
-
 
         <strong>
           CCGDM
         </strong>
 
-
         <span>
-
-          Certificate Course in Gestational
-          Diabetes Management
-
+          Certificate Course in Gestational Diabetes Management
         </span>
 
-
         <span>
-
           Dr. Mohan's Diabetes Centre
-
         </span>
-
 
         <small>
-
           Completed in 2025
-
         </small>
-
 
       </div>
 
@@ -756,52 +885,37 @@
 
       <div class="qualification">
 
-
         <strong>
           FIDM
         </strong>
 
-
         <span>
-
           Fellowship in Diabetes Mellitus
-
         </span>
-
 
         <span>
-
           Apollo Hospitals
-
         </span>
-
 
         <small>
-
-          Specialized fellowship training in
-          Diabetes Mellitus and its comprehensive
-          management.
-
+          Specialized fellowship training in Diabetes Mellitus
+          and its comprehensive management.
         </small>
-
 
       </div>
 
 
 
       <h3 class="doctor-subheading">
-
         Clinical Experience
-
       </h3>
 
 
       <p>
 
-        Dr. ARUNKUMAR has nearly 8 years of
-        experience in general medical practice,
-        providing evaluation and management of
-        a broad range of acute and chronic
+        Dr. ARUNKUMAR has nearly 8 years of experience in
+        general medical practice, providing evaluation and
+        management of a broad range of acute and chronic
         medical conditions.
 
       </p>
@@ -809,9 +923,8 @@
 
       <p>
 
-        With around 4 years of focused experience
-        in diabetes care, particular clinical
-        interest includes:
+        With around 4 years of focused experience in diabetes
+        care, particular clinical interest includes:
 
       </p>
 
@@ -819,84 +932,70 @@
 
       <ul class="doctor-interests">
 
-
         <li>
           Diabetes mellitus and prediabetes
         </li>
-
 
         <li>
           Gestational diabetes
         </li>
 
-
         <li>
           Diabetes prevention and lifestyle management
         </li>
-
 
         <li>
           Individualized diabetes treatment
         </li>
 
-
         <li>
-          Monitoring and prevention of
-          diabetes-related complications
+          Monitoring and prevention of diabetes-related complications
         </li>
 
-
         <li>
-          Hypertension and cardiovascular
-          risk assessment
+          Hypertension and cardiovascular risk assessment
         </li>
-
 
         <li>
           Thyroid and other metabolic disorders
         </li>
 
-
       </ul>
-
 
     </div>
 
-
   </details>
-
 
 </section>
 
 
 
-<!-- CLINIC INFORMATION -->
+<!-- =======================================================
+     CLINIC INFORMATION
+     ======================================================= -->
 
 <section class="clinic-info">
 
 
 
-<!-- APPOINTMENT BOOKING -->
+<!-- =======================================================
+     APPOINTMENT BOOKING
+     ======================================================= -->
 
 <section
   class="appointment-section"
   id="appointmentBooking">
 
-
   <div class="appointment-card">
 
 
     <p class="section-label">
-
       BOOK A VISIT
-
     </p>
 
 
     <h2>
-
       Appointment Booking
-
     </h2>
 
 
@@ -914,16 +1013,11 @@
     <form id="appointmentForm">
 
 
-
       <div class="form-group">
 
-
         <label for="patientName">
-
           Patient Name
-
         </label>
-
 
         <input
           type="text"
@@ -931,20 +1025,15 @@
           placeholder="Enter patient name"
           required>
 
-
       </div>
 
 
 
       <div class="form-group">
 
-
         <label for="patientPhone">
-
           Phone Number
-
         </label>
-
 
         <input
           type="tel"
@@ -956,7 +1045,6 @@
           pattern="[0-9]{10}"
           required>
 
-
       </div>
 
 
@@ -964,22 +1052,16 @@
       <div class="form-row">
 
 
-
         <div class="form-group">
 
-
           <label for="appointmentDate">
-
             Preferred Date
-
           </label>
-
 
           <input
             type="date"
             id="appointmentDate"
             required>
-
 
         </div>
 
@@ -987,11 +1069,8 @@
 
         <div class="form-group">
 
-
           <label for="appointmentTime">
-
             Preferred Time
-
           </label>
 
 
@@ -999,61 +1078,37 @@
             id="appointmentTime"
             required>
 
-
             <option value="">
-
               Select time
-
             </option>
-
 
             <option value="18:00">
-
               6:00 PM – 6:30 PM
-
             </option>
-
 
             <option value="18:30">
-
               6:30 PM – 7:00 PM
-
             </option>
-
 
             <option value="19:00">
-
               7:00 PM – 7:30 PM
-
             </option>
-
 
             <option value="19:30">
-
               7:30 PM – 8:00 PM
-
             </option>
-
 
             <option value="20:00">
-
               8:00 PM – 8:30 PM
-
             </option>
-
 
             <option value="20:30">
-
               8:30 PM – 9:00 PM
-
             </option>
-
 
           </select>
 
-
         </div>
-
 
       </div>
 
@@ -1061,11 +1116,8 @@
 
       <div class="form-group">
 
-
         <label for="patientType">
-
           Patient Type
-
         </label>
 
 
@@ -1073,30 +1125,19 @@
           id="patientType"
           required>
 
-
           <option value="">
-
             Select
-
           </option>
-
 
           <option value="New Patient">
-
             New Patient
-
           </option>
-
 
           <option value="Existing Patient">
-
             Existing Patient
-
           </option>
 
-
         </select>
-
 
       </div>
 
@@ -1104,11 +1145,8 @@
 
       <div class="form-group">
 
-
         <label for="reason">
-
           Reason for Consultation
-
         </label>
 
 
@@ -1116,7 +1154,6 @@
           id="reason"
           rows="4"
           placeholder="Briefly mention the reason for your visit"></textarea>
-
 
       </div>
 
@@ -1139,45 +1176,37 @@
         aria-live="polite">
       </div>
 
-
     </form>
 
 
 
     <p class="appointment-note">
 
-
       ⏰ Clinic hours:
       6:00 PM – 9:00 PM,
       Monday–Saturday
 
-
       <br>
-
 
       For today's date, time slots that have
       already started are automatically hidden.
 
-
     </p>
 
-
   </div>
-
 
 </section>
 
 
 
-<!-- LOCATION -->
+<!-- =======================================================
+     CLINIC LOCATION
+     ======================================================= -->
 
 <div class="info-card">
 
-
   <h3>
-
     📍 Clinic Location
-
   </h3>
 
 
@@ -1199,27 +1228,23 @@
 
   </p>
 
-
 </div>
 
 
 
-<!-- MAP -->
+<!-- =======================================================
+     MAP
+     ======================================================= -->
 
 <section class="map-section">
 
-
   <p class="section-label">
-
     FIND US
-
   </p>
 
 
   <h2>
-
     Visit Our Clinic
-
   </h2>
 
 
@@ -1234,7 +1259,6 @@
 
   <div class="map-container">
 
-
     <iframe
       src="https://www.google.com/maps?q=General%20and%20Diabetes%20Care%20-%20Dr%20ARUNKUMAR%20A%20%7C%20General%20Physician%20%7C%20Diabetologist&output=embed"
       width="100%"
@@ -1242,9 +1266,9 @@
       style="border:0;"
       allowfullscreen=""
       loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
+      referrerpolicy="no-referrer-when-downgrade"
+      title="General and Diabetes Care Clinic Location">
     </iframe>
-
 
   </div>
 
@@ -1259,82 +1283,63 @@
 
   </a>
 
-
 </section>
 
 
 
-<!-- CONSULTATION HOURS -->
+<!-- =======================================================
+     CONSULTATION HOURS
+     ======================================================= -->
 
 <div class="info-card">
 
-
   <h3>
-
     🕐 Consultation Hours
-
   </h3>
 
 
   <p>
 
-
     <strong>
-
       6:00 PM – 9:00 PM
-
     </strong>
 
-
     <br>
-
 
     Monday – Saturday
 
-
     <br>
-
 
     Closed on Sunday
 
-
   </p>
-
 
 </div>
 
 
 
-<!-- CONTACT -->
+<!-- =======================================================
+     CONTACT
+     ======================================================= -->
 
 <div class="info-card">
 
-
   <h3>
-
     📞 Contact
-
   </h3>
 
 
   <p>
 
-
     <strong>
-
       9486365896
-
     </strong>
-
 
     <br>
 
-
     Phone &amp; WhatsApp
 
-
   </p>
-
 
 </div>
 
@@ -1343,22 +1348,19 @@
 
 
 
-<!-- SERVICES -->
+<!-- =======================================================
+     SERVICES
+     ======================================================= -->
 
 <section class="section">
 
-
   <p class="section-label">
-
     OUR SERVICES
-
   </p>
 
 
   <h2>
-
     Comprehensive Medical Care
-
   </h2>
 
 
@@ -1374,21 +1376,15 @@
   <div class="services">
 
 
-
     <div class="service">
-
 
       <span>
         🩺
       </span>
 
-
       <h3>
-
         General Medicine
-
       </h3>
-
 
       <p>
 
@@ -1397,25 +1393,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         🩸
       </span>
 
-
       <h3>
-
         Diabetes Care
-
       </h3>
-
 
       <p>
 
@@ -1434,25 +1424,19 @@
 
       </a>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         ❤️
       </span>
 
-
       <h3>
-
         Hypertension
-
       </h3>
-
 
       <p>
 
@@ -1461,25 +1445,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         🦋
       </span>
 
-
       <h3>
-
         Thyroid Disorders
-
       </h3>
-
 
       <p>
 
@@ -1488,25 +1466,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         🤒
       </span>
 
-
       <h3>
-
         Fever &amp; Infections
-
       </h3>
-
 
       <p>
 
@@ -1515,25 +1487,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         🫁
       </span>
 
-
       <h3>
-
         Respiratory Problems
-
       </h3>
-
 
       <p>
 
@@ -1543,25 +1509,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         🫘
       </span>
 
-
       <h3>
-
         Kidney &amp; Urinary Health
-
       </h3>
-
 
       <p>
 
@@ -1570,25 +1530,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         🦴
       </span>
 
-
       <h3>
-
         Joint &amp; Musculoskeletal Problems
-
       </h3>
-
 
       <p>
 
@@ -1598,25 +1552,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         🍽️
       </span>
 
-
       <h3>
-
         Digestive Problems
-
       </h3>
-
 
       <p>
 
@@ -1626,25 +1574,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         👴
       </span>
 
-
       <h3>
-
         Chronic Disease Care
-
       </h3>
-
 
       <p>
 
@@ -1653,25 +1595,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         🧠
       </span>
 
-
       <h3>
-
         Neurological Symptoms
-
       </h3>
-
 
       <p>
 
@@ -1681,25 +1617,19 @@
 
       </p>
 
-
     </div>
 
 
 
     <div class="service">
 
-
       <span>
         📋
       </span>
 
-
       <h3>
-
         Preventive Health
-
       </h3>
-
 
       <p>
 
@@ -1708,36 +1638,30 @@
 
       </p>
 
-
     </div>
 
 
   </div>
 
-
 </section>
 
 
 
-<!-- DIABETES SPECIAL FOCUS -->
+<!-- =======================================================
+     DIABETES SPECIAL FOCUS
+     ======================================================= -->
 
 <section class="diabetes-section">
 
-
   <div>
 
-
     <p class="section-label">
-
       SPECIAL FOCUS
-
     </p>
 
 
     <h2>
-
       Comprehensive Diabetes Care
-
     </h2>
 
 
@@ -1749,121 +1673,95 @@
 
     </p>
 
-
   </div>
 
 
 
   <div class="diabetes-list">
 
-
     <div>
       ✓ Diabetes diagnosis &amp; classification
     </div>
-
 
     <div>
       ✓ Blood glucose monitoring
     </div>
 
-
     <div>
       ✓ HbA1c monitoring
     </div>
-
 
     <div>
       ✓ Oral diabetes medications
     </div>
 
-
     <div>
       ✓ Insulin therapy
     </div>
-
 
     <div>
       ✓ Blood pressure management
     </div>
 
-
     <div>
       ✓ Diabetic kidney disease screening
     </div>
-
 
     <div>
       ✓ Diabetic neuropathy screening
     </div>
 
-
     <div>
       ✓ Cardiovascular risk assessment
     </div>
-
 
     <div>
       ✓ Lifestyle &amp; dietary counselling
     </div>
 
-
   </div>
-
 
 </section>
 
 
 
-<!-- REVIEWS -->
+<!-- =======================================================
+     GOOGLE REVIEWS
+     ======================================================= -->
 
 <section class="reviews-section">
 
 
   <div class="google-rating">
 
-
     <div class="google-rating-stars">
-
       ★★★★★
-
     </div>
 
 
     <div class="google-rating-score">
-
       5.0
-
     </div>
 
 
     <div class="google-rating-text">
 
-
       <strong>
-
         Google Reviews
-
       </strong>
 
-
       <span>
-
         9 Google Reviews
-
       </span>
 
-
     </div>
-
 
   </div>
 
 
 
   <h2>
-
     What Our Patients Say
-
   </h2>
 
 
@@ -1905,16 +1803,11 @@
     <div class="reviews-track">
 
 
-
       <div class="review-card active">
 
-
         <div class="stars">
-
           ★★★★★
-
         </div>
-
 
         <p>
 
@@ -1924,20 +1817,13 @@
 
         </p>
 
-
         <h3>
-
           M.r Vinoth
-
         </h3>
 
-
         <small>
-
           Google Review
-
         </small>
-
 
       </div>
 
@@ -1945,13 +1831,9 @@
 
       <div class="review-card">
 
-
         <div class="stars">
-
           ★★★★★
-
         </div>
-
 
         <p>
 
@@ -1960,20 +1842,13 @@
 
         </p>
 
-
         <h3>
-
           23UCO039 C G SAMYUKTHA
-
         </h3>
 
-
         <small>
-
           Google Review
-
         </small>
-
 
       </div>
 
@@ -1981,13 +1856,9 @@
 
       <div class="review-card">
 
-
         <div class="stars">
-
           ★★★★★
-
         </div>
-
 
         <p>
 
@@ -1998,23 +1869,15 @@
 
         </p>
 
-
         <h3>
-
           Vishalraj M
-
         </h3>
 
-
         <small>
-
           Google Review
-
         </small>
 
-
       </div>
-
 
     </div>
 
@@ -2029,13 +1892,11 @@
 
     </button>
 
-
   </div>
 
 
 
   <div class="review-dots">
-
 
     <button
       onclick="showReview(0)"
@@ -2057,7 +1918,6 @@
       aria-label="Review 3">
     </button>
 
-
   </div>
 
 
@@ -2073,34 +1933,28 @@
 
   </a>
 
-
 </section>
 
 
 
-<!-- SIMPLIFIED FOOTER -->
+<!-- =======================================================
+     FOOTER
+     ======================================================= -->
 
 <footer>
 
-
   <h3>
-
     GENERAL &amp; DIABETES CARE
-
   </h3>
 
 
   <p>
-
     Dr ARUNKUMAR
-
   </p>
 
 
   <p>
-
     General Physician &amp; Diabetologist
-
   </p>
 
 
@@ -2120,18 +1974,21 @@
 
   </a>
 
-
 </footer>
 
 
 
-<!-- EXISTING WEBSITE JS -->
+<!-- =======================================================
+     EXISTING WEBSITE SCRIPT
+     ======================================================= -->
 
 <script src="script.js"></script>
 
 
 
-<!-- SUPABASE -->
+<!-- =======================================================
+     SUPABASE
+     ======================================================= -->
 
 <script
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
@@ -2140,7 +1997,6 @@
 
 
 <script>
-
 
 const SUPABASE_URL =
   "https://twdmvdqqckcpwoccvtkj.supabase.co";
@@ -2156,12 +2012,13 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-
 </script>
 
 
 
-<!-- PUBLIC APPOINTMENT SYSTEM -->
+<!-- =======================================================
+     PUBLIC APPOINTMENT SYSTEM
+     ======================================================= -->
 
 <script>
 
@@ -2196,40 +2053,38 @@ const bookingStatus =
   );
 
 
-const MAX_PER_SLOT = 5;
+const MAX_PER_SLOT =
+  5;
 
 
 
 const timeLabels = {
 
-
   "18:00":
     "6:00 PM – 6:30 PM",
-
 
   "18:30":
     "6:30 PM – 7:00 PM",
 
-
   "19:00":
     "7:00 PM – 7:30 PM",
-
 
   "19:30":
     "7:30 PM – 8:00 PM",
 
-
   "20:00":
     "8:00 PM – 8:30 PM",
-
 
   "20:30":
     "8:30 PM – 9:00 PM"
 
-
 };
 
 
+
+/* =========================================================
+   INDIA DATE / TIME
+   ========================================================= */
 
 function getIndiaDateTimeParts() {
 
@@ -2264,7 +2119,8 @@ function getIndiaDateTimeParts() {
     );
 
 
-  const values = {};
+  const values =
+    {};
 
 
   formatter
@@ -2280,12 +2136,10 @@ function getIndiaDateTimeParts() {
           "literal"
         ) {
 
-
           values[
             part.type
           ] =
             part.value;
-
 
         }
 
@@ -2296,29 +2150,22 @@ function getIndiaDateTimeParts() {
 
   return {
 
-
     date:
-
       values.year +
       "-" +
       values.month +
       "-" +
       values.day,
 
-
     hour:
-
       Number(
         values.hour
       ),
 
-
     minute:
-
       Number(
         values.minute
       )
-
 
   };
 
@@ -2327,22 +2174,27 @@ function getIndiaDateTimeParts() {
 
 
 
-function setMinimumAppointmentDate() {
+/* =========================================================
+   MINIMUM DATE
+   ========================================================= */
 
+function setMinimumAppointmentDate() {
 
   appointmentDate.min =
     getIndiaDateTimeParts()
       .date;
 
-
 }
 
 
 
+/* =========================================================
+   PHONE NORMALIZATION
+   ========================================================= */
+
 function normalizePhone(
   value
 ) {
-
 
   return String(
     value || ""
@@ -2352,10 +2204,13 @@ function normalizePhone(
     ""
   );
 
-
 }
 
 
+
+/* =========================================================
+   CHECK IF TODAY'S SLOT HAS STARTED
+   ========================================================= */
 
 function hasSlotStarted(
   selectedDate,
@@ -2372,9 +2227,7 @@ function hasSlotStarted(
     indiaNow.date
   ) {
 
-
     return false;
-
 
   }
 
@@ -2386,20 +2239,16 @@ function hasSlotStarted(
 
 
   const slotMinutes =
-
     Number(
       parts[0]
     ) * 60 +
-
     Number(
       parts[1]
     );
 
 
   const currentMinutes =
-
     indiaNow.hour * 60 +
-
     indiaNow.minute;
 
 
@@ -2408,10 +2257,13 @@ function hasSlotStarted(
     currentMinutes
   );
 
-
 }
 
 
+
+/* =========================================================
+   RESET TIME OPTIONS
+   ========================================================= */
 
 function resetTimeOptions() {
 
@@ -2431,21 +2283,16 @@ function resetTimeOptions() {
         !option.value
       ) {
 
-
         option.disabled =
           false;
-
 
         option.hidden =
           false;
 
-
         option.textContent =
           "Select time";
 
-
         return;
-
 
       }
 
@@ -2472,6 +2319,10 @@ function resetTimeOptions() {
 
 
 
+/* =========================================================
+   LOAD AVAILABLE APPOINTMENT SLOTS
+   ========================================================= */
+
 async function loadAvailableSlots() {
 
 
@@ -2494,9 +2345,7 @@ async function loadAvailableSlots() {
     !selectedDate
   ) {
 
-
     return;
-
 
   }
 
@@ -2509,9 +2358,14 @@ async function loadAvailableSlots() {
     );
 
 
+  /*
+     Sunday = 0
+  */
+
   if (
     selectedDateObject
-      .getDay() === 0
+      .getDay() ===
+    0
   ) {
 
 
@@ -2533,6 +2387,13 @@ async function loadAvailableSlots() {
   }
 
 
+
+  /*
+     Secure slot-count RPC.
+
+     Public website does not directly
+     retrieve patient appointment records.
+  */
 
   const {
     data,
@@ -2609,9 +2470,7 @@ async function loadAvailableSlots() {
         !time
       ) {
 
-
         return;
-
 
       }
 
@@ -2650,9 +2509,7 @@ async function loadAvailableSlots() {
         !option.value
       ) {
 
-
         return;
-
 
       }
 
@@ -2665,20 +2522,19 @@ async function loadAvailableSlots() {
 
 
       /*
-        TODAY'S PAST SLOTS
+         For today's date, a slot that
+         has already started is hidden.
 
-        Example:
+         Example:
+         Current time = 7:30 PM
 
-        If current time is 7:30 PM,
+         6:00
+         6:30
+         7:00
+         7:30
 
-        6:00
-        6:30
-        7:00
-        7:30
-
-        will not be shown.
+         will not be shown.
       */
-
 
       if (
         hasSlotStarted(
@@ -2702,6 +2558,10 @@ async function loadAvailableSlots() {
       }
 
 
+
+      /*
+         Maximum 5 patients per slot.
+      */
 
       if (
         count >=
@@ -2764,6 +2624,10 @@ async function loadAvailableSlots() {
 
 
 
+/* =========================================================
+   DATE CHANGE
+   ========================================================= */
+
 appointmentDate
   .addEventListener(
     "change",
@@ -2771,6 +2635,10 @@ appointmentDate
   );
 
 
+
+/* =========================================================
+   BOOK APPOINTMENT
+   ========================================================= */
 
 appointmentForm
   .addEventListener(
@@ -2843,6 +2711,10 @@ appointmentForm
 
 
 
+      /* -----------------------------------------------------
+         REQUIRED FIELDS
+         ----------------------------------------------------- */
+
       if (
 
         !name ||
@@ -2873,6 +2745,10 @@ appointmentForm
 
 
 
+      /* -----------------------------------------------------
+         PHONE VALIDATION
+         ----------------------------------------------------- */
+
       if (
         !/^[0-9]{10}$/
           .test(
@@ -2895,6 +2771,10 @@ appointmentForm
       }
 
 
+
+      /* -----------------------------------------------------
+         PAST SLOT CHECK
+         ----------------------------------------------------- */
 
       if (
         hasSlotStarted(
@@ -2931,6 +2811,10 @@ appointmentForm
 
 
 
+      /* -----------------------------------------------------
+         APPOINTMENT TYPE
+         ----------------------------------------------------- */
+
       const appointmentType =
 
         patientType ===
@@ -2946,23 +2830,23 @@ appointmentForm
 
 
 
+      /* -----------------------------------------------------
+         NOTES
+         ----------------------------------------------------- */
+
       const notes =
         [];
-
 
 
       if (
         reason
       ) {
 
-
         notes.push(
           reason
         );
 
-
       }
-
 
 
       notes.push(
@@ -2973,7 +2857,6 @@ appointmentForm
       );
 
 
-
       notes.push(
 
         "Booked from clinic website"
@@ -2982,19 +2865,17 @@ appointmentForm
 
 
 
-      /*
-        THIS IS THE IMPORTANT NEW PART.
+      /* -----------------------------------------------------
+         SECURE DATABASE BOOKING
 
-        The appointment is saved to the clinic
-        appointment system FIRST.
+         This saves the appointment first.
 
-        Therefore the doctor appointment portal
-        can show the website booking.
+         Therefore it appears in the
+         Doctor Appointment Portal.
 
-        WhatsApp is opened only AFTER
-        successful database booking.
-      */
-
+         WhatsApp is opened only
+         after successful booking.
+         ----------------------------------------------------- */
 
       const {
         data: appointmentId,
@@ -3037,6 +2918,10 @@ appointmentForm
 
 
 
+      /* -----------------------------------------------------
+         ERROR
+         ----------------------------------------------------- */
+
       if (
         error
       ) {
@@ -3057,7 +2942,8 @@ appointmentForm
 
 
         const lower =
-          message.toLowerCase();
+          message
+            .toLowerCase();
 
 
 
@@ -3132,10 +3018,9 @@ appointmentForm
 
 
 
-      /*
-        SUCCESS MESSAGE
-      */
-
+      /* -----------------------------------------------------
+         SUCCESS
+         ----------------------------------------------------- */
 
       bookingStatus.className =
         "booking-status success";
@@ -3177,13 +3062,9 @@ appointmentForm
 
 
 
-      /*
-        WHATSAPP CONFIRMATION
-
-        This occurs only after the database
-        appointment has been successfully created.
-      */
-
+      /* -----------------------------------------------------
+         WHATSAPP CONFIRMATION
+         ----------------------------------------------------- */
 
       const whatsappMessage =
 `Hello General & Diabetes Care,
@@ -3214,27 +3095,31 @@ Thank you.`;
 
 
 
-      appointmentForm.reset();
+      /* -----------------------------------------------------
+         RESET FORM
+         ----------------------------------------------------- */
 
+      appointmentForm.reset();
 
 
       setMinimumAppointmentDate();
 
 
-
       resetTimeOptions();
-
 
 
       appointmentSubmitButton.disabled =
         false;
 
 
-
       appointmentSubmitButton.textContent =
         "📅 Book Appointment";
 
 
+
+      /* -----------------------------------------------------
+         OPEN WHATSAPP AFTER SUCCESS
+         ----------------------------------------------------- */
 
       window.open(
         whatsappURL,
@@ -3246,6 +3131,10 @@ Thank you.`;
   );
 
 
+
+/* =========================================================
+   INITIAL DATE
+   ========================================================= */
 
 setMinimumAppointmentDate();
 
