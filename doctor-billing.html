@@ -2274,9 +2274,8 @@ function clearSelectedPatient() {
 
 }
 
-
-/* =========================================================
-   LOAD PATIENT FROM URL
+  /* =========================================================
+   LOAD PATIENT / BILL FROM URL
    ========================================================= */
 
 async function loadPatientFromURL() {
@@ -2296,15 +2295,38 @@ async function loadPatientFromURL() {
       "consultation_id"
     );
 
+  const billId =
+    params.get(
+      "bill_id"
+    );
+
+
+  /* -----------------------------------------
+     OPEN EXISTING BILL
+     ----------------------------------------- */
+
+  if (billId) {
+
+    await showSavedBill(
+      Number(
+        billId
+      )
+    );
+
+    return true;
+  }
+
+
+  /* -----------------------------------------
+     CREATE BILL FOR PATIENT / CONSULTATION
+     ----------------------------------------- */
 
   if (!patientId) {
     return false;
   }
 
 
-  if (
-    consultationId
-  ) {
+  if (consultationId) {
 
     selectedConsultationId =
       Number(
@@ -2324,9 +2346,7 @@ async function loadPatientFromURL() {
   );
 
 
-  if (
-    selectedConsultationId
-  ) {
+  if (selectedConsultationId) {
 
     await showLinkedConsultation(
       selectedConsultationId
@@ -2338,6 +2358,7 @@ async function loadPatientFromURL() {
   return true;
 
 }
+
 
 
 /* =========================================================
