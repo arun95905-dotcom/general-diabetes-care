@@ -799,7 +799,7 @@ View today's billing and payment summary
 
 <div class="view-header">
 
-<h2>
+<h2 id="createBillTitle">
 💰 Create Bill
 </h2>
 
@@ -1364,6 +1364,13 @@ let selectedConsultationId =
 let billingReturnURL =
   null;
 
+/*
+   When null, the form creates a new bill.
+   When it contains a bill ID, the form updates that bill.
+*/
+let editingBillId =
+  null;
+
 
 /* =========================================================
    HELPERS
@@ -1643,6 +1650,19 @@ function goBackFromBilling() {
 
 
 function returnFromCreateBill() {
+
+  if (editingBillId) {
+
+    resetBillMode();
+
+    selectedPatient =
+      null;
+
+    selectedConsultationId =
+      null;
+
+  }
+
 
   if (
     billingReturnURL
@@ -2195,14 +2215,152 @@ async function loadPatientConsultations() {
 }
 
 
+async function findExistingConsultationBill(
+  consultationId,
+  excludeBillId = null
+) {
+
+  if (!consultationId) {
+    return null;
+  }
+
+  let query =
+    supabaseClient
+      .from("billing")
+      .select(
+        "id,patient_id,consultation_id,bill_date,total_amount,payment_status"
+      )
+      .eq(
+        "consultation_id",
+        Number(
+          consultationId
+        )
+      );
+
+  if (excludeBillId) {
+
+    query =
+      query.neq(
+        "id",
+        Number(
+          excludeBillId
+        )
+      );
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await query
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      )
+      .limit(1);
+
+
+  if (error) {
+
+    console.error(
+      "Duplicate consultation bill check failed:",
+      error
+    );
+
+    /*
+       Do not silently allow saving when the duplicate check
+       itself fails. The caller can distinguish undefined.
+    */
+    return undefined;
+  }
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    return null;
+  }
+
+
+  return data[0];
+
+}
+
+
 async function linkConsultation(
   consultationId
 ) {
 
-  selectedConsultationId =
+  const consultationNumber =
     Number(
       consultationId
     );
+
+
+  const existingBill =
+    await findExistingConsultationBill(
+      consultationNumber,
+      editingBillId
+    );
+
+
+  if (
+    existingBill ===
+    undefined
+  ) {
+
+    alert(
+      "Unable to check whether this consultation already has a bill.\n\nPlease try again."
+    );
+
+    return;
+  }
+
+
+  if (existingBill) {
+
+    const editExisting =
+      confirm(
+        "⚠️ A bill already exists for Consultation #" +
+        consultationNumber +
+        ".\n\n" +
+        "Bill #" +
+        existingBill.id +
+        "\n" +
+        "Bill Date: " +
+        formatDate(
+          existingBill.bill_date
+        ) +
+        "\n" +
+        "Total: " +
+        currency(
+          existingBill.total_amount
+        ) +
+        "\n\n" +
+        "Press OK to edit the existing bill.\n" +
+        "Press Cancel to keep the current bill unchanged."
+      );
+
+
+    if (editExisting) {
+
+      await editBill(
+        existingBill.id
+      );
+
+    }
+
+    return;
+  }
+
+
+  selectedConsultationId =
+    consultationNumber;
 
 
   await showLinkedConsultation(
@@ -2224,6 +2382,22 @@ async function linkConsultation(
    ========================================================= */
 
 function clearSelectedPatient() {
+
+  if (editingBillId) {
+
+    const confirmedEdit =
+      confirm(
+        "You are editing an existing bill. Stop editing this bill and choose another patient?"
+      );
+
+    if (!confirmedEdit) {
+      return;
+    }
+
+    resetBillMode();
+
+  }
+
 
   if (
     selectedConsultationId &&
@@ -2547,6 +2721,58 @@ async function saveBill() {
       .trim();
 
 
+  /*
+     Final duplicate check immediately before INSERT / UPDATE.
+     While editing, the bill currently being edited is excluded.
+  */
+  if (selectedConsultationId) {
+
+    const existingBill =
+      await findExistingConsultationBill(
+        selectedConsultationId,
+        editingBillId
+      );
+
+
+    if (
+      existingBill ===
+      undefined
+    ) {
+
+      alert(
+        "Unable to verify duplicate billing.\n\nThe bill was not saved. Please try again."
+      );
+
+      return;
+    }
+
+
+    if (existingBill) {
+
+      const editExisting =
+        confirm(
+          "⚠️ This consultation already has Bill #" +
+          existingBill.id +
+          ".\n\n" +
+          "A second bill will not be created.\n\n" +
+          "Press OK to edit the existing bill."
+        );
+
+
+      if (editExisting) {
+
+        await editBill(
+          existingBill.id
+        );
+
+      }
+
+      return;
+    }
+
+  }
+
+
   const button =
     document.getElementById(
       "saveBillButton"
@@ -2557,77 +2783,132 @@ async function saveBill() {
     true;
 
   button.textContent =
-    "⏳ Saving...";
+    editingBillId
+      ? "⏳ Updating..."
+      : "⏳ Saving...";
 
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("billing")
-      .insert({
+  const billPayload = {
 
-        patient_id:
-          selectedPatient.id,
+    patient_id:
+      selectedPatient.id,
 
-        consultation_id:
-          selectedConsultationId ||
-          null,
+    consultation_id:
+      selectedConsultationId ||
+      null,
 
-        bill_date:
-          billDate,
+    bill_date:
+      billDate,
 
-        consultation_fee:
-          consultationFee,
+    consultation_fee:
+      consultationFee,
 
-        medicine_charges:
-          medicineCharges,
+    medicine_charges:
+      medicineCharges,
 
-        procedure_charges:
-          procedureCharges,
+    procedure_charges:
+      procedureCharges,
 
-        total_amount:
-          total,
+    total_amount:
+      total,
 
-        payment_status:
-          paymentStatus,
+    payment_status:
+      paymentStatus,
 
-        payment_method:
-          paymentMethod ||
-          null,
+    payment_method:
+      paymentMethod ||
+      null,
 
-        notes:
-          notes ||
-          null
+    notes:
+      notes ||
+      null
 
-      })
-      .select()
-      .single();
+  };
+
+
+  let result;
+
+
+  if (editingBillId) {
+
+    result =
+      await supabaseClient
+        .from("billing")
+        .update(
+          billPayload
+        )
+        .eq(
+          "id",
+          editingBillId
+        )
+        .select()
+        .single();
+
+  } else {
+
+    result =
+      await supabaseClient
+        .from("billing")
+        .insert(
+          billPayload
+        )
+        .select()
+        .single();
+
+  }
+
+
+  const data =
+    result.data;
+
+  const error =
+    result.error;
 
 
   button.disabled =
     false;
 
-  button.textContent =
-    "💾 Save Bill";
-
 
   if (error) {
+
+    button.textContent =
+      editingBillId
+        ? "💾 Update Bill"
+        : "💾 Save Bill";
 
     console.error(error);
 
     alert(
-      "Unable to save bill:\n\n" +
-      error.message
+      editingBillId
+        ? "Unable to update bill:\n\n" +
+          error.message
+        : "Unable to save bill:\n\n" +
+          error.message
     );
 
     return;
   }
 
 
+  const wasEditing =
+    Boolean(
+      editingBillId
+    );
+
+
+  editingBillId =
+    null;
+
+
+  resetBillMode();
+
+
   await showSavedBill(
-    data.id
+    data.id,
+    false,
+    wasEditing
+      ? "✅ Bill Updated Successfully"
+      : "✅ Bill Saved Successfully"
   );
 
 }
@@ -2924,11 +3205,293 @@ function renderBillDetails(
 
 
 /* =========================================================
+   EDIT BILL
+   ========================================================= */
+
+function resetBillMode() {
+
+  editingBillId =
+    null;
+
+  const title =
+    document.getElementById(
+      "createBillTitle"
+    );
+
+  if (title) {
+
+    title.textContent =
+      "💰 Create Bill";
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "saveBillButton"
+    );
+
+  if (button) {
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "💾 Save Bill";
+
+  }
+
+}
+
+
+async function editBill(
+  billId
+) {
+
+  const result =
+    await getBillAndPatient(
+      billId
+    );
+
+
+  if (!result) {
+    return;
+  }
+
+
+  const bill =
+    result.bill;
+
+  const patient =
+    result.patient;
+
+
+  if (
+    !patient ||
+    !patient.id
+  ) {
+
+    alert(
+      "Unable to load the patient for this bill."
+    );
+
+    return;
+  }
+
+
+  editingBillId =
+    Number(
+      bill.id
+    );
+
+  selectedPatient =
+    patient;
+
+  selectedConsultationId =
+    bill.consultation_id
+      ? Number(
+          bill.consultation_id
+        )
+      : null;
+
+
+  showView(
+    "createBillView"
+  );
+
+
+  document
+    .getElementById(
+      "patientSearchArea"
+    )
+    .style.display =
+      "none";
+
+
+  document
+    .getElementById(
+      "selectedPatientArea"
+    )
+    .style.display =
+      "block";
+
+
+  document
+    .getElementById(
+      "selectedPatientName"
+    )
+    .textContent =
+      "👤 " +
+      (
+        patient.patient_name ||
+        "-"
+      );
+
+
+  document
+    .getElementById(
+      "selectedPatientMeta"
+    )
+    .innerHTML = `
+
+      Patient ID:
+      <strong>
+        ${escapeHTML(
+          patient.id
+        )}
+      </strong>
+
+      <br>
+
+      Phone:
+      <strong>
+        ${escapeHTML(
+          patient.patient_phone ||
+          "-"
+        )}
+      </strong>
+
+      <br>
+
+      Editing:
+      <strong>
+        Bill #${escapeHTML(
+          bill.id
+        )}
+      </strong>
+
+  `;
+
+
+  const title =
+    document.getElementById(
+      "createBillTitle"
+    );
+
+  if (title) {
+
+    title.textContent =
+      "✏️ Edit Bill #" +
+      bill.id;
+
+  }
+
+
+  document
+    .getElementById(
+      "billDate"
+    )
+    .value =
+      bill.bill_date ||
+      getTodayString();
+
+
+  document
+    .getElementById(
+      "consultationFee"
+    )
+    .value =
+      Number(
+        bill.consultation_fee ||
+        0
+      );
+
+
+  document
+    .getElementById(
+      "medicineCharges"
+    )
+    .value =
+      Number(
+        bill.medicine_charges ||
+        0
+      );
+
+
+  document
+    .getElementById(
+      "procedureCharges"
+    )
+    .value =
+      Number(
+        bill.procedure_charges ||
+        0
+      );
+
+
+  document
+    .getElementById(
+      "paymentStatus"
+    )
+    .value =
+      bill.payment_status ||
+      "Paid";
+
+
+  document
+    .getElementById(
+      "paymentMethod"
+    )
+    .value =
+      bill.payment_method ||
+      "";
+
+
+  document
+    .getElementById(
+      "billingNotes"
+    )
+    .value =
+      bill.notes ||
+      "";
+
+
+  document
+    .getElementById(
+      "saveBillButton"
+    )
+    .textContent =
+      "💾 Update Bill";
+
+
+  document
+    .getElementById(
+      "consultationLinkArea"
+    )
+    .style.display =
+      "none";
+
+
+  if (selectedConsultationId) {
+
+    await showLinkedConsultation(
+      selectedConsultationId
+    );
+
+  } else {
+
+    document
+      .getElementById(
+        "linkedConsultationNotice"
+      )
+      .style.display =
+        "none";
+
+  }
+
+
+  calculateTotal();
+
+}
+
+
+/* =========================================================
    SAVED BILL
    ========================================================= */
 async function showSavedBill(
   billId,
-  viewingExistingBill = false
+  viewingExistingBill = false,
+  successTitle = ""
 ) {
 
   const result =
@@ -2955,9 +3518,12 @@ async function showSavedBill(
 
     <h2>
       ${
-        viewingExistingBill
-          ? "🧾 Bill Details"
-          : "✅ Bill Saved Successfully"
+        successTitle ||
+        (
+          viewingExistingBill
+            ? "🧾 Bill Details"
+            : "✅ Bill Saved Successfully"
+        )
       }
     </h2>
 
@@ -3009,6 +3575,20 @@ async function showSavedBill(
 
 
     <div class="billing-actions">
+
+      <button
+        type="button"
+        class="billing-button warning"
+        onclick="editBill(
+          ${Number(
+            bill.id
+          )}
+        )">
+
+        ✏️ Edit Bill
+
+      </button>
+
 
       <button
         type="button"
@@ -3427,6 +4007,20 @@ async function renderBillsList(
 
 
                 <div class="billing-actions">
+
+                  <button
+                    type="button"
+                    class="billing-button warning small"
+                    onclick="editBill(
+                      ${Number(
+                        bill.id
+                      )}
+                    )">
+
+                    ✏️ Edit
+
+                  </button>
+
 
                   <button
                     type="button"
@@ -5525,6 +6119,9 @@ window.printBill =
 window.downloadBillPDF =
   downloadBillPDF;
 
+window.editBill =
+  editBill;
+
 window.deleteBill =
   deleteBill;
 
@@ -5555,6 +6152,8 @@ document
 
       selectedPatient =
         null;
+
+      resetBillMode();
 
       resetBillForm();
 
