@@ -1392,6 +1392,16 @@ let currentAppointmentId =
 let consultationReturnURL =
   null;
 
+/*
+   Appointment portal navigation.
+   Used for Basic Details and appointment-linked registration.
+*/
+let patientPageReturnURL =
+  null;
+
+let registrationAppointmentId =
+  null;
+
 
 /* =========================================================
    HELPERS
@@ -1466,6 +1476,14 @@ function showHomeView() {
 
 
   consultationReturnURL =
+    null;
+
+
+  patientPageReturnURL =
+    null;
+
+
+  registrationAppointmentId =
     null;
 
 
@@ -1942,7 +1960,123 @@ async function savePatient() {
     data.id;
 
 
+  let appointmentLinkedSuccessfully =
+    false;
+
+
+  /*
+     Appointment portal registration:
+     immediately link the newly registered patient
+     back to the appointment that opened this form.
+  */
+  if (
+    registrationAppointmentId
+  ) {
+
+    let {
+      error:
+        linkError
+    } =
+      await supabaseClient
+        .from("appointments")
+        .update({
+
+          patient_id:
+            data.id,
+
+          linked_patient_id:
+            data.id
+
+        })
+        .eq(
+          "id",
+          registrationAppointmentId
+        );
+
+
+    /*
+       Compatibility fallback for databases that only
+       have patient_id and not linked_patient_id.
+    */
+    if (
+      linkError &&
+      String(
+        linkError.message ||
+        ""
+      )
+      .toLowerCase()
+      .includes(
+        "linked_patient_id"
+      )
+    ) {
+
+      const fallback =
+        await supabaseClient
+          .from("appointments")
+          .update({
+
+            patient_id:
+              data.id
+
+          })
+          .eq(
+            "id",
+            registrationAppointmentId
+          );
+
+
+      linkError =
+        fallback.error;
+
+    }
+
+
+    if (linkError) {
+
+      alert(
+        "Patient was registered, but the appointment could not be linked automatically:\n\n" +
+        linkError.message
+      );
+
+    } else {
+
+      appointmentLinkedSuccessfully =
+        true;
+
+    }
+
+  }
+
+
   clearRegistrationForm();
+
+
+  const returnButtonHTML =
+    patientPageReturnURL
+      ? `
+
+        <button
+          type="button"
+          class="portal-button light-button"
+          onclick="returnToPatientPageSource()">
+
+          ← Back to Appointments
+
+        </button>
+
+      `
+      : `
+
+        <button
+          type="button"
+          class="portal-button light-button"
+          onclick="showHomeView()">
+
+          ← Patient Management
+
+        </button>
+
+      `;
 
 
   document
@@ -1984,6 +2118,21 @@ async function savePatient() {
             data.patient_phone
           )}
 
+          ${
+            appointmentLinkedSuccessfully
+              ? `
+
+                <br>
+
+                Appointment:
+                <strong>
+                  Linked successfully
+                </strong>
+
+              `
+              : ""
+          }
+
         </div>
 
       </div>
@@ -2019,14 +2168,7 @@ async function savePatient() {
         </button>
 
 
-        <button
-          type="button"
-          class="portal-button light-button"
-          onclick="showHomeView()">
-
-          ← Patient Management
-
-        </button>
+        ${returnButtonHTML}
 
       </div>
 
@@ -2562,9 +2704,17 @@ async function viewPatientDetails(
         <button
           type="button"
           class="portal-button light-button"
-          onclick="showView('searchView')">
+          onclick="${
+            patientPageReturnURL
+              ? "returnToPatientPageSource()"
+              : "showView('searchView')"
+          }">
 
-          ← Back
+          ${
+            patientPageReturnURL
+              ? "← Back to Appointments"
+              : "← Back"
+          }
 
         </button>
 
@@ -2675,9 +2825,17 @@ async function viewPatientDetails(
         <button
           type="button"
           class="portal-button light-button"
-          onclick="showView('searchView')">
+          onclick="${
+            patientPageReturnURL
+              ? "returnToPatientPageSource()"
+              : "showView('searchView')"
+          }">
 
-          ← Return
+          ${
+            patientPageReturnURL
+              ? "← Back to Appointments"
+              : "← Return"
+          }
 
         </button>
 
@@ -2760,7 +2918,11 @@ async function editPatient(
         <button
           type="button"
           class="portal-button light-button"
-                    onclick="showView('searchView')">
+          onclick="viewPatientDetails(
+            ${Number(
+              patient.id
+            )}
+          )">
 
           ↩ Cancel
 
@@ -2987,7 +3149,11 @@ async function editPatient(
         <button
           type="button"
           class="portal-button light-button"
-                    onclick="showView('searchView')">
+          onclick="viewPatientDetails(
+            ${Number(
+              patient.id
+            )}
+          )">
 
           ↩ Cancel
 
@@ -4975,6 +5141,7 @@ async function openSavedConsultation(
 
           </button>
 
+
           ${
             consultationReturnURL
               ? `
@@ -5002,7 +5169,6 @@ async function openSavedConsultation(
 
               `
           }
-          
 
         </div>
 
@@ -6801,6 +6967,28 @@ function closeFileModal() {
 
 
 /* =========================================================
+   RETURN TO APPOINTMENT / SOURCE PAGE
+   ========================================================= */
+
+function returnToPatientPageSource() {
+
+  if (
+    patientPageReturnURL
+  ) {
+
+    window.location.href =
+      patientPageReturnURL;
+
+    return;
+  }
+
+
+  showHomeView();
+
+}
+
+
+/* =========================================================
    URL PARAMETERS
    STEP 3
    ========================================================= */
@@ -6840,10 +7028,26 @@ async function handleURLParameters() {
     );
 
 
+  const appointmentPatientName =
+    params.get(
+      "patient_name"
+    );
+
+
+  const appointmentPatientPhone =
+    params.get(
+      "patient_phone"
+    );
+
+
   consultationReturnURL =
     params.get(
       "return_to"
     );
+
+
+  patientPageReturnURL =
+    consultationReturnURL;
 
 
   /*
@@ -6858,6 +7062,77 @@ async function handleURLParameters() {
       Number(
         appointmentId
       );
+
+  }
+
+
+  /*
+     Appointment → Register New Patient
+     Opens the existing registration form and pre-fills
+     appointment name + phone.
+  */
+
+  if (
+    view ===
+      "register" &&
+    appointmentId
+  ) {
+
+    registrationAppointmentId =
+      Number(
+        appointmentId
+      );
+
+
+    clearRegistrationForm();
+
+
+    document
+      .getElementById(
+        "newPatientName"
+      )
+      .value =
+        appointmentPatientName ||
+        "";
+
+
+    document
+      .getElementById(
+        "newPatientPhone"
+      )
+      .value =
+        appointmentPatientPhone ||
+        "";
+
+
+    showView(
+      "registrationView"
+    );
+
+
+    return true;
+
+  }
+
+
+  /*
+     Appointment → View Patient Basic Details
+  */
+
+  if (
+    view ===
+      "details" &&
+    patientId
+  ) {
+
+    await viewPatientDetails(
+      Number(
+        patientId
+      )
+    );
+
+
+    return true;
 
   }
 
@@ -7160,6 +7435,10 @@ window.openPDFModal =
 
 window.closeFileModal =
   closeFileModal;
+
+
+window.returnToPatientPageSource =
+  returnToPatientPageSource;
 
 
 /* =========================================================
