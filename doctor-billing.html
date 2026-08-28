@@ -5624,7 +5624,35 @@ document
   )
   .addEventListener(
     "click",
-    loadPatientConsultations
+    function() {
+
+      const area =
+        document.getElementById(
+          "consultationLinkArea"
+        );
+
+      /*
+         If consultation list is already open,
+         collapse it.
+      */
+      if (
+        area.style.display ===
+        "block"
+      ) {
+
+        area.style.display =
+          "none";
+
+        return;
+      }
+
+      /*
+         Otherwise open and load
+         patient's consultations.
+      */
+      loadPatientConsultations();
+
+    }
   );
   
 document
