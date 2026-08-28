@@ -3258,63 +3258,91 @@ async function editBill(
   */
 
   const previousView =
-  document.getElementById(
-    "previousBillsView"
-  );
+    document.getElementById(
+      "previousBillsView"
+    );
 
-const savedView =
-  document.getElementById(
-    "savedBillView"
-  );
+  const todayView =
+    document.getElementById(
+      "todayBillsView"
+    );
+
+  const savedView =
+    document.getElementById(
+      "savedBillView"
+    );
 
 
-if (
-  previousView &&
-  previousView.classList.contains(
-    "active"
-  )
-) {
-
-  billEditReturnState = {
-
-    view:
-      "previousBills",
-
-    search:
-      document
-        .getElementById(
-          "billSearch"
-        )
-        .value,
-
-    billId:
-      Number(
-        billId
-      )
-
-  };
-
-} else if (
-  !(
-    savedView &&
-    savedView.classList.contains(
+  if (
+    previousView &&
+    previousView.classList.contains(
       "active"
-    ) &&
-    billEditReturnState &&
-    billEditReturnState.view ===
-      "previousBills"
-  )
-) {
+    )
+  ) {
 
-  /*
-     Edit was started from somewhere other
-     than Previous Bills, so do not reuse
-     an old Previous Bills return state.
-  */
-  billEditReturnState =
-    null;
+    billEditReturnState = {
 
-}
+      view:
+        "previousBills",
+
+      search:
+        document
+          .getElementById(
+            "billSearch"
+          )
+          .value,
+
+      billId:
+        Number(
+          billId
+        )
+
+    };
+
+  } else if (
+    todayView &&
+    todayView.classList.contains(
+      "active"
+    )
+  ) {
+
+    billEditReturnState = {
+
+      view:
+        "todayBills",
+
+      billId:
+        Number(
+          billId
+        )
+
+    };
+
+  } else if (
+    !(
+      savedView &&
+      savedView.classList.contains(
+        "active"
+      ) &&
+      billEditReturnState &&
+      (
+        billEditReturnState.view ===
+          "previousBills" ||
+        billEditReturnState.view ===
+          "todayBills"
+      )
+    )
+  ) {
+
+    /*
+       Edit was started from somewhere other
+       than Previous Bills / Today's Bills,
+       so do not reuse an old return state.
+    */
+    billEditReturnState =
+      null;
+
+  }
 
   const result =
     await getBillAndPatient(
@@ -3619,6 +3647,57 @@ async function returnToPatientBillDetails() {
 
 
 /* =========================================================
+   RETURN TO TODAY'S BILLS
+   ========================================================= */
+
+async function returnToTodayBills() {
+
+  if (
+    !billEditReturnState ||
+    billEditReturnState.view !==
+      "todayBills"
+  ) {
+
+    showDashboard();
+
+    return;
+  }
+
+
+  const returnState =
+    {
+      ...billEditReturnState
+    };
+
+
+  await loadTodayBills();
+
+
+  const details =
+    document.getElementById(
+      "billDetails-" +
+      returnState.billId
+    );
+
+
+  if (details) {
+
+    details.classList.add(
+      "open"
+    );
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================================================
    SAVED BILL
    ========================================================= */
 async function showSavedBill(
@@ -3768,7 +3847,9 @@ async function showSavedBill(
           : `
 
             ${
-              billEditReturnState
+              billEditReturnState &&
+              billEditReturnState.view ===
+                "previousBills"
                 ? `
 
                   <button
@@ -3781,18 +3862,33 @@ async function showSavedBill(
                   </button>
 
                 `
-                : `
+                : billEditReturnState &&
+                  billEditReturnState.view ===
+                    "todayBills"
+                  ? `
 
-                  <button
-                    type="button"
-                    class="billing-button light"
-                    onclick="showDashboard()">
+                    <button
+                      type="button"
+                      class="billing-button light"
+                      onclick="returnToTodayBills()">
 
-                    ← Billing Home
+                      ← Back to Today's Bills
 
-                  </button>
+                    </button>
 
-                `
+                  `
+                  : `
+
+                    <button
+                      type="button"
+                      class="billing-button light"
+                      onclick="showDashboard()">
+
+                      ← Billing Home
+
+                    </button>
+
+                  `
             }
 
           `
@@ -6276,6 +6372,9 @@ window.editBill =
 
 window.returnToPatientBillDetails =
   returnToPatientBillDetails;
+
+window.returnToTodayBills =
+  returnToTodayBills;
 
 window.deleteBill =
   deleteBill;
