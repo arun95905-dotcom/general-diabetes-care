@@ -1371,6 +1371,9 @@ let billingReturnURL =
 let editingBillId =
   null;
 
+let billEditReturnState =
+  null;
+
 
 /* =========================================================
    HELPERS
@@ -3248,6 +3251,71 @@ async function editBill(
   billId
 ) {
 
+  /*
+     Remember where Edit Bill was opened from.
+     This lets the updated bill return to the same
+     Previous Bills search with the same bill expanded.
+  */
+
+  const previousView =
+  document.getElementById(
+    "previousBillsView"
+  );
+
+const savedView =
+  document.getElementById(
+    "savedBillView"
+  );
+
+
+if (
+  previousView &&
+  previousView.classList.contains(
+    "active"
+  )
+) {
+
+  billEditReturnState = {
+
+    view:
+      "previousBills",
+
+    search:
+      document
+        .getElementById(
+          "billSearch"
+        )
+        .value,
+
+    billId:
+      Number(
+        billId
+      )
+
+  };
+
+} else if (
+  !(
+    savedView &&
+    savedView.classList.contains(
+      "active"
+    ) &&
+    billEditReturnState &&
+    billEditReturnState.view ===
+      "previousBills"
+  )
+) {
+
+  /*
+     Edit was started from somewhere other
+     than Previous Bills, so do not reuse
+     an old Previous Bills return state.
+  */
+  billEditReturnState =
+    null;
+
+}
+
   const result =
     await getBillAndPatient(
       billId
@@ -3486,6 +3554,71 @@ async function editBill(
 
 
 /* =========================================================
+   RETURN TO PATIENT BILL DETAILS
+   ========================================================= */
+
+async function returnToPatientBillDetails() {
+
+  if (
+    !billEditReturnState ||
+    billEditReturnState.view !==
+      "previousBills"
+  ) {
+
+    showDashboard();
+
+    return;
+  }
+
+
+  const returnState =
+    {
+      ...billEditReturnState
+    };
+
+
+  showView(
+    "previousBillsView"
+  );
+
+
+  document
+    .getElementById(
+      "billSearch"
+    )
+    .value =
+      returnState.search ||
+      "";
+
+
+  await searchPreviousBills();
+
+
+  const details =
+    document.getElementById(
+      "billDetails-" +
+      returnState.billId
+    );
+
+
+  if (details) {
+
+    details.classList.add(
+      "open"
+    );
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================================================
    SAVED BILL
    ========================================================= */
 async function showSavedBill(
@@ -3634,14 +3767,33 @@ async function showSavedBill(
           `
           : `
 
-            <button
-              type="button"
-              class="billing-button light"
-              onclick="showDashboard()">
+            ${
+              billEditReturnState
+                ? `
 
-              ← Billing Home
+                  <button
+                    type="button"
+                    class="billing-button light"
+                    onclick="returnToPatientBillDetails()">
 
-            </button>
+                    ← Back to Patient Bill Details
+
+                  </button>
+
+                `
+                : `
+
+                  <button
+                    type="button"
+                    class="billing-button light"
+                    onclick="showDashboard()">
+
+                    ← Billing Home
+
+                  </button>
+
+                `
+            }
 
           `
       }
@@ -6122,6 +6274,9 @@ window.downloadBillPDF =
 window.editBill =
   editBill;
 
+window.returnToPatientBillDetails =
+  returnToPatientBillDetails;
+
 window.deleteBill =
   deleteBill;
 
@@ -6151,6 +6306,9 @@ document
         null;
 
       selectedPatient =
+        null;
+
+      billEditReturnState =
         null;
 
       resetBillMode();
