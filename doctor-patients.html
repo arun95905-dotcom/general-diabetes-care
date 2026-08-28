@@ -1427,6 +1427,47 @@ function escapeHTML(value) {
 }
 
 
+function getPatientPageReturnLabel() {
+
+  if (!patientPageReturnURL) {
+    return "← Back";
+  }
+
+
+  const returnURL =
+    String(
+      patientPageReturnURL
+    )
+    .toLowerCase();
+
+
+  if (
+    returnURL.includes(
+      "doctor-followups.html"
+    )
+  ) {
+
+    return "← Back to Follow-ups";
+
+  }
+
+
+  if (
+    returnURL.includes(
+      "doctor-appointments.html"
+    )
+  ) {
+
+    return "← Back to Appointments";
+
+  }
+
+
+  return "← Back";
+
+}
+
+
 function showView(
   viewId
 ) {
@@ -2060,7 +2101,7 @@ async function savePatient() {
           class="portal-button light-button"
           onclick="returnToPatientPageSource()">
 
-          ← Back to Appointments
+          ${getPatientPageReturnLabel()}
 
         </button>
 
@@ -2712,7 +2753,7 @@ async function viewPatientDetails(
 
           ${
             patientPageReturnURL
-              ? "← Back to Appointments"
+              ? getPatientPageReturnLabel()
               : "← Back"
           }
 
@@ -2833,7 +2874,7 @@ async function viewPatientDetails(
 
           ${
             patientPageReturnURL
-              ? "← Back to Appointments"
+              ? getPatientPageReturnLabel()
               : "← Return"
           }
 
