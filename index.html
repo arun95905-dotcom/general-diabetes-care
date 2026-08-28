@@ -2026,6 +2026,362 @@
   }
 </style>
 
+
+<style id="services-toned-down-refinement">
+  /* =========================================================
+     SERVICES — SOFTER, MORE COHESIVE CLINIC PALETTE
+     ========================================================= */
+
+  .section {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(248, 252, 255, .96),
+        rgba(255, 255, 255, .98)
+      ) !important;
+  }
+
+  .services {
+    gap: 16px !important;
+  }
+
+  .service {
+    background:
+      linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #fbfdff 100%
+      ) !important;
+
+    border:
+      1px solid
+      rgba(15, 47, 99, .08) !important;
+
+    box-shadow:
+      0 8px 20px
+      rgba(18, 50, 84, .07) !important;
+  }
+
+  .service:hover {
+    transform: translateY(-4px) !important;
+
+    box-shadow:
+      0 14px 28px
+      rgba(18, 50, 84, .10) !important;
+
+    border-color:
+      rgba(23, 105, 224, .12) !important;
+  }
+
+  /* Remove the stronger coloured decorative blob */
+  .service::before {
+    background:
+      rgba(23, 105, 224, .035) !important;
+
+    filter: none !important;
+  }
+
+  /* One consistent soft medical halo */
+  .service-icon-shell {
+    background:
+      linear-gradient(
+        145deg,
+        #f2f8ff 0%,
+        #f7fbff 58%,
+        #eef7fb 100%
+      ) !important;
+
+    box-shadow:
+      inset 0 0 0 1px
+      rgba(23, 105, 224, .06) !important;
+  }
+
+  /* Keep 3D detail, but reduce visual intensity */
+  .service-3d-icon {
+    filter:
+      saturate(.82)
+      contrast(.98)
+      brightness(1.02) !important;
+
+    transform:
+      scale(.98) !important;
+  }
+
+  /* Make headings consistent with the rest of the clinic site */
+  .service h3 {
+    color:
+      #163d72 !important;
+
+    font-weight:
+      850 !important;
+  }
+
+  .service p {
+    color:
+      #65758a !important;
+  }
+
+  /* Keep only subtle accent identity via a tiny top border */
+  .service {
+    border-top:
+      3px solid
+      rgba(23, 105, 224, .12) !important;
+  }
+
+  .service-diabetes {
+    border-top-color:
+      rgba(23, 105, 224, .36) !important;
+  }
+
+  .service-hypertension {
+    border-top-color:
+      rgba(215, 25, 32, .26) !important;
+  }
+
+  .service-thyroid {
+    border-top-color:
+      rgba(109, 69, 216, .24) !important;
+  }
+
+  .service-kidney {
+    border-top-color:
+      rgba(12, 174, 150, .24) !important;
+  }
+
+  .service-digestive,
+  .service-respiratory,
+  .service-neurology {
+    border-top-color:
+      rgba(217, 75, 53, .22) !important;
+  }
+
+  .service-fever,
+  .service-joint {
+    border-top-color:
+      rgba(244, 163, 0, .24) !important;
+  }
+
+  .service-chronic {
+    border-top-color:
+      rgba(163, 24, 61, .20) !important;
+  }
+
+  .service-preventive {
+    border-top-color:
+      rgba(18, 130, 69, .22) !important;
+  }
+
+  /* Keep Diabetes Learn More visible but not overly bright */
+  .service .map-button {
+    color:
+      #245ea8 !important;
+
+    font-weight:
+      800 !important;
+  }
+
+  @media (max-width: 760px) {
+    .services {
+      gap: 12px !important;
+    }
+
+    .service {
+      padding:
+        14px 12px 16px !important;
+    }
+
+    .service-icon-shell {
+      width:
+        138px !important;
+
+      height:
+        112px !important;
+    }
+
+    .service-3d-icon {
+      transform:
+        scale(.96) !important;
+    }
+
+    .service h3 {
+      font-size:
+        15.5px !important;
+    }
+
+    .service p {
+      font-size:
+        12.5px !important;
+    }
+  }
+</style>
+
+
+<style id="services-fully-merged-refinement">
+  /* =========================================================
+     SERVICES — FULLY MERGED WITH OVERALL SITE DESIGN
+     ========================================================= */
+
+  /* Remove the "separate block" feeling */
+  .section {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+
+  .section > .section-label,
+  .section > h2,
+  .section > .section-intro {
+    position: relative;
+    z-index: 2;
+  }
+
+  .services {
+    margin-top: 30px !important;
+    gap: 14px !important;
+  }
+
+  /* Cards use the same white surface language as the rest of the website */
+  .service {
+    background: rgba(255, 255, 255, .94) !important;
+    border: 1px solid rgba(15, 47, 99, .06) !important;
+    border-top: 1px solid rgba(15, 47, 99, .06) !important;
+    box-shadow: 0 7px 18px rgba(18, 50, 84, .055) !important;
+    border-radius: 22px !important;
+    padding: 16px 16px 18px !important;
+  }
+
+  .service:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 24px rgba(18, 50, 84, .085) !important;
+    border-color: rgba(23, 105, 224, .09) !important;
+  }
+
+  /* Remove decorative category blobs completely */
+  .service::before {
+    display: none !important;
+  }
+
+  /* No separate colored halo — icon sits naturally in the card */
+  .service-icon-shell {
+    width: 136px !important;
+    height: 110px !important;
+    margin: 0 auto 7px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .service-3d-icon {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transform: scale(.94) !important;
+    filter:
+      saturate(.74)
+      contrast(.96)
+      brightness(1.03) !important;
+  }
+
+  /* One unified title style */
+  .service h3 {
+    color: #173b6d !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    margin: 8px 0 7px !important;
+  }
+
+  .service p {
+    color: #68778b !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  .service .map-button {
+    color: #1b65c9 !important;
+    font-size: 12.5px !important;
+    font-weight: 750 !important;
+  }
+
+  /* Make Diabetes slightly emphasized, but still within the same family */
+  .service-diabetes {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(248, 252, 255, .98),
+        rgba(255, 255, 255, .98)
+      ) !important;
+    border-color: rgba(23, 105, 224, .09) !important;
+  }
+
+  /* No category-specific title colors */
+  .service-general h3,
+  .service-diabetes h3,
+  .service-hypertension h3,
+  .service-thyroid h3,
+  .service-fever h3,
+  .service-respiratory h3,
+  .service-kidney h3,
+  .service-joint h3,
+  .service-digestive h3,
+  .service-chronic h3,
+  .service-neurology h3,
+  .service-preventive h3 {
+    color: #173b6d !important;
+  }
+
+  /* Softer section heading to blend with page */
+  .section > h2 {
+    margin-bottom: 10px !important;
+    color: #123a6d !important;
+  }
+
+  .section > .section-intro {
+    max-width: 720px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    color: #6c7a8f !important;
+  }
+
+  @media (max-width: 760px) {
+    .services {
+      gap: 11px !important;
+    }
+
+    .service {
+      padding: 14px 12px 16px !important;
+      border-radius: 19px !important;
+    }
+
+    .service-icon-shell {
+      width: 128px !important;
+      height: 102px !important;
+    }
+
+    .service-3d-icon {
+      transform: scale(.92) !important;
+    }
+
+    .service h3 {
+      font-size: 15.5px !important;
+    }
+
+    .service p {
+      font-size: 12.3px !important;
+    }
+  }
+</style>
+
+
+<style id="welcome-hero-title-weight-refinement">
+  /* Only the "General & Diabetes Care" title directly below WELCOME TO */
+  .hero-content > h1 {
+    font-weight: 650 !important;
+    font-size: clamp(2.45rem, 7.5vw, 4.35rem) !important;
+    line-height: 1.02 !important;
+  }
+</style>
+
 </head>
 
 
