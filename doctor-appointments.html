@@ -146,6 +146,28 @@ textarea {
   background: #64748b;
 }
 
+
+.history-button {
+  color: #4c3aa6;
+  background: #f1edff;
+}
+
+.register-button {
+  color: #ffffff;
+  background: #7a4c00;
+}
+
+.unregistered-badge {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: #8a5a00;
+  background: #fff6df;
+  font-size: 10px;
+  font-weight: 800;
+}
+
 .small-button {
   min-height: 36px;
   padding: 8px 11px;
@@ -1568,6 +1590,16 @@ async function loadAppointments() {
 
   /*
      NEW:
+     identify appointments whose phone already belongs
+     to a registered patient, even when patient_id was
+     not stored when the appointment was created.
+  */
+
+  await resolvePatientLinksForAppointments();
+
+
+  /*
+     PRESERVED:
      find consultations linked through appointment_id.
   */
 
@@ -1582,6 +1614,39 @@ async function loadAppointments() {
   ) {
 
     renderCurrentSection();
+
+  }
+
+}
+
+
+/* =========================================================
+   RESOLVE EXISTING PATIENT LINKS BEFORE RENDER
+   ========================================================= */
+
+async function resolvePatientLinksForAppointments() {
+
+  const unresolved =
+    allAppointments.filter(
+      function(appointment) {
+
+        return !(
+          appointment.patient_id ||
+          appointment.linked_patient_id
+        );
+
+      }
+    );
+
+
+  for (
+    const appointment
+    of unresolved
+  ) {
+
+    await resolveAppointmentPatient(
+      appointment
+    );
 
   }
 
@@ -2172,7 +2237,7 @@ function renderAppointmentCard(
 
 
   /*
-     NEW:
+     PRESERVED:
      consultation created from this appointment.
   */
 
@@ -2181,6 +2246,67 @@ function renderAppointmentCard(
       appointment.id
     ] ||
     null;
+
+
+  let patientActions =
+    "";
+
+
+  if (
+    linkedPatientId
+  ) {
+
+    patientActions = `
+
+      <button
+        type="button"
+        class="portal-button light-button small-button"
+        onclick="viewPatientBasicDetails(
+          ${Number(
+            appointment.id
+          )}
+        )">
+
+        👤 View Patient
+
+      </button>
+
+
+      <button
+        type="button"
+        class="portal-button history-button small-button"
+        onclick="openPatientHistory(
+          ${Number(
+            appointment.id
+          )}
+        )">
+
+        📋 History
+
+      </button>
+
+    `;
+
+  } else {
+
+    patientActions = `
+
+      <button
+        type="button"
+        class="portal-button register-button small-button"
+        onclick="registerAppointmentPatient(
+          ${Number(
+            appointment.id
+          )}
+        )">
+
+        ➕ Register Patient
+
+      </button>
+
+    `;
+
+  }
 
 
   return `
@@ -2232,7 +2358,15 @@ function renderAppointmentCard(
                 </span>
 
               `
-              : ""
+              : `
+
+                <span class="unregistered-badge">
+
+                  Not Registered
+
+                </span>
+
+              `
           }
 
         </div>
@@ -2324,23 +2458,13 @@ function renderAppointmentCard(
       <div class="appointment-actions">
 
 
-        <button
-          type="button"
-          class="portal-button light-button small-button"
-          onclick="handleViewPatientById(
-            ${Number(
-              appointment.id
-            )}
-          )">
-
-          👤 View Patient
-
-        </button>
+        ${patientActions}
 
 
         ${
           status ===
-          "Pending"
+            "Pending" &&
+          linkedPatientId
             ? `
 
               <button
@@ -2356,6 +2480,15 @@ function renderAppointmentCard(
 
               </button>
 
+            `
+            : ""
+        }
+
+
+        ${
+          status ===
+          "Pending"
+            ? `
 
               <button
                 type="button"
@@ -2736,7 +2869,85 @@ async function resolveAppointmentPatient(
    VIEW PATIENT
    ========================================================= */
 
-async function handleViewPatientById(
+function getAppointmentReturnURL(
+  appointment
+) {
+
+  const returnSection =
+    currentSection ||
+    (
+      appointment.appointment_date ===
+      getTodayString()
+        ? "today"
+        : "upcoming"
+    );
+
+
+  return (
+    "doctor-appointments.html" +
+    "?section=" +
+    encodeURIComponent(
+      returnSection
+    )
+  );
+
+}
+
+
+async function viewPatientBasicDetails(
+  appointmentId
+) {
+
+  const appointment =
+    getAppointmentById(
+      appointmentId
+    );
+
+
+  if (!appointment) {
+    return;
+  }
+
+
+  const patientId =
+    await resolveAppointmentPatient(
+      appointment
+    );
+
+
+  if (!patientId) {
+
+    registerAppointmentPatient(
+      appointmentId
+    );
+
+    return;
+
+  }
+
+
+  const returnURL =
+    getAppointmentReturnURL(
+      appointment
+    );
+
+
+  window.location.href =
+    "doctor-patients.html" +
+    "?view=details" +
+    "&patient_id=" +
+    encodeURIComponent(
+      patientId
+    ) +
+    "&return_to=" +
+    encodeURIComponent(
+      returnURL
+    );
+
+}
+
+
+async function openPatientHistory(
   appointmentId
 ) {
 
@@ -2760,9 +2971,8 @@ async function handleViewPatientById(
   if (!patientId) {
 
     alert(
-      "No registered patient record was found for this appointment."
+      "This patient is not registered yet."
     );
-
 
     return;
 
@@ -2770,14 +2980,8 @@ async function handleViewPatientById(
 
 
   const returnURL =
-    "doctor-appointments.html" +
-    (
-      currentSection
-        ? "?section=" +
-          encodeURIComponent(
-            currentSection
-          )
-        : ""
+    getAppointmentReturnURL(
+      appointment
     );
 
 
@@ -2791,6 +2995,67 @@ async function handleViewPatientById(
     encodeURIComponent(
       returnURL
     );
+
+}
+
+
+function registerAppointmentPatient(
+  appointmentId
+) {
+
+  const appointment =
+    getAppointmentById(
+      appointmentId
+    );
+
+
+  if (!appointment) {
+    return;
+  }
+
+
+  const returnURL =
+    getAppointmentReturnURL(
+      appointment
+    );
+
+
+  window.location.href =
+    "doctor-patients.html" +
+    "?view=register" +
+    "&appointment_id=" +
+    encodeURIComponent(
+      appointment.id
+    ) +
+    "&patient_name=" +
+    encodeURIComponent(
+      appointment.patient_name ||
+      ""
+    ) +
+    "&patient_phone=" +
+    encodeURIComponent(
+      appointment.patient_phone ||
+      ""
+    ) +
+    "&return_to=" +
+    encodeURIComponent(
+      returnURL
+    );
+
+}
+
+
+/*
+   Compatibility alias for the old function name.
+   Any old inline reference will now open Basic Details.
+*/
+async function handleViewPatientById(
+  appointmentId
+) {
+
+  await viewPatientBasicDetails(
+    appointmentId
+  );
 
 }
 
@@ -2822,8 +3087,8 @@ async function startConsultationByAppointmentId(
 
   if (!patientId) {
 
-    alert(
-      "This appointment is not linked to a registered patient.\n\nPlease register the patient first."
+    registerAppointmentPatient(
+      appointmentId
     );
 
 
@@ -4313,6 +4578,15 @@ window.deleteAppointment =
 
 window.handleViewPatientById =
   handleViewPatientById;
+
+window.viewPatientBasicDetails =
+  viewPatientBasicDetails;
+
+window.openPatientHistory =
+  openPatientHistory;
+
+window.registerAppointmentPatient =
+  registerAppointmentPatient;
 
 window.startConsultationByAppointmentId =
   startConsultationByAppointmentId;
