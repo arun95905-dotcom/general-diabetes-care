@@ -1266,14 +1266,52 @@ function readHistoryReturnURL() {
 
 
   if (
-    button &&
-    historyReturnURL
+    !button ||
+    !historyReturnURL
+  ) {
+
+    return;
+
+  }
+
+
+  const returnURL =
+    String(
+      historyReturnURL
+    )
+    .toLowerCase();
+
+
+  if (
+    returnURL.includes(
+      "doctor-followups.html"
+    )
+  ) {
+
+    button.textContent =
+      "← Back to Follow-ups";
+
+    return;
+
+  }
+
+
+  if (
+    returnURL.includes(
+      "doctor-appointments.html"
+    )
   ) {
 
     button.textContent =
       "← Back to Appointments";
 
+    return;
+
   }
+
+
+  button.textContent =
+    "← Back";
 
 }
 
@@ -1322,8 +1360,7 @@ function goBackFromHistory() {
 
   window.location.href =
     "doctor-patients.html";
-
-  }
+}
 
 /* =========================================================
    PATIENT ID
