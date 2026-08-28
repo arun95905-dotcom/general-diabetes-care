@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Follow-ups | General & Diabetes Care</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg,#f5f9fc 0%,#eef6fb 50%,#f8fbfd 100%);
+      color: #172033;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    }
+
+    button,input { font-family: inherit; }
+
+    .doctor-dashboard {
+      min-height: 100vh;
+      padding: 22px 12px 42px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .followup-page { width: 100%; max-width: 980px; }
+
+    .page-shell {
+      width: 100%;
+      padding: 30px;
+      background: rgba(255,255,255,.97);
+      border: 1px solid #e1eaf1;
+      border-radius: 25px;
+      box-shadow: 0 15px 45px rgba(30,70,100,.10);
+    }
+
+    .portal-header { text-align: center; margin-bottom: 25px; }
+
+    .header-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 21px;
+      font-size: 33px;
+      background: linear-gradient(135deg,#fff5dd,#fffaf0);
+      border: 1px solid #f1dfb4;
+    }
+
+    .section-label {
+      margin: 0 0 6px;
+      color: #1877a8;
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 1.45px;
+    }
+
+    .portal-header h1 {
+      margin: 4px 0 7px;
+      font-size: 30px;
+      color: #183447;
+    }
+
+    .portal-subtitle {
+      margin: 0;
+      color: #6c7b86;
+      font-size: 14px;
+    }
+
+    .portal-view { display: none; }
+    .portal-view.active { display: block; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      position: relative;
+      width: 100%;
+      min-height: 145px;
+      padding: 20px;
+      border: 1px solid #e0e8ef;
+      border-radius: 18px;
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .18s ease,box-shadow .18s ease;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(31,72,98,.10);
+    }
+
+    .today-card {
+      background: linear-gradient(145deg,#f6fbff,#eef8ff);
+      border-color: #d3e8f7;
+    }
+
+    .upcoming-card {
+      background: linear-gradient(145deg,#f7fcf9,#eff9f3);
+      border-color: #d4eadc;
+    }
+
+    .overdue-card {
+      background: linear-gradient(145deg,#fffafa,#fff3f2);
+      border-color: #f0d5d2;
+    }
+
+    .summary-icon {
+      width: 46px;
+      height: 46px;
+      margin-bottom: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      font-size: 24px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(200,210,220,.7);
+    }
+
+    .summary-title {
+      display: block;
+      margin-bottom: 6px;
+      color: #183447;
+      font-size: 16px;
+      font-weight: 850;
+    }
+
+    .summary-count {
+      color: #667684;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .summary-arrow {
+      position: absolute;
+      right: 17px;
+      bottom: 17px;
+      width: 29px;
+      height: 29px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,.85);
+      color: #417c9f;
+      font-size: 18px;
+    }
+
+    .search-card {
+      margin-top: 14px;
+      padding: 18px;
+      background: #fff;
+      border: 1px solid #e1e8ee;
+      border-radius: 17px;
+    }
+
+    .search-card h2 {
+      margin: 0 0 6px;
+      color: #183447;
+      font-size: 17px;
+    }
+
+    .search-help {
+      margin: 0 0 13px;
+      color: #71808b;
+      font-size: 12px;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 9px;
+    }
+
+    .search-row input {
+      width: 100%;
+      min-height: 45px;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #ccd7df;
+      border-radius: 11px;
+      color: #172033;
+      font-size: 14px;
+    }
+
+    .portal-button {
+      min-height: 43px;
+      padding: 10px 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      border-radius: 11px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 780;
+    }
+
+    .primary-button { background: #2563eb; color: #fff; }
+    .light-button { background: #f1f5f9; color: #263846; border: 1px solid #d8e1e8; }
+    .secondary-button { background: #64748b; color: #fff; }
+    .small-button { min-height: 36px; padding: 8px 11px; font-size: 13px; }
+
+    .view-header {
+      margin-bottom: 17px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid #e1e8ee;
+      border-radius: 17px;
+    }
+
+    .view-header-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .view-header h2 {
+      margin: 0;
+      color: #183447;
+      font-size: 22px;
+    }
+
+    .view-subtitle {
+      margin: 6px 0 0;
+      color: #71808b;
+      font-size: 13px;
+    }
+
+    .result-count {
+      display: inline-flex;
+      margin-top: 10px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #eef6ff;
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .followup-list {
+      display: grid;
+      gap: 11px;
+    }
+
+    .followup-card {
+      padding: 17px;
+      background: #fff;
+      border: 1px solid #e1e7ed;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(24,52,71,.045);
+    }
+
+    .followup-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .patient-name {
+      color: #183447;
+      font-size: 17px;
+      font-weight: 850;
+    }
+
+    .patient-meta {
+      margin-top: 7px;
+      color: #687785;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .due-date {
+      margin-top: 10px;
+      padding: 10px 11px;
+      background: #f8fafc;
+      border: 1px solid #e5eaf0;
+      border-radius: 11px;
+      color: #394d5c;
+      font-size: 13px;
+    }
+
+    .diagnosis-text {
+      margin-top: 7px;
+      color: #60707d;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .today-badge { background: #e9f5ff; color: #176b9b; }
+    .upcoming-badge { background: #ebf8ef; color: #237044; }
+    .overdue-badge { background: #fff0ef; color: #b23b31; }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .portal-message {
+      padding: 22px 15px;
+      text-align: center;
+      color: #6f7d89;
+      background: #fff;
+      border: 1px solid #e3e9ee;
+      border-radius: 15px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .error-message {
+      color: #a53932;
+      background: #fff5f4;
+      border-color: #efd4d1;
+    }
+
+    .dashboard-loading {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(245,249,252,.97);
+    }
+
+    .dashboard-loading-box { padding: 25px; text-align: center; }
+    .loading-icon { margin-bottom: 10px; font-size: 42px; }
+    .loading-text { color: #62737e; font-weight: 650; }
+
+    .main-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 23px;
+      padding-top: 20px;
+      border-top: 1px solid #e6edf2;
+    }
+
+    .page-footer {
+      margin-top: 18px;
+      text-align: center;
+      color: #8b979f;
+      font-size: 12px;
+    }
+
+    @media(max-width:760px) {
+      .doctor-dashboard { padding: 12px 8px 32px; }
+      .page-shell { padding: 20px 13px; border-radius: 20px; }
+      .summary-grid { grid-template-columns: 1fr; gap: 10px; }
+      .summary-card { min-height: 118px; padding: 17px; }
+      .search-row { grid-template-columns: 1fr; }
+      .search-row .portal-button { width: 100%; }
+      .portal-header h1 { font-size: 26px; }
+      .followup-card-top { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="pageLoading" class="dashboard-loading">
+    <div class="dashboard-loading-box">
+      <div class="loading-icon">🔔</div>
+      <div class="loading-text">Loading Follow-ups...</div>
+    </div>
+  </div>
+
+  <section class="doctor-dashboard">
+    <div class="followup-page">
+      <div class="page-shell">
+
+        <div class="portal-header">
+          <div class="header-icon">🔔</div>
+          <p class="section-label">GENERAL &amp; DIABETES CARE</p>
+          <h1>Follow-ups</h1>
+          <p class="portal-subtitle">Manage patient review dates</p>
+        </div>
+
+        <div id="mainView" class="portal-view active">
+
+          <div class="summary-grid">
+
+            <button type="button" class="summary-card today-card" onclick="openFollowupView('today')">
+              <div class="summary-icon">🔔</div>
+              <span class="summary-title">Today's Follow-ups</span>
+              <span id="todayCount" class="summary-count">0 patients</span>
+              <span class="summary-arrow">›</span>
+            </button>
+
+            <button type="button" class="summary-card upcoming-card" onclick="openFollowupView('upcoming')">
+              <div class="summary-icon">📅</div>
+              <span class="summary-title">Upcoming Follow-ups</span>
+              <span id="upcomingCount" class="summary-count">0 patients</span>
+              <span class="summary-arrow">›</span>
+            </button>
+
+            <button type="button" class="summary-card overdue-card" onclick="openFollowupView('overdue')">
+              <div class="summary-icon">⚠️</div>
+              <span class="summary-title">Overdue Follow-ups</span>
+              <span id="overdueCount" class="summary-count">0 patients</span>
+              <span class="summary-arrow">›</span>
+            </button>
+
+          </div>
+
+          <div class="search-card">
+            <h2>📅 Search by Date</h2>
+            <p class="search-help">View active follow-ups scheduled for a specific date.</p>
+
+            <div class="search-row">
+              <input type="date" id="followupDateSearch">
+
+              <button type="button" class="portal-button primary-button" onclick="searchByDate()">
+                🔎 View Follow-ups
+              </button>
+            </div>
+          </div>
+
+          <div class="search-card">
+            <h2>🔎 Search Patient</h2>
+            <p class="search-help">Search active follow-ups using patient ID, name or phone number.</p>
+
+            <div class="search-row">
+              <input type="text" id="patientSearchInput" placeholder="Patient ID / Name / Phone">
+
+              <button type="button" class="portal-button primary-button" onclick="searchPatientFollowups()">
+                🔎 Search
+              </button>
+            </div>
+          </div>
+
+          <div class="main-actions">
+            <a href="doctor-dashboard.html" class="portal-button light-button">
+              ← Back to Dashboard
+            </a>
+
+            <button type="button" class="portal-button secondary-button" onclick="logoutDoctor()">
+              🔒 Logout
+            </button>
+          </div>
+
+        </div>
+
+        <div id="listView" class="portal-view">
+
+          <div class="view-header">
+
+            <div class="view-header-top">
+              <button type="button" class="portal-button light-button small-button" onclick="goToFollowupMain()">
+                ← Follow-ups
+              </button>
+            </div>
+
+            <h2 id="listViewTitle">Follow-ups</h2>
+
+            <p id="listViewSubtitle" class="view-subtitle"></p>
+
+            <div id="listViewCount" class="result-count">
+              0 patients
+            </div>
+
+          </div>
+
+          <div id="followupList" class="followup-list">
+            <div class="portal-message">Loading follow-ups...</div>
+          </div>
+
+        </div>
+
+        <div class="page-footer">
+          General &amp; Diabetes Care
+          <br>
+          Secure Doctor Portal
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://twdmvdqqckcpwoccvtkj.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+    let allConsultations = [];
+    let allPatients = [];
+    let patientMap = {};
+    let activeFollowups = [];
+    let currentDateSearch = "";
+    let currentPatientSearch = "";
+
+    function escapeHTML(value) {
+      if (value === null || value === undefined) return "";
+
+      return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+    }
+
+    function localDateStringFromDate(date) {
+      return (
+        date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1).padStart(2,"0") +
+        "-" +
+        String(date.getDate()).padStart(2,"0")
+      );
+    }
+
+    function getTodayString() {
+      return localDateStringFromDate(new Date());
+    }
+
+    function consultationDateString(value) {
+      if (!value) return "";
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) return "";
+
+      return localDateStringFromDate(date);
+    }
+
+    function formatDate(value) {
+      if (!value) return "-";
+
+      const date =
+        new Date(
+          String(value).length === 10
+            ? value + "T00:00:00"
+            : value
+        );
+
+      if (Number.isNaN(date.getTime())) return value;
+
+      return date.toLocaleDateString(
+        "en-IN",
+        {
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+        }
+      );
+    }
+
+    function formatPatientCount(count) {
+      return count + (count === 1 ? " patient" : " patients");
+    }
+
+    function showView(viewId) {
+      document
+        .querySelectorAll(".portal-view")
+        .forEach(function(view) {
+          view.classList.remove("active");
+        });
+
+      const view =
+        document.getElementById(viewId);
+
+      if (view) {
+        view.classList.add("active");
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    function getPatientById(patientId) {
+      return patientMap[String(patientId)] || null;
+    }
+
+    function getFollowupStatus(followupDate) {
+      const today = getTodayString();
+
+      if (followupDate === today) return "today";
+      if (followupDate > today) return "upcoming";
+
+      return "overdue";
+    }
+
+    function getStatusLabel(status) {
+      if (status === "today") return "Today";
+      if (status === "upcoming") return "Upcoming";
+
+      return "Overdue";
+    }
+
+    function getStatusBadgeClass(status) {
+      if (status === "today") return "today-badge";
+      if (status === "upcoming") return "upcoming-badge";
+
+      return "overdue-badge";
+    }
+
+    async function checkDoctorLogin() {
+      try {
+        const {
+          data: { session }
+        } =
+          await supabaseClient
+            .auth
+            .getSession();
+
+        if (!session) {
+          window.location.href =
+            "doctor-login.html";
+
+          return false;
+        }
+
+        return true;
+      }
+
+      catch (error) {
+        console.error(
+          "Doctor login check error:",
+          error
+        );
+
+        window.location.href =
+          "doctor-login.html";
+
+        return false;
+      }
+    }
+
+    async function logoutDoctor() {
+      try {
+        await supabaseClient
+          .auth
+          .signOut();
+      }
+
+      catch (error) {
+        console.error(
+          "Logout error:",
+          error
+        );
+      }
+
+      window.location.href =
+        "doctor-login.html";
+    }
+
+    async function loadFollowupData() {
+
+      const consultationResult =
+        await supabaseClient
+          .from("consultations")
+          .select(
+            "id,patient_id,created_at,follow_up_date,diagnosis,chief_complaints"
+          )
+          .order(
+            "created_at",
+            {
+              ascending: true
+            }
+          );
+
+      if (consultationResult.error) {
+        throw consultationResult.error;
+      }
+
+      allConsultations =
+        consultationResult.data || [];
+
+      const patientIds =
+        Array.from(
+          new Set(
+            allConsultations
+              .map(function(item) {
+                return item.patient_id;
+              })
+              .filter(function(value) {
+                return value !== null &&
+                       value !== undefined;
+              })
+          )
+        );
+
+      allPatients = [];
+      patientMap = {};
+
+      if (patientIds.length) {
+
+        const patientResult =
+          await supabaseClient
+            .from("patients")
+            .select(
+              "id,patient_name,patient_phone,date_of_birth,gender"
+            )
+            .in(
+              "id",
+              patientIds
+            );
+
+        if (patientResult.error) {
+          throw patientResult.error;
+        }
+
+        allPatients =
+          patientResult.data || [];
+
+        allPatients.forEach(
+          function(patient) {
+            patientMap[String(patient.id)] =
+              patient;
+          }
+        );
+      }
+
+      buildActiveFollowups();
+      updateSummaryCounts();
+    }
+
+    function buildActiveFollowups() {
+
+      /*
+        One consultation with follow_up_date = one planned review.
+
+        COMPLETION RULE:
+        A follow-up is completed only when the SAME patient has
+        a genuinely later consultation whose consultation DATE
+        is exactly the scheduled follow-up date.
+
+        An earlier visit does not complete it.
+        A visit on a later date does not automatically complete it.
+      */
+
+      const consultationsByPatient = {};
+
+      allConsultations.forEach(
+        function(consultation) {
+
+          if (
+            consultation.patient_id === null ||
+            consultation.patient_id === undefined
+          ) {
+            return;
+          }
+
+          const key =
+            String(
+              consultation.patient_id
+            );
+
+          if (!consultationsByPatient[key]) {
+            consultationsByPatient[key] = [];
+          }
+
+          consultationsByPatient[key]
+            .push(consultation);
+        }
+      );
+
+      const followups = [];
+
+      Object.keys(
+        consultationsByPatient
+      )
+      .forEach(
+        function(patientKey) {
+
+          const patientConsultations =
+            consultationsByPatient[
+              patientKey
+            ]
+            .slice()
+            .sort(
+              function(a,b) {
+                return (
+                  new Date(a.created_at) -
+                  new Date(b.created_at)
+                );
+              }
+            );
+
+          patientConsultations
+            .forEach(
+              function(sourceConsultation) {
+
+                if (!sourceConsultation.follow_up_date) {
+                  return;
+                }
+
+                const dueDate =
+                  String(
+                    sourceConsultation.follow_up_date
+                  ).slice(0,10);
+
+                const sourceTime =
+                  new Date(
+                    sourceConsultation.created_at
+                  ).getTime();
+
+                const completed =
+                  patientConsultations
+                    .some(
+                      function(nextConsultation) {
+
+                        const nextTime =
+                          new Date(
+                            nextConsultation.created_at
+                          ).getTime();
+
+                        if (
+                          !Number.isFinite(sourceTime) ||
+                          !Number.isFinite(nextTime)
+                        ) {
+                          return false;
+                        }
+
+                        /*
+                          Must be a later consultation.
+                          This prevents the consultation that created
+                          the follow-up from completing itself.
+                        */
+                        if (nextTime <= sourceTime) {
+                          return false;
+                        }
+
+                        const nextDate =
+                          consultationDateString(
+                            nextConsultation.created_at
+                          );
+
+                        return (
+                          nextDate ===
+                          dueDate
+                        );
+                      }
+                    );
+
+                if (completed) {
+                  return;
+                }
+
+                followups.push({
+                  patient_id:
+                    sourceConsultation.patient_id,
+
+                  source_consultation_id:
+                    sourceConsultation.id,
+
+                  source_created_at:
+                    sourceConsultation.created_at,
+
+                  follow_up_date:
+                    dueDate,
+
+                  diagnosis:
+                    sourceConsultation.diagnosis || "",
+
+                  chief_complaints:
+                    sourceConsultation.chief_complaints || "",
+
+                  status:
+                    getFollowupStatus(dueDate)
+                });
+              }
+            );
+        }
+      );
+
+      activeFollowups =
+        followups.sort(
+          function(a,b) {
+            if (
+              a.follow_up_date ===
+              b.follow_up_date
+            ) {
+              return (
+                new Date(a.source_created_at) -
+                new Date(b.source_created_at)
+              );
+            }
+
+            return (
+              a.follow_up_date <
+              b.follow_up_date
+                ? -1
+                : 1
+            );
+          }
+        );
+    }
+
+    function updateSummaryCounts() {
+
+      const todayCount =
+        activeFollowups.filter(
+          function(item) {
+            return item.status === "today";
+          }
+        ).length;
+
+      const upcomingCount =
+        activeFollowups.filter(
+          function(item) {
+            return item.status === "upcoming";
+          }
+        ).length;
+
+      const overdueCount =
+        activeFollowups.filter(
+          function(item) {
+            return item.status === "overdue";
+          }
+        ).length;
+
+      document
+        .getElementById("todayCount")
+        .textContent =
+          formatPatientCount(todayCount);
+
+      document
+        .getElementById("upcomingCount")
+        .textContent =
+          formatPatientCount(upcomingCount);
+
+      document
+        .getElementById("overdueCount")
+        .textContent =
+          formatPatientCount(overdueCount);
+    }
+
+    function buildFollowupURL(view,value) {
+
+      if (!view || view === "main") {
+        return "doctor-followups.html";
+      }
+
+      if (view === "date") {
+        return (
+          "doctor-followups.html" +
+          "?view=date" +
+          "&date=" +
+          encodeURIComponent(value || "")
+        );
+      }
+
+      if (view === "patient") {
+        return (
+          "doctor-followups.html" +
+          "?view=patient" +
+          "&search=" +
+          encodeURIComponent(value || "")
+        );
+      }
+
+      return (
+        "doctor-followups.html" +
+        "?view=" +
+        encodeURIComponent(view)
+      );
+    }
+
+    function setFollowupURL(
+      view,
+      value,
+      replace
+    ) {
+
+      const url =
+        buildFollowupURL(
+          view,
+          value
+        );
+
+      const state = {
+        view: view || "main",
+        value: value || ""
+      };
+
+      if (replace) {
+        window.history.replaceState(
+          state,
+          "",
+          url
+        );
+      } else {
+        window.history.pushState(
+          state,
+          "",
+          url
+        );
+      }
+    }
+
+    function getCurrentFollowupReturnURL() {
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+      const view =
+        params.get("view") ||
+        "main";
+
+      if (view === "date") {
+        return buildFollowupURL(
+          "date",
+          params.get("date") ||
+          currentDateSearch
+        );
+      }
+
+      if (view === "patient") {
+        return buildFollowupURL(
+          "patient",
+          params.get("search") ||
+          currentPatientSearch
+        );
+      }
+
+      if (
+        view === "today" ||
+        view === "upcoming" ||
+        view === "overdue"
+      ) {
+        return buildFollowupURL(view);
+      }
+
+      return buildFollowupURL("main");
+    }
+
+    function renderFollowupList(
+      items,
+      title,
+      subtitle
+    ) {
+
+      showView("listView");
+
+      document
+        .getElementById("listViewTitle")
+        .textContent =
+          title;
+
+      document
+        .getElementById("listViewSubtitle")
+        .textContent =
+          subtitle || "";
+
+      document
+        .getElementById("listViewCount")
+        .textContent =
+          formatPatientCount(
+            items.length
+          );
+
+      const container =
+        document.getElementById(
+          "followupList"
+        );
+
+      if (!items.length) {
+        container.innerHTML = `
+          <div class="portal-message">
+            No active follow-ups found.
+          </div>
+        `;
+
+        return;
+      }
+
+      container.innerHTML =
+        items
+          .map(
+            function(item) {
+
+              const patient =
+                getPatientById(
+                  item.patient_id
+                );
+
+              const patientName =
+                patient &&
+                patient.patient_name
+                  ? patient.patient_name
+                  : "Patient";
+
+              const patientPhone =
+                patient &&
+                patient.patient_phone
+                  ? patient.patient_phone
+                  : "-";
+
+              const contextText =
+                item.diagnosis ||
+                item.chief_complaints ||
+                "";
+
+              return `
+                <div class="followup-card">
+
+                  <div class="followup-card-top">
+
+                    <div>
+
+                      <div class="patient-name">
+                        👤
+                        ${escapeHTML(patientName)}
+                      </div>
+
+                      <div class="patient-meta">
+                        🆔 Patient ID:
+                        ${escapeHTML(item.patient_id)}
+                        <br>
+                        📞
+                        ${escapeHTML(patientPhone)}
+                      </div>
+
+                    </div>
+
+                    <span class="status-badge ${getStatusBadgeClass(item.status)}">
+                      ${escapeHTML(getStatusLabel(item.status))}
+                    </span>
+
+                  </div>
+
+                  <div class="due-date">
+                    📅 Follow-up:
+                    <strong>
+                      ${escapeHTML(formatDate(item.follow_up_date))}
+                    </strong>
+                  </div>
+
+                  ${
+                    contextText
+                      ? `
+                        <div class="diagnosis-text">
+                          🩺
+                          ${escapeHTML(contextText)}
+                        </div>
+                      `
+                      : ""
+                  }
+
+                  <div class="action-row">
+
+                    <button
+                      type="button"
+                      class="portal-button primary-button small-button"
+                      onclick="viewFollowupPatient(${Number(item.patient_id)})">
+
+                      👤 View Patient
+
+                    </button>
+
+                    <button
+                      type="button"
+                      class="portal-button light-button small-button"
+                      onclick="viewFollowupHistory(${Number(item.patient_id)})">
+
+                      📋 History
+
+                    </button>
+
+                  </div>
+
+                </div>
+              `;
+            }
+          )
+          .join("");
+    }
+
+    function openFollowupView(
+      viewType,
+      pushState = true
+    ) {
+
+      if (pushState) {
+        setFollowupURL(viewType);
+      }
+
+      if (viewType === "today") {
+
+        const items =
+          activeFollowups.filter(
+            function(item) {
+              return item.status === "today";
+            }
+          );
+
+        renderFollowupList(
+          items,
+          "🔔 Today's Follow-ups",
+          formatDate(getTodayString())
+        );
+
+        return;
+      }
+
+      if (viewType === "upcoming") {
+
+        const items =
+          activeFollowups.filter(
+            function(item) {
+              return item.status === "upcoming";
+            }
+          );
+
+        renderFollowupList(
+          items,
+          "📅 Upcoming Follow-ups",
+          "Future patient review dates"
+        );
+
+        return;
+      }
+
+      if (viewType === "overdue") {
+
+        const items =
+          activeFollowups
+            .filter(
+              function(item) {
+                return item.status === "overdue";
+              }
+            )
+            .sort(
+              function(a,b) {
+                return (
+                  a.follow_up_date <
+                  b.follow_up_date
+                    ? 1
+                    : -1
+                );
+              }
+            );
+
+        renderFollowupList(
+          items,
+          "⚠️ Overdue Follow-ups",
+          "Review dates that have passed without a visit on the scheduled date"
+        );
+      }
+    }
+
+    function searchByDate(
+      forcedDate,
+      pushState = true
+    ) {
+
+      const input =
+        document.getElementById(
+          "followupDateSearch"
+        );
+
+      const selectedDate =
+        forcedDate ||
+        input.value;
+
+      if (!selectedDate) {
+        alert(
+          "Please select a follow-up date."
+        );
+
+        return;
+      }
+
+      currentDateSearch =
+        selectedDate;
+
+      input.value =
+        selectedDate;
+
+      if (pushState) {
+        setFollowupURL(
+          "date",
+          selectedDate
+        );
+      }
+
+      const items =
+        activeFollowups.filter(
+          function(item) {
+            return (
+              item.follow_up_date ===
+              selectedDate
+            );
+          }
+        );
+
+      renderFollowupList(
+        items,
+        "📅 Follow-ups — " +
+          formatDate(selectedDate),
+        "Active follow-ups scheduled for this date"
+      );
+    }
+
+    function searchPatientFollowups(
+      forcedSearch,
+      pushState = true
+    ) {
+
+      const input =
+        document.getElementById(
+          "patientSearchInput"
+        );
+
+      const searchValue =
+        String(
+          forcedSearch !== undefined
+            ? forcedSearch
+            : input.value
+        ).trim();
+
+      if (!searchValue) {
+        alert(
+          "Please enter Patient ID, name or phone number."
+        );
+
+        return;
+      }
+
+      currentPatientSearch =
+        searchValue;
+
+      input.value =
+        searchValue;
+
+      if (pushState) {
+        setFollowupURL(
+          "patient",
+          searchValue
+        );
+      }
+
+      const normalized =
+        searchValue.toLowerCase();
+
+      const numericSearch =
+        /^[0-9]+$/.test(
+          searchValue
+        );
+
+      const items =
+        activeFollowups.filter(
+          function(item) {
+
+            const patient =
+              getPatientById(
+                item.patient_id
+              );
+
+            if (!patient) {
+              return false;
+            }
+
+            const idMatch =
+              numericSearch &&
+              String(patient.id) ===
+              searchValue;
+
+            const nameMatch =
+              String(
+                patient.patient_name ||
+                ""
+              )
+              .toLowerCase()
+              .includes(normalized);
+
+            const phoneMatch =
+              String(
+                patient.patient_phone ||
+                ""
+              )
+              .includes(searchValue);
+
+            return (
+              idMatch ||
+              nameMatch ||
+              phoneMatch
+            );
+          }
+        );
+
+      renderFollowupList(
+        items,
+        "🔎 Patient Follow-ups",
+        'Search: "' +
+          searchValue +
+          '"'
+      );
+    }
+
+    function viewFollowupPatient(
+      patientId
+    ) {
+
+      const returnURL =
+        getCurrentFollowupReturnURL();
+
+      window.location.href =
+        "doctor-patients.html" +
+        "?view=details" +
+        "&patient_id=" +
+        encodeURIComponent(patientId) +
+        "&return_to=" +
+        encodeURIComponent(returnURL);
+    }
+
+    function viewFollowupHistory(
+      patientId
+    ) {
+
+      const returnURL =
+        getCurrentFollowupReturnURL();
+
+      window.location.href =
+        "doctor-patient-history.html" +
+        "?patient_id=" +
+        encodeURIComponent(patientId) +
+        "&return_to=" +
+        encodeURIComponent(returnURL);
+    }
+
+    function goToFollowupMain(
+      pushState = true
+    ) {
+
+      if (pushState) {
+        setFollowupURL("main");
+      }
+
+      showView("mainView");
+    }
+
+    function restoreViewFromURL() {
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+      const view =
+        params.get("view") ||
+        "main";
+
+      if (
+        view === "today" ||
+        view === "upcoming" ||
+        view === "overdue"
+      ) {
+        openFollowupView(
+          view,
+          false
+        );
+
+        return;
+      }
+
+      if (view === "date") {
+
+        const date =
+          params.get("date");
+
+        if (date) {
+          searchByDate(
+            date,
+            false
+          );
+
+          return;
+        }
+      }
+
+      if (view === "patient") {
+
+        const search =
+          params.get("search");
+
+        if (search) {
+          searchPatientFollowups(
+            search,
+            false
+          );
+
+          return;
+        }
+      }
+
+      goToFollowupMain(false);
+    }
+
+    window.addEventListener(
+      "popstate",
+      function() {
+        restoreViewFromURL();
+      }
+    );
+
+    document
+      .getElementById(
+        "patientSearchInput"
+      )
+      .addEventListener(
+        "keydown",
+        function(event) {
+          if (event.key === "Enter") {
+            searchPatientFollowups();
+          }
+        }
+      );
+
+    async function initializeFollowups() {
+
+      const loggedIn =
+        await checkDoctorLogin();
+
+      if (!loggedIn) {
+        return;
+      }
+
+      try {
+        await loadFollowupData();
+        restoreViewFromURL();
+      }
+
+      catch (error) {
+
+        console.error(
+          "Follow-up page load error:",
+          error
+        );
+
+        showView("mainView");
+
+        document
+          .getElementById("mainView")
+          .innerHTML = `
+            <div class="portal-message error-message">
+              Unable to load follow-up information.
+              <br>
+              Please refresh the page or try again.
+            </div>
+
+            <div class="main-actions">
+              <a href="doctor-dashboard.html" class="portal-button light-button">
+                ← Back to Dashboard
+              </a>
+            </div>
+          `;
+      }
+
+      finally {
+
+        const loading =
+          document.getElementById(
+            "pageLoading"
+          );
+
+        if (loading) {
+          loading.style.display =
+            "none";
+        }
+      }
+    }
+
+    window.openFollowupView =
+      openFollowupView;
+
+    window.searchByDate =
+      searchByDate;
+
+    window.searchPatientFollowups =
+      searchPatientFollowups;
+
+    window.viewFollowupPatient =
+      viewFollowupPatient;
+
+    window.viewFollowupHistory =
+      viewFollowupHistory;
+
+    window.goToFollowupMain =
+      goToFollowupMain;
+
+    window.logoutDoctor =
+      logoutDoctor;
+
+    initializeFollowups();
+
+  </script>
+
+</body>
+</html>
