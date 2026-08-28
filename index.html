@@ -1819,6 +1819,213 @@
   }
 </style>
 
+
+<style id="final-booking-layout-fix">
+  /* =========================================================
+     APPOINTMENT / CLINIC INFORMATION — FINAL LAYOUT
+     ========================================================= */
+
+  .clinic-info {
+    display: block !important;
+    width: 100% !important;
+    padding:
+      44px clamp(16px, 5vw, 72px)
+      68px !important;
+  }
+
+  .appointment-section {
+    display: block !important;
+    width: min(860px, 100%) !important;
+    max-width: 860px !important;
+    margin: 0 auto 28px !important;
+  }
+
+  .appointment-card {
+    width: 100% !important;
+    max-width: 860px !important;
+    margin: 0 auto !important;
+    padding: clamp(26px, 4vw, 40px) !important;
+  }
+
+  .appointment-card > h2 {
+    margin-top: 8px !important;
+    margin-bottom: 14px !important;
+    font-size: clamp(30px, 3.5vw, 42px) !important;
+    line-height: 1.08 !important;
+  }
+
+  .appointment-intro {
+    max-width: 680px !important;
+    margin: 0 0 24px !important;
+    color: #5f7086 !important;
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+  }
+
+  #appointmentForm {
+    width: 100% !important;
+  }
+
+  #appointmentForm .form-group {
+    margin-bottom: 16px !important;
+  }
+
+  #appointmentForm .form-row {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  #appointmentForm label {
+    font-size: 13px !important;
+    margin-bottom: 7px !important;
+  }
+
+  #appointmentForm input,
+  #appointmentForm select,
+  #appointmentForm textarea {
+    font-size: 15px !important;
+  }
+
+  .appointment-note {
+    margin-top: 16px !important;
+    padding: 12px 14px !important;
+    font-size: 12.5px !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
+  }
+
+  /* Consultation Hours + Contact: two compact cards below booking */
+  .clinic-summary-grid {
+    width: min(860px, 100%) !important;
+    margin: 0 auto 22px !important;
+    display: grid !important;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  .clinic-summary-grid .info-card {
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 20px 22px !important;
+    border-radius: 20px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(15,47,99,.08) !important;
+    box-shadow: 0 8px 22px rgba(18,50,84,.08) !important;
+  }
+
+  .clinic-summary-grid .info-card h3 {
+    margin: 0 0 10px !important;
+    color: #0f2f63 !important;
+    font-size: 16px !important;
+    line-height: 1.3 !important;
+  }
+
+  .clinic-summary-grid .info-card p {
+    margin: 0 !important;
+    color: #52657d !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Clinic Location follows as its own compact full-width card */
+  .clinic-info > .location-info-card {
+    width: min(860px, 100%) !important;
+    margin: 0 auto 24px !important;
+    padding: 20px 22px !important;
+    min-height: 0 !important;
+  }
+
+  .clinic-info > .location-info-card h3 {
+    margin: 0 0 10px !important;
+  }
+
+  .clinic-info > .location-info-card p {
+    margin: 0 !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Map remains below location, not alongside any card */
+  .clinic-info > .map-section {
+    display: block !important;
+    width: min(1040px, 100%) !important;
+    max-width: 1040px !important;
+    margin: 0 auto !important;
+  }
+
+  /* Prevent inherited desktop grid/flex rules from squeezing these sections */
+  .clinic-info > .appointment-section,
+  .clinic-info > .clinic-summary-grid,
+  .clinic-info > .location-info-card,
+  .clinic-info > .map-section {
+    grid-column: 1 / -1 !important;
+  }
+
+  @media (max-width: 700px) {
+    .clinic-info {
+      padding: 30px 12px 48px !important;
+    }
+
+    .appointment-section,
+    .clinic-summary-grid,
+    .clinic-info > .location-info-card,
+    .clinic-info > .map-section {
+      width: 100% !important;
+      max-width: none !important;
+    }
+
+    .appointment-card {
+      padding: 24px 16px !important;
+      border-radius: 24px !important;
+    }
+
+    .appointment-card > h2 {
+      font-size: 30px !important;
+      line-height: 1.12 !important;
+    }
+
+    .appointment-intro {
+      font-size: 14px !important;
+      line-height: 1.6 !important;
+      margin-bottom: 22px !important;
+    }
+
+    #appointmentForm .form-row {
+      grid-template-columns: 1fr !important;
+      gap: 0 !important;
+    }
+
+    .clinic-summary-grid {
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+      margin-bottom: 12px !important;
+    }
+
+    .clinic-summary-grid .info-card,
+    .clinic-info > .location-info-card {
+      padding: 18px 18px !important;
+      border-radius: 18px !important;
+    }
+
+    .clinic-summary-grid .info-card h3,
+    .clinic-info > .location-info-card h3 {
+      font-size: 15px !important;
+    }
+
+    .clinic-summary-grid .info-card p,
+    .clinic-info > .location-info-card p {
+      font-size: 13.5px !important;
+    }
+
+    .clinic-info > .map-section {
+      margin-top: 12px !important;
+    }
+  }
+</style>
+
 </head>
 
 
@@ -2265,12 +2472,7 @@
 
 
     <p class="appointment-intro">
-
-      Choose an available appointment slot.
-      Your booking will be saved directly in the
-      clinic appointment system.
-      WhatsApp will open after successful booking.
-
+      Choose your preferred date and an available appointment time to book your clinic visit.
     </p>
 
 
@@ -2446,22 +2648,19 @@
 
 
     <p class="appointment-note">
-
-      ⏰ Clinic hours:
-      6:00 PM – 9:00 PM,
-      Monday–Saturday
-
-      <br>
-
-      For today's date, time slots that have
-      already started are automatically hidden.
-
+      ℹ️ For today's date, time slots that have already started are automatically hidden.
     </p>
 
   </div>
 
 </section>
 
+
+
+
+
+
+<div class="clinic-summary-grid">
 <!-- =======================================================
      CONSULTATION HOURS
      ======================================================= -->
@@ -2514,6 +2713,7 @@
 
   </p>
 
+</div>
 </div>
 
 <!-- =======================================================
