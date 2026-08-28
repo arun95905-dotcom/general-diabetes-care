@@ -570,6 +570,907 @@
 
   </style>
 
+
+  <style id="modern-3d-redesign">
+    :root {
+      --clinic-red: #d71920;
+      --clinic-red-dark: #b91c1c;
+      --clinic-navy: #0f2f63;
+      --clinic-blue: #1769e0;
+      --clinic-cyan: #12a8d6;
+      --clinic-teal: #0cae96;
+      --clinic-green: #14a866;
+      --clinic-purple: #6d45d8;
+      --clinic-gold: #f4a300;
+      --ink: #13233f;
+      --muted: #607086;
+      --surface: #ffffff;
+      --line: rgba(15, 47, 99, .10);
+      --soft-blue: #eff8ff;
+      --soft-cyan: #eefcff;
+      --soft-red: #fff2f3;
+      --shadow-sm: 0 8px 22px rgba(18, 50, 84, .08);
+      --shadow-md: 0 16px 38px rgba(18, 50, 84, .12);
+      --shadow-lg: 0 26px 70px rgba(18, 50, 84, .17);
+      --radius: 24px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(57, 184, 255, .10), transparent 24rem),
+        radial-gradient(circle at 92% 28%, rgba(99, 102, 241, .08), transparent 26rem),
+        linear-gradient(180deg, #ffffff 0%, #f8fcff 36%, #ffffff 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      transition: transform .22s ease, box-shadow .22s ease, opacity .22s ease, background .22s ease;
+    }
+
+    /* HEADER */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 15px clamp(18px, 5vw, 72px);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(15,47,99,.08);
+      box-shadow: 0 7px 24px rgba(20,45,80,.06);
+    }
+
+    .header .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      min-width: 0;
+    }
+
+    .clinic-logo {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      filter: drop-shadow(0 5px 12px rgba(215,25,32,.12));
+    }
+
+    .header .logo h1 {
+      margin: 0;
+      color: var(--clinic-red) !important;
+      font-size: clamp(20px, 2vw, 28px);
+      line-height: 1.05;
+      letter-spacing: -.025em;
+      font-weight: 900;
+    }
+
+    .header .logo p {
+      margin: 7px 0 0;
+      color: #66758a;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .patient-portal-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 15px;
+      color: #fff !important;
+      text-decoration: none;
+      font-weight: 800;
+      background: linear-gradient(135deg, #2458df, #7148dc);
+      box-shadow: 0 10px 24px rgba(78,75,214,.24);
+    }
+
+    .patient-portal-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(78,75,214,.30);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: clamp(44px, 6vw, 82px) clamp(18px, 5vw, 72px);
+      background:
+        radial-gradient(circle at 76% 36%, rgba(34,197,246,.28), transparent 21rem),
+        radial-gradient(circle at 18% 12%, rgba(37,99,235,.12), transparent 22rem),
+        linear-gradient(135deg, #eef9ff 0%, #f8fdff 50%, #e8f8ff 100%);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 260px;
+      height: 260px;
+      right: -90px;
+      top: -80px;
+      background: rgba(23,105,224,.06);
+    }
+
+    .hero::after {
+      width: 170px;
+      height: 170px;
+      left: -65px;
+      bottom: -75px;
+      background: rgba(12,174,150,.06);
+    }
+
+    .hero-layout {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content .welcome,
+    .section-label {
+      color: #2373d8;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .hero-content h2 {
+      margin: 10px 0 18px;
+      color: var(--clinic-navy);
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: .98;
+      letter-spacing: -.045em;
+      font-weight: 900;
+    }
+
+    .hero-content h2::first-line {
+      color: var(--clinic-navy);
+    }
+
+    .hero-content .doctor {
+      margin: 20px 0;
+      padding: 17px 20px;
+      width: fit-content;
+      max-width: 100%;
+      border-radius: 18px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(23,105,224,.10);
+      box-shadow: var(--shadow-sm);
+      color: #52657d;
+      line-height: 1.65;
+    }
+
+    .hero-content .doctor strong {
+      color: var(--clinic-red);
+      font-size: 19px;
+    }
+
+    .hero-content > p:not(.welcome):not(.doctor) {
+      max-width: 680px;
+      color: #52657d;
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .hero-buttons .button {
+      min-width: 158px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 20px;
+      border-radius: 15px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 850;
+      background: linear-gradient(135deg, #1769e0, #1058cc);
+      box-shadow: 0 12px 28px rgba(23,105,224,.23);
+    }
+
+    .hero-buttons .whatsapp-button {
+      background: linear-gradient(135deg, #1ab36b, #079a59);
+      box-shadow: 0 12px 28px rgba(20,168,102,.22);
+    }
+
+    .hero-buttons .button:hover {
+      transform: translateY(-3px);
+    }
+
+    .hero-doctor-card {
+      max-width: 440px;
+      border-radius: 32px;
+      border: 7px solid rgba(255,255,255,.88);
+      box-shadow: var(--shadow-lg);
+      transform: translateZ(0);
+    }
+
+    .hero-doctor-image {
+      /* IMPORTANT: existing doctor image and crop are preserved. */
+      object-position: center top;
+    }
+
+    .hero-doctor-overlay {
+      border: 1px solid rgba(15,47,99,.07);
+      background: rgba(255,255,255,.91);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .hero-doctor-overlay strong {
+      color: var(--clinic-red);
+    }
+
+    /* QUICK ACCESS */
+    .quick-access-strip {
+      width: min(1200px, calc(100% - 36px));
+      margin: -25px auto 48px;
+      position: relative;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      padding: 12px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(15,47,99,.08);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(16px);
+    }
+
+    .quick-access-item {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      min-height: 78px;
+      padding: 14px;
+      border-radius: 18px;
+      text-decoration: none;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .quick-access-item:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .quick-icon {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      font-size: 22px;
+      background: #edf5ff;
+    }
+
+    .quick-blue .quick-icon { background: #e8f1ff; }
+    .quick-purple .quick-icon { background: #f1ebff; }
+    .quick-red .quick-icon { background: #fff0f1; }
+    .quick-gold .quick-icon { background: #fff7df; }
+
+    .quick-access-item strong,
+    .quick-access-item small {
+      display: block;
+    }
+
+    .quick-access-item strong {
+      font-size: 14px;
+      color: var(--clinic-navy);
+    }
+
+    .quick-access-item small {
+      margin-top: 3px;
+      color: #718096;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    /* COMMON SECTIONS */
+    .section,
+    .doctor-profile,
+    .clinic-info,
+    .diabetes-section,
+    .reviews-section,
+    .map-section {
+      position: relative;
+    }
+
+    .section {
+      width: min(1240px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 58px 0 72px;
+      text-align: center;
+    }
+
+    .section > h2,
+    .map-section > h2,
+    .reviews-section > h2,
+    .appointment-card > h2,
+    .diabetes-section h2 {
+      color: var(--clinic-navy);
+      letter-spacing: -.025em;
+    }
+
+    .section-intro,
+    .map-intro,
+    .reviews-intro,
+    .appointment-intro {
+      color: #68798f;
+      line-height: 1.7;
+    }
+
+    /* ABOUT DOCTOR */
+    .doctor-profile {
+      width: min(1200px, calc(100% - 36px));
+      margin: 0 auto 30px;
+    }
+
+    .doctor-details {
+      overflow: hidden;
+      border: 1px solid rgba(23,105,224,.09);
+      border-radius: 28px;
+      background: linear-gradient(145deg, #ffffff, #f8fcff);
+      box-shadow: var(--shadow-md);
+    }
+
+    .doctor-details summary {
+      padding: 22px 24px;
+    }
+
+    .doctor-stethoscope-icon {
+      width: 82px;
+      min-width: 82px;
+      height: 82px;
+      overflow: hidden;
+      border-radius: 22px;
+      padding: 5px;
+      background: linear-gradient(135deg, #eef8ff, #ffffff);
+      box-shadow: inset 0 0 0 1px rgba(23,105,224,.08), var(--shadow-sm);
+    }
+
+    .doctor-summary-3d-icon {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+
+    .doctor-profile-content {
+      padding: 6px 26px 28px;
+      color: #54677e;
+      line-height: 1.75;
+    }
+
+    .qualification {
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid rgba(15,47,99,.07);
+      box-shadow: 0 6px 18px rgba(15,47,99,.04);
+    }
+
+    /* APPOINTMENT + CLINIC INFO */
+    .clinic-info {
+      padding: 36px clamp(18px, 5vw, 72px) 70px;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(23,105,224,.08), transparent 20rem),
+        linear-gradient(180deg, #f7fbff, #ffffff);
+    }
+
+    .appointment-section {
+      width: min(920px, 100%);
+      margin: 0 auto 34px;
+    }
+
+    .appointment-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(24px, 4vw, 42px);
+      border-radius: 30px;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(23,105,224,.10);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .appointment-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 7px;
+      background: linear-gradient(90deg, var(--clinic-blue), var(--clinic-cyan), var(--clinic-teal));
+    }
+
+    #appointmentForm label {
+      color: #233d62;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    #appointmentForm input,
+    #appointmentForm select,
+    #appointmentForm textarea {
+      min-height: 52px;
+      padding: 13px 14px;
+      border: 1px solid #d9e5f1;
+      border-radius: 14px;
+      background: #fbfdff;
+      color: #1d334f;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    #appointmentForm textarea {
+      min-height: 108px;
+      resize: vertical;
+    }
+
+    #appointmentForm input:focus,
+    #appointmentForm select:focus,
+    #appointmentForm textarea:focus {
+      border-color: #6cb5ff;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(23,105,224,.10);
+    }
+
+    .appointment-button,
+    .map-directions-button,
+    .google-review-button,
+    .see-reviews-button {
+      border: 0;
+      border-radius: 15px;
+      font-weight: 850;
+    }
+
+    .appointment-button {
+      min-height: 54px;
+      width: 100%;
+      color: #fff;
+      background: linear-gradient(135deg, #1769e0, #0fa7d3);
+      box-shadow: 0 14px 30px rgba(23,105,224,.20);
+    }
+
+    .appointment-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #f1f8ff;
+      color: #52677f;
+      line-height: 1.55;
+    }
+
+    .clinic-info > .info-card {
+      width: min(920px, 100%);
+      margin: 18px auto;
+      padding: 22px 24px;
+      border-radius: 22px;
+      background: #fff;
+      border: 1px solid rgba(15,47,99,.08);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .clinic-info > .info-card h3 {
+      color: var(--clinic-navy);
+    }
+
+    .map-section {
+      width: min(1040px, 100%);
+      margin: 34px auto;
+      padding: 30px;
+      border-radius: 28px;
+      background: linear-gradient(145deg, #ffffff, #f8fcff);
+      border: 1px solid rgba(15,47,99,.08);
+      box-shadow: var(--shadow-md);
+    }
+
+    .map-container {
+      overflow: hidden;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(15,47,99,.10);
+    }
+
+    .map-directions-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 18px;
+      padding: 13px 18px;
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(135deg, #1769e0, #0fa7d3);
+    }
+
+    /* 3D SERVICES */
+    .services {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .service {
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+      padding: 18px 18px 20px;
+      border-radius: 24px;
+      border: 1px solid rgba(15,47,99,.08);
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+
+    .service::before {
+      content: "";
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      top: -58px;
+      right: -60px;
+      background: var(--service-glow, rgba(23,105,224,.08));
+      filter: blur(2px);
+      pointer-events: none;
+    }
+
+    .service:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 20px 42px rgba(18,50,84,.15);
+      border-color: rgba(23,105,224,.16);
+    }
+
+    .service-icon-shell {
+      width: 156px;
+      height: 132px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 7px;
+      overflow: hidden;
+      border-radius: 50%;
+      background: var(--service-halo, #eef7ff);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.8);
+    }
+
+    .service-3d-icon {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.03);
+      filter: saturate(1.04) contrast(1.02);
+    }
+
+    .service h3 {
+      margin: 10px 0 8px;
+      color: var(--service-color, var(--clinic-navy));
+      font-size: 18px;
+      line-height: 1.18;
+      font-weight: 900;
+      letter-spacing: -.02em;
+    }
+
+    .service p {
+      margin: 0;
+      color: #5f7086;
+      font-size: 13.5px;
+      line-height: 1.52;
+    }
+
+    .service .map-button {
+      margin-top: auto;
+      padding-top: 13px;
+      color: #1769e0;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .service-general    { --service-color:#0f4a9a; --service-halo:#e9f4ff; --service-glow:rgba(23,105,224,.11); }
+    .service-diabetes   { --service-color:#0967d8; --service-halo:#e9f5ff; --service-glow:rgba(14,116,230,.12); }
+    .service-hypertension { --service-color:#cf252c; --service-halo:#fff0f2; --service-glow:rgba(215,25,32,.11); }
+    .service-thyroid    { --service-color:#6c35c6; --service-halo:#f4edff; --service-glow:rgba(109,69,216,.12); }
+    .service-fever      { --service-color:#d24d16; --service-halo:#fff3eb; --service-glow:rgba(234,88,12,.11); }
+    .service-respiratory{ --service-color:#d94b35; --service-halo:#fff0eb; --service-glow:rgba(229,83,59,.11); }
+    .service-kidney     { --service-color:#087f5b; --service-halo:#eafaf5; --service-glow:rgba(12,174,150,.10); }
+    .service-joint      { --service-color:#b55e05; --service-halo:#fff8e8; --service-glow:rgba(244,163,0,.12); }
+    .service-digestive  { --service-color:#dd491a; --service-halo:#fff0ea; --service-glow:rgba(234,88,12,.10); }
+    .service-chronic    { --service-color:#a3183d; --service-halo:#fff0f5; --service-glow:rgba(190,24,93,.10); }
+    .service-neurology  { --service-color:#d94b35; --service-halo:#fff0eb; --service-glow:rgba(229,83,59,.12); }
+    .service-preventive { --service-color:#128245; --service-halo:#ebfaf0; --service-glow:rgba(20,168,102,.11); }
+
+    /* DIABETES FOCUS */
+    .diabetes-section {
+      width: min(1200px, calc(100% - 36px));
+      margin: 20px auto 56px;
+      padding: clamp(28px, 4vw, 46px);
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 92% 12%, rgba(38,183,255,.18), transparent 19rem),
+        linear-gradient(135deg, #eaf7ff 0%, #f8fcff 48%, #edfffa 100%);
+      border: 1px solid rgba(23,105,224,.09);
+      box-shadow: var(--shadow-md);
+    }
+
+    .diabetes-list {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 11px;
+    }
+
+    .diabetes-list > div {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px;
+      text-align: center;
+      border-radius: 17px;
+      color: #234264;
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.4;
+      background: rgba(255,255,255,.83);
+      border: 1px solid rgba(23,105,224,.08);
+      box-shadow: 0 7px 18px rgba(15,47,99,.05);
+    }
+
+    /* REVIEWS */
+    .reviews-section {
+      width: min(1040px, calc(100% - 36px));
+      margin: 0 auto 58px;
+      padding: clamp(28px, 4vw, 44px);
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(250,204,21,.12), transparent 15rem),
+        linear-gradient(145deg, #ffffff, #f8fbff);
+      border: 1px solid rgba(15,47,99,.08);
+      box-shadow: var(--shadow-md);
+    }
+
+    .google-rating {
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(15,47,99,.07);
+    }
+
+    .google-rating-stars,
+    .stars {
+      color: #f5a400;
+    }
+
+    .review-card {
+      border-radius: 22px;
+      background: #fff;
+      border: 1px solid rgba(15,47,99,.07);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .see-reviews-button,
+    .google-review-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 18px;
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(135deg, #1769e0, #0fa7d3);
+    }
+
+    .google-review-button {
+      background: linear-gradient(135deg, #f0a500, #ff7a1a);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 38px 20px;
+      text-align: center;
+      color: #dbe9ff;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(23,105,224,.30), transparent 22rem),
+        linear-gradient(135deg, #071c3d, #0c2f63 58%, #0e4677);
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    footer h3 {
+      color: #ff4a4f;
+      font-weight: 900;
+      letter-spacing: .02em;
+    }
+
+    footer p {
+      color: #d0ddf1;
+    }
+
+    .doctor-portal-link {
+      display: inline-flex;
+      margin-top: 14px;
+      padding: 11px 18px;
+      border-radius: 999px;
+      color: #fff !important;
+      text-decoration: none;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1050px) {
+      .services {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .quick-access-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .diabetes-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .header {
+        position: relative;
+        align-items: flex-start;
+        padding: 14px 16px;
+      }
+
+      .clinic-logo {
+        width: 58px;
+        height: 58px;
+      }
+
+      .header .logo h1 {
+        font-size: 18px;
+      }
+
+      .header .logo p {
+        font-size: 12px;
+      }
+
+      .patient-portal-button {
+        min-height: 40px;
+        padding: 0 12px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 38px 18px 56px;
+      }
+
+      .hero-content h2 {
+        font-size: clamp(42px, 13vw, 62px);
+      }
+
+      .quick-access-strip {
+        margin-top: -20px;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .services {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 13px;
+      }
+
+      .service {
+        padding: 14px 12px 17px;
+        border-radius: 20px;
+      }
+
+      .service-icon-shell {
+        width: 128px;
+        height: 108px;
+      }
+
+      .service h3 {
+        font-size: 16px;
+      }
+
+      .service p {
+        font-size: 12.5px;
+      }
+
+      .diabetes-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .map-section,
+      .reviews-section,
+      .diabetes-section {
+        border-radius: 24px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .header {
+        flex-direction: column;
+      }
+
+      .header-actions,
+      .patient-portal-button {
+        width: 100%;
+      }
+
+      .patient-portal-button {
+        justify-content: center;
+      }
+
+      .hero-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-buttons .button {
+        min-width: 0;
+      }
+
+      .quick-access-strip {
+        grid-template-columns: 1fr;
+        width: calc(100% - 24px);
+      }
+
+      .services {
+        grid-template-columns: 1fr;
+      }
+
+      .service {
+        min-height: 0;
+      }
+
+      .service-icon-shell {
+        width: 150px;
+        height: 126px;
+      }
+
+      .diabetes-list {
+        grid-template-columns: 1fr;
+      }
+
+      .appointment-card {
+        padding: 24px 16px;
+      }
+
+      .map-section {
+        padding: 22px 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+
 </head>
 
 
@@ -739,6 +1640,28 @@
 </section>
 
 
+<section class="quick-access-strip" aria-label="Quick clinic links">
+  <a href="#appointmentBooking" class="quick-access-item quick-blue">
+    <span class="quick-icon">📅</span>
+    <span><strong>Book Appointment</strong><small>Choose an available clinic slot</small></span>
+  </a>
+
+  <a href="patient-login.html" class="quick-access-item quick-purple">
+    <span class="quick-icon">👤</span>
+    <span><strong>Patient Portal</strong><small>Access your clinic portal</small></span>
+  </a>
+
+  <a href="#clinicLocation" class="quick-access-item quick-red">
+    <span class="quick-icon">📍</span>
+    <span><strong>Clinic Location</strong><small>Anna Nagar West, Chennai</small></span>
+  </a>
+
+  <a href="#googleReviews" class="quick-access-item quick-gold">
+    <span class="quick-icon">★</span>
+    <span><strong>Google Reviews</strong><small>See patient feedback</small></span>
+  </a>
+</section>
+
 
 <!-- =======================================================
      ABOUT THE DOCTOR
@@ -760,7 +1683,7 @@
           class="doctor-stethoscope-icon"
           aria-hidden="true">
 
-          🩺
+          <img src="medical-icons/general-medicine.webp" alt="" class="doctor-summary-3d-icon">
 
         </div>
 
@@ -1203,7 +2126,7 @@
      CLINIC LOCATION
      ======================================================= -->
 
-<div class="info-card">
+<div class="info-card location-info-card" id="clinicLocation">
 
   <h3>
     📍 Clinic Location
@@ -1376,11 +2299,11 @@
   <div class="services">
 
 
-    <div class="service">
+    <div class="service service-general">
 
-      <span>
-        🩺
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/general-medicine.webp" alt="3D stethoscope and medical cross icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         General Medicine
@@ -1397,11 +2320,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-diabetes">
 
-      <span>
-        🩸
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/diabetes-care.webp" alt="3D glucometer and blood drop icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Diabetes Care
@@ -1428,11 +2351,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-hypertension">
 
-      <span>
-        ❤️
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/hypertension.webp" alt="3D heart and blood pressure monitor icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Hypertension
@@ -1449,11 +2372,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-thyroid">
 
-      <span>
-        🦋
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/thyroid.webp" alt="3D thyroid gland icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Thyroid Disorders
@@ -1470,11 +2393,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-fever">
 
-      <span>
-        🤒
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/fever-infections.webp" alt="3D thermometer and infection icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Fever &amp; Infections
@@ -1491,11 +2414,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-respiratory">
 
-      <span>
-        🫁
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/respiratory-coral.webp" alt="3D lungs icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Respiratory Problems
@@ -1513,11 +2436,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-kidney">
 
-      <span>
-        🫘
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/kidney-urinary.webp" alt="3D kidneys and urinary tract icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Kidney &amp; Urinary Health
@@ -1534,11 +2457,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-joint">
 
-      <span>
-        🦴
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/joint-musculoskeletal.webp" alt="3D knee joint icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Joint &amp; Musculoskeletal Problems
@@ -1556,11 +2479,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-digestive">
 
-      <span>
-        🍽️
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/digestive.webp" alt="3D stomach and intestines icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Digestive Problems
@@ -1578,11 +2501,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-chronic">
 
-      <span>
-        👴
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/chronic-disease.webp" alt="3D chronic disease care medical record icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Chronic Disease Care
@@ -1599,11 +2522,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-neurology">
 
-      <span>
-        🧠
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/neurological-coral.webp" alt="3D yellow brain icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Neurological Symptoms
@@ -1621,11 +2544,11 @@
 
 
 
-    <div class="service">
+    <div class="service service-preventive">
 
-      <span>
-        📋
-      </span>
+      <div class="service-icon-shell">
+        <img src="medical-icons/preventive-health.webp" alt="3D preventive health shield and checklist icon" class="service-3d-icon" loading="lazy">
+      </div>
 
       <h3>
         Preventive Health
@@ -1729,7 +2652,7 @@
      GOOGLE REVIEWS
      ======================================================= -->
 
-<section class="reviews-section">
+<section class="reviews-section" id="googleReviews">
 
 
   <div class="google-rating">
