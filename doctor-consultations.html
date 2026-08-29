@@ -685,6 +685,50 @@ textarea {
 }
 
 /* =========================================================
+   COMPLETE CONSULTATION HISTORY OPTION
+   ========================================================= */
+
+.complete-history-option {
+  margin-top: 16px;
+  padding: 16px;
+  background:
+    linear-gradient(
+      135deg,
+      #f8fbff,
+      #ffffff
+    );
+  border: 1px solid #dce8f6;
+  border-radius: 16px;
+}
+
+.complete-history-option-title {
+  margin: 0;
+  color: #1e3a5f;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.complete-history-option-text {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.complete-history-option .portal-button {
+  margin-top: 12px;
+}
+
+@media(max-width:560px) {
+
+  .complete-history-option .portal-button {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
    MOBILE
    ========================================================= */
 
@@ -2213,6 +2257,28 @@ function renderHistoryPeriodSelector() {
 
       </div>
 
+
+      <div class="complete-history-option">
+
+        <h3 class="complete-history-option-title">
+          📚 Complete Consultation History
+        </h3>
+
+        <p class="complete-history-option-text">
+          View all previous consultations for this patient in chronological order, with the newest consultation first.
+        </p>
+
+        <button
+          type="button"
+          class="portal-button primary-button"
+          onclick="openCompleteConsultationHistory()">
+
+          📋 View Complete Consultation History
+
+        </button>
+
+      </div>
+
     `;
 
 
@@ -2329,6 +2395,62 @@ function historyMonthChanged() {
   updateHistoryURL(
     false
   );
+
+}
+
+
+function openCompleteConsultationHistory() {
+
+  if (
+    !currentPatientId
+  ) {
+
+    alert(
+      "Unable to identify patient."
+    );
+
+    return;
+
+  }
+
+
+  const params =
+    new URLSearchParams();
+
+
+  params.set(
+    "patient_id",
+    currentPatientId
+  );
+
+
+  if (
+    selectedHistoryYear
+  ) {
+
+    params.set(
+      "year",
+      selectedHistoryYear
+    );
+
+  }
+
+
+  if (
+    selectedHistoryMonth
+  ) {
+
+    params.set(
+      "month",
+      selectedHistoryMonth
+    );
+
+  }
+
+
+  window.location.href =
+    "doctor-complete-consultation-history.html?" +
+    params.toString();
 
 }
 
@@ -7282,6 +7404,9 @@ window.historyMonthChanged =
 
 window.viewSelectedHistoryPeriod =
   viewSelectedHistoryPeriod;
+
+window.openCompleteConsultationHistory =
+  openCompleteConsultationHistory;
 
 window.showHistoryPeriodSelector =
   showHistoryPeriodSelector;
