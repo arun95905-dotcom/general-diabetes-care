@@ -1,23 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
+
   <title>Follow-ups | General & Diabetes Care</title>
-  <link rel="stylesheet" href="styles.css">
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 
   <style>
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      background: linear-gradient(135deg,#f5f9fc 0%,#eef6fb 50%,#f8fbfd 100%);
+      background:
+        linear-gradient(
+          135deg,
+          #f5f9fc 0%,
+          #eef6fb 50%,
+          #f8fbfd 100%
+        );
       color: #172033;
-      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
     }
 
-    button,input { font-family: inherit; }
+    button,
+    input {
+      font-family: inherit;
+    }
 
     .doctor-dashboard {
       min-height: 100vh;
@@ -27,7 +59,10 @@
       align-items: flex-start;
     }
 
-    .followup-page { width: 100%; max-width: 980px; }
+    .followup-page {
+      width: 100%;
+      max-width: 980px;
+    }
 
     .page-shell {
       width: 100%;
@@ -38,7 +73,10 @@
       box-shadow: 0 15px 45px rgba(30,70,100,.10);
     }
 
-    .portal-header { text-align: center; margin-bottom: 25px; }
+    .portal-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
 
     .header-icon {
       width: 68px;
@@ -49,7 +87,12 @@
       justify-content: center;
       border-radius: 21px;
       font-size: 33px;
-      background: linear-gradient(135deg,#fff5dd,#fffaf0);
+      background:
+        linear-gradient(
+          135deg,
+          #fff5dd,
+          #fffaf0
+        );
       border: 1px solid #f1dfb4;
     }
 
@@ -73,12 +116,21 @@
       font-size: 14px;
     }
 
-    .portal-view { display: none; }
-    .portal-view.active { display: block; }
+    .portal-view {
+      display: none;
+    }
+
+    .portal-view.active {
+      display: block;
+    }
 
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(3,minmax(0,1fr));
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0,1fr)
+        );
       gap: 15px;
       margin-bottom: 24px;
     }
@@ -93,7 +145,10 @@
       background: #fff;
       text-align: left;
       cursor: pointer;
-      transition: transform .18s ease,box-shadow .18s ease;
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease;
     }
 
     .summary-card:hover {
@@ -102,17 +157,32 @@
     }
 
     .today-card {
-      background: linear-gradient(145deg,#f6fbff,#eef8ff);
+      background:
+        linear-gradient(
+          145deg,
+          #f6fbff,
+          #eef8ff
+        );
       border-color: #d3e8f7;
     }
 
     .upcoming-card {
-      background: linear-gradient(145deg,#f7fcf9,#eff9f3);
+      background:
+        linear-gradient(
+          145deg,
+          #f7fcf9,
+          #eff9f3
+        );
       border-color: #d4eadc;
     }
 
     .overdue-card {
-      background: linear-gradient(145deg,#fffafa,#fff3f2);
+      background:
+        linear-gradient(
+          145deg,
+          #fffafa,
+          #fff3f2
+        );
       border-color: #f0d5d2;
     }
 
@@ -135,6 +205,14 @@
       color: #183447;
       font-size: 16px;
       font-weight: 850;
+    }
+
+    .summary-description {
+      display: block;
+      margin-bottom: 5px;
+      color: #71808b;
+      font-size: 12px;
+      font-weight: 650;
     }
 
     .summary-count {
@@ -166,6 +244,16 @@
       border-radius: 17px;
     }
 
+    .range-search-card {
+      background:
+        linear-gradient(
+          145deg,
+          #f7fffd,
+          #f1fbf8
+        );
+      border-color: #d5ebe4;
+    }
+
     .search-card h2 {
       margin: 0 0 6px;
       color: #183447;
@@ -176,15 +264,41 @@
       margin: 0 0 13px;
       color: #71808b;
       font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .range-input-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .input-group {
+      display: grid;
+      gap: 6px;
+    }
+
+    .input-group label {
+      color: #516270;
+      font-size: 12px;
+      font-weight: 800;
     }
 
     .search-row {
       display: grid;
-      grid-template-columns: minmax(0,1fr) auto;
+      grid-template-columns:
+        minmax(0,1fr)
+        auto;
       gap: 9px;
     }
 
-    .search-row input {
+    .search-row input,
+    .range-input-grid input {
       width: 100%;
       min-height: 45px;
       padding: 10px 12px;
@@ -193,6 +307,23 @@
       border-radius: 11px;
       color: #172033;
       font-size: 14px;
+      outline: none;
+      transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+    }
+
+    .search-row input:focus,
+    .range-input-grid input:focus {
+      border-color: #7ab5d5;
+      box-shadow:
+        0 0 0 3px rgba(74,144,184,.10);
+    }
+
+    .range-action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
     }
 
     .portal-button {
@@ -208,12 +339,37 @@
       text-decoration: none;
       font-size: 14px;
       font-weight: 780;
+      transition:
+        transform .16s ease,
+        box-shadow .16s ease,
+        opacity .16s ease;
     }
 
-    .primary-button { background: #2563eb; color: #fff; }
-    .light-button { background: #f1f5f9; color: #263846; border: 1px solid #d8e1e8; }
-    .secondary-button { background: #64748b; color: #fff; }
-    .small-button { min-height: 36px; padding: 8px 11px; font-size: 13px; }
+    .portal-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-button {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .light-button {
+      background: #f1f5f9;
+      color: #263846;
+      border: 1px solid #d8e1e8;
+    }
+
+    .secondary-button {
+      background: #64748b;
+      color: #fff;
+    }
+
+    .small-button {
+      min-height: 36px;
+      padding: 8px 11px;
+      font-size: 13px;
+    }
 
     .view-header {
       margin-bottom: 17px;
@@ -240,6 +396,7 @@
       margin: 6px 0 0;
       color: #71808b;
       font-size: 13px;
+      line-height: 1.55;
     }
 
     .result-count {
@@ -253,6 +410,39 @@
       font-weight: 850;
     }
 
+    .status-summary-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .status-summary-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 30px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .status-summary-today {
+      background: #e9f5ff;
+      color: #176b9b;
+    }
+
+    .status-summary-upcoming {
+      background: #ebf8ef;
+      color: #237044;
+    }
+
+    .status-summary-overdue {
+      background: #fff0ef;
+      color: #b23b31;
+    }
+
     .followup-list {
       display: grid;
       gap: 11px;
@@ -263,7 +453,8 @@
       background: #fff;
       border: 1px solid #e1e7ed;
       border-radius: 16px;
-      box-shadow: 0 4px 14px rgba(24,52,71,.045);
+      box-shadow:
+        0 4px 14px rgba(24,52,71,.045);
     }
 
     .followup-card-top {
@@ -312,15 +503,155 @@
       white-space: nowrap;
     }
 
-    .today-badge { background: #e9f5ff; color: #176b9b; }
-    .upcoming-badge { background: #ebf8ef; color: #237044; }
-    .overdue-badge { background: #fff0ef; color: #b23b31; }
+    .today-badge {
+      background: #e9f5ff;
+      color: #176b9b;
+    }
+
+    .upcoming-badge {
+      background: #ebf8ef;
+      color: #237044;
+    }
+
+    .overdue-badge {
+      background: #fff0ef;
+      color: #b23b31;
+    }
 
     .action-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 13px;
+    }
+
+    .date-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .date-row {
+      width: 100%;
+      padding: 16px;
+      display: grid;
+      grid-template-columns:
+        auto
+        minmax(0,1fr)
+        auto;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #e0e8ee;
+      border-radius: 15px;
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+      transition:
+        transform .16s ease,
+        box-shadow .16s ease,
+        border-color .16s ease;
+    }
+
+    .date-row:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 8px 20px rgba(31,72,98,.08);
+      border-color: #cddde7;
+    }
+
+    .date-icon {
+      width: 43px;
+      height: 43px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 13px;
+      background: #f4f8fb;
+      border: 1px solid #e1e9ef;
+      font-size: 21px;
+    }
+
+    .date-main {
+      min-width: 0;
+    }
+
+    .date-title {
+      color: #183447;
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .date-weekday {
+      margin-top: 3px;
+      color: #7a8893;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .date-meta {
+      margin-top: 7px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .date-count {
+      color: #60717d;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .date-arrow {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #f5f8fa;
+      color: #417c9f;
+      font-size: 19px;
+    }
+
+    .date-status-pill {
+      display: inline-flex;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 850;
+    }
+
+    .date-status-today {
+      background: #e9f5ff;
+      color: #176b9b;
+    }
+
+    .date-status-upcoming {
+      background: #ebf8ef;
+      color: #237044;
+    }
+
+    .date-status-overdue {
+      background: #fff0ef;
+      color: #b23b31;
+    }
+
+    .selected-date-toolbar {
+      margin-bottom: 12px;
+      padding: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #f8fbfd;
+      border: 1px solid #e1e9ef;
+      border-radius: 14px;
+    }
+
+    .selected-date-copy {
+      color: #405563;
+      font-size: 13px;
+      font-weight: 750;
     }
 
     .portal-message {
@@ -350,9 +681,20 @@
       background: rgba(245,249,252,.97);
     }
 
-    .dashboard-loading-box { padding: 25px; text-align: center; }
-    .loading-icon { margin-bottom: 10px; font-size: 42px; }
-    .loading-text { color: #62737e; font-weight: 650; }
+    .dashboard-loading-box {
+      padding: 25px;
+      text-align: center;
+    }
+
+    .loading-icon {
+      margin-bottom: 10px;
+      font-size: 42px;
+    }
+
+    .loading-text {
+      color: #62737e;
+      font-weight: 650;
+    }
 
     .main-actions {
       display: flex;
@@ -372,125 +714,374 @@
     }
 
     @media(max-width:760px) {
-      .doctor-dashboard { padding: 12px 8px 32px; }
-      .page-shell { padding: 20px 13px; border-radius: 20px; }
-      .summary-grid { grid-template-columns: 1fr; gap: 10px; }
-      .summary-card { min-height: 118px; padding: 17px; }
-      .search-row { grid-template-columns: 1fr; }
-      .search-row .portal-button { width: 100%; }
-      .portal-header h1 { font-size: 26px; }
-      .followup-card-top { flex-direction: column; }
+
+      .doctor-dashboard {
+        padding: 12px 8px 32px;
+      }
+
+      .page-shell {
+        padding: 20px 13px;
+        border-radius: 20px;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .summary-card {
+        min-height: 118px;
+        padding: 17px;
+      }
+
+      .range-input-grid,
+      .search-row {
+        grid-template-columns: 1fr;
+      }
+
+      .range-action-row .portal-button,
+      .search-row .portal-button {
+        width: 100%;
+      }
+
+      .portal-header h1 {
+        font-size: 26px;
+      }
+
+      .followup-card-top {
+        flex-direction: column;
+      }
+
+      .date-row {
+        padding: 14px;
+        grid-template-columns:
+          auto
+          minmax(0,1fr)
+          auto;
+      }
+
     }
+
   </style>
+
 </head>
 
 <body>
 
-  <div id="pageLoading" class="dashboard-loading">
+  <div
+    id="pageLoading"
+    class="dashboard-loading"
+  >
+
     <div class="dashboard-loading-box">
-      <div class="loading-icon">🔔</div>
-      <div class="loading-text">Loading Follow-ups...</div>
+
+      <div class="loading-icon">
+        🔔
+      </div>
+
+      <div class="loading-text">
+        Loading Follow-ups...
+      </div>
+
     </div>
+
   </div>
 
   <section class="doctor-dashboard">
+
     <div class="followup-page">
+
       <div class="page-shell">
 
         <div class="portal-header">
-          <div class="header-icon">🔔</div>
-          <p class="section-label">GENERAL &amp; DIABETES CARE</p>
-          <h1>Follow-ups</h1>
-          <p class="portal-subtitle">Manage patient review dates</p>
+
+          <div class="header-icon">
+            🔔
+          </div>
+
+          <p class="section-label">
+            GENERAL &amp; DIABETES CARE
+          </p>
+
+          <h1>
+            Follow-ups
+          </h1>
+
+          <p class="portal-subtitle">
+            Manage patient review dates
+          </p>
+
         </div>
 
-        <div id="mainView" class="portal-view active">
+        <div
+          id="mainView"
+          class="portal-view active"
+        >
 
           <div class="summary-grid">
 
-            <button type="button" class="summary-card today-card" onclick="openFollowupView('today')">
-              <div class="summary-icon">🔔</div>
-              <span class="summary-title">Today's Follow-ups</span>
-              <span id="todayCount" class="summary-count">0 patients</span>
-              <span class="summary-arrow">›</span>
+            <button
+              type="button"
+              class="summary-card today-card"
+              onclick="openFollowupView('today')"
+            >
+
+              <div class="summary-icon">
+                🔔
+              </div>
+
+              <span class="summary-title">
+                Today's Follow-ups
+              </span>
+
+              <span class="summary-description">
+                Today's review patients
+              </span>
+
+              <span
+                id="todayCount"
+                class="summary-count"
+              >
+                0 patients
+              </span>
+
+              <span class="summary-arrow">
+                ›
+              </span>
+
             </button>
 
-            <button type="button" class="summary-card upcoming-card" onclick="openFollowupView('upcoming')">
-              <div class="summary-icon">📅</div>
-              <span class="summary-title">Upcoming Follow-ups</span>
-              <span id="upcomingCount" class="summary-count">0 patients</span>
-              <span class="summary-arrow">›</span>
+            <button
+              type="button"
+              class="summary-card upcoming-card"
+              onclick="openFollowupView('upcoming')"
+            >
+
+              <div class="summary-icon">
+                📅
+              </div>
+
+              <span class="summary-title">
+                Upcoming Follow-ups
+              </span>
+
+              <span class="summary-description">
+                Next 7 days only
+              </span>
+
+              <span
+                id="upcomingCount"
+                class="summary-count"
+              >
+                0 patients
+              </span>
+
+              <span class="summary-arrow">
+                ›
+              </span>
+
             </button>
 
-            <button type="button" class="summary-card overdue-card" onclick="openFollowupView('overdue')">
-              <div class="summary-icon">⚠️</div>
-              <span class="summary-title">Overdue Follow-ups</span>
-              <span id="overdueCount" class="summary-count">0 patients</span>
-              <span class="summary-arrow">›</span>
+            <button
+              type="button"
+              class="summary-card overdue-card"
+              onclick="openFollowupView('overdue')"
+            >
+
+              <div class="summary-icon">
+                ⚠️
+              </div>
+
+              <span class="summary-title">
+                Overdue Follow-ups
+              </span>
+
+              <span class="summary-description">
+                Previous 7 days only
+              </span>
+
+              <span
+                id="overdueCount"
+                class="summary-count"
+              >
+                0 patients
+              </span>
+
+              <span class="summary-arrow">
+                ›
+              </span>
+
             </button>
 
           </div>
 
-          <div class="search-card">
-            <h2>📅 Search by Date</h2>
-            <p class="search-help">View active follow-ups scheduled for a specific date.</p>
+          <div class="search-card range-search-card">
 
-            <div class="search-row">
-              <input type="date" id="followupDateSearch">
+            <h2>
+              🔎 Search Follow-ups
+            </h2>
 
-              <button type="button" class="portal-button primary-button" onclick="searchByDate()">
-                🔎 View Follow-ups
-              </button>
+            <p class="search-help">
+              Search active follow-ups using a date range.
+              Future dates show upcoming reviews, past dates show overdue reviews,
+              and a range including today shows all relevant active follow-ups.
+            </p>
+
+            <div class="range-input-grid">
+
+              <div class="input-group">
+
+                <label for="followupFromDate">
+                  From Date
+                </label>
+
+                <input
+                  type="date"
+                  id="followupFromDate"
+                >
+
+              </div>
+
+              <div class="input-group">
+
+                <label for="followupToDate">
+                  To Date
+                </label>
+
+                <input
+                  type="date"
+                  id="followupToDate"
+                >
+
+              </div>
+
             </div>
+
+            <div class="range-action-row">
+
+              <button
+                type="button"
+                class="portal-button primary-button"
+                onclick="searchFollowupRange()"
+              >
+                🔎 Search Follow-ups
+              </button>
+
+              <button
+                type="button"
+                class="portal-button light-button"
+                onclick="clearFollowupRangeSearch()"
+              >
+                ✖ Clear
+              </button>
+
+            </div>
+
           </div>
 
           <div class="search-card">
-            <h2>🔎 Search Patient</h2>
-            <p class="search-help">Search active follow-ups using patient ID, name or phone number.</p>
+
+            <h2>
+              🔎 Search Patient
+            </h2>
+
+            <p class="search-help">
+              Search all active follow-ups using patient ID, name or phone number.
+            </p>
 
             <div class="search-row">
-              <input type="text" id="patientSearchInput" placeholder="Patient ID / Name / Phone">
 
-              <button type="button" class="portal-button primary-button" onclick="searchPatientFollowups()">
+              <input
+                type="text"
+                id="patientSearchInput"
+                placeholder="Patient ID / Name / Phone"
+              >
+
+              <button
+                type="button"
+                class="portal-button primary-button"
+                onclick="searchPatientFollowups()"
+              >
                 🔎 Search
               </button>
+
             </div>
+
           </div>
 
           <div class="main-actions">
-            <a href="doctor-dashboard.html" class="portal-button light-button">
+
+            <a
+              href="doctor-dashboard.html"
+              class="portal-button light-button"
+            >
               ← Back to Dashboard
             </a>
 
-            <button type="button" class="portal-button secondary-button" onclick="logoutDoctor()">
+            <button
+              type="button"
+              class="portal-button secondary-button"
+              onclick="logoutDoctor()"
+            >
               🔒 Logout
             </button>
+
           </div>
 
         </div>
 
-        <div id="listView" class="portal-view">
+        <div
+          id="listView"
+          class="portal-view"
+        >
 
           <div class="view-header">
 
             <div class="view-header-top">
-              <button type="button" class="portal-button light-button small-button" onclick="goToFollowupMain()">
+
+              <button
+                type="button"
+                class="portal-button light-button small-button"
+                onclick="goToFollowupMain()"
+              >
                 ← Follow-ups
               </button>
+
             </div>
 
-            <h2 id="listViewTitle">Follow-ups</h2>
+            <h2 id="listViewTitle">
+              Follow-ups
+            </h2>
 
-            <p id="listViewSubtitle" class="view-subtitle"></p>
+            <p
+              id="listViewSubtitle"
+              class="view-subtitle"
+            ></p>
 
-            <div id="listViewCount" class="result-count">
+            <div
+              id="listViewCount"
+              class="result-count"
+            >
               0 patients
             </div>
 
+            <div
+              id="statusSummaryRow"
+              class="status-summary-row"
+              style="display:none;"
+            ></div>
+
           </div>
 
-          <div id="followupList" class="followup-list">
-            <div class="portal-message">Loading follow-ups...</div>
+          <div
+            id="followupList"
+            class="followup-list"
+          >
+
+            <div class="portal-message">
+              Loading follow-ups...
+            </div>
+
           </div>
 
         </div>
@@ -502,10 +1093,14 @@
         </div>
 
       </div>
+
     </div>
+
   </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
 
   <script>
 
@@ -525,11 +1120,22 @@
     let allPatients = [];
     let patientMap = {};
     let activeFollowups = [];
-    let currentDateSearch = "";
+
+    let currentView = "main";
+    let selectedFollowupDate = "";
+
+    let currentFromDate = "";
+    let currentToDate = "";
     let currentPatientSearch = "";
 
     function escapeHTML(value) {
-      if (value === null || value === undefined) return "";
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
 
       return String(value)
         .replace(/&/g,"&amp;")
@@ -540,31 +1146,75 @@
     }
 
     function localDateStringFromDate(date) {
+
       return (
         date.getFullYear() +
         "-" +
-        String(date.getMonth() + 1).padStart(2,"0") +
+        String(
+          date.getMonth() + 1
+        ).padStart(2,"0") +
         "-" +
-        String(date.getDate()).padStart(2,"0")
+        String(
+          date.getDate()
+        ).padStart(2,"0")
       );
     }
 
     function getTodayString() {
-      return localDateStringFromDate(new Date());
+
+      return localDateStringFromDate(
+        new Date()
+      );
+    }
+
+    function addDaysToDateString(
+      dateString,
+      days
+    ) {
+
+      const date =
+        new Date(
+          dateString +
+          "T00:00:00"
+        );
+
+      date.setDate(
+        date.getDate() +
+        days
+      );
+
+      return localDateStringFromDate(
+        date
+      );
     }
 
     function consultationDateString(value) {
-      if (!value) return "";
 
-      const date = new Date(value);
+      if (!value) {
+        return "";
+      }
 
-      if (Number.isNaN(date.getTime())) return "";
+      const date =
+        new Date(value);
 
-      return localDateStringFromDate(date);
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "";
+      }
+
+      return localDateStringFromDate(
+        date
+      );
     }
 
     function formatDate(value) {
-      if (!value) return "-";
+
+      if (!value) {
+        return "-";
+      }
 
       const date =
         new Date(
@@ -573,7 +1223,13 @@
             : value
         );
 
-      if (Number.isNaN(date.getTime())) return value;
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return value;
+      }
 
       return date.toLocaleDateString(
         "en-IN",
@@ -585,22 +1241,69 @@
       );
     }
 
+    function formatWeekday(value) {
+
+      if (!value) {
+        return "";
+      }
+
+      const date =
+        new Date(
+          value +
+          "T00:00:00"
+        );
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "";
+      }
+
+      return date.toLocaleDateString(
+        "en-IN",
+        {
+          weekday: "long"
+        }
+      );
+    }
+
     function formatPatientCount(count) {
-      return count + (count === 1 ? " patient" : " patients");
+
+      return (
+        count +
+        (
+          count === 1
+            ? " patient"
+            : " patients"
+        )
+      );
     }
 
     function showView(viewId) {
+
       document
-        .querySelectorAll(".portal-view")
-        .forEach(function(view) {
-          view.classList.remove("active");
-        });
+        .querySelectorAll(
+          ".portal-view"
+        )
+        .forEach(
+          function(view) {
+            view.classList.remove(
+              "active"
+            );
+          }
+        );
 
       const view =
-        document.getElementById(viewId);
+        document.getElementById(
+          viewId
+        );
 
       if (view) {
-        view.classList.add("active");
+        view.classList.add(
+          "active"
+        );
       }
 
       window.scrollTo({
@@ -610,42 +1313,130 @@
     }
 
     function getPatientById(patientId) {
-      return patientMap[String(patientId)] || null;
+
+      return (
+        patientMap[
+          String(patientId)
+        ] ||
+        null
+      );
     }
 
-    function getFollowupStatus(followupDate) {
-      const today = getTodayString();
+    function getFollowupStatus(
+      followupDate
+    ) {
 
-      if (followupDate === today) return "today";
-      if (followupDate > today) return "upcoming";
+      const today =
+        getTodayString();
+
+      if (
+        followupDate ===
+        today
+      ) {
+        return "today";
+      }
+
+      if (
+        followupDate >
+        today
+      ) {
+        return "upcoming";
+      }
 
       return "overdue";
     }
 
     function getStatusLabel(status) {
-      if (status === "today") return "Today";
-      if (status === "upcoming") return "Upcoming";
+
+      if (
+        status ===
+        "today"
+      ) {
+        return "Today";
+      }
+
+      if (
+        status ===
+        "upcoming"
+      ) {
+        return "Upcoming";
+      }
 
       return "Overdue";
     }
 
     function getStatusBadgeClass(status) {
-      if (status === "today") return "today-badge";
-      if (status === "upcoming") return "upcoming-badge";
+
+      if (
+        status ===
+        "today"
+      ) {
+        return "today-badge";
+      }
+
+      if (
+        status ===
+        "upcoming"
+      ) {
+        return "upcoming-badge";
+      }
 
       return "overdue-badge";
     }
 
+    function getDateStatusPillClass(status) {
+
+      if (
+        status ===
+        "today"
+      ) {
+        return "date-status-today";
+      }
+
+      if (
+        status ===
+        "upcoming"
+      ) {
+        return "date-status-upcoming";
+      }
+
+      return "date-status-overdue";
+    }
+
+    function getStatusIcon(status) {
+
+      if (
+        status ===
+        "today"
+      ) {
+        return "🔔";
+      }
+
+      if (
+        status ===
+        "upcoming"
+      ) {
+        return "📅";
+      }
+
+      return "⚠️";
+    }
+
     async function checkDoctorLogin() {
+
       try {
+
         const {
-          data: { session }
+          data: {
+            session
+          }
         } =
           await supabaseClient
             .auth
             .getSession();
 
         if (!session) {
+
           window.location.href =
             "doctor-login.html";
 
@@ -656,6 +1447,7 @@
       }
 
       catch (error) {
+
         console.error(
           "Doctor login check error:",
           error
@@ -669,13 +1461,16 @@
     }
 
     async function logoutDoctor() {
+
       try {
+
         await supabaseClient
           .auth
           .signOut();
       }
 
       catch (error) {
+
         console.error(
           "Logout error:",
           error
@@ -690,7 +1485,9 @@
 
       const consultationResult =
         await supabaseClient
-          .from("consultations")
+          .from(
+            "consultations"
+          )
           .select(
             "id,patient_id,created_at,follow_up_date,diagnosis,chief_complaints"
           )
@@ -701,35 +1498,48 @@
             }
           );
 
-      if (consultationResult.error) {
+      if (
+        consultationResult.error
+      ) {
         throw consultationResult.error;
       }
 
       allConsultations =
-        consultationResult.data || [];
+        consultationResult.data ||
+        [];
 
       const patientIds =
         Array.from(
           new Set(
             allConsultations
-              .map(function(item) {
-                return item.patient_id;
-              })
-              .filter(function(value) {
-                return value !== null &&
-                       value !== undefined;
-              })
+              .map(
+                function(item) {
+                  return item.patient_id;
+                }
+              )
+              .filter(
+                function(value) {
+                  return (
+                    value !== null &&
+                    value !== undefined
+                  );
+                }
+              )
           )
         );
 
       allPatients = [];
       patientMap = {};
 
-      if (patientIds.length) {
+      if (
+        patientIds.length
+      ) {
 
         const patientResult =
           await supabaseClient
-            .from("patients")
+            .from(
+              "patients"
+            )
             .select(
               "id,patient_name,patient_phone,date_of_birth,gender"
             )
@@ -738,16 +1548,22 @@
               patientIds
             );
 
-        if (patientResult.error) {
+        if (
+          patientResult.error
+        ) {
           throw patientResult.error;
         }
 
         allPatients =
-          patientResult.data || [];
+          patientResult.data ||
+          [];
 
         allPatients.forEach(
           function(patient) {
-            patientMap[String(patient.id)] =
+
+            patientMap[
+              String(patient.id)
+            ] =
               patient;
           }
         );
@@ -762,13 +1578,24 @@
       /*
         One consultation with follow_up_date = one planned review.
 
-        COMPLETION RULE:
-        A follow-up is completed only when the SAME patient has
-        a genuinely later consultation whose consultation DATE
-        is exactly the scheduled follow-up date.
+        FINAL COMPLETION RULE:
 
-        An earlier visit does not complete it.
-        A visit on a later date does not automatically complete it.
+        A follow-up is considered completed when the SAME patient
+        has ANY genuinely later consultation after the consultation
+        that created the follow-up.
+
+        The later consultation may happen:
+        - before the advised follow-up date,
+        - exactly on the advised follow-up date, or
+        - after the advised follow-up date.
+
+        The source consultation itself can never complete
+        its own follow-up because nextTime must be greater
+        than sourceTime.
+
+        If the patient never has a later consultation,
+        the follow-up remains active and becomes overdue
+        after its advised date passes.
       */
 
       const consultationsByPatient = {};
@@ -788,12 +1615,21 @@
               consultation.patient_id
             );
 
-          if (!consultationsByPatient[key]) {
-            consultationsByPatient[key] = [];
+          if (
+            !consultationsByPatient[
+              key
+            ]
+          ) {
+            consultationsByPatient[
+              key
+            ] = [];
           }
 
-          consultationsByPatient[key]
-            .push(consultation);
+          consultationsByPatient[
+            key
+          ].push(
+            consultation
+          );
         }
       );
 
@@ -812,9 +1648,14 @@
             .slice()
             .sort(
               function(a,b) {
+
                 return (
-                  new Date(a.created_at) -
-                  new Date(b.created_at)
+                  new Date(
+                    a.created_at
+                  ) -
+                  new Date(
+                    b.created_at
+                  )
                 );
               }
             );
@@ -823,83 +1664,103 @@
             .forEach(
               function(sourceConsultation) {
 
-                if (!sourceConsultation.follow_up_date) {
+                if (
+                  !sourceConsultation
+                    .follow_up_date
+                ) {
                   return;
                 }
 
                 const dueDate =
                   String(
-                    sourceConsultation.follow_up_date
-                  ).slice(0,10);
+                    sourceConsultation
+                      .follow_up_date
+                  )
+                  .slice(
+                    0,
+                    10
+                  );
 
                 const sourceTime =
                   new Date(
-                    sourceConsultation.created_at
-                  ).getTime();
+                    sourceConsultation
+                      .created_at
+                  )
+                  .getTime();
 
                 const completed =
                   patientConsultations
                     .some(
-                      function(nextConsultation) {
+                      function(
+                        nextConsultation
+                      ) {
 
                         const nextTime =
                           new Date(
-                            nextConsultation.created_at
-                          ).getTime();
+                            nextConsultation
+                              .created_at
+                          )
+                          .getTime();
 
                         if (
-                          !Number.isFinite(sourceTime) ||
-                          !Number.isFinite(nextTime)
+                          !Number.isFinite(
+                            sourceTime
+                          ) ||
+                          !Number.isFinite(
+                            nextTime
+                          )
                         ) {
                           return false;
                         }
 
                         /*
-                          Must be a later consultation.
-                          This prevents the consultation that created
-                          the follow-up from completing itself.
+                          Any genuinely later consultation
+                          completes the earlier planned follow-up.
                         */
-                        if (nextTime <= sourceTime) {
-                          return false;
-                        }
-
-                        const nextDate =
-                          consultationDateString(
-                            nextConsultation.created_at
-                          );
-
                         return (
-                          nextDate ===
-                          dueDate
+                          nextTime >
+                          sourceTime
                         );
                       }
                     );
 
-                if (completed) {
+                if (
+                  completed
+                ) {
                   return;
                 }
 
                 followups.push({
+
                   patient_id:
-                    sourceConsultation.patient_id,
+                    sourceConsultation
+                      .patient_id,
 
                   source_consultation_id:
-                    sourceConsultation.id,
+                    sourceConsultation
+                      .id,
 
                   source_created_at:
-                    sourceConsultation.created_at,
+                    sourceConsultation
+                      .created_at,
 
                   follow_up_date:
                     dueDate,
 
                   diagnosis:
-                    sourceConsultation.diagnosis || "",
+                    sourceConsultation
+                      .diagnosis ||
+                    "",
 
                   chief_complaints:
-                    sourceConsultation.chief_complaints || "",
+                    sourceConsultation
+                      .chief_complaints ||
+                    "",
 
                   status:
-                    getFollowupStatus(dueDate)
+                    getFollowupStatus(
+                      dueDate
+                    )
                 });
               }
             );
@@ -909,13 +1770,19 @@
       activeFollowups =
         followups.sort(
           function(a,b) {
+
             if (
               a.follow_up_date ===
               b.follow_up_date
             ) {
+
               return (
-                new Date(a.source_created_at) -
-                new Date(b.source_created_at)
+                new Date(
+                  a.source_created_at
+                ) -
+                new Date(
+                  b.source_created_at
+                )
               );
             }
 
@@ -929,105 +1796,245 @@
         );
     }
 
+    function getUpcomingWeekItems() {
+
+      const today =
+        getTodayString();
+
+      const lastUpcomingDate =
+        addDaysToDateString(
+          today,
+          7
+        );
+
+      return activeFollowups
+        .filter(
+          function(item) {
+
+            return (
+              item.status ===
+                "upcoming" &&
+              item.follow_up_date >
+                today &&
+              item.follow_up_date <=
+                lastUpcomingDate
+            );
+          }
+        )
+        .sort(
+          function(a,b) {
+
+            return (
+              a.follow_up_date <
+              b.follow_up_date
+                ? -1
+                : 1
+            );
+          }
+        );
+    }
+
+    function getOverdueWeekItems() {
+
+      const today =
+        getTodayString();
+
+      const firstOverdueDate =
+        addDaysToDateString(
+          today,
+          -7
+        );
+
+      return activeFollowups
+        .filter(
+          function(item) {
+
+            return (
+              item.status ===
+                "overdue" &&
+              item.follow_up_date >=
+                firstOverdueDate &&
+              item.follow_up_date <
+                today
+            );
+          }
+        )
+        .sort(
+          function(a,b) {
+
+            return (
+              a.follow_up_date <
+              b.follow_up_date
+                ? 1
+                : -1
+            );
+          }
+        );
+    }
+
     function updateSummaryCounts() {
 
       const todayCount =
-        activeFollowups.filter(
-          function(item) {
-            return item.status === "today";
-          }
-        ).length;
+        activeFollowups
+          .filter(
+            function(item) {
+
+              return (
+                item.status ===
+                "today"
+              );
+            }
+          )
+          .length;
 
       const upcomingCount =
-        activeFollowups.filter(
-          function(item) {
-            return item.status === "upcoming";
-          }
-        ).length;
+        getUpcomingWeekItems()
+          .length;
 
       const overdueCount =
-        activeFollowups.filter(
-          function(item) {
-            return item.status === "overdue";
-          }
-        ).length;
+        getOverdueWeekItems()
+          .length;
 
       document
-        .getElementById("todayCount")
+        .getElementById(
+          "todayCount"
+        )
         .textContent =
-          formatPatientCount(todayCount);
+          formatPatientCount(
+            todayCount
+          );
 
       document
-        .getElementById("upcomingCount")
+        .getElementById(
+          "upcomingCount"
+        )
         .textContent =
-          formatPatientCount(upcomingCount);
+          formatPatientCount(
+            upcomingCount
+          );
 
       document
-        .getElementById("overdueCount")
+        .getElementById(
+          "overdueCount"
+        )
         .textContent =
-          formatPatientCount(overdueCount);
+          formatPatientCount(
+            overdueCount
+          );
     }
 
-    function buildFollowupURL(view,value) {
+    function buildFollowupURL(
+      view,
+      options
+    ) {
 
-      if (!view || view === "main") {
+      const safeView =
+        view ||
+        "main";
+
+      const values =
+        options ||
+        {};
+
+      if (
+        safeView ===
+        "main"
+      ) {
         return "doctor-followups.html";
       }
 
-      if (view === "date") {
-        return (
-          "doctor-followups.html" +
-          "?view=date" +
-          "&date=" +
-          encodeURIComponent(value || "")
+      const params =
+        new URLSearchParams();
+
+      params.set(
+        "view",
+        safeView
+      );
+
+      if (
+        values.date
+      ) {
+        params.set(
+          "date",
+          values.date
         );
       }
 
-      if (view === "patient") {
-        return (
-          "doctor-followups.html" +
-          "?view=patient" +
-          "&search=" +
-          encodeURIComponent(value || "")
+      if (
+        values.from
+      ) {
+        params.set(
+          "from",
+          values.from
+        );
+      }
+
+      if (
+        values.to
+      ) {
+        params.set(
+          "to",
+          values.to
+        );
+      }
+
+      if (
+        values.search
+      ) {
+        params.set(
+          "search",
+          values.search
         );
       }
 
       return (
-        "doctor-followups.html" +
-        "?view=" +
-        encodeURIComponent(view)
+        "doctor-followups.html?" +
+        params.toString()
       );
     }
 
     function setFollowupURL(
       view,
-      value,
+      options,
       replace
     ) {
 
       const url =
         buildFollowupURL(
           view,
-          value
+          options
         );
 
       const state = {
-        view: view || "main",
-        value: value || ""
+        view:
+          view ||
+          "main",
+
+        options:
+          options ||
+          {}
       };
 
-      if (replace) {
-        window.history.replaceState(
-          state,
-          "",
-          url
-        );
-      } else {
-        window.history.pushState(
-          state,
-          "",
-          url
-        );
+      if (
+        replace
+      ) {
+
+        window.history
+          .replaceState(
+            state,
+            "",
+            url
+          );
+      }
+
+      else {
+
+        window.history
+          .pushState(
+            state,
+            "",
+            url
+          );
       }
     }
 
@@ -1039,67 +2046,239 @@
         );
 
       const view =
-        params.get("view") ||
+        params.get(
+          "view"
+        ) ||
+        currentView ||
         "main";
 
-      if (view === "date") {
-        return buildFollowupURL(
-          "date",
-          params.get("date") ||
-          currentDateSearch
-        );
-      }
+      if (
+        view ===
+        "patient"
+      ) {
 
-      if (view === "patient") {
         return buildFollowupURL(
           "patient",
-          params.get("search") ||
-          currentPatientSearch
+          {
+            search:
+              params.get(
+                "search"
+              ) ||
+              currentPatientSearch
+          }
         );
       }
 
       if (
-        view === "today" ||
-        view === "upcoming" ||
-        view === "overdue"
+        view ===
+        "range"
       ) {
-        return buildFollowupURL(view);
+
+        return buildFollowupURL(
+          "range",
+          {
+            from:
+              params.get(
+                "from"
+              ) ||
+              currentFromDate,
+
+            to:
+              params.get(
+                "to"
+              ) ||
+              currentToDate,
+
+            date:
+              params.get(
+                "date"
+              ) ||
+              selectedFollowupDate
+          }
+        );
       }
 
-      return buildFollowupURL("main");
+      if (
+        view ===
+          "today" ||
+        view ===
+          "upcoming" ||
+        view ===
+          "overdue"
+      ) {
+
+        return buildFollowupURL(
+          view,
+          {
+            date:
+              params.get(
+                "date"
+              ) ||
+              selectedFollowupDate
+          }
+        );
+      }
+
+      return buildFollowupURL(
+        "main"
+      );
     }
 
-    function renderFollowupList(
-      items,
+    function setListHeader(
       title,
-      subtitle
+      subtitle,
+      count
     ) {
 
-      showView("listView");
+      showView(
+        "listView"
+      );
 
       document
-        .getElementById("listViewTitle")
+        .getElementById(
+          "listViewTitle"
+        )
         .textContent =
           title;
 
       document
-        .getElementById("listViewSubtitle")
+        .getElementById(
+          "listViewSubtitle"
+        )
         .textContent =
-          subtitle || "";
+          subtitle ||
+          "";
 
       document
-        .getElementById("listViewCount")
+        .getElementById(
+          "listViewCount"
+        )
         .textContent =
           formatPatientCount(
-            items.length
+            count
           );
+
+      const statusSummaryRow =
+        document.getElementById(
+          "statusSummaryRow"
+        );
+
+      statusSummaryRow
+        .innerHTML =
+          "";
+
+      statusSummaryRow
+        .style
+        .display =
+          "none";
+    }
+
+    function renderStatusSummary(
+      items
+    ) {
+
+      const todayCount =
+        items.filter(
+          function(item) {
+
+            return (
+              item.status ===
+              "today"
+            );
+          }
+        ).length;
+
+      const upcomingCount =
+        items.filter(
+          function(item) {
+
+            return (
+              item.status ===
+              "upcoming"
+            );
+          }
+        ).length;
+
+      const overdueCount =
+        items.filter(
+          function(item) {
+
+            return (
+              item.status ===
+              "overdue"
+            );
+          }
+        ).length;
+
+      const parts = [];
+
+      if (
+        overdueCount
+      ) {
+
+        parts.push(`
+          <span class="status-summary-chip status-summary-overdue">
+            ⚠️ Overdue ${overdueCount}
+          </span>
+        `);
+      }
+
+      if (
+        todayCount
+      ) {
+
+        parts.push(`
+          <span class="status-summary-chip status-summary-today">
+            🔔 Today ${todayCount}
+          </span>
+        `);
+      }
+
+      if (
+        upcomingCount
+      ) {
+
+        parts.push(`
+          <span class="status-summary-chip status-summary-upcoming">
+            📅 Upcoming ${upcomingCount}
+          </span>
+        `);
+      }
+
+      const row =
+        document.getElementById(
+          "statusSummaryRow"
+        );
+
+      row.innerHTML =
+        parts.join(
+          ""
+        );
+
+      row.style.display =
+        parts.length
+          ? "flex"
+          : "none";
+    }
+
+    function renderFollowupCards(
+      items,
+      options
+    ) {
+
+      const values =
+        options ||
+        {};
 
       const container =
         document.getElementById(
           "followupList"
         );
 
-      if (!items.length) {
+      if (
+        !items.length
+      ) {
+
         container.innerHTML = `
           <div class="portal-message">
             No active follow-ups found.
@@ -1109,7 +2288,40 @@
         return;
       }
 
-      container.innerHTML =
+      const toolbarHTML =
+        values.showAllDatesButton
+          ? `
+            <div class="selected-date-toolbar">
+
+              <div class="selected-date-copy">
+                📅
+                ${escapeHTML(
+                  formatDate(
+                    values.selectedDate ||
+                    ""
+                  )
+                )}
+                ·
+                ${escapeHTML(
+                  formatPatientCount(
+                    items.length
+                  )
+                )}
+              </div>
+
+              <button
+                type="button"
+                class="portal-button light-button small-button"
+                onclick="backToFollowupDates()"
+              >
+                ← All Dates
+              </button>
+
+            </div>
+          `
+          : "";
+
+      const cardsHTML =
         items
           .map(
             function(item) {
@@ -1120,14 +2332,18 @@
                 );
 
               const patientName =
-                patient &&
-                patient.patient_name
+                (
+                  patient &&
+                  patient.patient_name
+                )
                   ? patient.patient_name
                   : "Patient";
 
               const patientPhone =
-                patient &&
-                patient.patient_phone
+                (
+                  patient &&
+                  patient.patient_phone
+                )
                   ? patient.patient_phone
                   : "-";
 
@@ -1135,6 +2351,12 @@
                 item.diagnosis ||
                 item.chief_complaints ||
                 "";
+
+              const dueLabel =
+                item.status ===
+                  "overdue"
+                  ? "Follow-up was due:"
+                  : "Follow-up:";
 
               return `
                 <div class="followup-card">
@@ -1145,38 +2367,70 @@
 
                       <div class="patient-name">
                         👤
-                        ${escapeHTML(patientName)}
+                        ${escapeHTML(
+                          patientName
+                        )}
                       </div>
 
                       <div class="patient-meta">
+
                         🆔 Patient ID:
-                        ${escapeHTML(item.patient_id)}
+                        ${escapeHTML(
+                          item.patient_id
+                        )}
+
                         <br>
+
                         📞
-                        ${escapeHTML(patientPhone)}
+                        ${escapeHTML(
+                          patientPhone
+                        )}
+
                       </div>
 
                     </div>
 
                     <span class="status-badge ${getStatusBadgeClass(item.status)}">
-                      ${escapeHTML(getStatusLabel(item.status))}
+
+                      ${escapeHTML(
+                        getStatusLabel(
+                          item.status
+                        )
+                      )}
+
                     </span>
 
                   </div>
 
                   <div class="due-date">
-                    📅 Follow-up:
+
+                    ${getStatusIcon(
+                      item.status
+                    )}
+                    ${escapeHTML(
+                      dueLabel
+                    )}
+
                     <strong>
-                      ${escapeHTML(formatDate(item.follow_up_date))}
+                      ${escapeHTML(
+                        formatDate(
+                          item.follow_up_date
+                        )
+                      )}
                     </strong>
+
                   </div>
 
                   ${
                     contextText
                       ? `
                         <div class="diagnosis-text">
+
                           🩺
-                          ${escapeHTML(contextText)}
+                          ${escapeHTML(
+                            contextText
+                          )}
+
                         </div>
                       `
                       : ""
@@ -1187,19 +2441,17 @@
                     <button
                       type="button"
                       class="portal-button primary-button small-button"
-                      onclick="viewFollowupPatient(${Number(item.patient_id)})">
-
+                      onclick="viewFollowupPatient(${Number(item.patient_id)})"
+                    >
                       👤 View Patient
-
                     </button>
 
                     <button
                       type="button"
                       class="portal-button light-button small-button"
-                      onclick="viewFollowupHistory(${Number(item.patient_id)})">
-
+                      onclick="viewFollowupHistory(${Number(item.patient_id)})"
+                    >
                       📋 History
-
                     </button>
 
                   </div>
@@ -1208,133 +2460,817 @@
               `;
             }
           )
-          .join("");
+          .join(
+            ""
+          );
+
+      container.innerHTML =
+        toolbarHTML +
+        cardsHTML;
+    }
+
+    function groupFollowupsByDate(
+      items
+    ) {
+
+      const grouped = {};
+
+      items.forEach(
+        function(item) {
+
+          if (
+            !grouped[
+              item.follow_up_date
+            ]
+          ) {
+
+            grouped[
+              item.follow_up_date
+            ] = [];
+          }
+
+          grouped[
+            item.follow_up_date
+          ].push(
+            item
+          );
+        }
+      );
+
+      return grouped;
+    }
+
+    function renderDateList(
+      items,
+      sortDirection
+    ) {
+
+      const container =
+        document.getElementById(
+          "followupList"
+        );
+
+      if (
+        !items.length
+      ) {
+
+        container.innerHTML = `
+          <div class="portal-message">
+            No active follow-ups found.
+          </div>
+        `;
+
+        return;
+      }
+
+      const grouped =
+        groupFollowupsByDate(
+          items
+        );
+
+      const dates =
+        Object.keys(
+          grouped
+        )
+        .sort(
+          function(a,b) {
+
+            if (
+              sortDirection ===
+              "desc"
+            ) {
+
+              return (
+                a <
+                b
+                  ? 1
+                  : -1
+              );
+            }
+
+            return (
+              a <
+              b
+                ? -1
+                : 1
+            );
+          }
+        );
+
+      container.innerHTML = `
+        <div class="date-list">
+
+          ${
+            dates
+              .map(
+                function(date) {
+
+                  const dateItems =
+                    grouped[
+                      date
+                    ];
+
+                  const statusCounts = {
+                    overdue: 0,
+                    today: 0,
+                    upcoming: 0
+                  };
+
+                  dateItems
+                    .forEach(
+                      function(item) {
+
+                        if (
+                          statusCounts[
+                            item.status
+                          ] !== undefined
+                        ) {
+
+                          statusCounts[
+                            item.status
+                          ] += 1;
+                        }
+                      }
+                    );
+
+                  const pills = [];
+
+                  if (
+                    statusCounts
+                      .overdue
+                  ) {
+
+                    pills.push(`
+                      <span class="date-status-pill date-status-overdue">
+                        ⚠️ Overdue ${statusCounts.overdue}
+                      </span>
+                    `);
+                  }
+
+                  if (
+                    statusCounts
+                      .today
+                  ) {
+
+                    pills.push(`
+                      <span class="date-status-pill date-status-today">
+                        🔔 Today ${statusCounts.today}
+                      </span>
+                    `);
+                  }
+
+                  if (
+                    statusCounts
+                      .upcoming
+                  ) {
+
+                    pills.push(`
+                      <span class="date-status-pill date-status-upcoming">
+                        📅 Upcoming ${statusCounts.upcoming}
+                      </span>
+                    `);
+                  }
+
+                  const dominantStatus =
+                    dateItems[0]
+                      .status;
+
+                  return `
+                    <button
+                      type="button"
+                      class="date-row"
+                      onclick="openFollowupDate('${escapeHTML(date)}')"
+                    >
+
+                      <span class="date-icon">
+                        ${getStatusIcon(
+                          dominantStatus
+                        )}
+                      </span>
+
+                      <span class="date-main">
+
+                        <span class="date-title">
+                          ${escapeHTML(
+                            formatDate(
+                              date
+                            )
+                          )}
+                        </span>
+
+                        <span class="date-weekday">
+                          ${escapeHTML(
+                            formatWeekday(
+                              date
+                            )
+                          )}
+                        </span>
+
+                        <span class="date-meta">
+
+                          <span class="date-count">
+                            ${escapeHTML(
+                              formatPatientCount(
+                                dateItems.length
+                              )
+                            )}
+                          </span>
+
+                          ${pills.join("")}
+
+                        </span>
+
+                      </span>
+
+                      <span class="date-arrow">
+                        ›
+                      </span>
+
+                    </button>
+                  `;
+                }
+              )
+              .join(
+                ""
+              )
+          }
+
+        </div>
+      `;
     }
 
     function openFollowupView(
       viewType,
-      pushState = true
+      pushState = true,
+      forcedDate = ""
     ) {
 
-      if (pushState) {
-        setFollowupURL(viewType);
-      }
+      currentView =
+        viewType;
 
-      if (viewType === "today") {
+      selectedFollowupDate =
+        forcedDate ||
+        "";
 
-        const items =
-          activeFollowups.filter(
-            function(item) {
-              return item.status === "today";
-            }
-          );
+      if (
+        pushState
+      ) {
 
-        renderFollowupList(
-          items,
-          "🔔 Today's Follow-ups",
-          formatDate(getTodayString())
+        setFollowupURL(
+          viewType,
+          {
+            date:
+              selectedFollowupDate
+          }
         );
-
-        return;
       }
 
-      if (viewType === "upcoming") {
+      if (
+        viewType ===
+        "today"
+      ) {
 
-        const items =
-          activeFollowups.filter(
-            function(item) {
-              return item.status === "upcoming";
-            }
-          );
-
-        renderFollowupList(
-          items,
-          "📅 Upcoming Follow-ups",
-          "Future patient review dates"
-        );
-
-        return;
-      }
-
-      if (viewType === "overdue") {
+        selectedFollowupDate =
+          "";
 
         const items =
           activeFollowups
             .filter(
               function(item) {
-                return item.status === "overdue";
-              }
-            )
-            .sort(
-              function(a,b) {
+
                 return (
-                  a.follow_up_date <
-                  b.follow_up_date
-                    ? 1
-                    : -1
+                  item.status ===
+                  "today"
                 );
               }
             );
 
-        renderFollowupList(
-          items,
-          "⚠️ Overdue Follow-ups",
-          "Review dates that have passed without a visit on the scheduled date"
-        );
-      }
-    }
-
-    function searchByDate(
-      forcedDate,
-      pushState = true
-    ) {
-
-      const input =
-        document.getElementById(
-          "followupDateSearch"
+        setListHeader(
+          "🔔 Today's Follow-ups",
+          formatDate(
+            getTodayString()
+          ),
+          items.length
         );
 
-      const selectedDate =
-        forcedDate ||
-        input.value;
-
-      if (!selectedDate) {
-        alert(
-          "Please select a follow-up date."
+        renderFollowupCards(
+          items
         );
 
         return;
       }
 
-      currentDateSearch =
-        selectedDate;
+      if (
+        viewType ===
+        "upcoming"
+      ) {
 
-      input.value =
-        selectedDate;
+        const items =
+          getUpcomingWeekItems();
 
-      if (pushState) {
+        setListHeader(
+          "📅 Upcoming Follow-ups",
+          "Active follow-ups scheduled during the next 7 days.",
+          items.length
+        );
+
+        if (
+          selectedFollowupDate
+        ) {
+
+          const selectedItems =
+            items
+              .filter(
+                function(item) {
+
+                  return (
+                    item.follow_up_date ===
+                    selectedFollowupDate
+                  );
+                }
+              );
+
+          if (
+            !selectedItems.length
+          ) {
+
+            selectedFollowupDate =
+              "";
+
+            setFollowupURL(
+              "upcoming",
+              {},
+              true
+            );
+
+            renderDateList(
+              items,
+              "asc"
+            );
+
+            return;
+          }
+
+          renderFollowupCards(
+            selectedItems,
+            {
+              showAllDatesButton: true,
+              selectedDate:
+                selectedFollowupDate
+            }
+          );
+
+          return;
+        }
+
+        renderDateList(
+          items,
+          "asc"
+        );
+
+        return;
+      }
+
+      if (
+        viewType ===
+        "overdue"
+      ) {
+
+        const items =
+          getOverdueWeekItems();
+
+        setListHeader(
+          "⚠️ Overdue Follow-ups",
+          "Active overdue follow-ups from the previous 7 days.",
+          items.length
+        );
+
+        if (
+          selectedFollowupDate
+        ) {
+
+          const selectedItems =
+            items
+              .filter(
+                function(item) {
+
+                  return (
+                    item.follow_up_date ===
+                    selectedFollowupDate
+                  );
+                }
+              );
+
+          if (
+            !selectedItems.length
+          ) {
+
+            selectedFollowupDate =
+              "";
+
+            setFollowupURL(
+              "overdue",
+              {},
+              true
+            );
+
+            renderDateList(
+              items,
+              "desc"
+            );
+
+            return;
+          }
+
+          renderFollowupCards(
+            selectedItems,
+            {
+              showAllDatesButton: true,
+              selectedDate:
+                selectedFollowupDate
+            }
+          );
+
+          return;
+        }
+
+        renderDateList(
+          items,
+          "desc"
+        );
+      }
+    }
+
+    function openFollowupDate(
+      date
+    ) {
+
+      selectedFollowupDate =
+        date;
+
+      if (
+        currentView ===
+        "range"
+      ) {
+
+        searchFollowupRange(
+          currentFromDate,
+          currentToDate,
+          true,
+          date
+        );
+
+        return;
+      }
+
+      if (
+        currentView ===
+          "upcoming" ||
+        currentView ===
+          "overdue"
+      ) {
+
+        openFollowupView(
+          currentView,
+          true,
+          date
+        );
+      }
+    }
+
+    function backToFollowupDates() {
+
+      selectedFollowupDate =
+        "";
+
+      if (
+        currentView ===
+        "range"
+      ) {
+
+        searchFollowupRange(
+          currentFromDate,
+          currentToDate,
+          true,
+          ""
+        );
+
+        return;
+      }
+
+      if (
+        currentView ===
+          "upcoming" ||
+        currentView ===
+          "overdue"
+      ) {
+
+        openFollowupView(
+          currentView,
+          true,
+          ""
+        );
+      }
+    }
+
+    function getRangeSearchMode(
+      fromDate,
+      toDate
+    ) {
+
+      const today =
+        getTodayString();
+
+      if (
+        fromDate >
+        today
+      ) {
+        return "future";
+      }
+
+      if (
+        toDate <
+        today
+      ) {
+        return "past";
+      }
+
+      return "mixed";
+    }
+
+    function getRangeSearchSubtitle(
+      fromDate,
+      toDate
+    ) {
+
+      const mode =
+        getRangeSearchMode(
+          fromDate,
+          toDate
+        );
+
+      const rangeText =
+        formatDate(
+          fromDate
+        ) +
+        " – " +
+        formatDate(
+          toDate
+        );
+
+      if (
+        mode ===
+        "future"
+      ) {
+
+        return (
+          rangeText +
+          " · Upcoming follow-ups only"
+        );
+      }
+
+      if (
+        mode ===
+        "past"
+      ) {
+
+        return (
+          rangeText +
+          " · Active overdue follow-ups only"
+        );
+      }
+
+      return (
+        rangeText +
+        " · Overdue, today and upcoming active follow-ups"
+      );
+    }
+
+    function searchFollowupRange(
+      forcedFrom,
+      forcedTo,
+      pushState = true,
+      forcedDate = ""
+    ) {
+
+      const fromInput =
+        document.getElementById(
+          "followupFromDate"
+        );
+
+      const toInput =
+        document.getElementById(
+          "followupToDate"
+        );
+
+      const fromDate =
+        String(
+          forcedFrom ||
+          fromInput.value ||
+          ""
+        )
+        .trim();
+
+      const toDate =
+        String(
+          forcedTo ||
+          toInput.value ||
+          ""
+        )
+        .trim();
+
+      if (
+        !fromDate ||
+        !toDate
+      ) {
+
+        alert(
+          "Please select both From Date and To Date."
+        );
+
+        return;
+      }
+
+      if (
+        fromDate >
+        toDate
+      ) {
+
+        alert(
+          "From Date cannot be later than To Date."
+        );
+
+        return;
+      }
+
+      currentView =
+        "range";
+
+      currentFromDate =
+        fromDate;
+
+      currentToDate =
+        toDate;
+
+      selectedFollowupDate =
+        forcedDate ||
+        "";
+
+      fromInput.value =
+        fromDate;
+
+      toInput.value =
+        toDate;
+
+      if (
+        pushState
+      ) {
+
         setFollowupURL(
-          "date",
-          selectedDate
+          "range",
+          {
+            from:
+              fromDate,
+
+            to:
+              toDate,
+
+            date:
+              selectedFollowupDate
+          }
         );
       }
 
       const items =
-        activeFollowups.filter(
-          function(item) {
-            return (
-              item.follow_up_date ===
-              selectedDate
+        activeFollowups
+          .filter(
+            function(item) {
+
+              return (
+                item.follow_up_date >=
+                  fromDate &&
+                item.follow_up_date <=
+                  toDate
+              );
+            }
+          );
+
+      setListHeader(
+        "🔎 Follow-up Search Results",
+        getRangeSearchSubtitle(
+          fromDate,
+          toDate
+        ),
+        items.length
+      );
+
+      renderStatusSummary(
+        items
+      );
+
+      if (
+        selectedFollowupDate
+      ) {
+
+        const selectedItems =
+          items
+            .filter(
+              function(item) {
+
+                return (
+                  item.follow_up_date ===
+                  selectedFollowupDate
+                );
+              }
             );
+
+        if (
+          !selectedItems.length
+        ) {
+
+          selectedFollowupDate =
+            "";
+
+          setFollowupURL(
+            "range",
+            {
+              from:
+                fromDate,
+
+              to:
+                toDate
+            },
+            true
+          );
+
+          renderDateList(
+            items,
+            getRangeSearchMode(
+              fromDate,
+              toDate
+            ) === "past"
+              ? "desc"
+              : "asc"
+          );
+
+          return;
+        }
+
+        renderFollowupCards(
+          selectedItems,
+          {
+            showAllDatesButton: true,
+            selectedDate:
+              selectedFollowupDate
           }
         );
 
-      renderFollowupList(
+        return;
+      }
+
+      renderDateList(
         items,
-        "📅 Follow-ups — " +
-          formatDate(selectedDate),
-        "Active follow-ups scheduled for this date"
+        getRangeSearchMode(
+          fromDate,
+          toDate
+        ) === "past"
+          ? "desc"
+          : "asc"
       );
+    }
+
+    function clearFollowupRangeSearch() {
+
+      document
+        .getElementById(
+          "followupFromDate"
+        )
+        .value =
+          "";
+
+      document
+        .getElementById(
+          "followupToDate"
+        )
+        .value =
+          "";
+
+      currentFromDate =
+        "";
+
+      currentToDate =
+        "";
+
+      selectedFollowupDate =
+        "";
+
+      if (
+        currentView ===
+        "range"
+      ) {
+
+        goToFollowupMain();
+      }
     }
 
     function searchPatientFollowups(
@@ -1352,9 +3288,13 @@
           forcedSearch !== undefined
             ? forcedSearch
             : input.value
-        ).trim();
+        )
+        .trim();
 
-      if (!searchValue) {
+      if (
+        !searchValue
+      ) {
+
         alert(
           "Please enter Patient ID, name or phone number."
         );
@@ -1362,21 +3302,34 @@
         return;
       }
 
+      currentView =
+        "patient";
+
+      selectedFollowupDate =
+        "";
+
       currentPatientSearch =
         searchValue;
 
       input.value =
         searchValue;
 
-      if (pushState) {
+      if (
+        pushState
+      ) {
+
         setFollowupURL(
           "patient",
-          searchValue
+          {
+            search:
+              searchValue
+          }
         );
       }
 
       const normalized =
-        searchValue.toLowerCase();
+        searchValue
+          .toLowerCase();
 
       const numericSearch =
         /^[0-9]+$/.test(
@@ -1384,52 +3337,95 @@
         );
 
       const items =
-        activeFollowups.filter(
-          function(item) {
+        activeFollowups
+          .filter(
+            function(item) {
 
-            const patient =
-              getPatientById(
-                item.patient_id
+              const patient =
+                getPatientById(
+                  item.patient_id
+                );
+
+              if (
+                !patient
+              ) {
+                return false;
+              }
+
+              const idMatch =
+                numericSearch &&
+                String(
+                  patient.id
+                ) ===
+                searchValue;
+
+              const nameMatch =
+                String(
+                  patient.patient_name ||
+                  ""
+                )
+                .toLowerCase()
+                .includes(
+                  normalized
+                );
+
+              const phoneMatch =
+                String(
+                  patient.patient_phone ||
+                  ""
+                )
+                .includes(
+                  searchValue
+                );
+
+              return (
+                idMatch ||
+                nameMatch ||
+                phoneMatch
               );
-
-            if (!patient) {
-              return false;
             }
+          )
+          .sort(
+            function(a,b) {
 
-            const idMatch =
-              numericSearch &&
-              String(patient.id) ===
-              searchValue;
+              if (
+                a.follow_up_date ===
+                b.follow_up_date
+              ) {
 
-            const nameMatch =
-              String(
-                patient.patient_name ||
-                ""
-              )
-              .toLowerCase()
-              .includes(normalized);
+                return (
+                  new Date(
+                    a.source_created_at
+                  ) -
+                  new Date(
+                    b.source_created_at
+                  )
+                );
+              }
 
-            const phoneMatch =
-              String(
-                patient.patient_phone ||
-                ""
-              )
-              .includes(searchValue);
+              return (
+                a.follow_up_date <
+                b.follow_up_date
+                  ? -1
+                  : 1
+              );
+            }
+          );
 
-            return (
-              idMatch ||
-              nameMatch ||
-              phoneMatch
-            );
-          }
-        );
-
-      renderFollowupList(
-        items,
+      setListHeader(
         "🔎 Patient Follow-ups",
         'Search: "' +
           searchValue +
-          '"'
+          '"',
+        items.length
+      );
+
+      renderStatusSummary(
+        items
+      );
+
+      renderFollowupCards(
+        items
       );
     }
 
@@ -1444,9 +3440,13 @@
         "doctor-patients.html" +
         "?view=details" +
         "&patient_id=" +
-        encodeURIComponent(patientId) +
+        encodeURIComponent(
+          patientId
+        ) +
         "&return_to=" +
-        encodeURIComponent(returnURL);
+        encodeURIComponent(
+          returnURL
+        );
     }
 
     function viewFollowupHistory(
@@ -1459,20 +3459,37 @@
       window.location.href =
         "doctor-patient-history.html" +
         "?patient_id=" +
-        encodeURIComponent(patientId) +
+        encodeURIComponent(
+          patientId
+        ) +
         "&return_to=" +
-        encodeURIComponent(returnURL);
+        encodeURIComponent(
+          returnURL
+        );
     }
 
     function goToFollowupMain(
       pushState = true
     ) {
 
-      if (pushState) {
-        setFollowupURL("main");
+      currentView =
+        "main";
+
+      selectedFollowupDate =
+        "";
+
+      if (
+        pushState
+      ) {
+
+        setFollowupURL(
+          "main"
+        );
       }
 
-      showView("mainView");
+      showView(
+        "mainView"
+      );
     }
 
     function restoreViewFromURL() {
@@ -1483,43 +3500,91 @@
         );
 
       const view =
-        params.get("view") ||
+        params.get(
+          "view"
+        ) ||
         "main";
 
       if (
-        view === "today" ||
-        view === "upcoming" ||
-        view === "overdue"
+        view ===
+        "today"
       ) {
+
         openFollowupView(
-          view,
+          "today",
           false
         );
 
         return;
       }
 
-      if (view === "date") {
+      if (
+        view ===
+          "upcoming" ||
+        view ===
+          "overdue"
+      ) {
 
-        const date =
-          params.get("date");
+        openFollowupView(
+          view,
+          false,
+          params.get(
+            "date"
+          ) ||
+          ""
+        );
 
-        if (date) {
-          searchByDate(
-            date,
-            false
+        return;
+      }
+
+      if (
+        view ===
+        "range"
+      ) {
+
+        const fromDate =
+          params.get(
+            "from"
+          );
+
+        const toDate =
+          params.get(
+            "to"
+          );
+
+        if (
+          fromDate &&
+          toDate
+        ) {
+
+          searchFollowupRange(
+            fromDate,
+            toDate,
+            false,
+            params.get(
+              "date"
+            ) ||
+            ""
           );
 
           return;
         }
       }
 
-      if (view === "patient") {
+      if (
+        view ===
+        "patient"
+      ) {
 
         const search =
-          params.get("search");
+          params.get(
+            "search"
+          );
 
-        if (search) {
+        if (
+          search
+        ) {
+
           searchPatientFollowups(
             search,
             false
@@ -1529,12 +3594,15 @@
         }
       }
 
-      goToFollowupMain(false);
+      goToFollowupMain(
+        false
+      );
     }
 
     window.addEventListener(
       "popstate",
       function() {
+
         restoreViewFromURL();
       }
     );
@@ -1546,23 +3614,102 @@
       .addEventListener(
         "keydown",
         function(event) {
-          if (event.key === "Enter") {
+
+          if (
+            event.key ===
+            "Enter"
+          ) {
+
             searchPatientFollowups();
           }
         }
       );
+
+    document
+      .getElementById(
+        "followupFromDate"
+      )
+      .addEventListener(
+        "keydown",
+        function(event) {
+
+          if (
+            event.key ===
+            "Enter"
+          ) {
+
+            searchFollowupRange();
+          }
+        }
+      );
+
+    document
+      .getElementById(
+        "followupToDate"
+      )
+      .addEventListener(
+        "keydown",
+        function(event) {
+
+          if (
+            event.key ===
+            "Enter"
+          ) {
+
+            searchFollowupRange();
+          }
+        }
+      );
+
+    function setDefaultRangeDates() {
+
+      const fromInput =
+        document.getElementById(
+          "followupFromDate"
+        );
+
+      const toInput =
+        document.getElementById(
+          "followupToDate"
+        );
+
+      if (
+        !fromInput.value
+      ) {
+
+        fromInput.value =
+          getTodayString();
+      }
+
+      if (
+        !toInput.value
+      ) {
+
+        toInput.value =
+          addDaysToDateString(
+            getTodayString(),
+            7
+          );
+      }
+    }
 
     async function initializeFollowups() {
 
       const loggedIn =
         await checkDoctorLogin();
 
-      if (!loggedIn) {
+      if (
+        !loggedIn
+      ) {
         return;
       }
 
       try {
+
+        setDefaultRangeDates();
+
         await loadFollowupData();
+
         restoreViewFromURL();
       }
 
@@ -1573,21 +3720,34 @@
           error
         );
 
-        showView("mainView");
+        showView(
+          "mainView"
+        );
 
         document
-          .getElementById("mainView")
+          .getElementById(
+            "mainView"
+          )
           .innerHTML = `
             <div class="portal-message error-message">
+
               Unable to load follow-up information.
+
               <br>
+
               Please refresh the page or try again.
+
             </div>
 
             <div class="main-actions">
-              <a href="doctor-dashboard.html" class="portal-button light-button">
+
+              <a
+                href="doctor-dashboard.html"
+                class="portal-button light-button"
+              >
                 ← Back to Dashboard
               </a>
+
             </div>
           `;
       }
@@ -1599,7 +3759,10 @@
             "pageLoading"
           );
 
-        if (loading) {
+        if (
+          loading
+        ) {
+
           loading.style.display =
             "none";
         }
@@ -1609,8 +3772,17 @@
     window.openFollowupView =
       openFollowupView;
 
-    window.searchByDate =
-      searchByDate;
+    window.openFollowupDate =
+      openFollowupDate;
+
+    window.backToFollowupDates =
+      backToFollowupDates;
+
+    window.searchFollowupRange =
+      searchFollowupRange;
+
+    window.clearFollowupRangeSearch =
+      clearFollowupRangeSearch;
 
     window.searchPatientFollowups =
       searchPatientFollowups;
@@ -1632,4 +3804,5 @@
   </script>
 
 </body>
+
 </html>
