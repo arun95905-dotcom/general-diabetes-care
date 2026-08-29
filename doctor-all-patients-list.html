@@ -36,7 +36,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font-family: inherit;
 }
 
@@ -159,6 +160,97 @@ input {
   color: #2563eb;
   font-size: 21px;
   font-weight: 900;
+}
+
+
+
+
+/* MONTH / YEAR FILTER */
+
+.filter-card {
+  margin-bottom: 14px;
+  padding: 16px;
+  background:
+    linear-gradient(
+      135deg,
+      #f8fbff,
+      #ffffff
+    );
+  border: 1px solid #dce8f7;
+  border-radius: 16px;
+}
+
+.filter-title {
+  margin: 0 0 4px;
+  color: #1e3a5f;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.filter-subtitle {
+  margin: 0 0 13px;
+  color: #697386;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.filter-select {
+  width: 100%;
+  min-height: 45px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 11px;
+  color: #172033;
+  font-size: 14px;
+  outline: none;
+}
+
+.filter-select:focus {
+  border-color: #2563eb;
+  box-shadow:
+    0 0 0 3px rgba(37,99,235,.08);
+}
+
+.filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.filter-status {
+  margin-top: 12px;
+  padding: 11px 12px;
+  background: #f8fafc;
+  border: 1px solid #e5eaf0;
+  border-radius: 11px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.filter-status strong {
+  color: #334155;
 }
 
 
@@ -301,6 +393,10 @@ input {
     padding: 14px;
   }
 
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+
   .list-header {
     display: none;
   }
@@ -360,7 +456,7 @@ GENERAL &amp; DIABETES CARE
 </h1>
 
 <p class="portal-subtitle">
-Complete clinic patient list
+Browse registered patients by month and year
 </p>
 
 </div>
@@ -381,6 +477,76 @@ Complete clinic patient list
 </div>
 
 
+<!-- MONTH / YEAR FILTER -->
+
+<div class="filter-card">
+
+<h2 class="filter-title">
+📅 Registered Patients
+</h2>
+
+<p class="filter-subtitle">
+Choose a year and month to view patients registered during that period.
+Future years and future months are not shown.
+</p>
+
+<div class="filter-grid">
+
+<div class="filter-group">
+
+<label for="patientYear">
+Select Year
+</label>
+
+<select
+  id="patientYear"
+  class="filter-select">
+</select>
+
+</div>
+
+
+<div class="filter-group">
+
+<label for="patientMonth">
+Select Month
+</label>
+
+<select
+  id="patientMonth"
+  class="filter-select">
+</select>
+
+</div>
+
+</div>
+
+
+<div class="filter-actions">
+
+<button
+  type="button"
+  id="viewPatientsButton"
+  class="portal-button primary-button">
+
+🔎 View Patients
+
+</button>
+
+</div>
+
+
+<div
+  id="filterStatus"
+  class="filter-status">
+
+Loading registration periods...
+
+</div>
+
+</div>
+
+
 <!-- LIST -->
 
 <div class="portal-card">
@@ -388,7 +554,9 @@ Complete clinic patient list
 
 <div class="patient-summary">
 
-<span class="patient-summary-label">
+<span
+  id="patientSummaryLabel"
+  class="patient-summary-label">
 Registered patients
 </span>
 
@@ -494,6 +662,20 @@ const supabaseClient =
 
 
 /* =========================================================
+   STATE
+   ========================================================= */
+
+let allPatients =
+  [];
+
+let selectedYear =
+  null;
+
+let selectedMonth =
+  null;
+
+
+/* =========================================================
    HELPERS
    ========================================================= */
 
@@ -545,53 +727,347 @@ function formatDate(value) {
 }
 
 
-/* =========================================================
-   AUTH
-   ========================================================= */
 
-async function checkDoctorLogin() {
+function getCurrentYearMonth() {
 
-  const {
-    data: {
-      session
-    }
-  } =
-    await supabaseClient
-      .auth
-      .getSession();
+  const now =
+    new Date();
+
+  return {
+    year:
+      now.getFullYear(),
+    month:
+      now.getMonth() + 1
+  };
+
+}
 
 
-  if (!session) {
+function getMonthName(monthNumber) {
 
-    window.location.href =
-      "doctor-login.html";
+  return new Date(
+    2000,
+    monthNumber - 1,
+    1
+  )
+    .toLocaleDateString(
+      "en-IN",
+      {
+        month:
+          "long"
+      }
+    );
 
-    return false;
+}
+
+
+function getPatientYearMonth(patient) {
+
+  if (
+    !patient ||
+    !patient.created_at
+  ) {
+    return null;
+  }
+
+
+  const date =
+    new Date(
+      patient.created_at
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return null;
+  }
+
+
+  return {
+    year:
+      date.getFullYear(),
+    month:
+      date.getMonth() + 1
+  };
+
+}
+
+
+function getEarliestPatientYear() {
+
+  const current =
+    getCurrentYearMonth();
+
+
+  const years =
+    allPatients
+      .map(
+        function(patient) {
+
+          const period =
+            getPatientYearMonth(
+              patient
+            );
+
+
+          return period
+            ? period.year
+            : null;
+
+        }
+      )
+      .filter(
+        function(year) {
+
+          return Number.isInteger(
+            year
+          );
+
+        }
+      );
+
+
+  if (
+    years.length === 0
+  ) {
+    return current.year;
+  }
+
+
+  return Math.min(
+    ...years
+  );
+
+}
+
+
+function populateYearOptions() {
+
+  const select =
+    document.getElementById(
+      "patientYear"
+    );
+
+
+  const current =
+    getCurrentYearMonth();
+
+
+  const earliestYear =
+    getEarliestPatientYear();
+
+
+  select.innerHTML =
+    "";
+
+
+  for (
+    let year =
+      current.year;
+    year >= earliestYear;
+    year--
+  ) {
+
+    const option =
+      document.createElement(
+        "option"
+      );
+
+
+    option.value =
+      String(year);
+
+
+    option.textContent =
+      String(year);
+
+
+    select.appendChild(
+      option
+    );
 
   }
 
-  return true;
+
+  if (
+    !selectedYear ||
+    selectedYear > current.year ||
+    selectedYear < earliestYear
+  ) {
+
+    selectedYear =
+      current.year;
+
+  }
+
+
+  select.value =
+    String(
+      selectedYear
+    );
 
 }
 
 
-async function logoutDoctor() {
+function populateMonthOptions() {
 
-  await supabaseClient
-    .auth
-    .signOut();
+  const select =
+    document.getElementById(
+      "patientMonth"
+    );
 
-  window.location.href =
-    "doctor-login.html";
+
+  const current =
+    getCurrentYearMonth();
+
+
+  const year =
+    Number(
+      document.getElementById(
+        "patientYear"
+      ).value
+    );
+
+
+  selectedYear =
+    year;
+
+
+  const lastMonth =
+    year === current.year
+      ? current.month
+      : 12;
+
+
+  select.innerHTML =
+    "";
+
+
+  for (
+    let month = 1;
+    month <= lastMonth;
+    month++
+  ) {
+
+    const count =
+      allPatients.filter(
+        function(patient) {
+
+          const period =
+            getPatientYearMonth(
+              patient
+            );
+
+
+          return (
+            period &&
+            period.year ===
+              year &&
+            period.month ===
+              month
+          );
+
+        }
+      ).length;
+
+
+    const option =
+      document.createElement(
+        "option"
+      );
+
+
+    option.value =
+      String(month);
+
+
+    option.textContent =
+      getMonthName(
+        month
+      ) +
+      " (" +
+      count +
+      ")";
+
+
+    select.appendChild(
+      option
+    );
+
+  }
+
+
+  if (
+    !selectedMonth ||
+    selectedMonth > lastMonth ||
+    selectedMonth < 1
+  ) {
+
+    selectedMonth =
+      year === current.year
+        ? current.month
+        : 12;
+
+  }
+
+
+  select.value =
+    String(
+      selectedMonth
+    );
 
 }
 
 
-/* =========================================================
-   LOAD ALL PATIENTS
-   ========================================================= */
+function getSelectedPatients() {
 
-async function loadPatients() {
+  return allPatients
+    .filter(
+      function(patient) {
+
+        const period =
+          getPatientYearMonth(
+            patient
+          );
+
+
+        return (
+          period &&
+          period.year ===
+            Number(
+              selectedYear
+            ) &&
+          period.month ===
+            Number(
+              selectedMonth
+            )
+        );
+
+      }
+    )
+    .sort(
+      function(a,b) {
+
+        return String(
+          b.created_at ||
+          ""
+        ).localeCompare(
+          String(
+            a.created_at ||
+            ""
+          )
+        );
+
+      }
+    );
+
+}
+
+
+function renderSelectedPatients() {
 
   const container =
     document.getElementById(
@@ -599,55 +1075,27 @@ async function loadPatients() {
     );
 
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("patients")
-      .select(
-        "id,patient_name,patient_phone,created_at"
+  const patients =
+    getSelectedPatients();
+
+
+  const monthName =
+    getMonthName(
+      Number(
+        selectedMonth
       )
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      );
-
-
-  if (error) {
-
-    console.error(
-      "Patient loading error:",
-      error
     );
 
 
-    container.innerHTML = `
-
-      <div class="portal-message">
-        Unable to load patients.
-      </div>
-
-    `;
-
-
-    document
-      .getElementById(
-        "patientCount"
-      )
-      .textContent =
-        "0";
-
-
-    return;
-
-  }
-
-
-  const patients =
-    data || [];
+  document
+    .getElementById(
+      "patientSummaryLabel"
+    )
+    .textContent =
+      "Registered in " +
+      monthName +
+      " " +
+      selectedYear;
 
 
   document
@@ -658,6 +1106,26 @@ async function loadPatients() {
       patients.length;
 
 
+  document
+    .getElementById(
+      "filterStatus"
+    )
+    .innerHTML =
+      "<strong>" +
+      escapeHTML(
+        monthName +
+        " " +
+        selectedYear
+      ) +
+      "</strong> · " +
+      patients.length +
+      (
+        patients.length === 1
+          ? " patient"
+          : " patients"
+      );
+
+
   if (
     patients.length === 0
   ) {
@@ -665,7 +1133,9 @@ async function loadPatients() {
     container.innerHTML = `
 
       <div class="portal-message">
-        No registered patients found.
+        No patients were registered in
+        ${escapeHTML(monthName)}
+        ${escapeHTML(selectedYear)}.
       </div>
 
     `;
@@ -769,6 +1239,235 @@ async function loadPatients() {
 }
 
 
+function applySelectedPeriod() {
+
+  selectedYear =
+    Number(
+      document.getElementById(
+        "patientYear"
+      ).value
+    );
+
+
+  selectedMonth =
+    Number(
+      document.getElementById(
+        "patientMonth"
+      ).value
+    );
+
+
+  renderSelectedPatients();
+
+
+  const url =
+    new URL(
+      window.location.href
+    );
+
+
+  url.searchParams.set(
+    "year",
+    selectedYear
+  );
+
+
+  url.searchParams.set(
+    "month",
+    selectedMonth
+  );
+
+
+  window.history.replaceState(
+    {},
+    "",
+    url.pathname +
+    url.search
+  );
+
+}
+
+
+function restorePeriodFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const year =
+    Number(
+      params.get(
+        "year"
+      )
+    );
+
+
+  const month =
+    Number(
+      params.get(
+        "month"
+      )
+    );
+
+
+  if (
+    Number.isInteger(
+      year
+    ) &&
+    year > 0
+  ) {
+
+    selectedYear =
+      year;
+
+  }
+
+
+  if (
+    Number.isInteger(
+      month
+    ) &&
+    month >= 1 &&
+    month <= 12
+  ) {
+
+    selectedMonth =
+      month;
+
+  }
+
+}
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+async function checkDoctorLogin() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!session) {
+
+    window.location.href =
+      "doctor-login.html";
+
+    return false;
+
+  }
+
+  return true;
+
+}
+
+
+async function logoutDoctor() {
+
+  await supabaseClient
+    .auth
+    .signOut();
+
+  window.location.href =
+    "doctor-login.html";
+
+}
+
+
+/* =========================================================
+   LOAD ALL PATIENTS
+   ========================================================= */
+
+async function loadPatients() {
+
+  const container =
+    document.getElementById(
+      "patientsContainer"
+    );
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("patients")
+      .select(
+        "id,patient_name,patient_phone,created_at"
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Patient loading error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="portal-message">
+        Unable to load patients.
+      </div>
+
+    `;
+
+
+    document
+      .getElementById(
+        "patientCount"
+      )
+      .textContent =
+        "0";
+
+
+    document
+      .getElementById(
+        "filterStatus"
+      )
+      .textContent =
+        "Unable to load registration periods.";
+
+
+    return;
+
+  }
+
+
+  allPatients =
+    data || [];
+
+
+  restorePeriodFromURL();
+
+
+  populateYearOptions();
+
+
+  populateMonthOptions();
+
+
+  renderSelectedPatients();
+
+}
+
+
 /* =========================================================
    NAVIGATION
    ========================================================= */
@@ -777,11 +1476,29 @@ function openPatientAdmin(
   patientId
 ) {
 
+  const returnURL =
+    "doctor-all-patients-list.html" +
+    "?year=" +
+    encodeURIComponent(
+      selectedYear ||
+      ""
+    ) +
+    "&month=" +
+    encodeURIComponent(
+      selectedMonth ||
+      ""
+    );
+
+
   window.location.href =
     "doctor-patient-admin.html" +
     "?patient_id=" +
     encodeURIComponent(
       patientId
+    ) +
+    "&return_to=" +
+    encodeURIComponent(
+      returnURL
     );
 
 }
@@ -790,6 +1507,57 @@ function openPatientAdmin(
 /* =========================================================
    EVENTS
    ========================================================= */
+
+document
+  .getElementById(
+    "patientYear"
+  )
+  .addEventListener(
+    "change",
+    function() {
+
+      selectedYear =
+        Number(
+          this.value
+        );
+
+
+      selectedMonth =
+        null;
+
+
+      populateMonthOptions();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "patientMonth"
+  )
+  .addEventListener(
+    "change",
+    function() {
+
+      selectedMonth =
+        Number(
+          this.value
+        );
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "viewPatientsButton"
+  )
+  .addEventListener(
+    "click",
+    applySelectedPeriod
+  );
+
 
 document
   .getElementById(
