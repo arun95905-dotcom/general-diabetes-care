@@ -806,6 +806,7 @@ View today's billing and payment summary
 <button
   type="button"
   class="billing-button light"
+  id="createBillBackButton"
   onclick="returnFromCreateBill()">
 
 ← Back
@@ -1615,6 +1616,317 @@ function readReturnURL() {
 }
 
 
+function getBillingReturnContext() {
+
+  if (!billingReturnURL) {
+
+    return {
+      type: "billing",
+      label: "← Billing Home"
+    };
+
+  }
+
+
+  let returnURL =
+    String(
+      billingReturnURL
+    );
+
+
+  let lowerURL =
+    returnURL.toLowerCase();
+
+
+  try {
+
+    const parsed =
+      new URL(
+        returnURL,
+        window.location.origin
+      );
+
+
+    const path =
+      parsed.pathname.toLowerCase();
+
+
+    const category =
+      (
+        parsed.searchParams.get(
+          "history_category"
+        ) ||
+        ""
+      )
+        .toLowerCase();
+
+
+    if (
+      path.includes(
+        "doctor-patient-history.html"
+      )
+    ) {
+
+      if (
+        category ===
+          "bill"
+      ) {
+
+        return {
+          type: "billHistory",
+          label: "← Back to Bill History"
+        };
+
+      }
+
+
+      if (
+        category ===
+          "consultation"
+      ) {
+
+        return {
+          type: "consultationHistory",
+          label: "← Back to Consultation History"
+        };
+
+      }
+
+
+      return {
+        type: "patientHistory",
+        label: "← Back to Patient History"
+      };
+
+    }
+
+
+    if (
+      path.includes(
+        "doctor-consultations.html"
+      )
+    ) {
+
+      return {
+        type: "consultationHistory",
+        label: "← Back to Consultation History"
+      };
+
+    }
+
+
+    if (
+      path.includes(
+        "doctor-patients.html"
+      )
+    ) {
+
+      return {
+        type: "patientDetails",
+        label: "← Back to Patient Details"
+      };
+
+    }
+
+
+    if (
+      path.includes(
+        "doctor-followups.html"
+      )
+    ) {
+
+      return {
+        type: "followups",
+        label: "← Back to Follow-ups"
+      };
+
+    }
+
+
+    if (
+      path.includes(
+        "doctor-appointments.html"
+      )
+    ) {
+
+      return {
+        type: "appointments",
+        label: "← Back to Appointments"
+      };
+
+    }
+
+  } catch (error) {
+
+    console.warn(
+      "Unable to identify billing return source:",
+      error
+    );
+
+  }
+
+
+  if (
+    lowerURL.includes(
+      "doctor-consultations.html"
+    )
+  ) {
+
+    return {
+      type: "consultationHistory",
+      label: "← Back to Consultation History"
+    };
+
+  }
+
+
+  if (
+    lowerURL.includes(
+      "doctor-patient-history.html"
+    )
+  ) {
+
+    return {
+      type: "patientHistory",
+      label: "← Back to Patient History"
+    };
+
+  }
+
+
+  return {
+    type: "external",
+    label: "← Back"
+  };
+
+}
+
+
+function getSavedBillBackLabel() {
+
+  if (
+    billingReturnURL
+  ) {
+
+    return getBillingReturnContext()
+      .label;
+
+  }
+
+
+  if (
+    billEditReturnState &&
+    billEditReturnState.view ===
+      "previousBills"
+  ) {
+
+    return "← Back to Previous Bills";
+
+  }
+
+
+  if (
+    billEditReturnState &&
+    billEditReturnState.view ===
+      "todayBills"
+  ) {
+
+    return "← Back to Today's Bills";
+
+  }
+
+
+  return "← Billing Home";
+
+}
+
+
+function updateCreateBillBackButton() {
+
+  const button =
+    document.getElementById(
+      "createBillBackButton"
+    );
+
+
+  if (!button) {
+    return;
+  }
+
+
+  if (
+    editingBillId
+  ) {
+
+    if (
+      billEditReturnState &&
+      billEditReturnState.view ===
+        "savedBill"
+    ) {
+
+      button.textContent =
+        "← Back to Bill Details";
+
+      return;
+
+    }
+
+
+    if (
+      billEditReturnState &&
+      billEditReturnState.view ===
+        "previousBills"
+    ) {
+
+      button.textContent =
+        "← Back to Previous Bills";
+
+      return;
+
+    }
+
+
+    if (
+      billEditReturnState &&
+      billEditReturnState.view ===
+        "todayBills"
+    ) {
+
+      button.textContent =
+        "← Back to Today's Bills";
+
+      return;
+
+    }
+
+
+    button.textContent =
+      "← Back to Bill Details";
+
+    return;
+
+  }
+
+
+  if (
+    billingReturnURL
+  ) {
+
+    button.textContent =
+      getBillingReturnContext()
+        .label;
+
+    return;
+
+  }
+
+
+  button.textContent =
+    "← Back";
+
+}
+
+
 function updateBackButton() {
 
   const button =
@@ -1628,7 +1940,8 @@ function updateBackButton() {
 
   button.textContent =
     billingReturnURL
-      ? "← Back to Consultation"
+      ? getBillingReturnContext()
+          .label
       : "← Back to Dashboard";
 
 }
@@ -1652,9 +1965,25 @@ function goBackFromBilling() {
 }
 
 
-function returnFromCreateBill() {
+async function returnFromCreateBill() {
 
-  if (editingBillId) {
+  if (
+    editingBillId
+  ) {
+
+    const billId =
+      Number(
+        editingBillId
+      );
+
+
+    const returnState =
+      billEditReturnState
+        ? {
+            ...billEditReturnState
+          }
+        : null;
+
 
     resetBillMode();
 
@@ -1663,6 +1992,77 @@ function returnFromCreateBill() {
 
     selectedConsultationId =
       null;
+
+
+    /*
+       Edit Bill opened from the full Bill Details page:
+       always return one level back to Bill Details first.
+    */
+    if (
+      returnState &&
+      returnState.view ===
+        "savedBill"
+    ) {
+
+      await showSavedBill(
+        billId,
+        true
+      );
+
+      return;
+
+    }
+
+
+    /*
+       Edit opened directly from Previous Bills.
+    */
+    if (
+      returnState &&
+      returnState.view ===
+        "previousBills"
+    ) {
+
+      billEditReturnState =
+        returnState;
+
+      await returnToPatientBillDetails();
+
+      return;
+
+    }
+
+
+    /*
+       Edit opened directly from Today's Bills.
+    */
+    if (
+      returnState &&
+      returnState.view ===
+        "todayBills"
+    ) {
+
+      billEditReturnState =
+        returnState;
+
+      await returnToTodayBills();
+
+      return;
+
+    }
+
+
+    /*
+       Fallback for an existing bill opened by URL.
+       Keep the user inside Bill Details rather than
+       jumping straight out of Billing.
+    */
+    await showSavedBill(
+      billId,
+      true
+    );
+
+    return;
 
   }
 
@@ -1674,7 +2074,9 @@ function returnFromCreateBill() {
     goBackFromBilling();
 
     return;
+
   }
+
 
   showDashboard();
 
@@ -1756,6 +2158,8 @@ function openCreateBill() {
       getTodayString();
 
   calculateTotal();
+
+  updateCreateBillBackButton();
 
 }
 
@@ -3244,6 +3648,9 @@ function resetBillMode() {
 
   }
 
+
+  updateCreateBillBackButton();
+
 }
 
 
@@ -3319,25 +3726,40 @@ async function editBill(
     };
 
   } else if (
-    !(
-      savedView &&
-      savedView.classList.contains(
-        "active"
-      ) &&
-      billEditReturnState &&
-      (
-        billEditReturnState.view ===
-          "previousBills" ||
-        billEditReturnState.view ===
-          "todayBills"
-      )
+    savedView &&
+    savedView.classList.contains(
+      "active"
     )
   ) {
 
     /*
-       Edit was started from somewhere other
-       than Previous Bills / Today's Bills,
-       so do not reuse an old return state.
+       Full Bill Details is the immediate parent of Edit Bill.
+       Keep any older Previous/Today source underneath it so the
+       Bill Details page can still return to that original source.
+    */
+    billEditReturnState = {
+
+      view:
+        "savedBill",
+
+      billId:
+        Number(
+          billId
+        ),
+
+      parentState:
+        billEditReturnState
+          ? {
+              ...billEditReturnState
+            }
+          : null
+
+    };
+
+  } else {
+
+    /*
+       Existing fallback for edits opened from another context.
     */
     billEditReturnState =
       null;
@@ -3578,6 +4000,8 @@ async function editBill(
 
   calculateTotal();
 
+  updateCreateBillBackButton();
+
 }
 
 
@@ -3697,6 +4121,53 @@ async function returnToTodayBills() {
 }
 
 
+async function restoreBillReturnStateAndGoBack(
+  targetView
+) {
+
+  if (
+    billEditReturnState &&
+    billEditReturnState.view ===
+      "savedBill" &&
+    billEditReturnState.parentState
+  ) {
+
+    billEditReturnState = {
+      ...billEditReturnState.parentState
+    };
+
+  }
+
+
+  if (
+    targetView ===
+      "previousBills"
+  ) {
+
+    await returnToPatientBillDetails();
+
+    return;
+
+  }
+
+
+  if (
+    targetView ===
+      "todayBills"
+  ) {
+
+    await returnToTodayBills();
+
+    return;
+
+  }
+
+
+  showDashboard();
+
+}
+
+
 /* =========================================================
    SAVED BILL
    ========================================================= */
@@ -3720,6 +4191,30 @@ async function showSavedBill(
 
   const patient =
     result.patient;
+
+  /*
+     If Bill Details is being restored after leaving Edit Bill,
+     keep the immediate savedBill state available, but also expose
+     its original Previous/Today parent for the outward Back button.
+  */
+  const savedBillParentState =
+    billEditReturnState &&
+    billEditReturnState.view ===
+      "savedBill"
+      ? billEditReturnState.parentState
+      : null;
+
+
+  const effectiveBillReturnState =
+    savedBillParentState ||
+    (
+      billEditReturnState &&
+      billEditReturnState.view !==
+        "savedBill"
+        ? billEditReturnState
+        : null
+    );
+
 
   const container =
     document.getElementById(
@@ -3839,59 +4334,59 @@ async function showSavedBill(
               class="billing-button light"
               onclick="goBackFromBilling()">
 
-              ← Back to Patient Details
+              ${escapeHTML(
+                getSavedBillBackLabel()
+              )}
 
             </button>
 
           `
-          : `
+          : effectiveBillReturnState &&
+            effectiveBillReturnState.view ===
+              "previousBills"
+            ? `
 
-            ${
-              billEditReturnState &&
-              billEditReturnState.view ===
-                "previousBills"
-                ? `
+              <button
+                type="button"
+                class="billing-button light"
+                onclick="restoreBillReturnStateAndGoBack(
+                  'previousBills'
+                )">
 
-                  <button
-                    type="button"
-                    class="billing-button light"
-                    onclick="returnToPatientBillDetails()">
+                ← Back to Previous Bills
 
-                    ← Back to Patient Bill Details
+              </button>
 
-                  </button>
+            `
+            : effectiveBillReturnState &&
+              effectiveBillReturnState.view ===
+                "todayBills"
+              ? `
 
-                `
-                : billEditReturnState &&
-                  billEditReturnState.view ===
-                    "todayBills"
-                  ? `
+                <button
+                  type="button"
+                  class="billing-button light"
+                  onclick="restoreBillReturnStateAndGoBack(
+                    'todayBills'
+                  )">
 
-                    <button
-                      type="button"
-                      class="billing-button light"
-                      onclick="returnToTodayBills()">
+                  ← Back to Today's Bills
 
-                      ← Back to Today's Bills
+                </button>
 
-                    </button>
+              `
+              : `
 
-                  `
-                  : `
+                <button
+                  type="button"
+                  class="billing-button light"
+                  onclick="showDashboard()">
 
-                    <button
-                      type="button"
-                      class="billing-button light"
-                      onclick="showDashboard()">
+                  ← Billing Home
 
-                      ← Billing Home
+                </button>
 
-                    </button>
-
-                  `
-            }
-
-          `
+              `
       }
 
     </div>
@@ -6375,6 +6870,9 @@ window.returnToPatientBillDetails =
 
 window.returnToTodayBills =
   returnToTodayBills;
+
+window.restoreBillReturnStateAndGoBack =
+  restoreBillReturnStateAndGoBack;
 
 window.deleteBill =
   deleteBill;
