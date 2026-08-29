@@ -894,6 +894,169 @@ textarea {
 
 </style>
 
+
+<style>
+
+/* =========================================================
+   WEEKLY VIEW + SEARCH APPOINTMENTS
+   ========================================================= */
+
+.menu-search {
+  background:
+    linear-gradient(
+      135deg,
+      #e7f7f4,
+      #f9fffd
+    );
+  border-color: #c6e8e1;
+}
+
+.menu-add {
+  grid-column: auto;
+}
+
+.search-form-wrap {
+  display: none;
+}
+
+.search-form-wrap.open {
+  display: block;
+}
+
+.search-range-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 12px;
+}
+
+.search-actions {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.search-range-note {
+  margin-top: 11px;
+  padding: 10px 12px;
+  color: #60707d;
+  background: #f7fafc;
+  border: 1px solid #e2e9ef;
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.search-results {
+  margin-top: 16px;
+}
+
+.search-results-header {
+  margin-bottom: 12px;
+  padding: 13px 14px;
+  background:
+    linear-gradient(
+      135deg,
+      #edf8fb,
+      #ffffff
+    );
+  border: 1px solid #d8e8ee;
+  border-radius: 13px;
+}
+
+.search-results-title {
+  color: #173649;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.search-results-range {
+  margin-top: 4px;
+  color: #6e7e8b;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.search-summary {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.search-summary-chip,
+.date-status-pill {
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.search-summary-upcoming,
+.date-status-upcoming {
+  color: #5946a6;
+  background: #eee9ff;
+}
+
+.search-summary-completed,
+.date-status-completed {
+  color: #167044;
+  background: #e8f8ef;
+}
+
+.search-summary-cancelled,
+.date-status-cancelled {
+  color: #b43131;
+  background: #ffeded;
+}
+
+.date-status-summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.search-status-group {
+  margin-top: 18px;
+}
+
+.search-status-heading {
+  margin: 0 0 9px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.week-window-note {
+  margin: 0 0 12px;
+  padding: 9px 11px;
+  color: #6e7d89;
+  background: #f8fafc;
+  border-radius: 10px;
+  font-size: 11px;
+}
+
+@media(max-width:700px) {
+
+  .search-range-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media(max-width:460px) {
+
+  .menu-search,
+  .menu-add {
+    min-height: 105px;
+  }
+
+}
+
+</style>
+
 </head>
 
 
@@ -986,7 +1149,7 @@ Upcoming
 </div>
 
 <div class="menu-description">
-Future appointments
+Next 7 days only
 </div>
 
 </button>
@@ -1012,7 +1175,7 @@ Completed
 </div>
 
 <div class="menu-description">
-Completed patient visits
+Last 7 days only
 </div>
 
 </button>
@@ -1038,7 +1201,28 @@ Cancelled
 </div>
 
 <div class="menu-description">
-Cancelled appointments
+Last 7 days only
+</div>
+
+</button>
+
+
+
+<button
+  type="button"
+  class="menu-card menu-search"
+  onclick="openAppointmentSearch()">
+
+<div class="menu-icon">
+🔎
+</div>
+
+<div class="menu-title">
+Search Appointments
+</div>
+
+<div class="menu-description">
+Search any date range
 </div>
 
 </button>
@@ -1063,6 +1247,125 @@ Book a new appointment
 
 </button>
 
+
+</div>
+
+
+
+<!-- =====================================================
+     SEARCH APPOINTMENTS
+     ===================================================== -->
+
+<div
+  id="searchAppointmentWrap"
+  class="search-form-wrap">
+
+<div class="portal-card">
+
+
+<div class="section-header">
+
+<h2>
+🔎 Search Appointments
+</h2>
+
+<button
+  type="button"
+  class="portal-button light-button small-button"
+  onclick="closeAppointmentSearch()">
+
+✕ Close
+
+</button>
+
+</div>
+
+
+<div class="form-section">
+
+<div class="search-range-grid">
+
+
+<div class="form-group">
+
+<label>
+From Date *
+</label>
+
+<input
+  type="date"
+  id="searchFromDate"
+  class="form-input">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+To Date *
+</label>
+
+<input
+  type="date"
+  id="searchToDate"
+  class="form-input">
+
+</div>
+
+
+</div>
+
+
+<div class="search-actions">
+
+<button
+  type="button"
+  class="portal-button primary-button"
+  onclick="runAppointmentSearch()">
+
+🔎 Search Appointments
+
+</button>
+
+<button
+  type="button"
+  class="portal-button light-button"
+  onclick="clearAppointmentSearch()">
+
+↺ Clear
+
+</button>
+
+</div>
+
+
+<div class="search-range-note">
+
+Future-only searches show upcoming appointments only.
+Past-only searches show completed and cancelled appointments.
+If the range crosses today, past dates show completed/cancelled
+visits while today and future dates show pending appointments.
+
+</div>
+
+</div>
+
+
+<div
+  id="appointmentSearchResults"
+  class="search-results">
+
+<div class="empty-state">
+
+Choose a From Date and To Date, then tap Search Appointments.
+
+</div>
+
+</div>
+
+
+</div>
 
 </div>
 
@@ -5132,6 +5435,2255 @@ window.viewAppointmentConsultation =
   restoreSectionFromURL();
 
 })();
+
+</script>
+
+
+
+<script>
+
+/* =========================================================
+   WEEKLY APPOINTMENT WINDOW + DATE RANGE SEARCH
+   ========================================================= */
+
+let appointmentSearchFromState =
+  null;
+
+let appointmentSearchToState =
+  null;
+
+let appointmentSearchItems =
+  [];
+
+
+/* ---------------------------------------------------------
+   DATE HELPERS
+   --------------------------------------------------------- */
+
+function addAppointmentDays(
+  value,
+  days
+) {
+
+  const date =
+    new Date(
+      value +
+      "T12:00:00"
+    );
+
+
+  date.setDate(
+    date.getDate() +
+    days
+  );
+
+
+  return (
+    date.getFullYear() +
+    "-" +
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    ) +
+    "-" +
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    )
+  );
+
+}
+
+
+function getUpcomingWeekEnd() {
+
+  return addAppointmentDays(
+    getTodayString(),
+    7
+  );
+
+}
+
+
+function getHistoryWeekStart() {
+
+  return addAppointmentDays(
+    getTodayString(),
+    -6
+  );
+
+}
+
+
+/* ---------------------------------------------------------
+   MAIN MENU COUNTS — ONE WEEK ONLY
+   --------------------------------------------------------- */
+
+updateCounts =
+  function() {
+
+    const today =
+      getTodayString();
+
+
+    const upcomingEnd =
+      getUpcomingWeekEnd();
+
+
+    const historyStart =
+      getHistoryWeekStart();
+
+
+    let todayCount =
+      0;
+
+    let upcomingCount =
+      0;
+
+    let completedCount =
+      0;
+
+    let cancelledCount =
+      0;
+
+
+    allAppointments.forEach(
+      function(appointment) {
+
+        const date =
+          appointment.appointment_date ||
+          "";
+
+
+        const status =
+          appointment.status ||
+          "Pending";
+
+
+        if (
+          date ===
+            today &&
+          status ===
+            "Pending"
+        ) {
+
+          todayCount++;
+
+        }
+
+
+        if (
+          date >
+            today &&
+          date <=
+            upcomingEnd &&
+          status ===
+            "Pending"
+        ) {
+
+          upcomingCount++;
+
+        }
+
+
+        if (
+          date >=
+            historyStart &&
+          date <=
+            today &&
+          status ===
+            "Completed"
+        ) {
+
+          completedCount++;
+
+        }
+
+
+        if (
+          date >=
+            historyStart &&
+          date <=
+            today &&
+          status ===
+            "Cancelled"
+        ) {
+
+          cancelledCount++;
+
+        }
+
+      }
+    );
+
+
+    getElement(
+      "todayCount"
+    ).textContent =
+      todayCount;
+
+
+    getElement(
+      "upcomingCount"
+    ).textContent =
+      upcomingCount;
+
+
+    getElement(
+      "completedCount"
+    ).textContent =
+      completedCount;
+
+
+    getElement(
+      "cancelledCount"
+    ).textContent =
+      cancelledCount;
+
+  };
+
+
+/* ---------------------------------------------------------
+   MAIN SECTION FILTER — ONE WEEK ONLY
+   --------------------------------------------------------- */
+
+getCurrentAppointments =
+  function() {
+
+    const today =
+      getTodayString();
+
+
+    const upcomingEnd =
+      getUpcomingWeekEnd();
+
+
+    const historyStart =
+      getHistoryWeekStart();
+
+
+    if (
+      currentSection ===
+      "today"
+    ) {
+
+      return allAppointments.filter(
+        function(appointment) {
+
+          return (
+            appointment.appointment_date ===
+              today &&
+            (
+              appointment.status ||
+              "Pending"
+            ) ===
+              "Pending"
+          );
+
+        }
+      );
+
+    }
+
+
+    if (
+      currentSection ===
+      "upcoming"
+    ) {
+
+      return allAppointments.filter(
+        function(appointment) {
+
+          return (
+            appointment.appointment_date >
+              today &&
+            appointment.appointment_date <=
+              upcomingEnd &&
+            (
+              appointment.status ||
+              "Pending"
+            ) ===
+              "Pending"
+          );
+
+        }
+      );
+
+    }
+
+
+    if (
+      currentSection ===
+      "completed"
+    ) {
+
+      return allAppointments
+        .filter(
+          function(appointment) {
+
+            return (
+              appointment.appointment_date >=
+                historyStart &&
+              appointment.appointment_date <=
+                today &&
+              appointment.status ===
+                "Completed"
+            );
+
+          }
+        )
+        .sort(
+          sortAppointmentsNewestFirst
+        );
+
+    }
+
+
+    if (
+      currentSection ===
+      "cancelled"
+    ) {
+
+      return allAppointments
+        .filter(
+          function(appointment) {
+
+            return (
+              appointment.appointment_date >=
+                historyStart &&
+              appointment.appointment_date <=
+                today &&
+              appointment.status ===
+                "Cancelled"
+            );
+
+          }
+        )
+        .sort(
+          sortAppointmentsNewestFirst
+        );
+
+    }
+
+
+    return [];
+
+  };
+
+
+/* ---------------------------------------------------------
+   KEEP EXISTING RENDERER, ADD WEEK NOTE + SEARCH SUPPORT
+   --------------------------------------------------------- */
+
+const originalWeeklyRenderCurrentSection =
+  renderCurrentSection;
+
+
+renderCurrentSection =
+  function() {
+
+    if (
+      currentSection ===
+      "search"
+    ) {
+
+      if (
+        appointmentSearchFromState &&
+        appointmentSearchToState
+      ) {
+
+        runAppointmentSearch(
+          false
+        );
+
+      }
+
+
+      return;
+
+    }
+
+
+    originalWeeklyRenderCurrentSection();
+
+
+    if (
+      currentSection ===
+        "upcoming" ||
+      currentSection ===
+        "completed" ||
+      currentSection ===
+        "cancelled"
+    ) {
+
+      const container =
+        getElement(
+          "appointmentsContainer"
+        );
+
+
+      if (
+        container &&
+        !selectedAppointmentDate &&
+        !container.querySelector(
+          ".week-window-note"
+        )
+      ) {
+
+        const note =
+          document.createElement(
+            "div"
+          );
+
+
+        note.className =
+          "week-window-note";
+
+
+        note.textContent =
+          currentSection ===
+            "upcoming"
+            ? "Showing upcoming appointments for the next 7 days."
+            : "Showing appointments from the last 7 days.";
+
+
+        container.prepend(
+          note
+        );
+
+      }
+
+    }
+
+  };
+
+
+/* ---------------------------------------------------------
+   OPEN NORMAL SECTIONS
+   --------------------------------------------------------- */
+
+const originalWeeklyOpenAppointmentSection =
+  openAppointmentSection;
+
+
+openAppointmentSection =
+  function(
+    section
+  ) {
+
+    closeAppointmentSearch(
+      false,
+      true
+    );
+
+
+    originalWeeklyOpenAppointmentSection(
+      section
+    );
+
+
+    const titles = {
+
+      upcoming:
+        "⏭️ Upcoming Appointments · Next 7 Days",
+
+      completed:
+        "✅ Completed Appointments · Last 7 Days",
+
+      cancelled:
+        "❌ Cancelled Appointments · Last 7 Days"
+
+    };
+
+
+    if (
+      titles[
+        section
+      ]
+    ) {
+
+      getElement(
+        "appointmentSectionTitle"
+      ).textContent =
+        titles[
+          section
+        ];
+
+    }
+
+  };
+
+
+/* ---------------------------------------------------------
+   SEARCH OPEN / CLOSE
+   --------------------------------------------------------- */
+
+function openAppointmentSearch(
+  scrollToSearch = true
+) {
+
+  currentSection =
+    "search";
+
+
+  selectedAppointmentDate =
+    null;
+
+
+  closeAddAppointment(
+    false
+  );
+
+
+  getElement(
+    "appointmentSection"
+  )
+  .classList.remove(
+    "open"
+  );
+
+
+  const wrap =
+    getElement(
+      "searchAppointmentWrap"
+    );
+
+
+  wrap.classList.add(
+    "open"
+  );
+
+
+  const fromInput =
+    getElement(
+      "searchFromDate"
+    );
+
+
+  const toInput =
+    getElement(
+      "searchToDate"
+    );
+
+
+  if (
+    !fromInput.value
+  ) {
+
+    fromInput.value =
+      getTodayString();
+
+  }
+
+
+  if (
+    !toInput.value
+  ) {
+
+    toInput.value =
+      getUpcomingWeekEnd();
+
+  }
+
+
+  updateAppointmentSearchURL();
+
+
+  if (
+    scrollToSearch
+  ) {
+
+    wrap.scrollIntoView({
+      behavior:
+        "smooth",
+
+      block:
+        "start"
+    });
+
+  }
+
+}
+
+
+function closeAppointmentSearch(
+  scrollTop = true,
+  preserveSection = false
+) {
+
+  const wrap =
+    getElement(
+      "searchAppointmentWrap"
+    );
+
+
+  if (
+    wrap
+  ) {
+
+    wrap.classList.remove(
+      "open"
+    );
+
+  }
+
+
+  if (
+    !preserveSection &&
+    currentSection ===
+      "search"
+  ) {
+
+    currentSection =
+      null;
+
+  }
+
+
+  selectedAppointmentDate =
+    null;
+
+
+  appointmentSearchFromState =
+    null;
+
+
+  appointmentSearchToState =
+    null;
+
+
+  appointmentSearchItems =
+    [];
+
+
+  if (
+    !preserveSection
+  ) {
+
+    const url =
+      new URL(
+        window.location.href
+      );
+
+
+    [
+      "section",
+      "from",
+      "to",
+      "date"
+    ]
+    .forEach(
+      function(key) {
+
+        url.searchParams.delete(
+          key
+        );
+
+      }
+    );
+
+
+    window.history.replaceState(
+      {},
+      "",
+      url.pathname +
+      url.search
+    );
+
+  }
+
+
+  if (
+    scrollTop
+  ) {
+
+    window.scrollTo({
+      top:
+        0,
+
+      behavior:
+        "smooth"
+    });
+
+  }
+
+}
+
+
+function clearAppointmentSearch() {
+
+  appointmentSearchFromState =
+    null;
+
+
+  appointmentSearchToState =
+    null;
+
+
+  appointmentSearchItems =
+    [];
+
+
+  selectedAppointmentDate =
+    null;
+
+
+  getElement(
+    "searchFromDate"
+  ).value =
+    "";
+
+
+  getElement(
+    "searchToDate"
+  ).value =
+    "";
+
+
+  getElement(
+    "appointmentSearchResults"
+  ).innerHTML = `
+
+    <div class="empty-state">
+
+      Choose a From Date and To Date, then tap Search Appointments.
+
+    </div>
+
+  `;
+
+
+  updateAppointmentSearchURL();
+
+}
+
+
+/* ---------------------------------------------------------
+   SEARCH FILTER RULES
+   --------------------------------------------------------- */
+
+function getAppointmentSearchItems(
+  fromDate,
+  toDate
+) {
+
+  const today =
+    getTodayString();
+
+
+  const futureOnly =
+    fromDate >
+    today;
+
+
+  const pastOnly =
+    toDate <
+    today;
+
+
+  return allAppointments
+    .filter(
+      function(appointment) {
+
+        const date =
+          appointment.appointment_date ||
+          "";
+
+
+        const status =
+          appointment.status ||
+          "Pending";
+
+
+        if (
+          date <
+            fromDate ||
+          date >
+            toDate
+        ) {
+
+          return false;
+
+        }
+
+
+        /*
+           FUTURE RANGE:
+           upcoming / pending only
+        */
+
+        if (
+          futureOnly
+        ) {
+
+          return (
+            date >
+              today &&
+            status ===
+              "Pending"
+          );
+
+        }
+
+
+        /*
+           PAST RANGE:
+           completed + cancelled only
+        */
+
+        if (
+          pastOnly
+        ) {
+
+          return (
+            date <
+              today &&
+            (
+              status ===
+                "Completed" ||
+              status ===
+                "Cancelled"
+            )
+          );
+
+        }
+
+
+        /*
+           RANGE INCLUDES TODAY:
+           - dates before today:
+             completed + cancelled
+           - today and future:
+             pending / upcoming only
+        */
+
+        if (
+          date <
+          today
+        ) {
+
+          return (
+            status ===
+              "Completed" ||
+            status ===
+              "Cancelled"
+          );
+
+        }
+
+
+        return (
+          status ===
+          "Pending"
+        );
+
+      }
+    );
+
+}
+
+
+/* ---------------------------------------------------------
+   RUN SEARCH
+   --------------------------------------------------------- */
+
+function runAppointmentSearch(
+  scrollToResults = true
+) {
+
+  const fromDate =
+    getElement(
+      "searchFromDate"
+    ).value;
+
+
+  const toDate =
+    getElement(
+      "searchToDate"
+    ).value;
+
+
+  if (
+    !fromDate ||
+    !toDate
+  ) {
+
+    alert(
+      "Please select both From Date and To Date."
+    );
+
+
+    return;
+
+  }
+
+
+  if (
+    fromDate >
+    toDate
+  ) {
+
+    alert(
+      "From Date cannot be later than To Date."
+    );
+
+
+    return;
+
+  }
+
+
+  currentSection =
+    "search";
+
+
+  appointmentSearchFromState =
+    fromDate;
+
+
+  appointmentSearchToState =
+    toDate;
+
+
+  selectedAppointmentDate =
+    null;
+
+
+  appointmentSearchItems =
+    getAppointmentSearchItems(
+      fromDate,
+      toDate
+    );
+
+
+  renderAppointmentSearchResults();
+
+
+  updateAppointmentSearchURL();
+
+
+  if (
+    scrollToResults
+  ) {
+
+    getElement(
+      "appointmentSearchResults"
+    )
+    .scrollIntoView({
+      behavior:
+        "smooth",
+
+      block:
+        "start"
+    });
+
+  }
+
+}
+
+
+/* ---------------------------------------------------------
+   SEARCH RESULTS
+   --------------------------------------------------------- */
+
+function renderAppointmentSearchResults() {
+
+  const container =
+    getElement(
+      "appointmentSearchResults"
+    );
+
+
+  const today =
+    getTodayString();
+
+
+  const futureOnly =
+    appointmentSearchFromState >
+    today;
+
+
+  const pastOnly =
+    appointmentSearchToState <
+    today;
+
+
+  const pendingCount =
+    appointmentSearchItems.filter(
+      function(appointment) {
+
+        return (
+          (
+            appointment.status ||
+            "Pending"
+          ) ===
+            "Pending"
+        );
+
+      }
+    )
+    .length;
+
+
+  const completedCount =
+    appointmentSearchItems.filter(
+      function(appointment) {
+
+        return (
+          appointment.status ===
+          "Completed"
+        );
+
+      }
+    )
+    .length;
+
+
+  const cancelledCount =
+    appointmentSearchItems.filter(
+      function(appointment) {
+
+        return (
+          appointment.status ===
+          "Cancelled"
+        );
+
+      }
+    )
+    .length;
+
+
+  let modeText =
+    "Selected appointment range";
+
+
+  if (
+    futureOnly
+  ) {
+
+    modeText =
+      "Future dates · Upcoming appointments only";
+
+  } else if (
+    pastOnly
+  ) {
+
+    modeText =
+      "Past dates · Completed and cancelled appointments";
+
+  } else {
+
+    modeText =
+      "Past history + today/future upcoming appointments";
+
+  }
+
+
+  let summary =
+    "";
+
+
+  if (
+    pendingCount
+  ) {
+
+    summary += `
+
+      <span
+        class="search-summary-chip search-summary-upcoming">
+
+        ⏭️ Upcoming
+        ${pendingCount}
+
+      </span>
+
+    `;
+
+  }
+
+
+  if (
+    completedCount
+  ) {
+
+    summary += `
+
+      <span
+        class="search-summary-chip search-summary-completed">
+
+        ✅ Completed
+        ${completedCount}
+
+      </span>
+
+    `;
+
+  }
+
+
+  if (
+    cancelledCount
+  ) {
+
+    summary += `
+
+      <span
+        class="search-summary-chip search-summary-cancelled">
+
+        ❌ Cancelled
+        ${cancelledCount}
+
+      </span>
+
+    `;
+
+  }
+
+
+  const header = `
+
+    <div class="search-results-header">
+
+      <div class="search-results-title">
+
+        🔎 Appointment Search Results
+
+      </div>
+
+      <div class="search-results-range">
+
+        ${formatDate(
+          appointmentSearchFromState
+        )}
+
+        –
+
+        ${formatDate(
+          appointmentSearchToState
+        )}
+
+        <br>
+
+        ${modeText}
+
+      </div>
+
+      ${
+        summary
+          ? `
+
+            <div class="search-summary">
+
+              ${summary}
+
+            </div>
+
+          `
+          : ""
+      }
+
+    </div>
+
+  `;
+
+
+  if (
+    appointmentSearchItems.length ===
+    0
+  ) {
+
+    container.innerHTML =
+      header +
+      `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            📭
+          </div>
+
+          No matching appointments found.
+
+        </div>
+
+      `;
+
+
+    return;
+
+  }
+
+
+  if (
+    selectedAppointmentDate
+  ) {
+
+    renderAppointmentSearchDate(
+      selectedAppointmentDate,
+      header
+    );
+
+
+    return;
+
+  }
+
+
+  const grouped =
+    {};
+
+
+  appointmentSearchItems.forEach(
+    function(appointment) {
+
+      const date =
+        appointment.appointment_date;
+
+
+      if (
+        !grouped[
+          date
+        ]
+      ) {
+
+        grouped[
+          date
+        ] =
+          [];
+
+      }
+
+
+      grouped[
+        date
+      ]
+      .push(
+        appointment
+      );
+
+    }
+  );
+
+
+  let dates =
+    Object.keys(
+      grouped
+    );
+
+
+  if (
+    pastOnly
+  ) {
+
+    dates.sort(
+      function(a,b) {
+
+        return b.localeCompare(
+          a
+        );
+
+      }
+    );
+
+  } else {
+
+    dates.sort();
+
+  }
+
+
+  const rows =
+    dates
+      .map(
+        function(date) {
+
+          const items =
+            grouped[
+              date
+            ];
+
+
+          const pending =
+            items.filter(
+              function(item) {
+
+                return (
+                  (
+                    item.status ||
+                    "Pending"
+                  ) ===
+                    "Pending"
+                );
+
+              }
+            )
+            .length;
+
+
+          const completed =
+            items.filter(
+              function(item) {
+
+                return (
+                  item.status ===
+                  "Completed"
+                );
+
+              }
+            )
+            .length;
+
+
+          const cancelled =
+            items.filter(
+              function(item) {
+
+                return (
+                  item.status ===
+                  "Cancelled"
+                );
+
+              }
+            )
+            .length;
+
+
+          const day =
+            new Date(
+              date +
+              "T00:00:00"
+            )
+            .toLocaleDateString(
+              "en-IN",
+              {
+                weekday:
+                  "long"
+              }
+            );
+
+
+          let statusPills =
+            "";
+
+
+          if (
+            pending
+          ) {
+
+            statusPills += `
+
+              <span
+                class="date-status-pill date-status-upcoming">
+
+                ⏭️ ${pending}
+
+              </span>
+
+            `;
+
+          }
+
+
+          if (
+            completed
+          ) {
+
+            statusPills += `
+
+              <span
+                class="date-status-pill date-status-completed">
+
+                ✅ ${completed}
+
+              </span>
+
+            `;
+
+          }
+
+
+          if (
+            cancelled
+          ) {
+
+            statusPills += `
+
+              <span
+                class="date-status-pill date-status-cancelled">
+
+                ❌ ${cancelled}
+
+              </span>
+
+            `;
+
+          }
+
+
+          return `
+
+            <button
+              type="button"
+              class="appointment-date-card"
+              onclick="openAppointmentSearchDate(
+                '${escapeHTML(
+                  date
+                )}'
+              )">
+
+
+              <div class="date-card-left">
+
+                <div class="date-card-date">
+
+                  📅
+                  ${formatDate(
+                    date
+                  )}
+
+                </div>
+
+                <div class="date-card-day">
+
+                  ${escapeHTML(
+                    day
+                  )}
+
+                </div>
+
+              </div>
+
+
+              <div class="date-card-right">
+
+                <div class="date-status-summary">
+
+                  ${statusPills}
+
+                </div>
+
+                <span class="date-card-arrow">
+
+                  ›
+
+                </span>
+
+              </div>
+
+
+            </button>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  container.innerHTML =
+    header +
+    `
+
+      <div class="appointment-date-list">
+
+        ${rows}
+
+      </div>
+
+    `;
+
+}
+
+
+/* ---------------------------------------------------------
+   OPEN ONE SEARCH DATE
+   --------------------------------------------------------- */
+
+function openAppointmentSearchDate(
+  date
+) {
+
+  selectedAppointmentDate =
+    date;
+
+
+  renderAppointmentSearchResults();
+
+
+  updateAppointmentSearchURL();
+
+
+  getElement(
+    "appointmentSearchResults"
+  )
+  .scrollIntoView({
+    behavior:
+      "smooth",
+
+    block:
+      "start"
+  });
+
+}
+
+
+function backToAppointmentSearchDates() {
+
+  selectedAppointmentDate =
+    null;
+
+
+  renderAppointmentSearchResults();
+
+
+  updateAppointmentSearchURL();
+
+}
+
+
+function renderSearchCard(
+  appointment
+) {
+
+  const oldSection =
+    currentSection;
+
+
+  const status =
+    appointment.status ||
+    "Pending";
+
+
+  if (
+    status ===
+    "Completed"
+  ) {
+
+    currentSection =
+      "completed";
+
+  } else if (
+    status ===
+    "Cancelled"
+  ) {
+
+    currentSection =
+      "cancelled";
+
+  } else if (
+    appointment.appointment_date ===
+    getTodayString()
+  ) {
+
+    currentSection =
+      "today";
+
+  } else {
+
+    currentSection =
+      "upcoming";
+
+  }
+
+
+  const card =
+    renderAppointmentCard(
+      appointment
+    );
+
+
+  currentSection =
+    oldSection;
+
+
+  return card;
+
+}
+
+
+function renderAppointmentSearchDate(
+  date,
+  header
+) {
+
+  const container =
+    getElement(
+      "appointmentSearchResults"
+    );
+
+
+  const items =
+    appointmentSearchItems
+      .filter(
+        function(appointment) {
+
+          return (
+            appointment.appointment_date ===
+            date
+          );
+
+        }
+      )
+      .sort(
+        function(a,b) {
+
+          return String(
+            a.appointment_time ||
+            ""
+          )
+          .localeCompare(
+            String(
+              b.appointment_time ||
+              ""
+            )
+          );
+
+        }
+      );
+
+
+  if (
+    items.length ===
+    0
+  ) {
+
+    selectedAppointmentDate =
+      null;
+
+
+    renderAppointmentSearchResults();
+
+
+    return;
+
+  }
+
+
+  const pending =
+    items.filter(
+      function(item) {
+
+        return (
+          (
+            item.status ||
+            "Pending"
+          ) ===
+            "Pending"
+        );
+
+      }
+    );
+
+
+  const completed =
+    items.filter(
+      function(item) {
+
+        return (
+          item.status ===
+          "Completed"
+        );
+
+      }
+    );
+
+
+  const cancelled =
+    items.filter(
+      function(item) {
+
+        return (
+          item.status ===
+          "Cancelled"
+        );
+
+      }
+    );
+
+
+  function makeGroup(
+    heading,
+    list
+  ) {
+
+    if (
+      list.length ===
+      0
+    ) {
+
+      return "";
+
+    }
+
+
+    return `
+
+      <div class="search-status-group">
+
+        <h3 class="search-status-heading">
+
+          ${heading}
+
+        </h3>
+
+        ${list
+          .map(
+            renderSearchCard
+          )
+          .join("")}
+
+      </div>
+
+    `;
+
+  }
+
+
+  container.innerHTML =
+    header +
+    `
+
+      <div class="selected-date-toolbar">
+
+        <div>
+
+          <div class="selected-date-title">
+
+            📅
+            ${formatDate(
+              date
+            )}
+
+          </div>
+
+          <div class="selected-date-count">
+
+            ${items.length}
+            ${
+              items.length ===
+                1
+                ? "appointment"
+                : "appointments"
+            }
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="portal-button light-button small-button date-back-button"
+          onclick="backToAppointmentSearchDates()">
+
+          ← Search Results
+
+        </button>
+
+      </div>
+
+
+      ${makeGroup(
+        "⏭️ Upcoming",
+        pending
+      )}
+
+      ${makeGroup(
+        "✅ Completed",
+        completed
+      )}
+
+      ${makeGroup(
+        "❌ Cancelled",
+        cancelled
+      )}
+
+    `;
+
+}
+
+
+/* ---------------------------------------------------------
+   SEARCH URL + RETURN NAVIGATION
+   --------------------------------------------------------- */
+
+function updateAppointmentSearchURL() {
+
+  if (
+    currentSection !==
+    "search"
+  ) {
+
+    return;
+
+  }
+
+
+  const url =
+    new URL(
+      window.location.href
+    );
+
+
+  url.searchParams.set(
+    "section",
+    "search"
+  );
+
+
+  if (
+    appointmentSearchFromState
+  ) {
+
+    url.searchParams.set(
+      "from",
+      appointmentSearchFromState
+    );
+
+  } else {
+
+    url.searchParams.delete(
+      "from"
+    );
+
+  }
+
+
+  if (
+    appointmentSearchToState
+  ) {
+
+    url.searchParams.set(
+      "to",
+      appointmentSearchToState
+    );
+
+  } else {
+
+    url.searchParams.delete(
+      "to"
+    );
+
+  }
+
+
+  if (
+    selectedAppointmentDate
+  ) {
+
+    url.searchParams.set(
+      "date",
+      selectedAppointmentDate
+    );
+
+  } else {
+
+    url.searchParams.delete(
+      "date"
+    );
+
+  }
+
+
+  window.history.replaceState(
+    {},
+    "",
+    url.pathname +
+    url.search
+  );
+
+}
+
+
+const originalWeeklyGetAppointmentReturnURL =
+  getAppointmentReturnURL;
+
+
+getAppointmentReturnURL =
+  function(
+    appointment
+  ) {
+
+    if (
+      currentSection ===
+      "search"
+    ) {
+
+      let returnURL =
+        "doctor-appointments.html" +
+        "?section=search";
+
+
+      if (
+        appointmentSearchFromState
+      ) {
+
+        returnURL +=
+          "&from=" +
+          encodeURIComponent(
+            appointmentSearchFromState
+          );
+
+      }
+
+
+      if (
+        appointmentSearchToState
+      ) {
+
+        returnURL +=
+          "&to=" +
+          encodeURIComponent(
+            appointmentSearchToState
+          );
+
+      }
+
+
+      if (
+        selectedAppointmentDate
+      ) {
+
+        returnURL +=
+          "&date=" +
+          encodeURIComponent(
+            selectedAppointmentDate
+          );
+
+      }
+
+
+      return returnURL;
+
+    }
+
+
+    return originalWeeklyGetAppointmentReturnURL(
+      appointment
+    );
+
+  };
+
+
+/* ---------------------------------------------------------
+   ADD APPOINTMENT SHOULD CLOSE SEARCH
+   --------------------------------------------------------- */
+
+const originalWeeklyToggleAddAppointment =
+  toggleAddAppointment;
+
+
+toggleAddAppointment =
+  function() {
+
+    closeAppointmentSearch(
+      false,
+      true
+    );
+
+
+    originalWeeklyToggleAddAppointment();
+
+  };
+
+
+/* ---------------------------------------------------------
+   RESTORE PAGE AFTER PATIENT / HISTORY / CONSULTATION
+   --------------------------------------------------------- */
+
+const originalWeeklyRestoreSectionFromURL =
+  restoreSectionFromURL;
+
+
+restoreSectionFromURL =
+  function() {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const section =
+      params.get(
+        "section"
+      );
+
+
+    if (
+      section !==
+      "search"
+    ) {
+
+      originalWeeklyRestoreSectionFromURL();
+
+
+      return;
+
+    }
+
+
+    const fromDate =
+      params.get(
+        "from"
+      );
+
+
+    const toDate =
+      params.get(
+        "to"
+      );
+
+
+    const date =
+      params.get(
+        "date"
+      );
+
+
+    openAppointmentSearch(
+      false
+    );
+
+
+    if (
+      fromDate
+    ) {
+
+      getElement(
+        "searchFromDate"
+      ).value =
+        fromDate;
+
+    }
+
+
+    if (
+      toDate
+    ) {
+
+      getElement(
+        "searchToDate"
+      ).value =
+        toDate;
+
+    }
+
+
+    if (
+      fromDate &&
+      toDate
+    ) {
+
+      appointmentSearchFromState =
+        fromDate;
+
+
+      appointmentSearchToState =
+        toDate;
+
+
+      appointmentSearchItems =
+        getAppointmentSearchItems(
+          fromDate,
+          toDate
+        );
+
+
+      selectedAppointmentDate =
+        date ||
+        null;
+
+
+      renderAppointmentSearchResults();
+
+
+      updateAppointmentSearchURL();
+
+    }
+
+  };
+
+
+/* ---------------------------------------------------------
+   KEEP SEARCH RESULTS LIVE AFTER STATUS / DELETE CHANGES
+   --------------------------------------------------------- */
+
+const originalWeeklyLoadAppointments =
+  loadAppointments;
+
+
+loadAppointments =
+  async function() {
+
+    const activeSearch =
+      currentSection ===
+        "search";
+
+
+    const savedFrom =
+      appointmentSearchFromState;
+
+
+    const savedTo =
+      appointmentSearchToState;
+
+
+    const savedDate =
+      selectedAppointmentDate;
+
+
+    /*
+       Temporarily prevent the original loader from trying
+       to render the custom search section.
+    */
+
+    if (
+      activeSearch
+    ) {
+
+      currentSection =
+        null;
+
+    }
+
+
+    await originalWeeklyLoadAppointments();
+
+
+    updateCounts();
+
+
+    if (
+      activeSearch
+    ) {
+
+      currentSection =
+        "search";
+
+
+      appointmentSearchFromState =
+        savedFrom;
+
+
+      appointmentSearchToState =
+        savedTo;
+
+
+      selectedAppointmentDate =
+        savedDate;
+
+
+      if (
+        savedFrom &&
+        savedTo
+      ) {
+
+        appointmentSearchItems =
+          getAppointmentSearchItems(
+            savedFrom,
+            savedTo
+          );
+
+
+        renderAppointmentSearchResults();
+
+
+        updateAppointmentSearchURL();
+
+      }
+
+    }
+
+  };
+
+
+/* ---------------------------------------------------------
+   SEARCH DATE INPUT UX
+   --------------------------------------------------------- */
+
+getElement(
+  "searchFromDate"
+)
+.addEventListener(
+  "change",
+  function() {
+
+    const fromDate =
+      getElement(
+        "searchFromDate"
+      ).value;
+
+
+    const toInput =
+      getElement(
+        "searchToDate"
+      );
+
+
+    if (
+      fromDate &&
+      toInput.value &&
+      toInput.value <
+        fromDate
+    ) {
+
+      toInput.value =
+        fromDate;
+
+    }
+
+  }
+);
+
+
+/* ---------------------------------------------------------
+   GLOBAL EXPORTS
+   --------------------------------------------------------- */
+
+window.updateCounts =
+  updateCounts;
+
+window.openAppointmentSection =
+  openAppointmentSection;
+
+window.openAppointmentSearch =
+  openAppointmentSearch;
+
+window.closeAppointmentSearch =
+  closeAppointmentSearch;
+
+window.clearAppointmentSearch =
+  clearAppointmentSearch;
+
+window.runAppointmentSearch =
+  runAppointmentSearch;
+
+window.openAppointmentSearchDate =
+  openAppointmentSearchDate;
+
+window.backToAppointmentSearchDates =
+  backToAppointmentSearchDates;
+
+window.toggleAddAppointment =
+  toggleAddAppointment;
+
+window.getAppointmentReturnURL =
+  getAppointmentReturnURL;
+
+
+/*
+   The original page initialization has already run by the
+   time this enhancement script is reached. Refresh the menu
+   counts once so the visible counters immediately follow the
+   new one-week rule.
+*/
+
+updateCounts();
 
 </script>
 
