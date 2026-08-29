@@ -166,10 +166,288 @@
     }
   }
   </style>
+  <style id="mobile-visual-improvement">
+   /* =========================================================
+     FINAL COLOUR AND MOBILE CARD REFINEMENT
+     ========================================================= */
+
+  :root {
+    --navy: #123a63;
+    --navy-deep: #0d2f52;
+    --blue: #256aa6;
+    --green: #21845e;
+    --red: #b83232;
+    --text: #26394d;
+    --muted: #5d6f80;
+    --border: #dce8f1;
+  }
+
+  body {
+    background:
+      linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #f7fbff 42%,
+        #ffffff 100%
+      );
+    color: var(--text);
+  }
+
+  .header {
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  .logo h1 {
+    color: #b83232;
+  }
+
+  .welcome {
+    color: #315f88;
+  }
+
+  .hero h2,
+  .section-heading h2,
+  .service h3,
+  .doctor-summary h2,
+  .appointment h2 {
+    color: var(--navy-deep);
+  }
+
+  .hero-intro,
+  .section-intro,
+  .service p,
+  .doctor-credentials,
+  .doctor-title,
+  .info-card p,
+  .appointment p:not(.section-label) {
+    color: var(--muted);
+  }
+
+  .service {
+    background:
+      linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #fbfdff 100%
+      );
+    border-color: var(--border);
+  }
+
+  .service-icon-shell {
+    background: #f8fbfe !important;
+    border-color: #e2ebf3 !important;
+    box-shadow: none !important;
+  }
+
+  .complication-panel {
+    background:
+      linear-gradient(
+        180deg,
+        #f3f9ff 0%,
+        #ffffff 100%
+      );
+  }
+
+  .complication-panel .section-label {
+    color: var(--green);
+  }
+
+  .appointment {
+    background:
+      linear-gradient(
+        135deg,
+        #f1f8ff 0%,
+        #ffffff 55%,
+        #f3fbf7 100%
+      );
+  }
+
+
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+
+  @media (max-width: 640px) {
+
+    .hero {
+      padding:
+        46px
+        18px
+        44px;
+    }
+
+    .hero h2 {
+      font-size: clamp(2.15rem, 9.5vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+    }
+
+    .hero-intro {
+      max-width: 560px;
+      font-size: 0.97rem;
+      line-height: 1.68;
+    }
+
+    .section {
+      width: min(100% - 28px, 1120px);
+      padding:
+        50px
+        0;
+    }
+
+    .section-heading {
+      margin-bottom: 28px;
+    }
+
+    .section-heading h2 {
+      font-size: 1.72rem;
+      line-height: 1.18;
+    }
+
+    .section-intro {
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .services {
+      gap: 14px;
+    }
+
+    .service {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr);
+      column-gap: 15px;
+      row-gap: 6px;
+      align-items: center;
+
+      padding:
+        18px
+        17px;
+
+      border-radius: 18px;
+
+      text-align: left;
+
+      box-shadow:
+        0 7px 22px
+        rgba(23, 50, 77, 0.055);
+    }
+
+    .service-icon-shell {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+
+      width: 72px !important;
+      height: 72px !important;
+
+      margin: 0 !important;
+      padding: 5px !important;
+
+      border-radius: 18px !important;
+    }
+
+    .service-3d-icon {
+      width: 100% !important;
+      height: 100% !important;
+
+      object-fit: contain !important;
+
+      border-radius: 14px !important;
+    }
+
+    .service h3 {
+      grid-column: 2;
+
+      margin: 0;
+
+      font-size: 1.02rem;
+      line-height: 1.3;
+    }
+
+    .service p {
+      grid-column: 2;
+
+      margin: 0;
+
+      font-size: 0.91rem;
+      line-height: 1.55;
+    }
+
+    .complication-wrap {
+      width: min(100% - 20px, 1160px);
+
+      padding:
+        50px
+        0;
+    }
+
+    .complication-panel {
+      padding:
+        30px
+        10px
+        18px;
+
+      border-radius: 22px;
+    }
+
+    .doctor-profile {
+      width: min(100% - 28px, 980px);
+    }
+
+    .clinic-info {
+      width: min(100% - 28px, 1120px);
+    }
+
+    .appointment {
+      width: min(100% - 28px, 900px);
+
+      padding:
+        32px
+        20px;
+    }
+
+    .button {
+      min-height: 48px;
+      border-radius: 14px;
+    }
+
+  }
+
+
+  /* =========================================================
+     VERY SMALL MOBILE
+     ========================================================= */
+
+  @media (max-width: 390px) {
+
+    .service {
+      grid-template-columns: 64px minmax(0, 1fr);
+      column-gap: 12px;
+
+      padding:
+        16px
+        14px;
+    }
+
+    .service-icon-shell {
+      width: 60px !important;
+      height: 60px !important;
+
+      border-radius: 16px !important;
+    }
+
+    .service h3 {
+      font-size: 0.98rem;
+    }
+
+    .service p {
+      font-size: 0.88rem;
+    }
+
+  }
+  </style>
  </head>
-
-
-<body>
+ <body>
   <header class="header">
    <div class="logo">
     <a aria-label="General and Diabetes Care home" href="index.html">
@@ -185,7 +463,6 @@
     </a>
    </div>
   </header>
-
 
   <section class="hero">
    <div class="hero-content">
@@ -228,7 +505,6 @@
    </div>
   </section>
 
-
   <section class="section">
    <div class="section-heading">
     <p class="section-label">
@@ -244,7 +520,7 @@
    <div class="services">
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Newly Detected High Blood Sugar medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/newly-detected-high-sugar.webp"/>
+      <img alt="Newly Detected High Blood Sugar medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
      </div>
      <h3>
       Newly Detected High Blood Sugar
@@ -255,7 +531,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Symptoms of High Blood Sugar medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/high-sugar-symptoms.webp"/>
+      <img alt="Symptoms of High Blood Sugar medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,UklGRpgEAABXRUJQVlA4IIwEAACQFwCdASpaAFoAPikSh0IhoQoFxuIMAUJZQDU+cj6dzW8GS5/qQY77jt/J4p/7He9B6QPIl66D0AOlp8orVh9zORr37MALYIHqYItxiNGq6a9E0VJ39VXRj2uZ0DhhmMoRXySRWBkkiuoTmZ/N0ZI250OlMlsbWVIHfN5+TXPlcZjePvBlGriR/jZBI04QUKEC1DnkmLcfryEWXNMH4v4NxRq+5OQndQiGs5eAl8LtI2HJktXEV1OQq2X6UqHf3iOwlTKgAAD+//9KGIAijFX1aT+bYc9MbsbyP73IcBauc5VWS4M2w1gYl8GPSKWbjzvJ0qmbSF296wU8FVMEYlyeUWM7y8VkzHnk93sq2NyQEc00N8YdbgdjpGjpRD/OC3FOjdmuVbgBv1C09+fAszHwNbfnMGx3fqAymO4/01wF/Ix8XDdofG5GQN3Kq/RfLrg7ct9MWsML5YOAM3T2lWiCJuH7UT3QzNpgSqmh7GanNnZ+VSnd96yrtRyJStqZy9CGbrTwARy2LXxTvCxdF6MeAmEycl4SjP1gfx6AAW6u1O0IgZdm3OaFPUysIv5o1PcboAEDpf6sAUmum+nHzB/+C4QR6jnNX5rOiIDnk+sDw3ch5sP5QNWOWNRJwyfXqnx6rtGEXND4n/Jt6zl0929VzxHyOic+tL+euM68SH7hZCaLamsnuUvD9LUqy6OLbNq4skJ9YGVcdqUqTHj4+X80OfJ+BR8HvJIQAyGqzfIay87ns/mODMlXDDs1+3OVGRUfcJ3XWDGsG49g3KSXRCf3P8qIMmHOiIviiLqb7ZsKkn1RX+/LqQ/wVCIyqqH0iojJHwc7gsamSAwEal56FH4eA8+RI1+6oZsjsIQ2qYRK0rgK3Wvf/8pG3h59yWWG8Kq1AgYX6Cu26gWcwyOjffYD29MUD9GDxpkeUC0Jn37+KtOlxRjuoA1OsAJEuItotC+g7aY8Vx2wTq8gKJ+wdwfN30bLaLwNPme+myv955OwOnpEH21I4QxVenM+iudDf5fBeIyBc/WhWFwqJbh74akD1FQvfwbt6QbSHTq8J8mDKeA3uAv77aUdatpFLVHWxmOq5ccsHp96rMbjxqDHk+5A6n/03nOljS6Q30uIl/0xMUiFhI3y6Y5Bqv0Y13QVTypHxHhPgLum6zU4KMT5+N/o/a5JaClZ9/jcbGrtwAZx2QqBf0XnJRvmRYV2iq/3kVz172xwdqdTnalLn4IOo61dIfeZK402f2UwfB8RDTCq/MBCOH0veEZn0LG8NPG+3DgZcmDsdc7dJhYKVvaDaKtdYjGdsAeQPgiczyO0jKn+VJeKutVU78Se3Eo7hsDk4vv/EP8oJxLk0Cw80ek8b7CqMqx20Ok/qPfqmaDiutZ5y0FmN4A7o83exUn145AM8KnihdP7N3VVuDpnFUAFN7TEPAo4zd8WcuMpbq07s/ex9WhReXcPbvgld2h29nfwvJLBJqvaIIQCTKtG671R2DvwfDcm8HS1lLeHpPf37RIgwdSdG5U/cCPKknEDe14w4XtzNJvPNTM/MLNAAAA="/>
      </div>
      <h3>
       Symptoms of High Blood Sugar
@@ -266,7 +542,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Diabetes Not Under Control medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/diabetes-not-controlled.webp"/>
+      <img alt="Diabetes Not Under Control medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,UklGRnIFAABXRUJQVlA4IGYFAADQHgCdASpeAF4APikSh0KhoQoFxpgMAUJQBpzQCfJ/RuJE1i7sfjJmO3EX90/Ln/FdoDzAP0P/vH2ud0DzAfsB1FPQJ/VXrEPQA/Wv0rP2n+C79mP+r/uPgD/WmmivjfydyCucw/qrn6P9XzJfR//A9wP9XypLfBDOEtRhJKFNCXUpsHOkherr7bfFOUM1qLTXl9h5DBGL48CycmLyBg2gNKwUYeXjYK06qjpWqQpgyOJbQEa+wfSyvSpyH5wWZiNLeKvhYK0arw2IgAxEfxsxq/CfnI3zM0WPpYhIdsNWG7JRCRKgB+JemWSqwIBHXSCT/+6mNJI5892x6Y+DHAAA/v87ovYeDtWv5dPOpW9tbZcsO9ibrQkegEYAmFe/ZJRzOBKwBKxDseGcC7Ki/yPI0WpjVMIoziCi9YSKC3cCsxEBfXW4eFuVFG04Uh9US/fj+/t22XKFSMV5iN6JhEe0El3kN8avfxApuc5owDMYd3houmFl1WgOY8nXRxnVlNRX9c4H4nbaJnpqQ3yVHqReP2kYcgmxKOU4eQSKMRoI0VnpTb/gaf8QquVltPa3YYwdbF97VOnC0t5pjcraJjELrIdbPqx0f+85Des/U+vndhoagWk9jzVqWWUNm/x5ABxybyVPgZ+yqz1VmkqOaIbRl1qId//4PPLeE3oZRUNkvCfskUb/oPgjtkcmpo9AC/6n+yOhgmarkxvP+lP/53I356ZJRjaVJ0yde7KL52NyPZP33mcjiU5aEzAWvKDYhDTINP6b8R2mJ+zd39a+wwCMnssLyGk4LJsVHrRf3OGS3B96H/53n9jQXU4/Z8TnhTs7JiqDgvYGDFD1R6icEV3xOtIJAndcWe7vcY+EjHtjb1PAVguuXEA7B7OfxWVTWjnm4bojbmot1/k28xvOfDReXmAy/C8LUoyfcuXsWBEfpal/qBdTcPGnu4CMx4QxUXG6SihJV/9VSIlCXp0BqcUtSlUX/ky8pXjGZ3//pjbF2YQkj8JlupEVh9ivp7xPifmC3btx8IHpLpkeaVTLNcDVqXR72Ald7Un6o1hSKNaoxHI+h+VBlRbRqQtYkIDLR2uNmcHf76szMr9rREBNf4HxGqvUUOwcrj6pcedNiu8M8mFNSmqnabOUutAZnIFkuXa6Fykc8BUiLGax4Z4F5LoPvm1RF7TQznmxo+VQXwlh5kjKsYDbcwN0ZP4s6GhYt+6717msuhJh9135SV7KwFTLoO7IdWDHzo71w1LeM/Nqv0Et2lm9Rvu+tUUeB+viqg58HqR2iqWNP7HmLF7JwXqfM0ELQ8z2hRu423fyp5T741iffUMYHiRqMH0wlGN+/aceeYmRxm1IE9j0xp9Jmc2v4fERKtbhPdnLzEa5YwDqS48RR0eDjFHgldPwjNC9gqZSv4X22KC71pyTXupqikdhu6+2GkITdAa6dct6p/KQxeVEDqSvU9zCdaKbIJ21NGXnr6Q7w/PcKueEMCelZ4EhyikwMYZTHtLocjo8QQi86rdz8wX+BMjCijOroadqaz6WEBfW7zf7Z5BLH3Xklc8l6jVK5r8q+NQ0Z89+ASUIjaFzI3DpL1ypuCMBE//qUUy+GMuzIOOibyY6aHUeACwLUCn4DT8t95azzvFJZs9XymjLuFsUOHXy26tqspIoDwvvyTT51Zr6NK1ic4CL/nrEZvGIsUKF9REaH2MDhblTD5HUC3N+zx8E+FOwn38tiK/+LFODBaYs3P4Un00rD96kndDUK0/94cOCu8SRTIgBONRd4FYt2FDkgdh4HdxovCrbTK+6XH8u7rWshEejXu1lPMJLuae4TEgA66Gi96mIfPM2eCCAAA=="/>
      </div>
      <h3>
       Diabetes Not Under Control
@@ -277,7 +553,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Repeated Low Blood Sugar medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/low-blood-sugar.webp"/>
+      <img alt="Repeated Low Blood Sugar medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,UklGRjAFAABXRUJQVlA4ICQFAACwGgCdASpeAF4APikSh0KhoQmUkuQMAUJQBquAW9p/ID2Sqa/WvvJ+5nP4lN68vt/5d/6/tKfbN6mX+t/Krtq+YzdAP1k62P0C/2K9K79wPhI/aX9lPZYprf57Iix3Z0jein599FUtl7XfBs0G/AJDM1F9t2dQlBxjQ37vO3GuvsjmSpX1l6wjoqKaGvccQvsaLr8FAPq+HHyHqfQ/FsF1Tv2aI6/rLOKfat+tJ47oF0FljXk8UBUFdwrf/GPvkRP5pC3TMGFkQ5egLJYGrXHEzE2pt/bNYP2rAorlQ+AA/v87p6xwCWrBg9g/imliyzSps3AXb3vbhb7nX/bD//C/NO8Ahf8q/chHl7yv0z53/Nq1/9XO8V49+eblgXjAyMAhmTRvzn68Lx51rScEFF81JQW/8HVfY+evuTD73DT1klACWikSb3b4LzvV5Aij8iSM3NGz5Ql/iX/2Idkf/Kv9zW/PmA83KjmmIEGFP9xP+fHoZ+XJ/gzr5iiV/++Xft65u+//1znu569dkJ+WjPtfZpt6kMh+HjnLW7Y53YTQ/7+h/vRLWSVAueuU22ij3iplPSc26+IFm+32r6gRdvmloGJfUc6KvxWbpilzyIzm8gJbb025I9/rtzZ7/hofs/BzPe9+ekgZCXeFmqrQ/RzRyvHlc/Gn5lhVZ9y/pp2cEaFt0LCeykbq7R02GhGjDT8ccONE1q/KvP6H+7sNPSPUBUxe/pJOPFHkJdis4AlxP+KhXVvZE+W9n/XUCKqaIaPNCs6kWotgJchRlQYcCIM6ptz7ty49zLJozh9i/dOzytaFRfNh2tBEGBoW1fC/+7hzMB9kEEJ8/ullSYCzZT48WuHVc4B58OBCVVWiuU12ezrhNl78FmyPWcBoDdp0rsd9BTo776imzqAMZ6lodu7YbgE/9a6RJs2T17ywZrClsDBd7Ktd+68YXYeG4opqhYjSoAwH6fkzyn+pnD2Zt4zqWljHrHW40owk5qaOEDs7jaoF4dAJf8Hd9Px8RR9T2iKvlz3YORueQCwCW48JS75mt6auDoyH/h05X2yVasdO5aBSwh74jcw0Isc+ESmQ9jxLa4+4KmVPP84IFJ9ymXO6ABWKm3SzfBHG5likL+SxrQu72Wvyog4QeX37F54aiyPzeM5OKHp+YXNqkNL9tocagJ5sC8YBC79vp4MtFBzQtonQQlhTec83tR/ogoaDzEyYcVT8PP+2VF8FanB2vz1zFb/42G8/59OW/uB+r0zXFZ+uvrELHl8APaWV8EJjo/ZeJRB4Pl7zV1KOXSD/FWJ2ds3ZaG6s78j5awQplEqKQL+ZIBr5BrSh0GnaOaSr/m7W5jTZL7nerRZjbtgMicCvZ92xj+xIm7BxIXgzbOX/Kh1f04G2kgixjZAdUvH4Nor6I7MB9oMRG4WckSEy6vGrIXCuPpYTp/aNmM/OozxjGN8o4Kpn8JymiRggogSWwYmZIWaedVB5o5nioVMU2N7xQc+AEMnQJjBmyQVVtkkqjCTZAo0cyM/FQ46fHf81z9ZGWy61JVE5GfFV1G84Mg3nZevAif97D47mPsV8f8mt/c32afjRN9Y6TSv+6qi9LdPZxsuUaRSelZTTWeH3rntEBC+v0LWwMVm9jF2VvjbOwcXU6djsNnMwFqTrt45Mldvd076Xkp3QGQZjPZhLDN5HBLtc2Ap4krXP9dwka6nmXT6dIh3Ja/NZKVxhK5EH4urCe3jlhUAJYi//jpf/IyOCsTQAAA=="/>
      </div>
      <h3>
       Repeated Low Blood Sugar
@@ -288,7 +564,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Starting or Adjusting Insulin medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/insulin-adjustment.webp"/>
+      <img alt="Starting or Adjusting Insulin medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
      </div>
      <h3>
       Starting or Adjusting Insulin
@@ -299,7 +575,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Regular Diabetes Review medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/regular-diabetes-review.webp"/>
+      <img alt="Regular Diabetes Review medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
      </div>
      <h3>
       Regular Diabetes Review
@@ -310,7 +586,6 @@
     </div>
    </div>
   </section>
-
 
   <section class="section">
    <div class="section-heading">
@@ -327,7 +602,7 @@
    <div class="services">
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Type 1 Diabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/type1-diabetes.webp"/>
+      <img alt="Type 1 Diabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
      </div>
      <h3>
       Type 1 Diabetes
@@ -338,7 +613,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Type 2 Diabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/type2-diabetes.webp"/>
+      <img alt="Type 2 Diabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
      </div>
      <h3>
       Type 2 Diabetes
@@ -349,7 +624,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Prediabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/prediabetes.webp"/>
+      <img alt="Prediabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,UklGRiIFAABXRUJQVlA4IBYFAADwGQCdASpaAFoAPikSh0KhoQoGOrwMAUJQBpzNv/jtUMMzv5Obe5v4xc0iX3r1/X9IvzBv1J/THr6eYD9Q/3A9nj1G+gB/M/8B1on7SewB+uXpseyJ+3v7c/AJ+r1Mp/R7S9gh/mWLm9DbRi9TlbJyK8DjErOEQw5bPrxaY8tRBbS/d0fcSU0o9GlGwVuAKRuOw7usfTNTtO5BmxL0wvX7a10/AHih8DeCAQIYgEZMoEZ3yxP/kr+l2+sDmcR8Y+Ax+ok4/MZAGlSdddGKjP6GI2LW95JjUAAA/v89XOOOk2bpnh6KS+av5rzIncmGYMsG2XHouBe5uqw4UZK+BX3UzD03Ek8U1kaa7A/PGGgxdDQAeqeuTQ8pW6mXKNO/cXMgueFEw15PT8B6O87pLrPJZDP6JE6enDLAxltzkpfqRS3+TkWDqEgzDLnH86wynaJlip+XaudggQgnIORl/E/+JjM6d2vFj3rV+X/9ArNPyr+faxFZFTvCKZ9ZPw+csl4immtSxH5TyNTavuoXnj6Oxbl50dxYWRhlrhgb2rHVeD8sbPnQ7QZnCRV364Ci70lJvr5BAdaKFi7lgWubghPFyQjmrZMBhclwmPoKHRHIBO/jIo7cPTwKDvXW+ZvSEwiygHiQBuL3fWT9msYvaaHfPa7y8GrBsU0ShkbdY1/e5eQFJyfrKwbNBZeoWYT9b5fuhx0GcyCe7hIx5q+r+zguVuVidR/L0e/+Ke362/31svEq9yz37OfmE7yWfP6hIDX+lEfVjDvpYXcjrfdv3ZorBzP6nhgcFoJ+pPP2AWI7Q7kVEjF8m0im/Rn0wavwc90Gbu8WGksyI/e2rmP/z/FcZ3aDnz4M0f6hMHX3/Jrmt9iPQf/xYfYfA2eX8R2N1uIfZG+lw3xOHjQsqggiIWPFeZzs6ZaS/mW+A784S4e8tz3SmsD6Qdt6qpuNQd+iQFio3ZxaE3EPxf5/QMHK/Ywvyvn36RDqGWNGGJRW1V/clI75cVc7R9em8ckI/+K49ffbk6j+Kf1G+qTqQ9l7yWL9ZBifchpaw7Bg2bqNruaTUjmgIhbG7vDc8b+5gC5rRuDFBPRHKfwqRmgJUnUaRZgMFnz/nVJFpUcwzPR2fhSl0RfBH7h/L0iVZuLj6Cmx2IETRqUSqM411RO1Iiw5b+1uKu6/b0aFMR61Y1Sdhh6xD2jVglCAZd1z2igZYl21EUN0sZKRDpgwy1pC2cktQpPFOXX2QyNvRD3ogHPj0oT1mrdWXg7Gu+6fd8i9E1wnu4Ely7Au35IuKq7Z1znh944NsqhfH/RZObgxGlX1teYAdWd14NOx0XeOxqVIqZr+7jh2hl7Xatev3pXc/3zY/LzBu313ELXAbLmMBqWmPKflykZSUFkT4dzm7Nd9LxuP0uC5tSmuZ95KITWF1KG3kYdqNN9e6XjnUqTQCVlaMOL/mgUEKbXItkYy9CWWfDaDM4e7UW6+aAfeBkAj9diktLEbJ4yXAHgXAj6zfVXILXh8qwrqdyTMNdpBFH61jy6JlfHHWXQPw8gDHFGA3nWwJBaonWtHNzTGgLjXtpPkdAi/PSd+XfANiATphW25ib1QOF9b1cpeXJn18jUAK2h5IRvKn1CZM7+IJ+2ymPk+sLYOpdjxL/lsc7rrtaCVPiEZt2/xzOpeq5/ENto2ZExgLTpwHZ57USBDlK2nWL/y1hxYawleEcbgJLJXKOEB4JRkGRLGh7AAAAA="/>
      </div>
      <h3>
       Prediabetes
@@ -360,7 +635,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Gestational Diabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/gestational-diabetes.webp"/>
+      <img alt="Gestational Diabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,UklGRroEAABXRUJQVlA4IK4EAABQGQCdASpaAFoAPikQh0IhoQtWZnoMAUJQBqHoJdTxU/nX/Y9MDwd+q95gP2I/VXsbegB+u3WAegB+2Ppi+xZ+zP7Ze1tc+fDPx4ezT8v8h5d21lNtmfeQn6V9g78uzYqSXRNpbaCEQMt0xQaMkEiulmaM8kJJO2PMuJOazGuQU78G0mC4ozag/oQKHVx+2N2A8yZFbdJoMn4QjV6bwC+BJhFDOnJkMIPP5Az6WPe0qK+Z1ki/j7Tt/lhlOHxS8QT3dfv6IlOZJ+efiB9JiPPBcnAAAP7/OudBtt9uUstdTO92l/0xu85Zhk7qtkulT/bNsyP//BS/f8yC/G0jtkr5ZUq5wZzp1dXfqPjjIfdIoFUsxJ6dSBzazKJ8xSe/o7QA9sLNaH8XLb/LN76djIug5/9r9RvFy78MxPlr8bHQ3tpfVL/XBQVJWCDt7dWE17GFR5ZMlOGS26zmlWM82ZgnDH3U2o14eyx4aO/Gq+3+GldxBqSOBLHYO31a3mkvUPX1Z8/7b7W9iIQbC6qvpxJW26Eq7De1ElrdXPE1yGblynyJ439wK2XI5oy4/lZ2tS0GeLRmm50O4ESDj2kF7h7XGajdfo8b5xxn/NI9IQSZnHK0Smkz6+GbgqgJo4M1nqHOMS16T4mxn9d9viduFBcP+eRUF5qAnf/KEpe6wWGse8HK+9lLcLSb8xw9SiP6MyxNJ9/PkY0b1r+Gg9/vKgdmG1lVu7f0B/RxgXjfEgQ0RW9wUS3PmB9P2RBQ8pc0jM79dShfcYr+N/BqllIINOcnQjbpGZnYGl+6UUpgS/wnb+kd6Rk7niHcbPNqZ3Ly4YCuvEiMHGKGYNhmsJYHhsb1Lo+nE5+chLC1LCeQvvytOak+XzyHBuJlbAO8XIG+AG8K/QlrQDUbJD1COy1ypcV21ja+9IiXQ/3zxmwdt+Xc41WLX8/Yr3OzqP4lVbz6ANKc/FbNzLVvQpUxZRvCh9u1WffXY1b8bkiB89s+Wfrai9Xkn+6tblCJmKz8FubMOLDasMez6AIACVmepdZYrfUI5orHRFuqAbB21aWyCfFIzsPYQPd+ZnDt5JBKwMJXNb6PIffi0itfuRMYOjcGgOss/q42fDIoFsWioTs3voBFRC5IHQX+VOzI7aOdDzFGPrlINRZ8eS6mC9qYTt9MLDr9M9gTLa8re3WSyWumuKPwrxD4ytOcM9rdDBl4Jzwuxwq9EEualy/8T4M9CkALpTbcnlg6z7nI0sXqXTQ+qXEmaUavCyGD1mkyP7l/Oner+Iq7s7z9dtp1umaggbOmTn8T3uYAvtSN8vXoNnMltKTsxzJwsBY73TBUfsCf+5vs53bdCAYOawKAXwvlbWhq0Ck3v1YU01SlmbLQ6S3sI9gbzVZehtkDCQpE+DNN+lPE8/hurnnNTews/lKeK1Pk1vddpWuw9D2c9r8752lQUyqj1MBFmlMj8fEezdT5wnQj5lMauFklSmdnfEqWjUxfN9AhZcjE936jcLi7k7ZHDQZef5pUcXuCrzzOOOvrAwpdQGUIKvX4Ca70hRjRfElDM7Z0k4ZEIWh1GAImPKbkuleMz+bpYpxRoM+Fn4EAAAAA"/>
      </div>
      <h3>
       Gestational Diabetes
@@ -371,7 +646,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Uncontrolled Diabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/uncontrolled-diabetes.webp"/>
+      <img alt="Uncontrolled Diabetes medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
      </div>
      <h3>
       Uncontrolled Diabetes
@@ -382,7 +657,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="Medication &amp; Insulin Review medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/medication-insulin-review.webp"/>
+      <img alt="Medication &amp; Insulin Review medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,UklGRs4EAABXRUJQVlA4IMIEAACQGwCdASpiAGIAPikSiEKhoSES+40AGAKEsoBq1VN2ZuTb79vNz6uPwtvAPMB/Ev9D+pvCAf1r/FdaB6AH63dZt+yf7De0hTMXz2aP8LOLXavq49YmM88j30f/3fcM/WsekfLvOevf+VTLw71QfR+++pjIQUjvEkNOQPSll6t3afRGXBXKDGSoJjio4xu0SgeIylYMee3D3wEbUwlzvuCz2sXMKUeKkREDjonIZgKHdaNT/K86vXI5LIMG/Lv/KS5hnXP0ZpkY6e9kYWF5fkMZKuNZ9WL2p7Y7PKSNwwdD3uohAKx4AP7//mIAb9bJ7b0z73saz6ES+w14A+Z3vi/ny2CfvH+4wAj6txmoZP4pZi116ub5++SJR4AY9T3jvOb30C5pwIiqGp2+8tYdTYm+5A2F2G7ST5kz0SFZb3LVvsni2XeYN4aDcOIR5BIm01POJTi/evcNk+LDXWhhNh7pCP7PY7QIULAA6DrgEvBZ/lfMeWFp1gt3YU3eIFWG+J6m11VPYeolQ7kvVKa5EX88KdbLqHMhMF6JVmxclDcD0DMpFqX7mH62JPh4d3ehGpxqwvBkDTks6Mrr0oEYJRTdPsyCtLz8rsGHGNiLl56fbdtaWokANz+9p4X41hMZBCNKR3vpeZCapLjcDNv97vHm2SaTWthgkLeYiyTESvsqxKeL6+vp4KnqzqCG6mffa3n/zbLPi/8m0dYbSXXH7j/697kPV7EpGwIIZ99oEAvuexyN9Apz96JqjXzP4rziFINvbf0CWydI6ihovmB5zAlb3phPM3vKJSbqvaZisySzvIvbFZMDd0MehH+zq6nq+Uy7PO/XWXi4dn8wPYo974AGuKf2YaOywWc54jXUbKLwvLIgvfWCmEfpLBUhmyFWYXGoezjLpbv+SuazCMWYjp1UEIA0fnkm4q8W8w/62xJOPQ4Zn8favHQ9wurK9v/6X4UGgNsvnZ9PVVD+/bMMmWr2lSzJeT5VnaKh8x3skQUN6sc78Bioalnj8AbaUvcgtkx7MDbwdWq+Usfa24W61tKVZgpRXh2S+5RWNonLNQ3Haf/PTO2PwZm27RqbCwec0YbOzDB/hfdYbqoK1z0AsWwrwvx1hBLFmhoUvz3Ilt0giSJra+Dc+6dqkbKmB/WYxL4sj2Ayn8uSLfoDizGG2Cu5M6ek5E1fucqXKaaHai5JE9eHqDDvqqp1HxXcdoY0J9Rf0CV9KmwiLw0FakQUv5B+pLUK9hkXHcuZRkfpYXmwv1Siz9rUP2zX2d3NL4R6V66/j0Qb/vmOqxneKmqrat/MtSJ42hR9krCoNOaRxGZ5yHgGLB9b7kkr+3o6dMJ11jJ31cxm701YSVY7xZXVJC0BMqyKfXELy1FX+bxhrklNnb26BE1B+2zIOamxIMD4ohxFOgIQGzvMiwZRF9DozN2p3Fk17xbn+i3/XuGjNKcCFIAK8ODv9tBp8dZoa5XUP47rAez5fASXQ1mB7FQq+L2aTN2zGMrI42/OJ/Ue8//SULIp4tY+/D1f0OaZ3WDvDIEJl/br+PbDLCudZ4NX4UwRNBZRT0bCe94PNABdWQPKfoPqcvR9lVTi1yjPw/zan/tyuKxZmU/ZpEa1q0sNghTCAAA="/>
      </div>
      <h3>
       Medication &amp; Insulin Review
@@ -393,7 +668,7 @@
     </div>
     <div class="service">
      <div class="service-icon-shell">
-      <img alt="HbA1c &amp; Glucose Monitoring medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/hba1c-glucose-monitoring.webp"/>
+      <img alt="HbA1c &amp; Glucose Monitoring medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,UklGRqoFAABXRUJQVlA4IJ4FAAAQHACdASpaAFoAPikSh0KhoQo8znYMAUJQA8ePu/4wexZV37397PUB1KxgPSz2//J/lp/le1z5g36ydKTzAdBT0AP046yj9sfYV/YD0xP2U+EH9nf2+9oKmJva/ydyhL3H8qNMO/TPASXAfljwxPNG/xXHMxseeh/s/4r0E/RH/c9wj+Vf1X/glLxRlnO7cuv0a7tXi6cMEgdH8T+YpL2DHm+9zVWhFQ3VAvvWXpIqD150WJQTLQBQUgQQpYC+gFLvNKVCasPIOho1zQbJdv5BOmKl6zwzhbeo9GotgKf4IYtHyIEH3VqwgAD+/z2X5Y1cJs765ZKn/hZNuqoVz2zfL1RtTz/j+52GvKh7uSInv3IOOEytzDPvvlX99k+PuNbPeCXz/kSQo5bv/lZ+DgXTORDET/4vdAlkJmUtmPjobvApcMbQy6t7JELkO28aoeN8x48mhJAFH/xcwsNGv9kJ24+sLbhBupHnBNwF1pUhWxHBoTiWoQ1HqSxaX+KJjcn1RYQ2aua/7VY4ntTQOLNtrxmkNpRSj89FlrS668RA+6p/WSCBs1zHfDdYvSa/JEyE1l6JP39/tqzsAnW47ZgUP9veCEnevCOgyb75tNgknCPZsnfVO4/eCoenE0tDmjt38l438J5ryxlARe3KXpj740l9vrilW4mBOcAk0dX2EjaeDmGxm5gfozBQ4F4SRaaOquNqH0KZ3alUoF+Mt2q7wHt8hycOhB7BnimAun+b3jIhiF7JtEcfsJ7DJQl5ADjCPMU7JxllZ0Tn0IsKDIg+qg7ri8bZSjIAQ7IcUkewsxsJ/av4y2sOLc9op0BaVGW9gkb1SlVOMsbYURM2HGQHeX1I6dzKEwFWlgi3JsAFRJdyCENWy/M6GfxMP1ManZyWD4PgME79X4mYc7Z0FK/0UcCBTvNV7YKz8E3kTYbwziOY4k75WecDNYp//04dzb0HSmNtq1n8TZe+eX8hPfJ4Vjh8p7J9eQmryoEkORb5mgS8Uk39rf+77+XJ5y8hDVY4XQQr+UrR1rd7uQkzNN4HzExL+gZBTAcIr9j/G9OM2bKqJ2ZUz9OarufnfpLVjSFUv8TZnWAhGX2m8lGRE3c+FpV74gOeQaDQ/5Us8JKM7fyIvevFQWdw7Gs6c/lyb0jtUIaz+Hldxdb7p87F3pE8ZJ1qPJ05LQjHV8P07gWMnaqrKrUex90hSCw89bMLDFQtvXewcT4d3nVhxh3T8jsQn3kqEzIfSd255dpz43bjMm39QE/87X5Nhn7vlzFw28GSbC/9jT6PfJGBju78vTFZoRwT4wKgxl/u6xf5Fn1DB1/YstsgqGGcvSjSHZuFmpf9rPlFTdjyo1e/5UabYSPBrqZtTWGf85aua8/ia9dGpitOfYMhr3f/lvsQh894o9KXuIjkut1m2tK0MqkHt+E0PJiD6mw7Yngl8Kf+L2+UlN53bTPjYGSyFa3Acuu0Qmvzwkp4tsFFm93zAQ6XanT67g77KckiZ9J8wctrYn9a1FcyRAG//+ZIL/yCYA3ED0sXSEm1TZBMBLhdK9MD5+UhUpnGTxZbUjqc37tk1QlAwMosqgSPEY20vZW0TUK9nKmT5fb9gVi5Bv+U3hnrHjBu3S0d9Ygc4vGP//f4u53nG7WeQgFYpvHwabimOABKTkjiWTnhNwBcPGXiLmgo/brj4D1T9t04TcWEzQ6Ud02BCaOPEQ/AEhes5lrZGZ57rLOb8Tm4V4G+i+/byxgQOCJQprjdbSVCSxZG9tkOfgdV7Ki0ytlS3+0pX1F3HE5OoJiTaoHKt/omrrceG+YTyoBrkJ0nw3LrNoVXuwOhLEgWarmHVkMj3/hWTTuCi5lcaxu1wTVdPwDuYAD1xonh+9F1o9yw1XFKSeDllJpgie2ic4ygQPA55b4Vs1OAAAAA"/>
      </div>
      <h3>
       HbA1c &amp; Glucose Monitoring
@@ -404,7 +679,6 @@
     </div>
    </div>
   </section>
-
 
   <section class="complication-wrap">
    <div class="complication-panel">
@@ -422,7 +696,7 @@
     <div class="services">
      <div class="service">
       <div class="service-icon-shell">
-       <img alt="Kidney Health medical icon" class="service-3d-icon" data-icon-origin="main-site-exact-match" loading="lazy" src="diabetes-care-icons/kidney-health.webp"/>
+       <img alt="Kidney Health medical icon" class="service-3d-icon" data-icon-origin="main-site-exact-match" loading="lazy" src="data:image/webp;base64,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"/>
       </div>
       <h3>
        Kidney Health
@@ -433,7 +707,7 @@
      </div>
      <div class="service">
       <div class="service-icon-shell">
-       <img alt="Eye Health medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/eye-health.webp"/>
+       <img alt="Eye Health medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
       </div>
       <h3>
        Eye Health
@@ -444,7 +718,7 @@
      </div>
      <div class="service">
       <div class="service-icon-shell">
-       <img alt="Nerve &amp; Foot Health medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/nerve-foot-health.webp"/>
+       <img alt="Nerve &amp; Foot Health medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,UklGRiIDAABXRUJQVlA4IBYDAABQEwCdASpiAGIAPikUiEKhoSET6qxwGAKEs4BrUveer5Kltfuu2+GPhVbeDzAebx0SWS4ESuPC1rVVdLo7DQ0MXSL6490MORX8C7+ozmTRosQz2tQ1Yl+eL04aDqyRvRBPhhupFQ6gwCYGMUNgkJeZnVeb3gaNY5b8WS1a3aIqAjVMacj59adKIePdZcdJ4R8VfRv7SwRwvUTQWze6AUVVVVCAAP7+99reB8EfFcU6XerHk7kNP0UZ/gIRfmen5DJPn/SONxDdiqwupGJQemgv72XoTxMNfvIUtAl3vkQoj7QcZ1cvUVZIyWgC/Gx7+Wo4w1V41MAvNAdrTrqo7BB8umhQFSmSP8MbRZZDjE2yIxKtgxWx0MG4pP70UNuy6dovvGcHAsBa+zV2BWgWXIHfy+j5K2AYoVatDl6cnh6KY5EQdBpSksxQDd7hQoSWFZ+dZl/q7Gz3X25eadLDYc9RiTsD3M+jhSJaqFxpCdPXd3td5AFbye9F4npOWtOci/e532rpv+FgqK5BKB7fXsmKRu9PEJV/z6yLHlXm2DWj+kzFIAxXm03mkF1YffWuct0g82gbkXSnldmyl3PY7Ezln+VpxXzz5ir0+XsZsFZj1Q8jY+3scBghSjr6m2TiYmICWb6XBXQikWcGvaVLxQiMjIvdnsSzLJgZsw+CmltwRe+q5Ymo3voSHlaApfSPz3t4mY7uz2Wn69QeHPAmE8V4Za9pbGMnm/T/gtnNLLBXG77n27jltiqAyZI8Jzwb8q1eQSqtjecws4zYFve2/hcKF1Y5DBBfj+IuPxnVxcUZTOaW+3dLgUfM//YzZvr7Ycrm3Fv3P+52mHl/hf8bx9I/B57LGPC2/AhjI3m6kkFMUhlO4L4i31vui7JmhsPzEwuqTHMTTFvp1kFzIT7QPj60wDDTGXed6RBVwcID7AFqSY0zrAAyJJnf0bfll4QMs3gWNwO6tEc5/gWBG9Nr+ca9zPhtSufg0Y2W2RzOVh0AgMy7MvdnH3uwB2ytafs+7ryTADLwqe9LASkv2N7k9CPaAAAAAAAA"/>
       </div>
       <h3>
        Nerve &amp; Foot Health
@@ -455,7 +729,7 @@
      </div>
      <div class="service">
       <div class="service-icon-shell">
-       <img alt="Heart &amp; Blood Vessel Health medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/heart-blood-vessel-health.webp"/>
+       <img alt="Heart &amp; Blood Vessel Health medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
       </div>
       <h3>
        Heart &amp; Blood Vessel Health
@@ -466,7 +740,7 @@
      </div>
      <div class="service">
       <div class="service-icon-shell">
-       <img alt="Weight &amp; Metabolic Health medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/weight-metabolic-health.webp"/>
+       <img alt="Weight &amp; Metabolic Health medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
       </div>
       <h3>
        Weight &amp; Metabolic Health
@@ -477,7 +751,7 @@
      </div>
      <div class="service">
       <div class="service-icon-shell">
-       <img alt="Overall Diabetes Review medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="diabetes-care-icons/overall-diabetes-review.webp"/>
+       <img alt="Overall Diabetes Review medical icon" class="service-3d-icon" data-icon-origin="diabetes-page-specific" loading="lazy" src="data:image/webp;base64,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"/>
       </div>
       <h3>
        Overall Diabetes Review
@@ -490,13 +764,12 @@
    </div>
   </section>
 
-
   <section class="doctor-profile">
    <details class="doctor-details">
     <summary>
      <div class="doctor-summary">
       <div class="doctor-profile-icon">
-       <img alt="Doctor stethoscope medical icon" class="doctor-summary-3d-icon" data-icon-origin="main-site-exact-match" src="diabetes-care-icons/doctor-profile.webp"/>
+       <img alt="Doctor stethoscope medical icon" class="doctor-summary-3d-icon" data-icon-origin="main-site-exact-match" src="data:image/webp;base64,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"/>
       </div>
       <div>
        <p class="section-label">
@@ -566,7 +839,6 @@
    </details>
   </section>
 
-
   <section class="clinic-info">
    <div class="info-card">
     <h3>
@@ -635,7 +907,6 @@
    </div>
   </section>
 
-
   <section class="appointment">
    <p class="section-label">
     BOOK A CONSULTATION
@@ -657,7 +928,6 @@
    </a>
   </section>
 
-
   <div class="return-home">
    <a href="index.html">
     &larr; Back to General &amp; Diabetes Care
@@ -671,7 +941,6 @@
     &copy; 2026 General &amp; Diabetes Care. All rights reserved.
    </p>
   </footer>
-
 
  </body>
 </html>
