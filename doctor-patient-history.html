@@ -575,21 +575,38 @@ select {
 .history-period-summary {
   margin-bottom: 12px;
   padding: 13px 14px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   background: #eef6ff;
   border: 1px solid #d4e5fb;
   border-radius: 13px;
+}
+
+.history-period-main {
+  min-width: 0;
 }
 
 .history-period-title {
   color: #172033;
   font-size: 16px;
   font-weight: 850;
+  line-height: 1.45;
 }
 
 .history-period-count {
   margin-top: 4px;
   color: #5f6b7c;
   font-size: 13px;
+}
+
+.history-period-change-button {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 7px 10px;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .history-navigation-row {
@@ -611,6 +628,16 @@ select {
 
   .history-navigation-row .portal-button {
     width: 100%;
+  }
+
+  .history-period-summary {
+    align-items: center;
+  }
+
+  .history-period-change-button {
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 11px;
   }
 
 }
@@ -2138,11 +2165,35 @@ function getFilteredHistoryItems(
 }
 
 
-function populateHistoryYearOptions() {
+function getHistorySelectId(
+  type,
+  category
+) {
+
+  return (
+    "history" +
+    (
+      type === "year"
+        ? "Year"
+        : "Month"
+    ) +
+    "Select-" +
+    category
+  );
+
+}
+
+
+function populateHistoryYearOptions(
+  category
+) {
 
   const select =
     document.getElementById(
-      "historyYearSelect"
+      getHistorySelectId(
+        "year",
+        category
+      )
     );
 
 
@@ -2201,11 +2252,16 @@ function populateHistoryYearOptions() {
 }
 
 
-function populateHistoryMonthOptions() {
+function populateHistoryMonthOptions(
+  category
+) {
 
   const select =
     document.getElementById(
-      "historyMonthSelect"
+      getHistorySelectId(
+        "month",
+        category
+      )
     );
 
 
@@ -2461,26 +2517,26 @@ function renderHistorySelector(
 
         <div class="history-filter-group">
 
-          <label for="historyYearSelect">
+          <label for="historyYearSelect-${category}">
             Select Year
           </label>
 
           <select
-            id="historyYearSelect"
-            onchange="historyYearChanged()">
+            id="historyYearSelect-${category}"
+            onchange="historyYearChanged('${category}')">
           </select>
 
         </div>
 
         <div class="history-filter-group">
 
-          <label for="historyMonthSelect">
+          <label for="historyMonthSelect-${category}">
             Select Month
           </label>
 
           <select
-            id="historyMonthSelect"
-            onchange="historyMonthChanged()">
+            id="historyMonthSelect-${category}"
+            onchange="historyMonthChanged('${category}')">
           </select>
 
         </div>
@@ -2518,9 +2574,13 @@ function renderHistorySelector(
   `;
 
 
-  populateHistoryYearOptions();
+  populateHistoryYearOptions(
+    category
+  );
 
-  populateHistoryMonthOptions();
+  populateHistoryMonthOptions(
+    category
+  );
 
 }
 
@@ -2618,11 +2678,21 @@ function openHistorySection(
 }
 
 
-function historyYearChanged() {
+function historyYearChanged(
+  category
+) {
+
+  const activeCategory =
+    category ||
+    activeHistoryCategory;
+
 
   const select =
     document.getElementById(
-      "historyYearSelect"
+      getHistorySelectId(
+        "year",
+        activeCategory
+      )
     );
 
 
@@ -2637,7 +2707,9 @@ function historyYearChanged() {
     );
 
 
-  populateHistoryMonthOptions();
+  populateHistoryMonthOptions(
+    activeCategory
+  );
 
 
   updateHistoryURL(
@@ -2647,11 +2719,21 @@ function historyYearChanged() {
 }
 
 
-function historyMonthChanged() {
+function historyMonthChanged(
+  category
+) {
+
+  const activeCategory =
+    category ||
+    activeHistoryCategory;
+
 
   const select =
     document.getElementById(
-      "historyMonthSelect"
+      getHistorySelectId(
+        "month",
+        activeCategory
+      )
     );
 
 
@@ -2682,13 +2764,19 @@ function showSelectedHistoryRecords() {
 
   const yearSelect =
     document.getElementById(
-      "historyYearSelect"
+      getHistorySelectId(
+        "year",
+        activeHistoryCategory
+      )
     );
 
 
   const monthSelect =
     document.getElementById(
-      "historyMonthSelect"
+      getHistorySelectId(
+        "month",
+        activeHistoryCategory
+      )
     );
 
 
@@ -2753,23 +2841,36 @@ function getHistoryPeriodHeader(
 
     <div class="history-period-summary">
 
-      <div class="history-period-title">
+      <div class="history-period-main">
 
-        ${config.icon}
-        ${config.title}
-        — ${HISTORY_MONTH_NAMES[
-          selectedHistoryMonth - 1
-        ]}
-        ${selectedHistoryYear}
+        <div class="history-period-title">
+
+          ${config.icon}
+          ${config.title}
+          — ${HISTORY_MONTH_NAMES[
+            selectedHistoryMonth - 1
+          ]}
+          ${selectedHistoryYear}
+
+        </div>
+
+        <div class="history-period-count">
+
+          ${count}
+          ${countText}
+
+        </div>
 
       </div>
 
-      <div class="history-period-count">
+      <button
+        type="button"
+        class="portal-button light-button history-period-change-button"
+        onclick="backToHistorySelector()">
 
-        ${count}
-        ${countText}
+        ↩ Change Month / Year
 
-      </div>
+      </button>
 
     </div>
 
@@ -2783,15 +2884,6 @@ function getHistoryRecordNavigation() {
   return `
 
     <div class="history-navigation-row">
-
-      <button
-        type="button"
-        class="portal-button light-button"
-        onclick="backToHistorySelector()">
-
-        ← Change Month / Year
-
-      </button>
 
       <button
         type="button"
