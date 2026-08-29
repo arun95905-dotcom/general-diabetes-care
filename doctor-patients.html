@@ -935,7 +935,9 @@ Date of Birth
 
 <input
   type="date"
-  id="newPatientDOB">
+  id="newPatientDOB"
+  oninput="updateAgeFromDOB('newPatientDOB','newPatientAge')"
+  onchange="updateAgeFromDOB('newPatientDOB','newPatientAge')">
 
 </div>
 
@@ -951,7 +953,7 @@ Age
   id="newPatientAge"
   min="0"
   max="120"
-  placeholder="Age in years">
+  placeholder="Auto from DOB or enter manually">
 
 </div>
 
@@ -1778,6 +1780,171 @@ function getValue(id) {
     : "";
 
 }
+
+
+function calculateAgeFromDOBValue(
+  dateValue
+) {
+
+  if (!dateValue) {
+    return null;
+  }
+
+
+  const parts =
+    String(dateValue)
+      .split("-");
+
+
+  if (parts.length !== 3) {
+    return null;
+  }
+
+
+  const year =
+    Number(parts[0]);
+
+  const month =
+    Number(parts[1]);
+
+  const day =
+    Number(parts[2]);
+
+
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(month) ||
+    !Number.isInteger(day)
+  ) {
+
+    return null;
+
+  }
+
+
+  const dob =
+    new Date(
+      year,
+      month - 1,
+      day
+    );
+
+
+  if (
+    dob.getFullYear() !== year ||
+    dob.getMonth() !== month - 1 ||
+    dob.getDate() !== day
+  ) {
+
+    return null;
+
+  }
+
+
+  const today =
+    new Date();
+
+
+  if (dob > today) {
+    return null;
+  }
+
+
+  let age =
+    today.getFullYear() -
+    dob.getFullYear();
+
+
+  const monthDifference =
+    today.getMonth() -
+    dob.getMonth();
+
+
+  if (
+    monthDifference < 0 ||
+    (
+      monthDifference === 0 &&
+      today.getDate() <
+      dob.getDate()
+    )
+  ) {
+
+    age--;
+
+  }
+
+
+  if (
+    age < 0 ||
+    age > 120
+  ) {
+
+    return null;
+
+  }
+
+
+  return age;
+
+}
+
+
+function updateAgeFromDOB(
+  dobInputId,
+  ageInputId
+) {
+
+  const dobInput =
+    document.getElementById(
+      dobInputId
+    );
+
+
+  const ageInput =
+    document.getElementById(
+      ageInputId
+    );
+
+
+  if (
+    !dobInput ||
+    !ageInput
+  ) {
+
+    return;
+
+  }
+
+
+  /*
+     If DOB is blank, leave Age untouched so it can
+     be entered manually when the exact DOB is unknown.
+  */
+  if (!dobInput.value) {
+    return;
+  }
+
+
+  const calculatedAge =
+    calculateAgeFromDOBValue(
+      dobInput.value
+    );
+
+
+  if (
+    calculatedAge === null
+  ) {
+
+    return;
+
+  }
+
+
+  ageInput.value =
+    calculatedAge;
+
+}
+
 
 
 /* =========================================================
@@ -3026,7 +3193,9 @@ async function editPatient(
               value="${escapeHTML(
                 patient.date_of_birth ||
                 ""
-              )}">
+              )}"
+              oninput="updateAgeFromDOB('editPatientDOB','editPatientAge')"
+              onchange="updateAgeFromDOB('editPatientDOB','editPatientAge')">
 
           </div>
 
@@ -3040,6 +3209,9 @@ async function editPatient(
             <input
               type="number"
               id="editPatientAge"
+              min="0"
+              max="120"
+              placeholder="Auto from DOB or enter manually"
               value="${escapeHTML(
                 patient.age ||
                 ""
@@ -3207,6 +3379,12 @@ async function editPatient(
 
   showView(
     "editPatientView"
+  );
+
+
+  updateAgeFromDOB(
+    "editPatientDOB",
+    "editPatientAge"
   );
 
 }
@@ -7480,6 +7658,9 @@ window.closeFileModal =
 
 window.returnToPatientPageSource =
   returnToPatientPageSource;
+
+window.updateAgeFromDOB =
+  updateAgeFromDOB;
 
 
 /* =========================================================
