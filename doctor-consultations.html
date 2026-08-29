@@ -951,6 +951,14 @@ let selectedHistoryYear =
 let selectedHistoryMonth =
   null;
 
+/*
+   HISTORY PERIOD RANGE
+   Show the present year and previous years only.
+   No future years or future months are shown.
+*/
+const HISTORY_YEAR_LOOKBACK =
+  20;
+
 
 /* =========================================================
    HELPERS
@@ -1741,79 +1749,42 @@ function getConsultationPeriod(
 
 function setDefaultHistoryPeriod() {
 
+  const now =
+    new Date();
+
+
   selectedHistoryYear =
-    null;
+    now.getFullYear();
 
   selectedHistoryMonth =
-    null;
-
-
-  for (
-    let index = 0;
-    index < currentConsultations.length;
-    index++
-  ) {
-
-    const period =
-      getConsultationPeriod(
-        currentConsultations[index]
-      );
-
-
-    if (!period) {
-      continue;
-    }
-
-
-    selectedHistoryYear =
-      period.year;
-
-    selectedHistoryMonth =
-      period.month;
-
-    return;
-
-  }
+    now.getMonth() + 1;
 
 }
 
 
 function getAvailableHistoryYears() {
 
+  const currentYear =
+    new Date().getFullYear();
+
   const years =
-    new Set();
+    [];
 
 
-  currentConsultations.forEach(
-    function(consultation) {
+  for (
+    let year = currentYear;
+    year >= currentYear - HISTORY_YEAR_LOOKBACK;
+    year--
+  ) {
 
-      const period =
-        getConsultationPeriod(
-          consultation
-        );
-
-
-      if (period) {
-
-        years.add(
-          period.year
-        );
-
-      }
-
-    }
-  );
-
-
-  return Array
-    .from(years)
-    .sort(
-      function(a,b) {
-
-        return b - a;
-
-      }
+    years.push(
+      year
     );
+
+  }
+
+
+  return years;
 
 }
 
@@ -1822,44 +1793,56 @@ function getAvailableMonthsForYear(
   year
 ) {
 
+  const now =
+    new Date();
+
+  const currentYear =
+    now.getFullYear();
+
+  const currentMonth =
+    now.getMonth() + 1;
+
+  const selectedYear =
+    Number(year);
+
+
+  if (
+    !Number.isInteger(
+      selectedYear
+    ) ||
+    selectedYear > currentYear ||
+    selectedYear <
+      currentYear - HISTORY_YEAR_LOOKBACK
+  ) {
+
+    return [];
+
+  }
+
+
+  const lastMonth =
+    selectedYear === currentYear
+      ? currentMonth
+      : 12;
+
   const months =
-    new Set();
+    [];
 
 
-  currentConsultations.forEach(
-    function(consultation) {
+  for (
+    let month = lastMonth;
+    month >= 1;
+    month--
+  ) {
 
-      const period =
-        getConsultationPeriod(
-          consultation
-        );
-
-
-      if (
-        period &&
-        period.year ===
-          Number(year)
-      ) {
-
-        months.add(
-          period.month
-        );
-
-      }
-
-    }
-  );
-
-
-  return Array
-    .from(months)
-    .sort(
-      function(a,b) {
-
-        return b - a;
-
-      }
+    months.push(
+      month
     );
+
+  }
+
+
+  return months;
 
 }
 
@@ -2084,7 +2067,7 @@ function renderHistoryPeriodSelector() {
         </h3>
 
         <p class="history-period-subtitle">
-          Choose a year and month to review previous consultations.
+          Choose any previous year and month up to the present month. Future months and years are hidden.
         </p>
 
 
@@ -2270,9 +2253,19 @@ function historyYearChanged() {
     );
 
 
-  selectedHistoryMonth =
-    months[0] ||
-    null;
+  if (
+    !months.includes(
+      Number(
+        selectedHistoryMonth
+      )
+    )
+  ) {
+
+    selectedHistoryMonth =
+      months[0] ||
+      null;
+
+  }
 
 
   renderHistoryPeriodSelector();
