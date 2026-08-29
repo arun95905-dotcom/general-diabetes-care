@@ -458,6 +458,140 @@ textarea {
 }
 
 
+
+/* =========================================================
+   APPOINTMENT DATE NAVIGATION
+   ========================================================= */
+
+.appointment-date-list {
+  display: grid;
+  gap: 10px;
+}
+
+.appointment-date-card {
+  width: 100%;
+  padding: 15px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #dfe8ef;
+  border-radius: 14px;
+  cursor: pointer;
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    border-color .15s ease;
+}
+
+.appointment-date-card:hover {
+  transform: translateY(-1px);
+  border-color: #bfd4e1;
+  box-shadow:
+    0 7px 18px rgba(25,55,80,.07);
+}
+
+.appointment-date-card.upcoming {
+  border-left: 5px solid #7a62cc;
+}
+
+.appointment-date-card.completed {
+  border-left: 5px solid #36a568;
+}
+
+.appointment-date-card.cancelled {
+  border-left: 5px solid #db5a5a;
+}
+
+.date-card-left {
+  min-width: 0;
+}
+
+.date-card-date {
+  color: #1d3446;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.date-card-day {
+  margin-top: 3px;
+  color: #7a8794;
+  font-size: 11px;
+}
+
+.date-card-right {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+}
+
+.date-card-count {
+  min-width: 34px;
+  padding: 5px 9px;
+  text-align: center;
+  border-radius: 999px;
+  color: #334155;
+  background: #f1f5f9;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.date-card-arrow {
+  color: #537080;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.selected-date-toolbar {
+  margin-bottom: 13px;
+  padding: 11px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #f7fafc;
+  border: 1px solid #e2e9ef;
+  border-radius: 12px;
+}
+
+.selected-date-title {
+  color: #203746;
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.selected-date-count {
+  margin-top: 2px;
+  color: #788696;
+  font-size: 11px;
+}
+
+.date-back-button {
+  min-height: 34px;
+  padding: 7px 10px;
+}
+
+@media(max-width:460px) {
+
+  .appointment-date-card {
+    padding: 13px 12px;
+  }
+
+  .date-card-date {
+    font-size: 14px;
+  }
+
+  .selected-date-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
+
+
 /* =========================================================
    ADD APPOINTMENT
    ========================================================= */
@@ -1319,6 +1453,9 @@ let selectedPatient =
 let currentSection =
   null;
 
+let selectedAppointmentDate =
+  null;
+
 let patientSearchTimer =
   null;
 
@@ -1590,16 +1727,6 @@ async function loadAppointments() {
 
   /*
      NEW:
-     identify appointments whose phone already belongs
-     to a registered patient, even when patient_id was
-     not stored when the appointment was created.
-  */
-
-  await resolvePatientLinksForAppointments();
-
-
-  /*
-     PRESERVED:
      find consultations linked through appointment_id.
   */
 
@@ -1614,39 +1741,6 @@ async function loadAppointments() {
   ) {
 
     renderCurrentSection();
-
-  }
-
-}
-
-
-/* =========================================================
-   RESOLVE EXISTING PATIENT LINKS BEFORE RENDER
-   ========================================================= */
-
-async function resolvePatientLinksForAppointments() {
-
-  const unresolved =
-    allAppointments.filter(
-      function(appointment) {
-
-        return !(
-          appointment.patient_id ||
-          appointment.linked_patient_id
-        );
-
-      }
-    );
-
-
-  for (
-    const appointment
-    of unresolved
-  ) {
-
-    await resolveAppointmentPatient(
-      appointment
-    );
 
   }
 
@@ -1874,6 +1968,10 @@ function openAppointmentSection(
     section;
 
 
+  selectedAppointmentDate =
+    null;
+
+
   closeAddAppointment(
     false
   );
@@ -1935,9 +2033,69 @@ function openAppointmentSection(
 }
 
 
+function openAppointmentDate(
+  date
+) {
+
+  if (
+    currentSection ===
+    "today"
+  ) {
+
+    return;
+
+  }
+
+
+  selectedAppointmentDate =
+    date;
+
+
+  renderCurrentSection();
+
+
+  updateSectionURL(
+    currentSection
+  );
+
+
+  getElement(
+    "appointmentSection"
+  )
+  .scrollIntoView({
+    behavior:
+      "smooth",
+
+    block:
+      "start"
+  });
+
+}
+
+
+function backToAppointmentDates() {
+
+  selectedAppointmentDate =
+    null;
+
+
+  renderCurrentSection();
+
+
+  updateSectionURL(
+    currentSection
+  );
+
+}
+
+
 function closeAppointmentSection() {
 
   currentSection =
+    null;
+
+
+  selectedAppointmentDate =
     null;
 
 
@@ -1957,6 +2115,11 @@ function closeAppointmentSection() {
 
   url.searchParams.delete(
     "section"
+  );
+
+
+  url.searchParams.delete(
+    "date"
   );
 
 
@@ -1984,6 +2147,26 @@ function updateSectionURL(
     "section",
     section
   );
+
+
+  if (
+    selectedAppointmentDate &&
+    section !==
+      "today"
+  ) {
+
+    url.searchParams.set(
+      "date",
+      selectedAppointmentDate
+    );
+
+  } else {
+
+    url.searchParams.delete(
+      "date"
+    );
+
+  }
 
 
   window.history.replaceState(
@@ -2181,12 +2364,316 @@ function renderCurrentSection() {
   }
 
 
-  container.innerHTML =
-    appointments
+  /*
+     Today contains only one date, so show the
+     patient cards immediately.
+
+     Upcoming, Completed and Cancelled first show
+     one date row for each date. Tapping the date
+     then loads only that day's patients.
+  */
+
+  if (
+    currentSection ===
+    "today"
+  ) {
+
+    container.innerHTML =
+      appointments
+        .map(
+          renderAppointmentCard
+        )
+        .join("");
+
+
+    return;
+
+  }
+
+
+  if (
+    !selectedAppointmentDate
+  ) {
+
+    renderAppointmentDateList(
+      appointments
+    );
+
+
+    return;
+
+  }
+
+
+  const dateAppointments =
+    appointments.filter(
+      function(appointment) {
+
+        return (
+          appointment.appointment_date ===
+          selectedAppointmentDate
+        );
+
+      }
+    );
+
+
+  if (
+    dateAppointments.length ===
+    0
+  ) {
+
+    selectedAppointmentDate =
+      null;
+
+
+    updateSectionURL(
+      currentSection
+    );
+
+
+    renderAppointmentDateList(
+      appointments
+    );
+
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <div class="selected-date-toolbar">
+
+      <div>
+
+        <div class="selected-date-title">
+
+          📅
+          ${formatDate(
+            selectedAppointmentDate
+          )}
+
+        </div>
+
+        <div class="selected-date-count">
+
+          ${dateAppointments.length}
+          ${
+            dateAppointments.length === 1
+              ? "appointment"
+              : "appointments"
+          }
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="portal-button light-button small-button date-back-button"
+        onclick="backToAppointmentDates()">
+
+        ← All Dates
+
+      </button>
+
+    </div>
+
+
+    ${dateAppointments
       .map(
         renderAppointmentCard
       )
-      .join("");
+      .join("")}
+
+  `;
+
+}
+
+
+function renderAppointmentDateList(
+  appointments
+) {
+
+  const container =
+    getElement(
+      "appointmentsContainer"
+    );
+
+
+  const grouped =
+    {};
+
+
+  appointments.forEach(
+    function(appointment) {
+
+      const date =
+        appointment.appointment_date;
+
+
+      if (!date) {
+        return;
+      }
+
+
+      if (
+        !grouped[
+          date
+        ]
+      ) {
+
+        grouped[
+          date
+        ] =
+          [];
+
+      }
+
+
+      grouped[
+        date
+      ]
+      .push(
+        appointment
+      );
+
+    }
+  );
+
+
+  let dates =
+    Object.keys(
+      grouped
+    );
+
+
+  /*
+     Upcoming:
+     nearest future date first.
+
+     Completed / Cancelled:
+     newest date first.
+  */
+
+  if (
+    currentSection ===
+    "upcoming"
+  ) {
+
+    dates.sort();
+
+  } else {
+
+    dates.sort(
+      function(a,b) {
+
+        return b.localeCompare(
+          a
+        );
+
+      }
+    );
+
+  }
+
+
+  container.innerHTML = `
+
+    <div class="appointment-date-list">
+
+      ${dates
+        .map(
+          function(date) {
+
+            const count =
+              grouped[
+                date
+              ].length;
+
+
+            const day =
+              new Date(
+                date +
+                "T00:00:00"
+              )
+              .toLocaleDateString(
+                "en-IN",
+                {
+                  weekday:
+                    "long"
+                }
+              );
+
+
+            return `
+
+              <button
+                type="button"
+                class="appointment-date-card ${escapeHTML(
+                  currentSection ||
+                  ""
+                )}"
+                onclick="openAppointmentDate(
+                  '${escapeHTML(
+                    date
+                  )}'
+                )">
+
+
+                <div class="date-card-left">
+
+                  <div class="date-card-date">
+
+                    📅
+                    ${formatDate(
+                      date
+                    )}
+
+                  </div>
+
+                  <div class="date-card-day">
+
+                    ${escapeHTML(
+                      day
+                    )}
+
+                  </div>
+
+                </div>
+
+
+                <div class="date-card-right">
+
+                  <span class="date-card-count">
+
+                    ${count}
+
+                  </span>
+
+                  <span class="date-card-arrow">
+
+                    ›
+
+                  </span>
+
+                </div>
+
+
+              </button>
+
+            `;
+
+          }
+        )
+        .join("")}
+
+    </div>
+
+  `;
 
 }
 
@@ -2235,11 +2722,6 @@ function renderAppointmentCard(
     appointment.linked_patient_id ||
     null;
 
-
-  /*
-     PRESERVED:
-     consultation created from this appointment.
-  */
 
   const linkedConsultation =
     linkedConsultationsByAppointment[
@@ -2883,13 +3365,30 @@ function getAppointmentReturnURL(
     );
 
 
-  return (
+  let returnURL =
     "doctor-appointments.html" +
     "?section=" +
     encodeURIComponent(
       returnSection
-    )
-  );
+    );
+
+
+  if (
+    selectedAppointmentDate &&
+    returnSection !==
+      "today"
+  ) {
+
+    returnURL +=
+      "&date=" +
+      encodeURIComponent(
+        selectedAppointmentDate
+      );
+
+  }
+
+
+  return returnURL;
 
 }
 
@@ -3046,8 +3545,7 @@ function registerAppointmentPatient(
 
 
 /*
-   Compatibility alias for the old function name.
-   Any old inline reference will now open Basic Details.
+   Compatibility alias for older inline references.
 */
 async function handleViewPatientById(
   appointmentId
@@ -3097,21 +3595,9 @@ async function startConsultationByAppointmentId(
   }
 
 
-  const returnSection =
-    currentSection ||
-    (
-      appointment.appointment_date ===
-      getTodayString()
-        ? "today"
-        : "upcoming"
-    );
-
-
   const returnURL =
-    "doctor-appointments.html" +
-    "?section=" +
-    encodeURIComponent(
-      returnSection
+    getAppointmentReturnURL(
+      appointment
     );
 
 
@@ -3198,8 +3684,9 @@ function viewAppointmentConsultation(
 
 
   const returnURL =
-    "doctor-appointments.html" +
-    "?section=completed";
+    getAppointmentReturnURL(
+      appointment
+    );
 
 
   window.location.href =
@@ -4487,6 +4974,12 @@ function restoreSectionFromURL() {
     );
 
 
+  const date =
+    params.get(
+      "date"
+    );
+
+
   if (
     [
       "today",
@@ -4502,6 +4995,26 @@ function restoreSectionFromURL() {
     openAppointmentSection(
       section
     );
+
+
+    if (
+      date &&
+      section !==
+        "today"
+    ) {
+
+      selectedAppointmentDate =
+        date;
+
+
+      renderCurrentSection();
+
+
+      updateSectionURL(
+        section
+      );
+
+    }
 
   }
 
@@ -4558,6 +5071,12 @@ window.openAppointmentSection =
 window.closeAppointmentSection =
   closeAppointmentSection;
 
+window.openAppointmentDate =
+  openAppointmentDate;
+
+window.backToAppointmentDates =
+  backToAppointmentDates;
+
 window.toggleAddAppointment =
   toggleAddAppointment;
 
@@ -4578,15 +5097,6 @@ window.deleteAppointment =
 
 window.handleViewPatientById =
   handleViewPatientById;
-
-window.viewPatientBasicDetails =
-  viewPatientBasicDetails;
-
-window.openPatientHistory =
-  openPatientHistory;
-
-window.registerAppointmentPatient =
-  registerAppointmentPatient;
 
 window.startConsultationByAppointmentId =
   startConsultationByAppointmentId;
