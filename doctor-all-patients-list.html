@@ -487,7 +487,7 @@ Browse registered patients by month and year
 
 <p class="filter-subtitle">
 Choose a year and month to view patients registered during that period.
-Future years and future months are not shown.
+The current year and previous 20 years are available. Future years and future months are not shown.
 </p>
 
 <div class="filter-grid">
@@ -675,6 +675,15 @@ let selectedMonth =
   null;
 
 
+/*
+   PATIENT REGISTRATION PERIOD RANGE
+   Show the present year and previous 20 years.
+   No future years or future months are shown.
+*/
+const PATIENT_YEAR_LOOKBACK =
+  20;
+
+
 /* =========================================================
    HELPERS
    ========================================================= */
@@ -802,43 +811,9 @@ function getEarliestPatientYear() {
     getCurrentYearMonth();
 
 
-  const years =
-    allPatients
-      .map(
-        function(patient) {
-
-          const period =
-            getPatientYearMonth(
-              patient
-            );
-
-
-          return period
-            ? period.year
-            : null;
-
-        }
-      )
-      .filter(
-        function(year) {
-
-          return Number.isInteger(
-            year
-          );
-
-        }
-      );
-
-
-  if (
-    years.length === 0
-  ) {
-    return current.year;
-  }
-
-
-  return Math.min(
-    ...years
+  return (
+    current.year -
+    PATIENT_YEAR_LOOKBACK
   );
 
 }
