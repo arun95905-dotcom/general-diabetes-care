@@ -443,13 +443,14 @@ Loading patient...
 
 <div class="action-row">
 
-<a
-  href="doctor-all-patients.html"
+<button
+  type="button"
+  id="backButton"
   class="portal-button light-button">
 
 ← All Patients
 
-</a>
+</button>
 
 <button
   type="button"
@@ -502,6 +503,9 @@ let currentPatient =
 
 let currentPatientId =
   null;
+
+let patientAdminReturnURL =
+  "doctor-all-patients.html";
 
 
 /* =========================================================
@@ -657,6 +661,66 @@ function getPatientIdFromURL() {
 }
 
 
+function getPatientAdminReturnURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const returnTo =
+    params.get(
+      "return_to"
+    );
+
+  if (!returnTo) {
+    return "doctor-all-patients.html";
+  }
+
+  try {
+
+    const decoded =
+      decodeURIComponent(
+        returnTo
+      );
+
+    const target =
+      new URL(
+        decoded,
+        window.location.href
+      );
+
+    if (
+      target.origin !==
+      window.location.origin
+    ) {
+      return "doctor-all-patients.html";
+    }
+
+    return (
+      target.pathname.split("/").pop() +
+      target.search +
+      target.hash
+    );
+
+  } catch (error) {
+
+    return "doctor-all-patients.html";
+
+  }
+
+}
+
+
+function returnFromPatientAdmin() {
+
+  window.location.href =
+    patientAdminReturnURL ||
+    "doctor-all-patients.html";
+
+}
+
+
 function chunkArray(
   array,
   size
@@ -778,13 +842,14 @@ async function loadPatient() {
           class="action-row"
           style="justify-content:center;">
 
-          <a
-            href="doctor-all-patients.html"
-            class="portal-button light-button">
+          <button
+            type="button"
+            class="portal-button light-button"
+            onclick="returnFromPatientAdmin()">
 
-            ← All Patients
+            ← Back
 
-          </a>
+          </button>
 
         </div>
 
@@ -1900,6 +1965,16 @@ async function deletePatientPermanently() {
 
 document
   .getElementById(
+    "backButton"
+  )
+  .addEventListener(
+    "click",
+    returnFromPatientAdmin
+  );
+
+
+document
+  .getElementById(
     "logoutButton"
   )
   .addEventListener(
@@ -1911,6 +1986,9 @@ document
 /* =========================================================
    GLOBAL
    ========================================================= */
+
+window.returnFromPatientAdmin =
+  returnFromPatientAdmin;
 
 window.toggleBasicDetails =
   toggleBasicDetails;
@@ -1934,8 +2012,27 @@ window.deletePatientPermanently =
   }
 
 
+  patientAdminReturnURL =
+    getPatientAdminReturnURL();
+
+
   currentPatientId =
     getPatientIdFromURL();
+
+
+  const backButton =
+    document.getElementById(
+      "backButton"
+    );
+
+  if (
+    backButton &&
+    patientAdminReturnURL !==
+      "doctor-all-patients.html"
+  ) {
+    backButton.textContent =
+      "← Back to Patient List";
+  }
 
 
   if (!currentPatientId) {
