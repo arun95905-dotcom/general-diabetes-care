@@ -2382,6 +2382,108 @@
   }
 </style>
 
+
+
+<style id="diabetes-learn-more-placement">
+  .diabetes-learn-more-after-services {
+    width: min(1240px, calc(100% - 36px));
+    margin: -42px auto 44px;
+    text-align: center;
+  }
+
+  .diabetes-learn-more-after-services .map-button {
+    display: inline-block;
+    color: #1769e0;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 850;
+  }
+
+  .diabetes-learn-more-after-services .map-button:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 520px) {
+    .diabetes-learn-more-after-services {
+      width: calc(100% - 28px);
+      margin: -46px auto 38px;
+    }
+
+    .diabetes-learn-more-after-services .map-button {
+      font-size: 14px;
+    }
+  }
+</style>
+
+
+<style id="tagline-and-diabetes-link-refinement">
+  .clinic-tagline {
+    position: relative;
+    margin-top: 9px !important;
+    padding-top: 8px !important;
+  }
+
+  .clinic-tagline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 230px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201,24,31,.55), rgba(23,105,224,.35));
+  }
+
+  .diabetes-learn-more-after-services {
+    width: min(1240px, calc(100% - 36px));
+    margin: -34px auto 54px;
+    text-align: center;
+  }
+
+  .diabetes-learn-more-after-services .diabetes-learn-more-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 13px 22px;
+    border-radius: 15px;
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 850;
+    background: linear-gradient(135deg, #1769e0, #0fa7d3);
+    box-shadow: 0 12px 28px rgba(23,105,224,.20);
+  }
+
+  .diabetes-learn-more-after-services .diabetes-learn-more-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(23,105,224,.25);
+  }
+
+  @media (max-width: 760px) {
+    .clinic-tagline {
+      margin-top: 6px !important;
+      padding-top: 6px !important;
+    }
+
+    .clinic-tagline::before {
+      max-width: 180px;
+    }
+
+    .diabetes-learn-more-after-services {
+      width: calc(100% - 36px);
+      margin: -28px auto 44px;
+    }
+
+    .diabetes-learn-more-after-services .diabetes-learn-more-button {
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 16px;
+      font-size: 13px;
+    }
+  }
+</style>
+
 </head>
 
 
@@ -2409,8 +2511,8 @@
       </h1>
 
 
-      <p>
-        General Physician &amp; Diabetologist
+      <p class="clinic-tagline">
+        Trusted Care for Better Health
       </p>
 
     </div>
@@ -3231,14 +3333,6 @@
       </p>
 
 
-      <a
-        href="diabetes-care-anna-nagar.html"
-        class="map-button">
-
-        Learn More About Diabetes Care →
-
-      </a>
-
     </div>
 
 
@@ -3460,6 +3554,18 @@
 
 </section>
 
+
+<div class="diabetes-learn-more-after-services">
+
+  <a
+    href="diabetes-care-anna-nagar.html"
+    class="diabetes-learn-more-button">
+
+    Learn More About Diabetes Care →
+
+  </a>
+
+</div>
 
 
 <!-- =======================================================
