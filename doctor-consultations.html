@@ -537,6 +537,153 @@ textarea {
 }
 
 
+
+/* =========================================================
+   MONTH / YEAR CONSULTATION NAVIGATION
+   ========================================================= */
+
+.history-period-panel {
+  margin-top: 14px;
+  padding: 16px;
+  background:
+    linear-gradient(
+      135deg,
+      #f7fbff,
+      #ffffff
+    );
+  border: 1px solid #dce8f6;
+  border-radius: 16px;
+}
+
+.history-period-title {
+  margin: 0;
+  color: #1e3a5f;
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.history-period-subtitle {
+  margin: 5px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.history-period-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.history-period-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-period-group label {
+  margin-bottom: 6px;
+  color: #4b5563;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.history-period-select {
+  width: 100%;
+  min-height: 47px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 11px;
+  color: #172033;
+  outline: none;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.history-period-select:focus {
+  border-color: #2563eb;
+  box-shadow:
+    0 0 0 3px rgba(37,99,235,.08);
+}
+
+.history-period-actions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.history-period-summary {
+  margin-top: 12px;
+  padding: 10px 12px;
+  color: #536274;
+  background: #f8fafc;
+  border: 1px solid #e5eaf0;
+  border-radius: 11px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.history-results-toolbar {
+  margin-bottom: 14px;
+  padding: 13px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background:
+    linear-gradient(
+      135deg,
+      #eef6ff,
+      #ffffff
+    );
+  border: 1px solid #d5e4f5;
+  border-radius: 14px;
+}
+
+.history-results-title {
+  color: #1e3a5f;
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.history-results-count {
+  margin-top: 3px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.history-loading {
+  padding: 24px 15px;
+  text-align: center;
+  color: #64748b;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+@media(max-width:560px) {
+
+  .history-period-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .history-period-actions .portal-button {
+    width: 100%;
+  }
+
+  .history-results-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .history-results-toolbar .portal-button {
+    width: 100%;
+  }
+
+}
+
 /* =========================================================
    MOBILE
    ========================================================= */
@@ -793,6 +940,15 @@ let currentPatientId =
   null;
 
 let currentConsultationId =
+  null;
+
+let currentConsultations =
+  [];
+
+let selectedHistoryYear =
+  null;
+
+let selectedHistoryMonth =
   null;
 
 
@@ -1317,11 +1473,12 @@ async function getPatient(patientId) {
 
 
 /* =========================================================
-   OPEN HISTORY
+   OPEN HISTORY + MONTH / YEAR SELECTOR
    ========================================================= */
 
 async function openPatientHistory(
-  patientId
+  patientId,
+  options = {}
 ) {
 
   const patient =
@@ -1341,6 +1498,45 @@ async function openPatientHistory(
 
   currentPatientId =
     patient.id;
+
+
+  document
+    .getElementById(
+      "historyContent"
+    )
+    .innerHTML = `
+
+      <div class="view-header">
+
+        <h2>
+          📋 Consultation History
+        </h2>
+
+        <button
+          type="button"
+          class="portal-button light-button"
+          onclick="backToSearch()">
+
+          ← Back
+
+        </button>
+
+      </div>
+
+      ${renderPatientHeader(
+        patient
+      )}
+
+      <div class="history-loading">
+        Loading consultation history...
+      </div>
+
+    `;
+
+
+  showView(
+    "historyView"
+  );
 
 
   const {
@@ -1374,7 +1570,7 @@ async function openPatientHistory(
   }
 
 
-  const normalConsultations =
+  currentConsultations =
     (
       consultations ||
       []
@@ -1390,6 +1586,466 @@ async function openPatientHistory(
 
       }
     );
+
+
+  const requestedYear =
+    options.year !== undefined
+      ? Number(options.year)
+      : null;
+
+
+  const requestedMonth =
+    options.month !== undefined
+      ? Number(options.month)
+      : null;
+
+
+  const shouldOpenResults =
+    options.openResults === true &&
+    Number.isInteger(
+      requestedYear
+    ) &&
+    Number.isInteger(
+      requestedMonth
+    );
+
+
+  if (shouldOpenResults) {
+
+    selectedHistoryYear =
+      requestedYear;
+
+    selectedHistoryMonth =
+      requestedMonth;
+
+    renderSelectedHistoryPeriod();
+
+    return;
+
+  }
+
+
+  setDefaultHistoryPeriod();
+
+  renderHistoryPeriodSelector();
+
+}
+
+
+function renderPatientHeader(
+  patient
+) {
+
+  return `
+
+    <div class="patient-header">
+
+      <div class="patient-name">
+
+        👤
+        ${escapeHTML(
+          patient.patient_name ||
+          "-"
+        )}
+
+      </div>
+
+
+      <div class="patient-meta">
+
+        🆔 Patient ID:
+        ${escapeHTML(
+          patient.id
+        )}
+
+        <br>
+
+        🎂 Age:
+        ${escapeHTML(
+          calculateAge(
+            patient
+          )
+        )}
+
+        ${
+          patient.gender
+            ? `
+                &nbsp; • &nbsp;
+                ${escapeHTML(
+                  patient.gender
+                )}
+              `
+            : ""
+        }
+
+        <br>
+
+        📞
+        ${escapeHTML(
+          patient.patient_phone ||
+          "-"
+        )}
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function getConsultationPeriod(
+  consultation
+) {
+
+  if (
+    !consultation ||
+    !consultation.created_at
+  ) {
+
+    return null;
+
+  }
+
+
+  const date =
+    new Date(
+      consultation.created_at
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  return {
+
+    year:
+      date.getFullYear(),
+
+    month:
+      date.getMonth() + 1
+
+  };
+
+}
+
+
+function setDefaultHistoryPeriod() {
+
+  selectedHistoryYear =
+    null;
+
+  selectedHistoryMonth =
+    null;
+
+
+  for (
+    let index = 0;
+    index < currentConsultations.length;
+    index++
+  ) {
+
+    const period =
+      getConsultationPeriod(
+        currentConsultations[index]
+      );
+
+
+    if (!period) {
+      continue;
+    }
+
+
+    selectedHistoryYear =
+      period.year;
+
+    selectedHistoryMonth =
+      period.month;
+
+    return;
+
+  }
+
+}
+
+
+function getAvailableHistoryYears() {
+
+  const years =
+    new Set();
+
+
+  currentConsultations.forEach(
+    function(consultation) {
+
+      const period =
+        getConsultationPeriod(
+          consultation
+        );
+
+
+      if (period) {
+
+        years.add(
+          period.year
+        );
+
+      }
+
+    }
+  );
+
+
+  return Array
+    .from(years)
+    .sort(
+      function(a,b) {
+
+        return b - a;
+
+      }
+    );
+
+}
+
+
+function getAvailableMonthsForYear(
+  year
+) {
+
+  const months =
+    new Set();
+
+
+  currentConsultations.forEach(
+    function(consultation) {
+
+      const period =
+        getConsultationPeriod(
+          consultation
+        );
+
+
+      if (
+        period &&
+        period.year ===
+          Number(year)
+      ) {
+
+        months.add(
+          period.month
+        );
+
+      }
+
+    }
+  );
+
+
+  return Array
+    .from(months)
+    .sort(
+      function(a,b) {
+
+        return b - a;
+
+      }
+    );
+
+}
+
+
+function getHistoryMonthName(
+  month
+) {
+
+  const names = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+
+
+  const index =
+    Number(month) - 1;
+
+
+  return names[index] ||
+    "Month";
+
+}
+
+
+function getConsultationsForPeriod(
+  year,
+  month
+) {
+
+  return currentConsultations
+    .filter(
+      function(consultation) {
+
+        const period =
+          getConsultationPeriod(
+            consultation
+          );
+
+
+        return (
+          period &&
+          period.year ===
+            Number(year) &&
+          period.month ===
+            Number(month)
+        );
+
+      }
+    )
+    .sort(
+      function(a,b) {
+
+        return String(
+          b.created_at ||
+          ""
+        ).localeCompare(
+          String(
+            a.created_at ||
+            ""
+          )
+        );
+
+      }
+    );
+
+}
+
+
+function renderHistoryPeriodSelector() {
+
+  if (!currentPatient) {
+
+    backToSearch();
+
+    return;
+
+  }
+
+
+  const years =
+    getAvailableHistoryYears();
+
+
+  if (
+    years.length === 0
+  ) {
+
+    document
+      .getElementById(
+        "historyContent"
+      )
+      .innerHTML = `
+
+        <div class="view-header">
+
+          <h2>
+            📋 Consultation History
+          </h2>
+
+          <button
+            type="button"
+            class="portal-button light-button"
+            onclick="backToSearch()">
+
+            ← Back
+
+          </button>
+
+        </div>
+
+        ${renderPatientHeader(
+          currentPatient
+        )}
+
+        <div class="portal-message">
+          No previous consultations found.
+        </div>
+
+      `;
+
+
+    updateHistoryURL(
+      false
+    );
+
+    showView(
+      "historyView"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !years.includes(
+      Number(
+        selectedHistoryYear
+      )
+    )
+  ) {
+
+    selectedHistoryYear =
+      years[0];
+
+  }
+
+
+  let months =
+    getAvailableMonthsForYear(
+      selectedHistoryYear
+    );
+
+
+  if (
+    !months.includes(
+      Number(
+        selectedHistoryMonth
+      )
+    )
+  ) {
+
+    selectedHistoryMonth =
+      months[0] ||
+      null;
+
+  }
+
+
+  const selectedCount =
+    selectedHistoryMonth
+      ? getConsultationsForPeriod(
+          selectedHistoryYear,
+          selectedHistoryMonth
+        ).length
+      : 0;
 
 
   document
@@ -1416,82 +2072,513 @@ async function openPatientHistory(
       </div>
 
 
-      <div class="patient-header">
+      ${renderPatientHeader(
+        currentPatient
+      )}
 
-        <div class="patient-name">
 
-          👤
-          ${escapeHTML(
-            patient.patient_name ||
-            "-"
-          )}
+      <div class="history-period-panel">
+
+        <h3 class="history-period-title">
+          Select Month &amp; Year
+        </h3>
+
+        <p class="history-period-subtitle">
+          Choose a year and month to review previous consultations.
+        </p>
+
+
+        <div class="history-period-grid">
+
+          <div class="history-period-group">
+
+            <label for="historyYearSelect">
+              Year
+            </label>
+
+            <select
+              id="historyYearSelect"
+              class="history-period-select"
+              onchange="historyYearChanged()">
+
+              ${years
+                .map(
+                  function(year) {
+
+                    return `
+
+                      <option
+                        value="${Number(year)}"
+                        ${
+                          Number(year) ===
+                          Number(selectedHistoryYear)
+                            ? "selected"
+                            : ""
+                        }>
+
+                        ${Number(year)}
+
+                      </option>
+
+                    `;
+
+                  }
+                )
+                .join("")}
+
+            </select>
+
+          </div>
+
+
+          <div class="history-period-group">
+
+            <label for="historyMonthSelect">
+              Month
+            </label>
+
+            <select
+              id="historyMonthSelect"
+              class="history-period-select"
+              onchange="historyMonthChanged()">
+
+              ${months
+                .map(
+                  function(month) {
+
+                    return `
+
+                      <option
+                        value="${Number(month)}"
+                        ${
+                          Number(month) ===
+                          Number(selectedHistoryMonth)
+                            ? "selected"
+                            : ""
+                        }>
+
+                        ${escapeHTML(
+                          getHistoryMonthName(
+                            month
+                          )
+                        )}
+
+                      </option>
+
+                    `;
+
+                  }
+                )
+                .join("")}
+
+            </select>
+
+          </div>
 
         </div>
 
 
-        <div class="patient-meta">
+        <div
+          id="historyPeriodSummary"
+          class="history-period-summary">
 
-          🆔 Patient ID:
+          ${selectedCount}
+          ${
+            selectedCount === 1
+              ? "consultation"
+              : "consultations"
+          }
+          available in
           ${escapeHTML(
-            patient.id
-          )}
-
-          <br>
-
-          🎂 Age:
-          ${escapeHTML(
-            calculateAge(
-              patient
+            getHistoryMonthName(
+              selectedHistoryMonth
             )
           )}
-
-          ${
-            patient.gender
-              ? `
-
-                &nbsp; • &nbsp;
-                ${escapeHTML(
-                  patient.gender
-                )}
-
-              `
-              : ""
-          }
-
-          <br>
-
-          📞
           ${escapeHTML(
-            patient.patient_phone ||
-            "-"
-          )}
+            selectedHistoryYear
+          )}.
+
+        </div>
+
+
+        <div class="history-period-actions">
+
+          <button
+            type="button"
+            class="portal-button primary-button"
+            onclick="viewSelectedHistoryPeriod()"
+            ${
+              selectedHistoryMonth
+                ? ""
+                : "disabled"
+            }>
+
+            🔎 View Consultations
+
+          </button>
+
+          <button
+            type="button"
+            class="portal-button light-button"
+            onclick="backToSearch()">
+
+            ✕ Cancel
+
+          </button>
 
         </div>
 
       </div>
 
+    `;
+
+
+  updateHistoryURL(
+    false
+  );
+
+
+  showView(
+    "historyView"
+  );
+
+}
+
+
+function historyYearChanged() {
+
+  const yearSelect =
+    document.getElementById(
+      "historyYearSelect"
+    );
+
+
+  if (!yearSelect) {
+    return;
+  }
+
+
+  selectedHistoryYear =
+    Number(
+      yearSelect.value
+    );
+
+
+  const months =
+    getAvailableMonthsForYear(
+      selectedHistoryYear
+    );
+
+
+  selectedHistoryMonth =
+    months[0] ||
+    null;
+
+
+  renderHistoryPeriodSelector();
+
+}
+
+
+function historyMonthChanged() {
+
+  const monthSelect =
+    document.getElementById(
+      "historyMonthSelect"
+    );
+
+
+  if (!monthSelect) {
+    return;
+  }
+
+
+  selectedHistoryMonth =
+    Number(
+      monthSelect.value
+    );
+
+
+  const count =
+    getConsultationsForPeriod(
+      selectedHistoryYear,
+      selectedHistoryMonth
+    ).length;
+
+
+  const summary =
+    document.getElementById(
+      "historyPeriodSummary"
+    );
+
+
+  if (summary) {
+
+    summary.textContent =
+      count +
+      " " +
+      (
+        count === 1
+          ? "consultation"
+          : "consultations"
+      ) +
+      " available in " +
+      getHistoryMonthName(
+        selectedHistoryMonth
+      ) +
+      " " +
+      selectedHistoryYear +
+      ".";
+
+  }
+
+
+  updateHistoryURL(
+    false
+  );
+
+}
+
+
+function viewSelectedHistoryPeriod() {
+
+  if (
+    !selectedHistoryYear ||
+    !selectedHistoryMonth
+  ) {
+
+    alert(
+      "Please select a year and month."
+    );
+
+    return;
+
+  }
+
+
+  renderSelectedHistoryPeriod();
+
+}
+
+
+function renderSelectedHistoryPeriod() {
+
+  if (!currentPatient) {
+
+    backToSearch();
+
+    return;
+
+  }
+
+
+  const consultations =
+    getConsultationsForPeriod(
+      selectedHistoryYear,
+      selectedHistoryMonth
+    );
+
+
+  document
+    .getElementById(
+      "historyContent"
+    )
+    .innerHTML = `
+
+      <div class="view-header">
+
+        <h2>
+          📋 Consultation History
+        </h2>
+
+        <button
+          type="button"
+          class="portal-button light-button"
+          onclick="showHistoryPeriodSelector()">
+
+          ← Change Month / Year
+
+        </button>
+
+      </div>
+
+
+      ${renderPatientHeader(
+        currentPatient
+      )}
+
+
+      <div class="history-results-toolbar">
+
+        <div>
+
+          <div class="history-results-title">
+            📅
+            ${escapeHTML(
+              getHistoryMonthName(
+                selectedHistoryMonth
+              )
+            )}
+            ${escapeHTML(
+              selectedHistoryYear
+            )}
+          </div>
+
+          <div class="history-results-count">
+            ${consultations.length}
+            ${
+              consultations.length === 1
+                ? "consultation"
+                : "consultations"
+            }
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="portal-button light-button small-button"
+          onclick="showHistoryPeriodSelector()">
+
+          ← Change Month / Year
+
+        </button>
+
+      </div>
+
 
       ${
-        normalConsultations.length
-          ? normalConsultations
+        consultations.length
+          ? consultations
               .map(
                 renderConsultationCard
               )
               .join("")
           : `
 
-            <div class="portal-message">
-              No previous consultations found.
-            </div>
+              <div class="portal-message">
+                No consultations found for this month.
+              </div>
 
-          `
+            `
       }
+
+
+      <div class="action-row">
+
+        <button
+          type="button"
+          class="portal-button light-button"
+          onclick="showHistoryPeriodSelector()">
+
+          ← Back to Month / Year
+
+        </button>
+
+        <button
+          type="button"
+          class="portal-button secondary-button"
+          onclick="backToSearch()">
+
+          ← Back to Patient Search
+
+        </button>
+
+      </div>
 
     `;
 
 
+  updateHistoryURL(
+    true
+  );
+
+
   showView(
     "historyView"
+  );
+
+}
+
+
+function showHistoryPeriodSelector() {
+
+  renderHistoryPeriodSelector();
+
+}
+
+
+function updateHistoryURL(
+  showResults
+) {
+
+  if (!currentPatientId) {
+    return;
+  }
+
+
+  const url =
+    new URL(
+      window.location.href
+    );
+
+
+  url.searchParams.set(
+    "patient_id",
+    currentPatientId
+  );
+
+
+  if (
+    selectedHistoryYear &&
+    selectedHistoryMonth
+  ) {
+
+    url.searchParams.set(
+      "year",
+      selectedHistoryYear
+    );
+
+    url.searchParams.set(
+      "month",
+      selectedHistoryMonth
+    );
+
+  } else {
+
+    url.searchParams.delete(
+      "year"
+    );
+
+    url.searchParams.delete(
+      "month"
+    );
+
+  }
+
+
+  if (showResults) {
+
+    url.searchParams.set(
+      "view",
+      "consultations"
+    );
+
+  } else {
+
+    url.searchParams.delete(
+      "view"
+    );
+
+  }
+
+
+  window.history.replaceState(
+    {},
+    "",
+    url.pathname +
+    url.search
   );
 
 }
@@ -1917,7 +3004,15 @@ async function deleteConsultation(
     if (currentPatientId) {
 
       await openPatientHistory(
-        currentPatientId
+        currentPatientId,
+        {
+          year:
+            selectedHistoryYear,
+          month:
+            selectedHistoryMonth,
+          openResults:
+            true
+        }
       );
 
     }
@@ -4258,7 +5353,15 @@ async function saveEditedConsultation(
 
 
   await openPatientHistory(
-    patientId
+    patientId,
+    {
+      year:
+        selectedHistoryYear,
+      month:
+        selectedHistoryMonth,
+      openResults:
+        true
+    }
   );
 
 }
@@ -4275,7 +5378,15 @@ function cancelEditConsultation() {
   ) {
 
     openPatientHistory(
-      currentPatientId
+      currentPatientId,
+      {
+        year:
+          selectedHistoryYear,
+        month:
+          selectedHistoryMonth,
+        openResults:
+          true
+      }
     );
 
     return;
@@ -5544,12 +6655,43 @@ function createBillForConsultation(
   }
 
 
+  const returnParams =
+    new URLSearchParams();
+
+
+  returnParams.set(
+    "patient_id",
+    currentPatientId
+  );
+
+
+  if (
+    selectedHistoryYear &&
+    selectedHistoryMonth
+  ) {
+
+    returnParams.set(
+      "year",
+      selectedHistoryYear
+    );
+
+    returnParams.set(
+      "month",
+      selectedHistoryMonth
+    );
+
+    returnParams.set(
+      "view",
+      "consultations"
+    );
+
+  }
+
+
   const returnURL =
     window.location.pathname +
-    "?patient_id=" +
-    encodeURIComponent(
-      currentPatientId
-    );
+    "?" +
+    returnParams.toString();
 
 
   const billingURL =
@@ -5880,12 +7022,43 @@ function openBillInBillingPage(
   }
 
 
+  const returnParams =
+    new URLSearchParams();
+
+
+  returnParams.set(
+    "patient_id",
+    currentPatientId
+  );
+
+
+  if (
+    selectedHistoryYear &&
+    selectedHistoryMonth
+  ) {
+
+    returnParams.set(
+      "year",
+      selectedHistoryYear
+    );
+
+    returnParams.set(
+      "month",
+      selectedHistoryMonth
+    );
+
+    returnParams.set(
+      "view",
+      "consultations"
+    );
+
+  }
+
+
   const returnURL =
     window.location.pathname +
-    "?patient_id=" +
-    encodeURIComponent(
-      currentPatientId
-    );
+    "?" +
+    returnParams.toString();
 
 
   const billingURL =
@@ -5933,6 +7106,52 @@ function backToSearch() {
     null;
 
 
+  currentConsultations =
+    [];
+
+
+  selectedHistoryYear =
+    null;
+
+
+  selectedHistoryMonth =
+    null;
+
+
+  const url =
+    new URL(
+      window.location.href
+    );
+
+
+  url.searchParams.delete(
+    "patient_id"
+  );
+
+
+  url.searchParams.delete(
+    "year"
+  );
+
+
+  url.searchParams.delete(
+    "month"
+  );
+
+
+  url.searchParams.delete(
+    "view"
+  );
+
+
+  window.history.replaceState(
+    {},
+    "",
+    url.pathname +
+    url.search
+  );
+
+
   showView(
     "searchView"
   );
@@ -5965,10 +7184,41 @@ async function handleURLPatient() {
   }
 
 
+  const year =
+    params.get(
+      "year"
+    );
+
+
+  const month =
+    params.get(
+      "month"
+    );
+
+
+  const view =
+    params.get(
+      "view"
+    );
+
+
   await openPatientHistory(
     Number(
       patientId
-    )
+    ),
+    {
+      year:
+        year !== null
+          ? Number(year)
+          : undefined,
+      month:
+        month !== null
+          ? Number(month)
+          : undefined,
+      openResults:
+        view ===
+        "consultations"
+    }
   );
 
 
@@ -6045,6 +7295,21 @@ window.deleteLabReport =
 
 window.closeFileModal =
   closeFileModal;
+
+window.renderHistoryPeriodSelector =
+  renderHistoryPeriodSelector;
+
+window.historyYearChanged =
+  historyYearChanged;
+
+window.historyMonthChanged =
+  historyMonthChanged;
+
+window.viewSelectedHistoryPeriod =
+  viewSelectedHistoryPeriod;
+
+window.showHistoryPeriodSelector =
+  showHistoryPeriodSelector;
 
 window.backToSearch =
   backToSearch;
