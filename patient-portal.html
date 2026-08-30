@@ -1427,23 +1427,58 @@ button {
 .empty-card {
 
   padding:
-    36px
-    18px;
+    38px
+    20px;
 
   text-align: center;
 
-  color: var(--muted);
+  color: #596975;
 
-  background: #ffffff;
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #f8fafc
+    );
 
   border:
-    1px dashed #d5dde3;
+    1px solid #dbe3e9;
 
-  border-radius: 16px;
+  border-radius: 20px;
 
-  font-size: 11px;
+  font-size: 12px;
 
-  line-height: 1.5;
+  line-height: 1.55;
+
+  box-shadow:
+    0 10px 28px rgba(35,51,63,.07);
+}
+
+
+.empty-card strong {
+
+  display: block;
+
+  margin-top: 10px;
+
+  color: #2d414f;
+
+  font-size: 16px;
+
+  font-weight: 900;
+}
+
+
+.empty-card-message {
+
+  max-width: 350px;
+
+  margin:
+    8px auto 0;
+
+  color: #74818b;
+
+  font-size: 12px;
 }
 
 
@@ -1724,6 +1759,165 @@ button {
 
 
 /* =========================================================
+   SESSION SECURITY UI
+   ========================================================= */
+
+.session-warning-banner {
+  display: none;
+  margin: 0 0 16px;
+  padding: 14px 15px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #6f4b00;
+  background: #fff6d8;
+  border: 1px solid #f1d47c;
+  border-radius: 15px;
+  box-shadow: 0 7px 20px rgba(109,79,9,.10);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.session-warning-banner.show {
+  display: flex;
+}
+
+.session-warning-banner strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #5e3f00;
+  font-size: 13px;
+}
+
+.session-countdown {
+  min-width: 66px;
+  padding: 8px 10px;
+  text-align: center;
+  color: #ffffff;
+  background: #a86400;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.security-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(20,31,39,.68);
+  backdrop-filter: blur(5px);
+}
+
+.security-overlay.show {
+  display: flex;
+}
+
+.security-card {
+  width: 100%;
+  max-width: 430px;
+  padding: 26px 22px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 24px 70px rgba(10,20,28,.28);
+}
+
+.security-card-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f5f8;
+  border-radius: 20px;
+  font-size: 30px;
+}
+
+.security-card h2 {
+  margin: 0;
+  color: #263b49;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.security-card p {
+  margin: 10px auto 0;
+  color: #667681;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.security-time-box {
+  margin: 18px 0 0;
+  padding: 14px;
+  color: #784c00;
+  background: #fff6d8;
+  border: 1px solid #f1d47c;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.security-actions {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.security-button {
+  min-height: 50px;
+  padding: 11px 14px;
+  border: none;
+  border-radius: 13px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.security-button.primary {
+  color: #ffffff;
+  background: linear-gradient(135deg,var(--blue),#6256c8);
+}
+
+.security-button.danger {
+  color: #ffffff;
+  background: linear-gradient(135deg,#c83b3b,#972525);
+}
+
+.security-button.secondary {
+  color: #445662;
+  background: #eef2f5;
+}
+
+.expired-card {
+  border-top: 5px solid #b73333;
+}
+
+.logout-card {
+  border-top: 5px solid #344b5c;
+}
+
+@media(max-width:520px) {
+  .security-card {
+    padding: 24px 17px;
+    border-radius: 20px;
+  }
+  .security-card h2 {
+    font-size: 20px;
+  }
+  .security-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
    MOBILE
    ========================================================= */
 
@@ -1888,6 +2082,24 @@ prescriptions, laboratory reports and receipts.
 <span class="secure-dot"></span>
 
 Verified patient access • Your medical records are protected
+
+</div>
+
+
+<div
+  id="sessionWarningBanner"
+  class="session-warning-banner">
+
+<div>
+<strong>⚠ Secure session expiring soon</strong>
+Your Patient Portal will close automatically for privacy.
+</div>
+
+<div
+  id="sessionBannerCountdown"
+  class="session-countdown">
+5:00
+</div>
 
 </div>
 
@@ -2376,6 +2588,68 @@ Medical Document
 </div>
 
 
+<!-- =====================================================
+     SESSION WARNING
+     ===================================================== -->
+
+<div
+  id="sessionWarningModal"
+  class="security-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="sessionWarningTitle">
+
+<div class="security-card">
+<div class="security-card-icon">⚠️</div>
+<h2 id="sessionWarningTitle">Your secure session will expire soon</h2>
+<p>For your privacy, Patient Portal access automatically ends after 30 minutes. Please finish viewing or downloading any records you need.</p>
+<div id="sessionModalCountdown" class="security-time-box">5 minutes remaining</div>
+<div class="security-actions">
+<button type="button" class="security-button primary" onclick="dismissSessionWarning()">Continue Viewing</button>
+<button type="button" class="security-button secondary" onclick="logoutPortal()">Logout Now</button>
+</div>
+</div>
+</div>
+
+<!-- =====================================================
+     SESSION EXPIRED
+     ===================================================== -->
+<div
+  id="sessionExpiredModal"
+  class="security-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="sessionExpiredTitle">
+<div class="security-card expired-card">
+<div class="security-card-icon">🔒</div>
+<h2 id="sessionExpiredTitle">Your Session Has Expired</h2>
+<p>For your privacy and security, this Patient Portal session has ended. Please verify your mobile number again to continue.</p>
+<div class="security-actions" style="grid-template-columns:1fr;">
+<button type="button" class="security-button danger" onclick="loginAgainAfterExpiry()">Login Again</button>
+</div>
+</div>
+</div>
+
+<!-- =====================================================
+     BACK BUTTON LOGOUT CONFIRMATION
+     ===================================================== -->
+<div
+  id="logoutConfirmModal"
+  class="security-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="logoutConfirmTitle">
+<div class="security-card logout-card">
+<div class="security-card-icon">🔒</div>
+<h2 id="logoutConfirmTitle">Logout from Patient Portal?</h2>
+<p>You pressed Back from the main Patient Portal page. Do you want to securely logout?</p>
+<div class="security-actions">
+<button type="button" class="security-button secondary" onclick="cancelBackLogout()">Stay in Portal</button>
+<button type="button" class="security-button danger" onclick="confirmBackLogout()">Logout</button>
+</div>
+</div>
+</div>
+
 <div
   id="toast"
   class="toast">
@@ -2575,6 +2849,19 @@ function isPdf(item) {
    SESSION
    ========================================================= */
 
+const PORTAL_SESSION_MS =
+  30 * 60 * 1000;
+
+const PORTAL_WARNING_MS =
+  5 * 60 * 1000;
+
+let portalSessionTimer =
+  null;
+
+let sessionWarningShown =
+  false;
+
+
 function getPortalToken() {
 
   return (
@@ -2583,6 +2870,73 @@ function getPortalToken() {
     ) ||
     ""
   );
+}
+
+
+function parseExpiryTime(value) {
+
+  if (!value) {
+    return null;
+  }
+
+  const numeric =
+    Number(value);
+
+  if (
+    Number.isFinite(numeric) &&
+    numeric > 0
+  ) {
+
+    return numeric < 100000000000
+      ? numeric * 1000
+      : numeric;
+  }
+
+  const parsed =
+    Date.parse(value);
+
+  return Number.isFinite(parsed)
+    ? parsed
+    : null;
+}
+
+
+function getEffectivePortalExpiry() {
+
+  let clientExpiry =
+    parseExpiryTime(
+      sessionStorage.getItem(
+        "patientPortalClientExpiresAt"
+      )
+    );
+
+  if (!clientExpiry) {
+
+    clientExpiry =
+      Date.now() +
+      PORTAL_SESSION_MS;
+
+    sessionStorage.setItem(
+      "patientPortalClientExpiresAt",
+      String(clientExpiry)
+    );
+  }
+
+  const serverExpiry =
+    parseExpiryTime(
+      sessionStorage.getItem(
+        "patientPortalSessionExpiresAt"
+      )
+    );
+
+  if (
+    serverExpiry &&
+    serverExpiry < clientExpiry
+  ) {
+    return serverExpiry;
+  }
+
+  return clientExpiry;
 }
 
 
@@ -2599,15 +2953,303 @@ function clearPatientSession() {
   sessionStorage.removeItem(
     "patientPortalSessionExpiresAt"
   );
+
+  sessionStorage.removeItem(
+    "patientPortalClientExpiresAt"
+  );
+
+  if (portalSessionTimer) {
+    clearInterval(
+      portalSessionTimer
+    );
+
+    portalSessionTimer =
+      null;
+  }
+}
+
+
+function hideProtectedPortalContent() {
+
+  const content =
+    document.getElementById(
+      "portalContent"
+    );
+
+  const loading =
+    document.getElementById(
+      "loadingCard"
+    );
+
+  if (content) {
+    content.style.display =
+      "none";
+  }
+
+  if (loading) {
+    loading.style.display =
+      "none";
+  }
 }
 
 
 function logoutPortal() {
 
+  hideProtectedPortalContent();
   clearPatientSession();
 
-  window.location.href =
-    "patient-login.html";
+  window.location.replace(
+    "patient-login.html"
+  );
+}
+
+
+function loginAgainAfterExpiry() {
+
+  window.location.replace(
+    "patient-login.html"
+  );
+}
+
+
+function formatSessionCountdown(ms) {
+
+  const totalSeconds =
+    Math.max(
+      0,
+      Math.ceil(ms / 1000)
+    );
+
+  const minutes =
+    Math.floor(
+      totalSeconds / 60
+    );
+
+  const seconds =
+    totalSeconds % 60;
+
+  return (
+    minutes +
+    ":" +
+    String(seconds).padStart(
+      2,
+      "0"
+    )
+  );
+}
+
+
+function updateSessionWarningUI(remaining) {
+
+  const countdown =
+    formatSessionCountdown(
+      remaining
+    );
+
+  const bannerCountdown =
+    document.getElementById(
+      "sessionBannerCountdown"
+    );
+
+  const modalCountdown =
+    document.getElementById(
+      "sessionModalCountdown"
+    );
+
+  if (bannerCountdown) {
+    bannerCountdown.textContent =
+      countdown;
+  }
+
+  if (modalCountdown) {
+    modalCountdown.textContent =
+      countdown +
+      " remaining";
+  }
+}
+
+
+function showSessionWarning(remaining) {
+
+  const banner =
+    document.getElementById(
+      "sessionWarningBanner"
+    );
+
+  const modal =
+    document.getElementById(
+      "sessionWarningModal"
+    );
+
+  if (banner) {
+    banner.classList.add(
+      "show"
+    );
+  }
+
+  updateSessionWarningUI(
+    remaining
+  );
+
+  if (
+    !sessionWarningShown &&
+    modal
+  ) {
+
+    sessionWarningShown =
+      true;
+
+    modal.classList.add(
+      "show"
+    );
+  }
+}
+
+
+function dismissSessionWarning() {
+
+  const modal =
+    document.getElementById(
+      "sessionWarningModal"
+    );
+
+  if (modal) {
+    modal.classList.remove(
+      "show"
+    );
+  }
+}
+
+
+function expirePortalSession() {
+
+  hideProtectedPortalContent();
+  clearPatientSession();
+
+  const warning =
+    document.getElementById(
+      "sessionWarningModal"
+    );
+
+  const banner =
+    document.getElementById(
+      "sessionWarningBanner"
+    );
+
+  const expired =
+    document.getElementById(
+      "sessionExpiredModal"
+    );
+
+  if (warning) {
+    warning.classList.remove(
+      "show"
+    );
+  }
+
+  if (banner) {
+    banner.classList.remove(
+      "show"
+    );
+  }
+
+  if (expired) {
+    expired.classList.add(
+      "show"
+    );
+  }
+}
+
+
+function checkPortalSession() {
+
+  if (!getPortalToken()) {
+    return false;
+  }
+
+  const expiry =
+    getEffectivePortalExpiry();
+
+  const remaining =
+    expiry -
+    Date.now();
+
+  if (remaining <= 0) {
+    expirePortalSession();
+    return false;
+  }
+
+  if (remaining <= PORTAL_WARNING_MS) {
+    showSessionWarning(
+      remaining
+    );
+  }
+
+  return true;
+}
+
+
+function startPortalSessionMonitor() {
+
+  if (!checkPortalSession()) {
+    return false;
+  }
+
+  if (portalSessionTimer) {
+    clearInterval(
+      portalSessionTimer
+    );
+  }
+
+  portalSessionTimer =
+    setInterval(
+      checkPortalSession,
+      1000
+    );
+
+  return true;
+}
+
+
+function handleUnauthorizedSession() {
+
+  expirePortalSession();
+}
+
+
+function showBackLogoutConfirmation() {
+
+  const modal =
+    document.getElementById(
+      "logoutConfirmModal"
+    );
+
+  if (modal) {
+    modal.classList.add(
+      "show"
+    );
+  }
+}
+
+
+function cancelBackLogout() {
+
+  const modal =
+    document.getElementById(
+      "logoutConfirmModal"
+    );
+
+  if (modal) {
+    modal.classList.remove(
+      "show"
+    );
+  }
+}
+
+
+function confirmBackLogout() {
+
+  logoutPortal();
 }
 
 
@@ -2804,6 +3446,34 @@ window.addEventListener(
     const state =
       event.state;
 
+    if (
+      state &&
+      state.patientPortalExitGuard
+    ) {
+
+      history.pushState(
+        {
+          patientPortal: true,
+          portalView: "homeView"
+        },
+        "",
+        window.location.href
+      );
+
+      selectedConsultationId =
+        null;
+
+      selectedConsultationDate =
+        "";
+
+      showView(
+        "homeView"
+      );
+
+      showBackLogoutConfirmation();
+
+      return;
+    }
 
     if (
       !state ||
@@ -2812,11 +3482,9 @@ window.addEventListener(
       return;
     }
 
-
     const view =
       state.portalView ||
       "homeView";
-
 
     if (
       view ===
@@ -2829,7 +3497,6 @@ window.addEventListener(
       selectedConsultationDate =
         "";
     }
-
 
     showView(
       view
@@ -2850,10 +3517,7 @@ async function loadPortalData() {
 
   if (!token) {
 
-    clearPatientSession();
-
-    window.location.href =
-      "patient-login.html";
+    handleUnauthorizedSession();
 
     return;
   }
@@ -2924,15 +3588,7 @@ async function loadPortalData() {
       response.status === 401
     ) {
 
-      clearPatientSession();
-
-      alert(
-        result.message ||
-        "Your patient portal session has expired. Please login again."
-      );
-
-      window.location.href =
-        "patient-login.html";
+      handleUnauthorizedSession();
 
       return;
     }
@@ -2994,6 +3650,14 @@ async function loadPortalData() {
     await loadBills(
       token
     );
+
+
+    if (
+      !getPortalToken() ||
+      !checkPortalSession()
+    ) {
+      return;
+    }
 
 
     buildConsultationHistory();
@@ -3070,10 +3734,7 @@ async function loadBills(token) {
       response.status === 401
     ) {
 
-      clearPatientSession();
-
-      window.location.href =
-        "patient-login.html";
+      handleUnauthorizedSession();
 
       return;
     }
@@ -3493,8 +4154,8 @@ function buildConsultationHistory() {
           No consultation records available
         </strong>
 
-        <div style="margin-top:5px;">
-          Your consultation history will appear here.
+        <div class="empty-card-message">
+          Your consultation history will appear here when records are available.
         </div>
 
       </div>
@@ -3822,7 +4483,7 @@ function renderPrescriptions(items) {
           No prescription available
         </strong>
 
-        <div style="margin-top:5px;">
+        <div class="empty-card-message">
           No prescription has been uploaded for this consultation.
         </div>
 
@@ -4063,7 +4724,7 @@ function renderLabs(items) {
           No lab reports available
         </strong>
 
-        <div style="margin-top:5px;">
+        <div class="empty-card-message">
           No laboratory reports are linked to this consultation.
         </div>
 
@@ -4350,8 +5011,8 @@ function renderBills(items) {
           No bill available
         </strong>
 
-        <div style="margin-top:5px;">
-          No receipt is linked to this consultation.
+        <div class="empty-card-message">
+          No bill or receipt is linked to this consultation.
         </div>
 
       </div>
@@ -6595,6 +7256,18 @@ window.refreshPortal =
 window.logoutPortal =
   logoutPortal;
 
+window.dismissSessionWarning =
+  dismissSessionWarning;
+
+window.loginAgainAfterExpiry =
+  loginAgainAfterExpiry;
+
+window.cancelBackLogout =
+  cancelBackLogout;
+
+window.confirmBackLogout =
+  confirmBackLogout;
+
 
 /* =========================================================
    INITIALIZE
@@ -6605,19 +7278,32 @@ window.logoutPortal =
   const token =
     getPortalToken();
 
-
   if (!token) {
 
     clearPatientSession();
+    hideProtectedPortalContent();
 
-    window.location.href =
-      "patient-login.html";
+    window.location.replace(
+      "patient-login.html"
+    );
 
     return;
   }
 
+  if (!startPortalSessionMonitor()) {
+    return;
+  }
 
   history.replaceState(
+    {
+      patientPortalExitGuard: true,
+      portalView: "homeView"
+    },
+    "",
+    window.location.href
+  );
+
+  history.pushState(
     {
       patientPortal: true,
       portalView: "homeView"
@@ -6626,10 +7312,29 @@ window.logoutPortal =
     window.location.href
   );
 
-
   await loadPortalData();
 
 })();
+
+
+window.addEventListener(
+  "pageshow",
+  function() {
+
+    if (!getPortalToken()) {
+
+      hideProtectedPortalContent();
+
+      window.location.replace(
+        "patient-login.html"
+      );
+
+      return;
+    }
+
+    checkPortalSession();
+  }
+);
 
 </script>
 
