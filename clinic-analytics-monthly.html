@@ -698,6 +698,60 @@ select {
 
 
 /* =========================================================
+   BILLING CHARGE ANALYSIS
+   ========================================================= */
+
+.charge-analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 10px;
+}
+
+.charge-analysis-card {
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #e1e7eb;
+  border-radius: 16px;
+  box-shadow: 0 5px 16px rgba(31,48,66,.045);
+}
+
+.charge-analysis-card.consultation {
+  background: linear-gradient(135deg,#eef5ff,#ffffff);
+}
+
+.charge-analysis-card.medicine {
+  background: linear-gradient(135deg,#eefaf3,#ffffff);
+}
+
+.charge-analysis-card.other {
+  background: linear-gradient(135deg,#fff6eb,#ffffff);
+}
+
+.charge-analysis-icon {
+  font-size: 22px;
+}
+
+.charge-analysis-value {
+  margin-top: 8px;
+  color: #273642;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.charge-analysis-label {
+  margin-top: 4px;
+  color: #6f7b85;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.charge-analysis-percent {
+  margin-top: 5px;
+  color: #8a949c;
+  font-size: 10px;
+}
+
+/* =========================================================
    REPORT ACTIONS
    ========================================================= */
 
@@ -1062,7 +1116,8 @@ select {
 
 @media(max-width:700px) {
 
-  .summary-grid {
+  .summary-grid,
+  .charge-analysis-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1419,6 +1474,44 @@ Collection Breakdown
 
 
 <!-- =====================================================
+     BILLING CHARGE ANALYSIS
+     ===================================================== -->
+
+<div class="section-title">
+Billing Charge Analysis
+</div>
+
+<div class="portal-card">
+
+  <div class="charge-analysis-grid">
+
+    <div class="charge-analysis-card consultation">
+      <div class="charge-analysis-icon">🩺</div>
+      <div id="consultationFeeTotal" class="charge-analysis-value">₹0</div>
+      <div class="charge-analysis-label">Consultation Fees</div>
+      <div id="consultationFeePercent" class="charge-analysis-percent">0% of paid revenue</div>
+    </div>
+
+    <div class="charge-analysis-card medicine">
+      <div class="charge-analysis-icon">💊</div>
+      <div id="medicineFeeTotal" class="charge-analysis-value">₹0</div>
+      <div class="charge-analysis-label">Medicine Charges</div>
+      <div id="medicineFeePercent" class="charge-analysis-percent">0% of paid revenue</div>
+    </div>
+
+    <div class="charge-analysis-card other">
+      <div class="charge-analysis-icon">🧾</div>
+      <div id="otherFeeTotal" class="charge-analysis-value">₹0</div>
+      <div class="charge-analysis-label">Procedure / Other Charges</div>
+      <div id="otherFeePercent" class="charge-analysis-percent">0% of paid revenue</div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
      PRINT + PDF BUTTONS
      ===================================================== -->
 
@@ -1722,6 +1815,37 @@ function getBillAmount(bill) {
     bill.total_amount ??
     bill.total ??
     bill.bill_amount ??
+    0
+  );
+
+}
+
+
+function getConsultationFee(bill) {
+
+  return Number(
+    bill.consultation_fee ??
+    0
+  );
+
+}
+
+
+function getMedicineCharges(bill) {
+
+  return Number(
+    bill.medicine_charges ??
+    0
+  );
+
+}
+
+
+function getOtherCharges(bill) {
+
+  return Number(
+    bill.procedure_charges ??
+    bill.other_charges ??
     0
   );
 
@@ -2185,6 +2309,33 @@ async function loadMonthlyReport() {
       );
 
 
+    currentConsultationFees =
+      currentPaidBills.reduce(
+        function(total, bill) {
+          return total + getConsultationFee(bill);
+        },
+        0
+      );
+
+
+    currentMedicineCharges =
+      currentPaidBills.reduce(
+        function(total, bill) {
+          return total + getMedicineCharges(bill);
+        },
+        0
+      );
+
+
+    currentOtherCharges =
+      currentPaidBills.reduce(
+        function(total, bill) {
+          return total + getOtherCharges(bill);
+        },
+        0
+      );
+
+
     currentAverageBill =
       currentPaidBills.length
         ? currentRevenue /
@@ -2275,6 +2426,53 @@ async function loadMonthlyReport() {
         formatMoney(
           currentAverageBill
         );
+
+
+    const paidRevenueForPercent =
+      currentRevenue || 0;
+
+
+    document.getElementById(
+      "consultationFeeTotal"
+    ).textContent = formatMoney(
+      currentConsultationFees
+    );
+
+    document.getElementById(
+      "medicineFeeTotal"
+    ).textContent = formatMoney(
+      currentMedicineCharges
+    );
+
+    document.getElementById(
+      "otherFeeTotal"
+    ).textContent = formatMoney(
+      currentOtherCharges
+    );
+
+    document.getElementById(
+      "consultationFeePercent"
+    ).textContent =
+      (paidRevenueForPercent > 0
+        ? (currentConsultationFees / paidRevenueForPercent * 100).toFixed(1)
+        : "0.0") +
+      "% of paid revenue";
+
+    document.getElementById(
+      "medicineFeePercent"
+    ).textContent =
+      (paidRevenueForPercent > 0
+        ? (currentMedicineCharges / paidRevenueForPercent * 100).toFixed(1)
+        : "0.0") +
+      "% of paid revenue";
+
+    document.getElementById(
+      "otherFeePercent"
+    ).textContent =
+      (paidRevenueForPercent > 0
+        ? (currentOtherCharges / paidRevenueForPercent * 100).toFixed(1)
+        : "0.0") +
+      "% of paid revenue";
 
 
     currentPaymentMethods =
@@ -3556,6 +3754,61 @@ function downloadMonthlyPdf() {
 
     y +=
       40;
+
+
+    /* =====================================================
+       BILLING CHARGE ANALYSIS
+       ===================================================== */
+
+    doc.setTextColor(90,90,90);
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(8.5);
+    doc.text("BILLING CHARGE ANALYSIS", margin, y);
+
+    y += 6;
+
+    const chargeCardGap = 4;
+    const chargeCardWidth =
+      (contentWidth - chargeCardGap * 2) / 3;
+
+    const chargeCards = [
+      {
+        title: "Consultation Fees",
+        value: formatPdfMoney(currentConsultationFees)
+      },
+      {
+        title: "Medicine Charges",
+        value: formatPdfMoney(currentMedicineCharges)
+      },
+      {
+        title: "Procedure / Other",
+        value: formatPdfMoney(currentOtherCharges)
+      }
+    ];
+
+    chargeCards.forEach(
+      function(card, index) {
+        const x =
+          margin + index * (chargeCardWidth + chargeCardGap);
+
+        doc.setDrawColor(220,224,228);
+        doc.setFillColor(250,250,250);
+        doc.roundedRect(
+          x, y, chargeCardWidth, 24, 2, 2, "FD"
+        );
+
+        doc.setTextColor(35,45,55);
+        doc.setFont("helvetica","bold");
+        doc.setFontSize(11);
+        doc.text(card.value, x + 4, y + 10);
+
+        doc.setTextColor(110,115,120);
+        doc.setFontSize(7);
+        doc.text(card.title, x + 4, y + 17);
+      }
+    );
+
+    y += 33;
 
 
     /* =====================================================
