@@ -3660,21 +3660,14 @@
     </div>
 
 
-    <div
-      id="googleRatingScore"
-      class="google-rating-score">
-      —
-    </div>
-
-
     <div class="google-rating-text">
 
       <strong>
         Google Reviews
       </strong>
 
-      <span id="googleReviewCountText">
-        Google Reviews
+      <span>
+        Read our patient experiences on Google
       </span>
 
     </div>
@@ -3701,8 +3694,7 @@
     href="https://www.google.co.in/search?ibp=gwp;0,7&q=General+and+Diabetes+Care+-+Dr+ARUNKUMAR+A+%7C+General+Physician+%7C+Diabetologist&ludocid=13575807184697288033&lsig=AB86z5XqKEsiwxBGRWAR0o8CGgwj#lkt=LocalPoiReviews&lpg=cid:CgIgAQ%3D%3D"
     target="_blank"
     rel="noopener"
-    class="see-reviews-button"
-    id="seeAllGoogleReviewsButton">
+    class="see-reviews-button">
 
     ⭐ See All Google Reviews
 
@@ -3937,123 +3929,6 @@ const supabaseClient =
   );
 
 
-/* =========================================================
-   LIVE GOOGLE REVIEW SUMMARY
-   ========================================================= */
-
-async function loadGoogleReviewSummary() {
-
-  const ratingElement =
-    document.getElementById(
-      "googleRatingScore"
-    );
-
-  const countElement =
-    document.getElementById(
-      "googleReviewCountText"
-    );
-
-  const reviewsButton =
-    document.getElementById(
-      "seeAllGoogleReviewsButton"
-    );
-
-
-  if (
-    !ratingElement ||
-    !countElement ||
-    !reviewsButton
-  ) {
-    return;
-  }
-
-
-  try {
-
-    const { data, error } =
-      await supabaseClient
-        .functions
-        .invoke(
-          "google-review-summary"
-        );
-
-
-    if (error) {
-      throw error;
-    }
-
-
-    const rating =
-      Number(data?.rating);
-
-    const reviewCount =
-      Number(data?.reviewCount);
-
-
-    if (
-      Number.isFinite(rating) &&
-      rating > 0
-    ) {
-      ratingElement.textContent =
-        rating.toFixed(1);
-    } else {
-      ratingElement.textContent =
-        "Google";
-    }
-
-
-    if (
-      Number.isInteger(reviewCount) &&
-      reviewCount >= 0
-    ) {
-
-      const reviewWord =
-        reviewCount === 1
-          ? "Review"
-          : "Reviews";
-
-      countElement.textContent =
-        reviewCount +
-        " Google " +
-        reviewWord;
-
-      reviewsButton.textContent =
-        "⭐ See All " +
-        reviewCount +
-        " Google " +
-        reviewWord;
-
-    } else {
-
-      countElement.textContent =
-        "Google Reviews";
-
-      reviewsButton.textContent =
-        "⭐ See All Google Reviews";
-
-    }
-
-  } catch (error) {
-
-    console.warn(
-      "Google review summary unavailable:",
-      error
-    );
-
-    ratingElement.textContent =
-      "Google";
-
-    countElement.textContent =
-      "Google Reviews";
-
-    reviewsButton.textContent =
-      "⭐ See All Google Reviews";
-
-  }
-}
-
-
-loadGoogleReviewSummary();
 
 </script>
 
