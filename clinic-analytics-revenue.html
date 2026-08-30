@@ -367,6 +367,59 @@ select {
 
 
 /* =========================================================
+   BILLING CHARGE ANALYSIS
+   ========================================================= */
+
+.charge-analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 10px;
+}
+
+.charge-analysis-card {
+  padding: 16px;
+  border: 1px solid #dce8e1;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.charge-analysis-card.consultation {
+  background: linear-gradient(135deg,#eef5ff,#ffffff);
+}
+
+.charge-analysis-card.medicine {
+  background: linear-gradient(135deg,#eaf9f0,#ffffff);
+}
+
+.charge-analysis-card.other {
+  background: linear-gradient(135deg,#fff7e8,#ffffff);
+}
+
+.charge-analysis-icon {
+  font-size: 22px;
+}
+
+.charge-analysis-value {
+  margin-top: 8px;
+  color: #21382e;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.charge-analysis-label {
+  margin-top: 4px;
+  color: #68776f;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.charge-analysis-percent {
+  margin-top: 5px;
+  color: #829087;
+  font-size: 10px;
+}
+
+/* =========================================================
    COLLECTION RATE
    ========================================================= */
 
@@ -736,7 +789,8 @@ select {
 
   .date-grid,
   .month-grid,
-  .collection-card {
+  .collection-card,
+  .charge-analysis-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1039,6 +1093,44 @@ Average bill
 
 </div>
 
+
+</div>
+
+
+<!-- =====================================================
+     BILLING CHARGE ANALYSIS
+     ===================================================== -->
+
+<div class="section-title">
+Billing Charge Analysis
+</div>
+
+<div class="portal-card">
+
+  <div class="charge-analysis-grid">
+
+    <div class="charge-analysis-card consultation">
+      <div class="charge-analysis-icon">🩺</div>
+      <div id="consultationFeeTotal" class="charge-analysis-value">₹0</div>
+      <div class="charge-analysis-label">Consultation Fees</div>
+      <div id="consultationFeePercent" class="charge-analysis-percent">0% of total billed</div>
+    </div>
+
+    <div class="charge-analysis-card medicine">
+      <div class="charge-analysis-icon">💊</div>
+      <div id="medicineFeeTotal" class="charge-analysis-value">₹0</div>
+      <div class="charge-analysis-label">Medicine Charges</div>
+      <div id="medicineFeePercent" class="charge-analysis-percent">0% of total billed</div>
+    </div>
+
+    <div class="charge-analysis-card other">
+      <div class="charge-analysis-icon">🧾</div>
+      <div id="otherFeeTotal" class="charge-analysis-value">₹0</div>
+      <div class="charge-analysis-label">Procedure / Other Charges</div>
+      <div id="otherFeePercent" class="charge-analysis-percent">0% of total billed</div>
+    </div>
+
+  </div>
 
 </div>
 
@@ -1490,6 +1582,37 @@ function getBillAmount(bill) {
     bill.total_amount ??
     bill.total ??
     bill.bill_amount ??
+    0
+  );
+
+}
+
+
+function getConsultationFee(bill) {
+
+  return Number(
+    bill.consultation_fee ??
+    0
+  );
+
+}
+
+
+function getMedicineCharges(bill) {
+
+  return Number(
+    bill.medicine_charges ??
+    0
+  );
+
+}
+
+
+function getOtherCharges(bill) {
+
+  return Number(
+    bill.procedure_charges ??
+    bill.other_charges ??
     0
   );
 
@@ -2134,6 +2257,33 @@ async function loadAnalytics() {
       );
 
 
+    const consultationFees =
+      allBills.reduce(
+        function(total, bill) {
+          return total + getConsultationFee(bill);
+        },
+        0
+      );
+
+
+    const medicineCharges =
+      allBills.reduce(
+        function(total, bill) {
+          return total + getMedicineCharges(bill);
+        },
+        0
+      );
+
+
+    const otherCharges =
+      allBills.reduce(
+        function(total, bill) {
+          return total + getOtherCharges(bill);
+        },
+        0
+      );
+
+
     const paidAmount =
       paidBills.reduce(
         function(
@@ -2235,6 +2385,49 @@ async function loadAnalytics() {
         formatMoney(
           averageBill
         );
+
+
+    document.getElementById(
+      "consultationFeeTotal"
+    ).textContent = formatMoney(
+      consultationFees
+    );
+
+    document.getElementById(
+      "medicineFeeTotal"
+    ).textContent = formatMoney(
+      medicineCharges
+    );
+
+    document.getElementById(
+      "otherFeeTotal"
+    ).textContent = formatMoney(
+      otherCharges
+    );
+
+    document.getElementById(
+      "consultationFeePercent"
+    ).textContent =
+      (totalBilled > 0
+        ? (consultationFees / totalBilled * 100).toFixed(1)
+        : "0.0") +
+      "% of total billed";
+
+    document.getElementById(
+      "medicineFeePercent"
+    ).textContent =
+      (totalBilled > 0
+        ? (medicineCharges / totalBilled * 100).toFixed(1)
+        : "0.0") +
+      "% of total billed";
+
+    document.getElementById(
+      "otherFeePercent"
+    ).textContent =
+      (totalBilled > 0
+        ? (otherCharges / totalBilled * 100).toFixed(1)
+        : "0.0") +
+      "% of total billed";
 
 
     document
