@@ -773,6 +773,124 @@ button {
 
 
 /* =========================================================
+   LARGE RETURN TO PORTAL
+   ========================================================= */
+
+.portal-return-button {
+
+  width: 100%;
+
+  min-height: 72px;
+
+  margin-top: 22px;
+
+  padding:
+    15px
+    18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  text-align: left;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #566776,
+      #344450
+    );
+
+  border: none;
+
+  border-radius: 17px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 24px rgba(38,52,63,.15);
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease;
+}
+
+
+.portal-return-button:hover {
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 14px 30px rgba(38,52,63,.20);
+}
+
+
+.portal-return-button:active {
+  transform: scale(.99);
+}
+
+
+.portal-return-icon {
+
+  width: 40px;
+  height: 40px;
+
+  flex: 0 0 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #344450;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  font-size: 20px;
+
+  font-weight: 900;
+}
+
+
+.portal-return-text {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.portal-return-text strong {
+
+  font-size: 14px;
+
+  font-weight: 900;
+}
+
+
+.portal-return-text span {
+
+  color: rgba(255,255,255,.78);
+
+  font-size: 10px;
+
+  font-weight: 650;
+}
+
+
+/* =========================================================
    CONSULTATION HEADER
    ========================================================= */
 
@@ -1919,15 +2037,6 @@ Select a consultation date to view records from that visit.
   class="portal-view">
 
 
-<button
-  type="button"
-  class="back-button"
-  onclick="showHome()">
-
-← Back to Patient Portal
-
-</button>
-
 
 <div class="visit-header">
 
@@ -2030,6 +2139,30 @@ Open ›
 
 
 </div>
+
+
+<button
+  type="button"
+  class="portal-return-button"
+  onclick="showHome()">
+
+<span class="portal-return-icon">
+←
+</span>
+
+<span class="portal-return-text">
+
+<strong>
+Back to Patient Portal
+</strong>
+
+<span>
+Return to consultation history
+</span>
+
+</span>
+
+</button>
 
 </section>
 
@@ -2522,7 +2655,59 @@ function showView(id) {
 }
 
 
+function getCurrentPortalView() {
+
+  const active =
+    document.querySelector(
+      ".portal-view.active"
+    );
+
+
+  return active
+    ? active.id
+    : "homeView";
+}
+
+
+function pushPortalView(id) {
+
+  if (
+    getCurrentPortalView() ===
+    id
+  ) {
+    return;
+  }
+
+
+  history.pushState(
+    {
+      patientPortal: true,
+      portalView: id
+    },
+    "",
+    window.location.href
+  );
+
+
+  showView(
+    id
+  );
+}
+
+
 function showHome() {
+
+  if (
+    getCurrentPortalView() !==
+    "homeView" &&
+    history.state?.patientPortal
+  ) {
+
+    history.back();
+
+    return;
+  }
+
 
   selectedConsultationId =
     null;
@@ -2548,10 +2733,67 @@ function showConsultation() {
   }
 
 
+  const current =
+    getCurrentPortalView();
+
+
+  if (
+    current !==
+      "consultationView" &&
+    history.state?.patientPortal
+  ) {
+
+    history.back();
+
+    return;
+  }
+
+
   showView(
     "consultationView"
   );
 }
+
+
+window.addEventListener(
+  "popstate",
+  function(event) {
+
+    const state =
+      event.state;
+
+
+    if (
+      !state ||
+      !state.patientPortal
+    ) {
+      return;
+    }
+
+
+    const view =
+      state.portalView ||
+      "homeView";
+
+
+    if (
+      view ===
+      "homeView"
+    ) {
+
+      selectedConsultationId =
+        null;
+
+      selectedConsultationDate =
+        "";
+    }
+
+
+    showView(
+      view
+    );
+  }
+);
 
 
 /* =========================================================
@@ -3458,7 +3700,7 @@ function openConsultation(id) {
       );
 
 
-  showView(
+  pushPortalView(
     "consultationView"
   );
 }
@@ -3508,7 +3750,7 @@ function openPrescriptionPage() {
   );
 
 
-  showView(
+  pushPortalView(
     "prescriptionView"
   );
 }
@@ -3749,7 +3991,7 @@ function openLabPage() {
   );
 
 
-  showView(
+  pushPortalView(
     "labView"
   );
 }
@@ -4036,7 +4278,7 @@ function openBillPage() {
   );
 
 
-  showView(
+  pushPortalView(
     "billView"
   );
 }
@@ -6331,6 +6573,16 @@ window.logoutPortal =
 
     return;
   }
+
+
+  history.replaceState(
+    {
+      patientPortal: true,
+      portalView: "homeView"
+    },
+    "",
+    window.location.href
+  );
 
 
   await loadPortalData();
