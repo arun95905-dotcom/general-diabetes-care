@@ -730,6 +730,178 @@ textarea {
 
 
 /* =========================================================
+   CONSULTATION NAVIGATION SOURCE
+   ========================================================= */
+
+function setConsultationNavigationSource(
+  source
+) {
+
+  consultationNavigationSource =
+    source ||
+    "search";
+
+}
+
+
+function hasValidSelectedHistoryPeriod() {
+
+  return (
+    Number.isInteger(
+      Number(
+        selectedHistoryYear
+      )
+    ) &&
+    Number(
+      selectedHistoryYear
+    ) > 0 &&
+    Number.isInteger(
+      Number(
+        selectedHistoryMonth
+      )
+    ) &&
+    Number(
+      selectedHistoryMonth
+    ) >= 1 &&
+    Number(
+      selectedHistoryMonth
+    ) <= 12
+  );
+
+}
+
+
+function buildConsultationReturnURL() {
+
+  const params =
+    new URLSearchParams();
+
+
+  if (
+    consultationNavigationSource ===
+    "today"
+  ) {
+
+    params.set(
+      "view",
+      "today"
+    );
+
+
+    return (
+      window.location.pathname +
+      "?" +
+      params.toString()
+    );
+
+  }
+
+
+  if (
+    currentPatientId
+  ) {
+
+    params.set(
+      "patient_id",
+      currentPatientId
+    );
+
+  }
+
+
+  if (
+    hasValidSelectedHistoryPeriod()
+  ) {
+
+    params.set(
+      "year",
+      selectedHistoryYear
+    );
+
+    params.set(
+      "month",
+      selectedHistoryMonth
+    );
+
+    params.set(
+      "view",
+      "consultations"
+    );
+
+  }
+
+
+  const query =
+    params.toString();
+
+
+  return (
+    window.location.pathname +
+    (
+      query
+        ? "?" + query
+        : ""
+    )
+  );
+
+}
+
+
+async function returnFromConsultationEdit(
+  patientId
+) {
+
+  if (
+    consultationNavigationSource ===
+    "today"
+  ) {
+
+    await openTodayConsultationHistory();
+
+    return;
+
+  }
+
+
+  if (
+    patientId
+  ) {
+
+    if (
+      hasValidSelectedHistoryPeriod()
+    ) {
+
+      await openPatientHistory(
+        patientId,
+        {
+          year:
+            selectedHistoryYear,
+          month:
+            selectedHistoryMonth,
+          openResults:
+            true
+        }
+      );
+
+    } else {
+
+      await openPatientHistory(
+        patientId
+      );
+
+    }
+
+    return;
+
+  }
+
+
+  backToSearch();
+
+}
+
+
+/* =========================================================
    TODAY'S CONSULTATION HISTORY
    ========================================================= */
 
@@ -1175,6 +1347,9 @@ let todayConsultations =
 
 let todayPatientsById =
   {};
+
+let consultationNavigationSource =
+  "search";
 
 
 /*
@@ -1640,6 +1815,11 @@ function setTodayConsultationContext(
   patientId
 ) {
 
+  setConsultationNavigationSource(
+    "today"
+  );
+
+
   const id =
     Number(
       patientId
@@ -1962,6 +2142,43 @@ function renderTodayConsultationCard(
 
 
 async function openTodayConsultationHistory() {
+
+  setConsultationNavigationSource(
+    "today"
+  );
+
+
+  const url =
+    new URL(
+      window.location.href
+    );
+
+
+  url.searchParams.set(
+    "view",
+    "today"
+  );
+
+  url.searchParams.delete(
+    "patient_id"
+  );
+
+  url.searchParams.delete(
+    "year"
+  );
+
+  url.searchParams.delete(
+    "month"
+  );
+
+
+  window.history.replaceState(
+    {},
+    "",
+    url.pathname +
+    url.search
+  );
+
 
   const container =
     document.getElementById(
@@ -2530,6 +2747,10 @@ async function openPatientHistory(
   patientId,
   options = {}
 ) {
+
+  consultationNavigationSource =
+    "history";
+
 
   const patient =
     await getPatient(
@@ -5864,6 +6085,43 @@ async function openEditConsultation(
   consultationId
 ) {
 
+  const todayView =
+    document.getElementById(
+      "todayConsultationView"
+    );
+
+
+  const historyView =
+    document.getElementById(
+      "historyView"
+    );
+
+
+  if (
+    todayView &&
+    todayView.classList.contains(
+      "active"
+    )
+  ) {
+
+    setConsultationNavigationSource(
+      "today"
+    );
+
+  } else if (
+    historyView &&
+    historyView.classList.contains(
+      "active"
+    )
+  ) {
+
+    setConsultationNavigationSource(
+      "history"
+    );
+
+  }
+
+
   const {
     data:
       consultation,
@@ -6447,16 +6705,8 @@ async function saveEditedConsultation(
   );
 
 
-  await openPatientHistory(
-    patientId,
-    {
-      year:
-        selectedHistoryYear,
-      month:
-        selectedHistoryMonth,
-      openResults:
-        true
-    }
+  await returnFromConsultationEdit(
+    patientId
   );
 
 }
@@ -6466,30 +6716,11 @@ async function saveEditedConsultation(
    CANCEL EDIT
    ========================================================= */
 
-function cancelEditConsultation() {
+async function cancelEditConsultation() {
 
-  if (
+  await returnFromConsultationEdit(
     currentPatientId
-  ) {
-
-    openPatientHistory(
-      currentPatientId,
-      {
-        year:
-          selectedHistoryYear,
-        month:
-          selectedHistoryMonth,
-        openResults:
-          true
-      }
-    );
-
-    return;
-
-  }
-
-
-  backToSearch();
+  );
 
 }
 
@@ -7750,43 +7981,8 @@ function createBillForConsultation(
   }
 
 
-  const returnParams =
-    new URLSearchParams();
-
-
-  returnParams.set(
-    "patient_id",
-    currentPatientId
-  );
-
-
-  if (
-    selectedHistoryYear &&
-    selectedHistoryMonth
-  ) {
-
-    returnParams.set(
-      "year",
-      selectedHistoryYear
-    );
-
-    returnParams.set(
-      "month",
-      selectedHistoryMonth
-    );
-
-    returnParams.set(
-      "view",
-      "consultations"
-    );
-
-  }
-
-
   const returnURL =
-    window.location.pathname +
-    "?" +
-    returnParams.toString();
+    buildConsultationReturnURL();
 
 
   const billingURL =
@@ -8117,43 +8313,8 @@ function openBillInBillingPage(
   }
 
 
-  const returnParams =
-    new URLSearchParams();
-
-
-  returnParams.set(
-    "patient_id",
-    currentPatientId
-  );
-
-
-  if (
-    selectedHistoryYear &&
-    selectedHistoryMonth
-  ) {
-
-    returnParams.set(
-      "year",
-      selectedHistoryYear
-    );
-
-    returnParams.set(
-      "month",
-      selectedHistoryMonth
-    );
-
-    returnParams.set(
-      "view",
-      "consultations"
-    );
-
-  }
-
-
   const returnURL =
-    window.location.pathname +
-    "?" +
-    returnParams.toString();
+    buildConsultationReturnURL();
 
 
   const billingURL =
@@ -8188,6 +8349,11 @@ function openBillInBillingPage(
    ========================================================= */
 
 function backToSearch() {
+
+  setConsultationNavigationSource(
+    "search"
+  );
+
 
   currentPatient =
     null;
@@ -8266,6 +8432,24 @@ async function handleURLPatient() {
     );
 
 
+  const view =
+    params.get(
+      "view"
+    );
+
+
+  if (
+    view ===
+    "today"
+  ) {
+
+    await openTodayConsultationHistory();
+
+    return true;
+
+  }
+
+
   const patientId =
     params.get(
       "patient_id"
@@ -8288,12 +8472,6 @@ async function handleURLPatient() {
   const month =
     params.get(
       "month"
-    );
-
-
-  const view =
-    params.get(
-      "view"
     );
 
 
@@ -8327,6 +8505,9 @@ async function handleURLPatient() {
 
 window.openTodayConsultationHistory =
   openTodayConsultationHistory;
+
+window.returnFromConsultationEdit =
+  returnFromConsultationEdit;
 
 window.openTodayFullConsultation =
   openTodayFullConsultation;
