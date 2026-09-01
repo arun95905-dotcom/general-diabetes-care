@@ -1391,6 +1391,37 @@ function readHistoryReturnURL() {
   }
 
 
+  if (
+    returnURL.includes(
+      "doctor-patients.html?view=today"
+    ) ||
+    returnURL.includes(
+      "view=today"
+    )
+  ) {
+
+    button.textContent =
+      "← Back to Today's Registered Patients";
+
+    return;
+
+  }
+
+
+  if (
+    returnURL.includes(
+      "view=search"
+    )
+  ) {
+
+    button.textContent =
+      "← Back to Patient Search";
+
+    return;
+
+  }
+
+
   button.textContent =
     "← Back";
 
@@ -1976,7 +2007,8 @@ function getHistoryCategoryConfig(
       title: "Consultation History",
       singular: "consultation",
       plural: "consultations",
-      buttonText: "🔎 View Consultations"
+      buttonText: "🔎 View Consultations",
+      fullButtonText: "📚 View Full Consultation History"
     },
 
     prescription: {
@@ -1986,7 +2018,8 @@ function getHistoryCategoryConfig(
       title: "Prescription History",
       singular: "prescription",
       plural: "prescriptions",
-      buttonText: "🔎 View Prescriptions"
+      buttonText: "🔎 View Prescriptions",
+      fullButtonText: "📚 View Full Prescription History"
     },
 
     lab: {
@@ -1996,7 +2029,8 @@ function getHistoryCategoryConfig(
       title: "Lab Report History",
       singular: "lab report",
       plural: "lab reports",
-      buttonText: "🔎 View Lab Reports"
+      buttonText: "🔎 View Lab Reports",
+      fullButtonText: "📚 View Full Lab Report History"
     },
 
     bill: {
@@ -2006,7 +2040,8 @@ function getHistoryCategoryConfig(
       title: "Bill History",
       singular: "bill",
       plural: "bills",
-      buttonText: "🔎 View Bills"
+      buttonText: "🔎 View Bills",
+      fullButtonText: "📚 View Full Bill History"
     }
 
   };
@@ -2554,6 +2589,16 @@ function renderHistorySelector(
 
         </button>
 
+
+        <button
+          type="button"
+          class="portal-button purple-button"
+          onclick="showFullHistoryRecords()">
+
+          ${config.fullButtonText}
+
+        </button>
+
       </div>
 
     </div>
@@ -2820,6 +2865,175 @@ function showSelectedHistoryRecords() {
 }
 
 
+function getSortedFullHistoryItems(
+  category
+) {
+
+  return [
+    ...getHistoryItems(
+      category
+    )
+  ]
+  .sort(
+    function(a,b) {
+
+      const aDate =
+        getHistoryItemDate(
+          category,
+          a
+        );
+
+      const bDate =
+        getHistoryItemDate(
+          category,
+          b
+        );
+
+
+      const aTime =
+        aDate
+          ? new Date(
+              String(aDate).length === 10
+                ? aDate + "T00:00:00"
+                : aDate
+            ).getTime()
+          : 0;
+
+
+      const bTime =
+        bDate
+          ? new Date(
+              String(bDate).length === 10
+                ? bDate + "T00:00:00"
+                : bDate
+            ).getTime()
+          : 0;
+
+
+      if (
+        bTime !== aTime
+      ) {
+
+        return bTime - aTime;
+
+      }
+
+
+      return (
+        Number(
+          b.id ||
+          0
+        ) -
+        Number(
+          a.id ||
+          0
+        )
+      );
+
+    }
+  );
+
+}
+
+
+function showFullHistoryRecords() {
+
+  if (
+    !activeHistoryCategory
+  ) {
+    return;
+  }
+
+
+  historyDisplayMode =
+    "full";
+
+
+  renderActiveHistoryRecords();
+
+
+  updateHistoryURL(
+    "full"
+  );
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+function getHistoryDisplayHeader(
+  category,
+  count
+) {
+
+  if (
+    historyDisplayMode ===
+      "full"
+  ) {
+
+    const config =
+      getHistoryCategoryConfig(
+        category
+      );
+
+
+    const countText =
+      count === 1
+        ? config.singular
+        : config.plural;
+
+
+    return `
+
+      <div class="history-period-summary">
+
+        <div class="history-period-main">
+
+          <div class="history-period-title">
+
+            ${config.icon}
+            Full ${config.title}
+
+          </div>
+
+          <div class="history-period-count">
+
+            ${count}
+            ${countText}
+            · Newest first
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="portal-button light-button history-period-change-button"
+          onclick="backToHistorySelector()">
+
+          ↩ Month / Year Filter
+
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+
+  return getHistoryPeriodHeader(
+    category,
+    count
+  );
+
+}
+
+
 function getHistoryPeriodHeader(
   category,
   count
@@ -2911,9 +3125,14 @@ function renderActiveHistoryRecords() {
 
 
   const items =
-    getFilteredHistoryItems(
-      activeHistoryCategory
-    );
+    historyDisplayMode ===
+      "full"
+      ? getSortedFullHistoryItems(
+          activeHistoryCategory
+        )
+      : getFilteredHistoryItems(
+          activeHistoryCategory
+        );
 
 
   if (
@@ -3106,7 +3325,11 @@ function restoreHistoryStateFromURL() {
   historyDisplayMode =
     requestedMode === "records"
       ? "records"
-      : "selector";
+      : (
+          requestedMode === "full"
+            ? "full"
+            : "selector"
+        );
 
 
   hideAllHistorySections();
@@ -3153,7 +3376,9 @@ function restoreHistoryStateFromURL() {
 
   if (
     historyDisplayMode ===
-      "records"
+      "records" ||
+    historyDisplayMode ===
+      "full"
   ) {
 
     renderActiveHistoryRecords();
@@ -3233,7 +3458,7 @@ function renderConsultationHistory(
 
 
   let html =
-    getHistoryPeriodHeader(
+    getHistoryDisplayHeader(
       "consultation",
       rows.length
     );
@@ -3246,7 +3471,11 @@ function renderConsultationHistory(
     html += `
 
       <div class="portal-message">
-        No consultations found for the selected month.
+        ${
+          historyDisplayMode === "full"
+            ? "No consultations found."
+            : "No consultations found for the selected month."
+        }
       </div>
 
     `;
@@ -3823,7 +4052,7 @@ function renderPrescriptionHistory(
 
 
   container.innerHTML =
-    getHistoryPeriodHeader(
+    getHistoryDisplayHeader(
       "prescription",
       rows.length
     ) +
@@ -3834,7 +4063,11 @@ function renderPrescriptionHistory(
           )
         : `
             <div class="portal-message">
-              No prescriptions found for the selected month.
+              ${
+                historyDisplayMode === "full"
+                  ? "No prescriptions found."
+                  : "No prescriptions found for the selected month."
+              }
             </div>
           `
     ) +
@@ -3862,7 +4095,7 @@ function renderLabHistory(
 
 
   container.innerHTML =
-    getHistoryPeriodHeader(
+    getHistoryDisplayHeader(
       "lab",
       rows.length
     ) +
@@ -3873,7 +4106,11 @@ function renderLabHistory(
           )
         : `
             <div class="portal-message">
-              No lab reports found for the selected month.
+              ${
+                historyDisplayMode === "full"
+                  ? "No lab reports found."
+                  : "No lab reports found for the selected month."
+              }
             </div>
           `
     ) +
@@ -3907,7 +4144,7 @@ function renderBillHistory(
 
 
   let html =
-    getHistoryPeriodHeader(
+    getHistoryDisplayHeader(
       "bill",
       rows.length
     );
@@ -3920,7 +4157,11 @@ function renderBillHistory(
     html += `
 
       <div class="portal-message">
-        No bills found for the selected month.
+        ${
+          historyDisplayMode === "full"
+            ? "No bills found."
+            : "No bills found for the selected month."
+        }
       </div>
 
     `;
@@ -5672,6 +5913,9 @@ window.historyMonthChanged =
 
 window.showSelectedHistoryRecords =
   showSelectedHistoryRecords;
+
+window.showFullHistoryRecords =
+  showFullHistoryRecords;
 
 window.backToHistorySelector =
   backToHistorySelector;
