@@ -6232,7 +6232,9 @@ function getAppointmentSearchItems(
 
         /*
            PAST RANGE:
-           completed + cancelled only
+           show every stored appointment status.
+           This includes old Pending records so they
+           can be reviewed or permanently deleted.
         */
 
         if (
@@ -6241,13 +6243,7 @@ function getAppointmentSearchItems(
 
           return (
             date <
-              today &&
-            (
-              status ===
-                "Completed" ||
-              status ===
-                "Cancelled"
-            )
+            today
           );
 
         }
@@ -6256,7 +6252,7 @@ function getAppointmentSearchItems(
         /*
            RANGE INCLUDES TODAY:
            - dates before today:
-             completed + cancelled
+             show every stored appointment status
            - today and future:
              pending / upcoming only
         */
@@ -6266,12 +6262,7 @@ function getAppointmentSearchItems(
           today
         ) {
 
-          return (
-            status ===
-              "Completed" ||
-            status ===
-              "Cancelled"
-          );
+          return true;
 
         }
 
