@@ -730,178 +730,6 @@ textarea {
 
 
 /* =========================================================
-   CONSULTATION NAVIGATION SOURCE
-   ========================================================= */
-
-function setConsultationNavigationSource(
-  source
-) {
-
-  consultationNavigationSource =
-    source ||
-    "search";
-
-}
-
-
-function hasValidSelectedHistoryPeriod() {
-
-  return (
-    Number.isInteger(
-      Number(
-        selectedHistoryYear
-      )
-    ) &&
-    Number(
-      selectedHistoryYear
-    ) > 0 &&
-    Number.isInteger(
-      Number(
-        selectedHistoryMonth
-      )
-    ) &&
-    Number(
-      selectedHistoryMonth
-    ) >= 1 &&
-    Number(
-      selectedHistoryMonth
-    ) <= 12
-  );
-
-}
-
-
-function buildConsultationReturnURL() {
-
-  const params =
-    new URLSearchParams();
-
-
-  if (
-    consultationNavigationSource ===
-    "today"
-  ) {
-
-    params.set(
-      "view",
-      "today"
-    );
-
-
-    return (
-      window.location.pathname +
-      "?" +
-      params.toString()
-    );
-
-  }
-
-
-  if (
-    currentPatientId
-  ) {
-
-    params.set(
-      "patient_id",
-      currentPatientId
-    );
-
-  }
-
-
-  if (
-    hasValidSelectedHistoryPeriod()
-  ) {
-
-    params.set(
-      "year",
-      selectedHistoryYear
-    );
-
-    params.set(
-      "month",
-      selectedHistoryMonth
-    );
-
-    params.set(
-      "view",
-      "consultations"
-    );
-
-  }
-
-
-  const query =
-    params.toString();
-
-
-  return (
-    window.location.pathname +
-    (
-      query
-        ? "?" + query
-        : ""
-    )
-  );
-
-}
-
-
-async function returnFromConsultationEdit(
-  patientId
-) {
-
-  if (
-    consultationNavigationSource ===
-    "today"
-  ) {
-
-    await openTodayConsultationHistory();
-
-    return;
-
-  }
-
-
-  if (
-    patientId
-  ) {
-
-    if (
-      hasValidSelectedHistoryPeriod()
-    ) {
-
-      await openPatientHistory(
-        patientId,
-        {
-          year:
-            selectedHistoryYear,
-          month:
-            selectedHistoryMonth,
-          openResults:
-            true
-        }
-      );
-
-    } else {
-
-      await openPatientHistory(
-        patientId
-      );
-
-    }
-
-    return;
-
-  }
-
-
-  backToSearch();
-
-}
-
-
-/* =========================================================
    TODAY'S CONSULTATION HISTORY
    ========================================================= */
 
@@ -1352,6 +1180,7 @@ let consultationNavigationSource =
   "search";
 
 
+
 /*
    HISTORY PERIOD RANGE
    Show the present year and previous years only.
@@ -1618,6 +1447,183 @@ async function logoutDoctor() {
 
 }
 
+
+
+/* =========================================================
+   CONSULTATION NAVIGATION SOURCE
+   ========================================================= */
+
+function setConsultationNavigationSource(
+  source
+) {
+
+  consultationNavigationSource =
+    source ||
+    "search";
+
+}
+
+
+function hasValidSelectedHistoryPeriod() {
+
+  const year =
+    Number(
+      selectedHistoryYear
+    );
+
+  const month =
+    Number(
+      selectedHistoryMonth
+    );
+
+
+  return (
+    Number.isInteger(
+      year
+    ) &&
+    year > 0 &&
+    Number.isInteger(
+      month
+    ) &&
+    month >= 1 &&
+    month <= 12
+  );
+
+}
+
+
+function buildConsultationReturnURL() {
+
+  const params =
+    new URLSearchParams();
+
+
+  if (
+    consultationNavigationSource ===
+    "today"
+  ) {
+
+    params.set(
+      "view",
+      "today"
+    );
+
+
+    return (
+      window.location.pathname +
+      "?" +
+      params.toString()
+    );
+
+  }
+
+
+  if (
+    currentPatientId
+  ) {
+
+    params.set(
+      "patient_id",
+      currentPatientId
+    );
+
+  }
+
+
+  if (
+    hasValidSelectedHistoryPeriod()
+  ) {
+
+    params.set(
+      "year",
+      selectedHistoryYear
+    );
+
+    params.set(
+      "month",
+      selectedHistoryMonth
+    );
+
+    params.set(
+      "view",
+      "consultations"
+    );
+
+  }
+
+
+  const query =
+    params.toString();
+
+
+  return (
+    window.location.pathname +
+    (
+      query
+        ? "?" + query
+        : ""
+    )
+  );
+
+}
+
+
+async function returnFromConsultationEdit(
+  patientId
+) {
+
+  if (
+    consultationNavigationSource ===
+    "today"
+  ) {
+
+    await openTodayConsultationHistory();
+
+    return;
+
+  }
+
+
+  if (
+    patientId
+  ) {
+
+    if (
+      hasValidSelectedHistoryPeriod()
+    ) {
+
+      await openPatientHistory(
+        patientId,
+        {
+          year:
+            Number(
+              selectedHistoryYear
+            ),
+          month:
+            Number(
+              selectedHistoryMonth
+            ),
+          openResults:
+            true
+        }
+      );
+
+    } else {
+
+      await openPatientHistory(
+        patientId
+      );
+
+    }
+
+    return;
+
+  }
+
+
+  backToSearch();
+
+}
 
 
 /* =========================================================
@@ -2148,26 +2154,26 @@ async function openTodayConsultationHistory() {
   );
 
 
-  const url =
+  const currentURL =
     new URL(
       window.location.href
     );
 
 
-  url.searchParams.set(
+  currentURL.searchParams.set(
     "view",
     "today"
   );
 
-  url.searchParams.delete(
+  currentURL.searchParams.delete(
     "patient_id"
   );
 
-  url.searchParams.delete(
+  currentURL.searchParams.delete(
     "year"
   );
 
-  url.searchParams.delete(
+  currentURL.searchParams.delete(
     "month"
   );
 
@@ -2175,8 +2181,8 @@ async function openTodayConsultationHistory() {
   window.history.replaceState(
     {},
     "",
-    url.pathname +
-    url.search
+    currentURL.pathname +
+    currentURL.search
   );
 
 
@@ -2748,8 +2754,9 @@ async function openPatientHistory(
   options = {}
 ) {
 
-  consultationNavigationSource =
-    "history";
+  setConsultationNavigationSource(
+    "history"
+  );
 
 
   const patient =
@@ -8499,7 +8506,8 @@ async function handleURLPatient() {
 
 }
 
-  /* =========================================================
+
+/* =========================================================
    GLOBAL
    ========================================================= */
 
