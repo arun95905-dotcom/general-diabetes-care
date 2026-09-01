@@ -1465,7 +1465,103 @@ function getPatientPageReturnLabel() {
   }
 
 
+  if (
+    returnURL.includes(
+      "doctor-patients.html?view=today"
+    ) ||
+    returnURL.includes(
+      "view=today"
+    )
+  ) {
+
+    return "← Back to Today's Registered Patients";
+
+  }
+
+
+  if (
+    returnURL.includes(
+      "view=search"
+    )
+  ) {
+
+    return "← Back to Patient Search";
+
+  }
+
+
   return "← Back";
+
+}
+
+
+function capturePatientListReturnContext() {
+
+  if (
+    patientPageReturnURL
+  ) {
+    return;
+  }
+
+
+  const todayView =
+    document.getElementById(
+      "todayView"
+    );
+
+
+  if (
+    todayView &&
+    todayView.classList.contains(
+      "active"
+    )
+  ) {
+
+    patientPageReturnURL =
+      "doctor-patients.html?view=today";
+
+    consultationReturnURL =
+      patientPageReturnURL;
+
+    return;
+
+  }
+
+
+  const searchView =
+    document.getElementById(
+      "searchView"
+    );
+
+
+  if (
+    searchView &&
+    searchView.classList.contains(
+      "active"
+    )
+  ) {
+
+    const searchValue =
+      getValue(
+        "patientSearch"
+      );
+
+
+    patientPageReturnURL =
+      "doctor-patients.html?view=search" +
+      (
+        searchValue
+          ? "&search=" +
+            encodeURIComponent(
+              searchValue
+            )
+          : ""
+      );
+
+    consultationReturnURL =
+      patientPageReturnURL;
+
+  }
 
 }
 
@@ -2852,6 +2948,9 @@ function openPatientHistory(
   patientId
 ) {
 
+  capturePatientListReturnContext();
+
+
   const searchValue =
     document
       .getElementById(
@@ -2860,16 +2959,41 @@ function openPatientHistory(
       .value
       .trim();
 
-  window.location.href =
+
+  let historyURL =
     "doctor-patient-history.html" +
     "?patient_id=" +
     encodeURIComponent(
       patientId
-    ) +
-    "&search=" +
-    encodeURIComponent(
-      searchValue
     );
+
+
+  if (searchValue) {
+
+    historyURL +=
+      "&search=" +
+      encodeURIComponent(
+        searchValue
+      );
+
+  }
+
+
+  if (
+    patientPageReturnURL
+  ) {
+
+    historyURL +=
+      "&return_to=" +
+      encodeURIComponent(
+        patientPageReturnURL
+      );
+
+  }
+
+
+  window.location.href =
+    historyURL;
 
 }
 
@@ -2881,6 +3005,9 @@ function openPatientHistory(
 async function viewPatientDetails(
   patientId
 ) {
+
+  capturePatientListReturnContext();
+
 
   const patient =
     await getPatient(
@@ -3096,6 +3223,9 @@ async function editPatient(
   patientId
 ) {
 
+  capturePatientListReturnContext();
+
+
   const patient =
     await getPatient(
       patientId
@@ -3126,13 +3256,19 @@ async function editPatient(
         <button
           type="button"
           class="portal-button light-button"
-          onclick="viewPatientDetails(
-            ${Number(
-              patient.id
-            )}
-          )">
+          onclick="${
+            patientPageReturnURL
+              ? "returnToPatientPageSource()"
+              : `viewPatientDetails(${Number(
+                  patient.id
+                )})`
+          }">
 
-          ↩ Cancel
+          ${
+            patientPageReturnURL
+              ? getPatientPageReturnLabel()
+              : "↩ Cancel"
+          }
 
         </button>
 
@@ -3362,13 +3498,19 @@ async function editPatient(
         <button
           type="button"
           class="portal-button light-button"
-          onclick="viewPatientDetails(
-            ${Number(
-              patient.id
-            )}
-          )">
+          onclick="${
+            patientPageReturnURL
+              ? "returnToPatientPageSource()"
+              : `viewPatientDetails(${Number(
+                  patient.id
+                )})`
+          }">
 
-          ↩ Cancel
+          ${
+            patientPageReturnURL
+              ? getPatientPageReturnLabel()
+              : "↩ Cancel"
+          }
 
         </button>
 
@@ -3602,6 +3744,9 @@ async function startConsultation(
   patientId
 ) {
 
+  capturePatientListReturnContext();
+
+
   const patient =
     await getPatient(
       patientId
@@ -3634,15 +3779,15 @@ async function startConsultation(
         </h2>
 
         ${
-          consultationReturnURL
+          patientPageReturnURL
             ? `
 
               <button
                 type="button"
                 class="portal-button light-button"
-                onclick="returnToAppointments()">
+                onclick="returnToPatientPageSource()">
 
-                ← Appointments
+                ${getPatientPageReturnLabel()}
 
               </button>
 
@@ -3997,15 +4142,15 @@ function newConsultationFormHTML(
 
 
       ${
-        consultationReturnURL
+        patientPageReturnURL
           ? `
 
             <button
               type="button"
               class="portal-button light-button"
-              onclick="returnToAppointments()">
+              onclick="returnToPatientPageSource()">
 
-              ↩ Cancel
+              ${getPatientPageReturnLabel()}
 
             </button>
 
@@ -5362,15 +5507,15 @@ async function openSavedConsultation(
 
 
           ${
-            consultationReturnURL
+            patientPageReturnURL
               ? `
 
                 <button
                   type="button"
                   class="portal-button light-button"
-                  onclick="returnToAppointments()">
+                  onclick="returnToPatientPageSource()">
 
-                  ← Back to Appointments
+                  ${getPatientPageReturnLabel()}
 
                 </button>
 
@@ -7405,13 +7550,33 @@ async function handleURLParameters() {
   }
 
   /*
+     Return to Today's Registered Patients.
+  */
+
+  if (
+    view === "today"
+  ) {
+
+    patientPageReturnURL =
+      null;
+
+    consultationReturnURL =
+      null;
+
+    await loadTodayPatients();
+
+    return true;
+
+  }
+
+
+  /*
      Return from Patient History
      → restore previous patient search
   */
 
   if (
-    view === "search" &&
-    search
+    view === "search"
   ) {
 
     showView(
@@ -7423,9 +7588,14 @@ async function handleURLParameters() {
         "patientSearch"
       )
       .value =
-        search;
+        search ||
+        "";
 
-    await searchPatients();
+    if (search) {
+
+      await searchPatients();
+
+    }
 
     return true;
 
@@ -7479,6 +7649,10 @@ document
         null;
 
 
+      patientPageReturnURL =
+        null;
+
+
       showView(
         "searchView"
       );
@@ -7507,7 +7681,17 @@ document
   )
   .addEventListener(
     "click",
-    loadTodayPatients
+    function() {
+
+      patientPageReturnURL =
+        null;
+
+      consultationReturnURL =
+        null;
+
+      loadTodayPatients();
+
+    }
   );
 
 
@@ -7658,6 +7842,9 @@ window.closeFileModal =
 
 window.returnToPatientPageSource =
   returnToPatientPageSource;
+
+window.capturePatientListReturnContext =
+  capturePatientListReturnContext;
 
 window.updateAgeFromDOB =
   updateAgeFromDOB;
