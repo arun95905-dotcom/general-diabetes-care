@@ -259,7 +259,7 @@ select {
 .list-header {
   display: grid;
   grid-template-columns:
-    minmax(0,1fr) 100px 140px 28px;
+    38px minmax(0,1fr) 100px 140px 28px;
   gap: 10px;
   padding: 9px 13px;
   color: #7b8795;
@@ -281,7 +281,7 @@ select {
   width: 100%;
   display: grid;
   grid-template-columns:
-    minmax(0,1fr) 100px 140px 28px;
+    38px minmax(0,1fr) 100px 140px 28px;
   gap: 10px;
   align-items: center;
   padding: 0;
@@ -354,6 +354,63 @@ select {
 }
 
 
+/* BULK PATIENT SELECTION */
+
+.bulk-actions {
+  margin-bottom: 12px;
+  padding: 11px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.bulk-select-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.bulk-select-all input,
+.patient-select-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+.bulk-delete-button {
+  min-height: 39px;
+  padding: 8px 12px;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.bulk-delete-button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.patient-select-cell {
+  padding: 0 0 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-row.selected {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
 /* MESSAGE */
 
 .portal-message {
@@ -403,7 +460,7 @@ select {
 
   .patient-row {
     grid-template-columns:
-      minmax(0,1fr) 25px;
+      38px minmax(0,1fr) 25px;
     gap: 7px;
   }
 
@@ -571,7 +628,40 @@ Registered patients
 </div>
 
 
+<div class="bulk-actions">
+
+<label class="bulk-select-all">
+
+<input
+  type="checkbox"
+  id="selectAllPatientsCheckbox"
+  onchange="toggleSelectAllPatients(this.checked)">
+
+<span id="selectAllPatientsLabel">
+Select All
+</span>
+
+</label>
+
+<button
+  type="button"
+  id="deleteSelectedPatientsButton"
+  class="portal-button bulk-delete-button"
+  onclick="deleteSelectedPatients()"
+  disabled>
+
+🗑 Delete Selected (0)
+
+</button>
+
+</div>
+
+
 <div class="list-header">
+
+<div>
+Select
+</div>
 
 <div>
 Patient
@@ -673,6 +763,9 @@ let selectedYear =
 
 let selectedMonth =
   null;
+
+let selectedPatientIds =
+  new Set();
 
 
 /*
@@ -997,6 +1090,892 @@ function populateMonthOptions() {
 }
 
 
+function chunkArray(
+  array,
+  size
+) {
+
+  const chunks =
+    [];
+
+  for (
+    let i = 0;
+    i < array.length;
+    i += size
+  ) {
+
+    chunks.push(
+      array.slice(
+        i,
+        i + size
+      )
+    );
+
+  }
+
+  return chunks;
+
+}
+
+
+function getPrescriptionStoragePath(
+  imageURL
+) {
+
+  if (!imageURL) {
+    return null;
+  }
+
+  try {
+
+    const url =
+      new URL(
+        imageURL
+      );
+
+    const markers = [
+
+      "/storage/v1/object/public/prescriptions/",
+      "/storage/v1/object/sign/prescriptions/"
+
+    ];
+
+    for (
+      const marker of markers
+    ) {
+
+      const index =
+        url.pathname.indexOf(
+          marker
+        );
+
+      if (
+        index !== -1
+      ) {
+
+        return decodeURIComponent(
+          url.pathname.substring(
+            index +
+            marker.length
+          )
+        );
+
+      }
+
+    }
+
+  } catch (error) {
+
+    console.warn(
+      "Could not determine prescription path:",
+      error
+    );
+
+  }
+
+  return null;
+
+}
+
+
+async function removeStorageFiles(
+  bucketName,
+  filePaths
+) {
+
+  const uniquePaths =
+    [
+      ...new Set(
+        (
+          filePaths ||
+          []
+        )
+        .filter(Boolean)
+      )
+    ];
+
+  if (
+    uniquePaths.length === 0
+  ) {
+    return;
+  }
+
+  const chunks =
+    chunkArray(
+      uniquePaths,
+      100
+    );
+
+  for (
+    const paths of chunks
+  ) {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .storage
+        .from(
+          bucketName
+        )
+        .remove(
+          paths
+        );
+
+    if (error) {
+
+      console.warn(
+        "Storage deletion warning:",
+        bucketName,
+        error
+      );
+
+    }
+
+  }
+
+}
+
+
+async function deletePatientRecords(
+  patientId
+) {
+
+  const {
+    data:
+      consultations,
+    error:
+      consultationLoadError
+  } =
+    await supabaseClient
+      .from(
+        "consultations"
+      )
+      .select(
+        "id,prescription_image_url"
+      )
+      .eq(
+        "patient_id",
+        patientId
+      );
+
+  if (consultationLoadError) {
+
+    throw new Error(
+      "Unable to read consultation records: " +
+      consultationLoadError.message
+    );
+
+  }
+
+  const consultationRows =
+    consultations ||
+    [];
+
+  const consultationIds =
+    consultationRows
+      .map(
+        function(item) {
+          return item.id;
+        }
+      );
+
+
+  let prescriptionImageRows =
+    [];
+
+  if (
+    consultationIds.length > 0
+  ) {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "consultation_images"
+        )
+        .select(
+          "id,consultation_id,image_url"
+        )
+        .in(
+          "consultation_id",
+          consultationIds
+        );
+
+    if (error) {
+
+      throw new Error(
+        "Unable to read prescription image records: " +
+        error.message
+      );
+
+    }
+
+    prescriptionImageRows =
+      data ||
+      [];
+
+  }
+
+
+  const {
+    data:
+      labReports,
+    error:
+      labLoadError
+  } =
+    await supabaseClient
+      .from(
+        "investigation_reports"
+      )
+      .select(
+        "id,file_path"
+      )
+      .eq(
+        "patient_id",
+        patientId
+      );
+
+  if (labLoadError) {
+
+    throw new Error(
+      "Unable to read lab report records: " +
+      labLoadError.message
+    );
+
+  }
+
+
+  const prescriptionPaths =
+    [];
+
+  prescriptionImageRows
+    .forEach(
+      function(image) {
+
+        const path =
+          getPrescriptionStoragePath(
+            image.image_url
+          );
+
+        if (path) {
+          prescriptionPaths.push(
+            path
+          );
+        }
+
+      }
+    );
+
+  consultationRows
+    .forEach(
+      function(consultation) {
+
+        const path =
+          getPrescriptionStoragePath(
+            consultation
+              .prescription_image_url
+          );
+
+        if (path) {
+          prescriptionPaths.push(
+            path
+          );
+        }
+
+      }
+    );
+
+  await removeStorageFiles(
+    "prescriptions",
+    prescriptionPaths
+  );
+
+
+  const labPaths =
+    (
+      labReports ||
+      []
+    )
+    .map(
+      function(report) {
+        return report.file_path;
+      }
+    )
+    .filter(Boolean);
+
+  await removeStorageFiles(
+    "investigation-reports",
+    labPaths
+  );
+
+
+  if (
+    consultationIds.length > 0
+  ) {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(
+          "consultation_images"
+        )
+        .delete()
+        .in(
+          "consultation_id",
+          consultationIds
+        );
+
+    if (error) {
+
+      throw new Error(
+        "Unable to delete prescription image records: " +
+        error.message
+      );
+
+    }
+
+  }
+
+
+  const {
+    error:
+      labDeleteError
+  } =
+    await supabaseClient
+      .from(
+        "investigation_reports"
+      )
+      .delete()
+      .eq(
+        "patient_id",
+        patientId
+      );
+
+  if (labDeleteError) {
+
+    throw new Error(
+      "Unable to delete lab report records: " +
+      labDeleteError.message
+    );
+
+  }
+
+
+  const {
+    error:
+      billingDeleteError
+  } =
+    await supabaseClient
+      .from(
+        "billing"
+      )
+      .delete()
+      .eq(
+        "patient_id",
+        patientId
+      );
+
+  if (billingDeleteError) {
+
+    throw new Error(
+      "Unable to delete billing records: " +
+      billingDeleteError.message
+    );
+
+  }
+
+
+  const {
+    error:
+      consultationDeleteError
+  } =
+    await supabaseClient
+      .from(
+        "consultations"
+      )
+      .delete()
+      .eq(
+        "patient_id",
+        patientId
+      );
+
+  if (consultationDeleteError) {
+
+    throw new Error(
+      "Unable to delete consultation records: " +
+      consultationDeleteError.message
+    );
+
+  }
+
+
+  const {
+    error:
+      appointmentDeleteError
+  } =
+    await supabaseClient
+      .from(
+        "appointments"
+      )
+      .delete()
+      .eq(
+        "patient_id",
+        patientId
+      );
+
+  if (appointmentDeleteError) {
+
+    throw new Error(
+      "Unable to delete linked appointments: " +
+      appointmentDeleteError.message
+    );
+
+  }
+
+
+  const {
+    error:
+      patientDeleteError
+  } =
+    await supabaseClient
+      .from(
+        "patients"
+      )
+      .delete()
+      .eq(
+        "id",
+        patientId
+      );
+
+  if (patientDeleteError) {
+
+    throw new Error(
+      "Unable to delete patient record: " +
+      patientDeleteError.message
+    );
+
+  }
+
+}
+
+
+function updateBulkDeleteControls() {
+
+  const patients =
+    getSelectedPatients();
+
+  const currentIds =
+    new Set(
+      patients.map(
+        function(patient) {
+          return Number(
+            patient.id
+          );
+        }
+      )
+    );
+
+  for (
+    const id of
+      Array.from(
+        selectedPatientIds
+      )
+  ) {
+
+    if (
+      !currentIds.has(
+        Number(id)
+      )
+    ) {
+
+      selectedPatientIds.delete(
+        Number(id)
+      );
+
+    }
+
+  }
+
+  const count =
+    selectedPatientIds.size;
+
+  const button =
+    document.getElementById(
+      "deleteSelectedPatientsButton"
+    );
+
+  const selectAll =
+    document.getElementById(
+      "selectAllPatientsCheckbox"
+    );
+
+  const selectAllLabel =
+    document.getElementById(
+      "selectAllPatientsLabel"
+    );
+
+  if (button) {
+
+    button.disabled =
+      count === 0;
+
+    button.textContent =
+      "🗑 Delete Selected (" +
+      count +
+      ")";
+
+  }
+
+  if (selectAll) {
+
+    const allSelected =
+      patients.length > 0 &&
+      patients.every(
+        function(patient) {
+
+          return selectedPatientIds.has(
+            Number(
+              patient.id
+            )
+          );
+
+        }
+      );
+
+    const someSelected =
+      patients.some(
+        function(patient) {
+
+          return selectedPatientIds.has(
+            Number(
+              patient.id
+            )
+          );
+
+        }
+      );
+
+    selectAll.checked =
+      allSelected;
+
+    selectAll.indeterminate =
+      someSelected &&
+      !allSelected;
+
+  }
+
+  if (selectAllLabel) {
+
+    selectAllLabel.textContent =
+      count > 0
+        ? "Selected: " +
+          count
+        : "Select All";
+
+  }
+
+}
+
+
+function togglePatientSelection(
+  patientId,
+  checked
+) {
+
+  const id =
+    Number(
+      patientId
+    );
+
+  if (checked) {
+
+    selectedPatientIds.add(
+      id
+    );
+
+  } else {
+
+    selectedPatientIds.delete(
+      id
+    );
+
+  }
+
+  const row =
+    document.getElementById(
+      "patientRow-" +
+      id
+    );
+
+  if (row) {
+
+    row.classList.toggle(
+      "selected",
+      checked
+    );
+
+  }
+
+  updateBulkDeleteControls();
+
+}
+
+
+function toggleSelectAllPatients(
+  checked
+) {
+
+  const patients =
+    getSelectedPatients();
+
+  patients.forEach(
+    function(patient) {
+
+      const id =
+        Number(
+          patient.id
+        );
+
+      if (checked) {
+
+        selectedPatientIds.add(
+          id
+        );
+
+      } else {
+
+        selectedPatientIds.delete(
+          id
+        );
+
+      }
+
+    }
+  );
+
+  renderSelectedPatients();
+
+}
+
+
+async function deleteSelectedPatients() {
+
+  const ids =
+    Array.from(
+      selectedPatientIds
+    );
+
+  if (
+    ids.length === 0
+  ) {
+    return;
+  }
+
+  const confirmed =
+    confirm(
+      "Permanently delete " +
+      ids.length +
+      (
+        ids.length === 1
+          ? " selected patient"
+          : " selected patients"
+      ) +
+      "?\n\n" +
+      "This will delete each patient's registration, consultations, prescription images, lab reports, billing records and linked appointments.\n\n" +
+      "This action cannot be undone."
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const button =
+    document.getElementById(
+      "deleteSelectedPatientsButton"
+    );
+
+  const selectAll =
+    document.getElementById(
+      "selectAllPatientsCheckbox"
+    );
+
+  if (button) {
+    button.disabled =
+      true;
+  }
+
+  if (selectAll) {
+    selectAll.disabled =
+      true;
+  }
+
+  const deletedIds =
+    [];
+
+  const failedPatients =
+    [];
+
+  for (
+    let index = 0;
+    index < ids.length;
+    index++
+  ) {
+
+    const patientId =
+      Number(
+        ids[index]
+      );
+
+    const patient =
+      allPatients.find(
+        function(item) {
+
+          return Number(
+            item.id
+          ) ===
+          patientId;
+
+        }
+      );
+
+    if (button) {
+
+      button.textContent =
+        "⏳ Deleting " +
+        (index + 1) +
+        " of " +
+        ids.length +
+        "...";
+
+    }
+
+    try {
+
+      await deletePatientRecords(
+        patientId
+      );
+
+      deletedIds.push(
+        patientId
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Bulk patient deletion error:",
+        patientId,
+        error
+      );
+
+      failedPatients.push(
+        {
+          id:
+            patientId,
+          name:
+            patient &&
+            patient.patient_name
+              ? patient.patient_name
+              : "Patient " +
+                patientId,
+          message:
+            error.message
+        }
+      );
+
+    }
+
+  }
+
+
+  if (
+    deletedIds.length > 0
+  ) {
+
+    const deletedSet =
+      new Set(
+        deletedIds
+      );
+
+    allPatients =
+      allPatients.filter(
+        function(patient) {
+
+          return !deletedSet.has(
+            Number(
+              patient.id
+            )
+          );
+
+        }
+      );
+
+  }
+
+  selectedPatientIds.clear();
+
+  populateMonthOptions();
+
+  document
+    .getElementById(
+      "patientMonth"
+    )
+    .value =
+      String(
+        selectedMonth
+      );
+
+  renderSelectedPatients();
+
+  if (selectAll) {
+    selectAll.disabled =
+      false;
+  }
+
+  if (
+    failedPatients.length === 0
+  ) {
+
+    alert(
+      deletedIds.length +
+      (
+        deletedIds.length === 1
+          ? " patient deleted successfully."
+          : " patients deleted successfully."
+      ) +
+      "\n\nAll linked patient records were removed."
+    );
+
+    return;
+
+  }
+
+  alert(
+    deletedIds.length +
+    " deleted successfully.\n\n" +
+    failedPatients.length +
+    " could not be fully deleted.\n\n" +
+    failedPatients
+      .map(
+        function(item) {
+          return (
+            item.name +
+            " (ID " +
+            item.id +
+            "): " +
+            item.message
+          );
+        }
+      )
+      .join("\n")
+  );
+
+}
+
+
 function getSelectedPatients() {
 
   return allPatients
@@ -1115,6 +2094,8 @@ function renderSelectedPatients() {
 
     `;
 
+    updateBulkDeleteControls();
+
     return;
 
   }
@@ -1127,14 +2108,62 @@ function renderSelectedPatients() {
 
           return `
 
-            <button
-              type="button"
-              class="patient-row"
+            <div
+              id="patientRow-${Number(
+                patient.id
+              )}"
+              class="patient-row ${
+                selectedPatientIds.has(
+                  Number(
+                    patient.id
+                  )
+                )
+                  ? "selected"
+                  : ""
+              }"
+              role="button"
+              tabindex="0"
               onclick="openPatientAdmin(
                 ${Number(
                   patient.id
                 )}
+              )"
+              onkeydown="handlePatientRowKeydown(
+                event,
+                ${Number(
+                  patient.id
+                )}
               )">
+
+
+              <div
+                class="patient-select-cell"
+                onclick="event.stopPropagation();">
+
+                <input
+                  type="checkbox"
+                  class="patient-select-checkbox"
+                  aria-label="Select patient ${escapeHTML(
+                    patient.patient_name ||
+                    patient.id
+                  )}"
+                  ${
+                    selectedPatientIds.has(
+                      Number(
+                        patient.id
+                      )
+                    )
+                      ? "checked"
+                      : ""
+                  }
+                  onchange="togglePatientSelection(
+                    ${Number(
+                      patient.id
+                    )},
+                    this.checked
+                  )">
+
+              </div>
 
 
               <div class="patient-cell patient-main">
@@ -1203,7 +2232,7 @@ function renderSelectedPatients() {
               </div>
 
 
-            </button>
+            </div>
 
           `;
 
@@ -1211,10 +2240,14 @@ function renderSelectedPatients() {
       )
       .join("");
 
+  updateBulkDeleteControls();
+
 }
 
 
 function applySelectedPeriod() {
+
+  selectedPatientIds.clear();
 
   selectedYear =
     Number(
@@ -1447,6 +2480,27 @@ async function loadPatients() {
    NAVIGATION
    ========================================================= */
 
+function handlePatientRowKeydown(
+  event,
+  patientId
+) {
+
+  if (
+    event.key === "Enter" ||
+    event.key === " "
+  ) {
+
+    event.preventDefault();
+
+    openPatientAdmin(
+      patientId
+    );
+
+  }
+
+}
+
+
 function openPatientAdmin(
   patientId
 ) {
@@ -1546,6 +2600,18 @@ document
 
 window.openPatientAdmin =
   openPatientAdmin;
+
+window.handlePatientRowKeydown =
+  handlePatientRowKeydown;
+
+window.togglePatientSelection =
+  togglePatientSelection;
+
+window.toggleSelectAllPatients =
+  toggleSelectAllPatients;
+
+window.deleteSelectedPatients =
+  deleteSelectedPatients;
 
 
 /* =========================================================
