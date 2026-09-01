@@ -202,741 +202,6 @@ textarea {
 
 
 /* =========================================================
-   TODAY'S CONSULTATION HISTORY
-   ========================================================= */
-
-function getTodayConsultationRange() {
-
-  const start =
-    new Date();
-
-  start.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-
-  const end =
-    new Date(
-      start
-    );
-
-  end.setDate(
-    end.getDate() + 1
-  );
-
-
-  return {
-    start:
-      start.toISOString(),
-    end:
-      end.toISOString()
-  };
-
-}
-
-
-async function loadTodayConsultationCount() {
-
-  const range =
-    getTodayConsultationRange();
-
-
-  const {
-    count,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "consultations"
-      )
-      .select(
-        "*",
-        {
-          count: "exact",
-          head: true
-        }
-      )
-      .neq(
-        "chief_complaints",
-        "__DIRECT_PRESCRIPTION_UPLOAD__"
-      )
-      .gte(
-        "created_at",
-        range.start
-      )
-      .lt(
-        "created_at",
-        range.end
-      );
-
-
-  if (error) {
-
-    console.error(
-      "Unable to load today's consultation count:",
-      error
-    );
-
-    return;
-
-  }
-
-
-  const badge =
-    document.getElementById(
-      "todayConsultationCount"
-    );
-
-
-  if (badge) {
-
-    badge.textContent =
-      count || 0;
-
-  }
-
-}
-
-
-function setTodayConsultationContext(
-  patientId
-) {
-
-  const patient =
-    todayPatientsById[
-      Number(
-        patientId
-      )
-    ] ||
-    null;
-
-
-  currentPatientId =
-    Number(
-      patientId
-    );
-
-
-  if (patient) {
-
-    currentPatient =
-      patient;
-
-  }
-
-}
-
-
-async function openTodayFullConsultation(
-  patientId,
-  consultationId
-) {
-
-  setTodayConsultationContext(
-    patientId
-  );
-
-  await toggleFullConsultation(
-    consultationId
-  );
-
-}
-
-
-async function openTodayEditConsultation(
-  patientId,
-  consultationId
-) {
-
-  setTodayConsultationContext(
-    patientId
-  );
-
-  await openEditConsultation(
-    consultationId
-  );
-
-}
-
-
-async function openTodayPrescriptionHistory(
-  patientId,
-  consultationId
-) {
-
-  setTodayConsultationContext(
-    patientId
-  );
-
-  await togglePrescriptionHistory(
-    consultationId
-  );
-
-}
-
-
-async function openTodayLabHistory(
-  patientId,
-  consultationId
-) {
-
-  setTodayConsultationContext(
-    patientId
-  );
-
-  await toggleLabHistory(
-    consultationId
-  );
-
-}
-
-
-async function openTodayBillHistory(
-  patientId,
-  consultationId
-) {
-
-  setTodayConsultationContext(
-    patientId
-  );
-
-  await toggleBillHistory(
-    consultationId
-  );
-
-}
-
-
-function renderTodayConsultationCard(
-  consultation
-) {
-
-  const patientId =
-    Number(
-      consultation.patient_id
-    );
-
-
-  const patient =
-    todayPatientsById[
-      patientId
-    ] ||
-    {};
-
-
-  return `
-
-    <div class="today-patient-card">
-
-      <div class="today-patient-name">
-
-        👤
-        ${escapeHTML(
-          patient.patient_name ||
-          "Patient"
-        )}
-
-      </div>
-
-
-      <div class="today-patient-meta">
-
-        🆔 Patient ID:
-        ${escapeHTML(
-          patientId
-        )}
-
-        <br>
-
-        📞
-        ${escapeHTML(
-          patient.patient_phone ||
-          "-"
-        )}
-
-        <br>
-
-        🎂 Age:
-        ${escapeHTML(
-          calculateAge(
-            patient
-          )
-        )}
-
-        ${
-          patient.gender
-            ? `
-                &nbsp; • &nbsp;
-                ${escapeHTML(
-                  patient.gender
-                )}
-              `
-            : ""
-        }
-
-      </div>
-
-
-      <div class="today-consultation-meta">
-
-        🕒
-        <strong>
-          Consultation:
-        </strong>
-        ${formatDateTime(
-          consultation.created_at
-        )}
-
-        <br>
-
-        <strong>
-          Diagnosis:
-        </strong>
-        ${escapeHTML(
-          consultation.diagnosis ||
-          "-"
-        )}
-
-      </div>
-
-
-      <div
-        id="fullConsultation-${Number(
-          consultation.id
-        )}"
-        class="full-consultation">
-
-        <div class="portal-message">
-          Loading...
-        </div>
-
-      </div>
-
-
-      <div class="action-row">
-
-        <button
-          type="button"
-          id="viewFullButton-${Number(
-            consultation.id
-          )}"
-          class="portal-button primary-button small-button"
-          onclick="openTodayFullConsultation(
-            ${patientId},
-            ${Number(
-              consultation.id
-            )}
-          )">
-
-          ▶ View Full Consultation
-
-        </button>
-
-
-        <button
-          type="button"
-          class="portal-button warning-button small-button"
-          onclick="openTodayEditConsultation(
-            ${patientId},
-            ${Number(
-              consultation.id
-            )}
-          )">
-
-          ✏️ Edit Consultation
-
-        </button>
-
-      </div>
-
-
-      <div class="action-row">
-
-        <button
-          type="button"
-          class="portal-button purple-button small-button"
-          onclick="openTodayPrescriptionHistory(
-            ${patientId},
-            ${Number(
-              consultation.id
-            )}
-          )">
-
-          💊 Prescription
-
-        </button>
-
-
-        <button
-          type="button"
-          class="portal-button primary-button small-button"
-          onclick="openTodayLabHistory(
-            ${patientId},
-            ${Number(
-              consultation.id
-            )}
-          )">
-
-          🧪 Lab Reports
-
-        </button>
-
-
-        <button
-          type="button"
-          class="portal-button success-button small-button"
-          onclick="openTodayBillHistory(
-            ${patientId},
-            ${Number(
-              consultation.id
-            )}
-          )">
-
-          💰 Bills
-
-        </button>
-
-      </div>
-
-
-      <div
-        id="prescriptionPanel-${Number(
-          consultation.id
-        )}"
-        class="full-consultation">
-      </div>
-
-
-      <div
-        id="labPanel-${Number(
-          consultation.id
-        )}"
-        class="full-consultation">
-      </div>
-
-
-      <div
-        id="billPanel-${Number(
-          consultation.id
-        )}"
-        class="full-consultation">
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-async function openTodayConsultationHistory() {
-
-  const container =
-    document.getElementById(
-      "todayConsultationContent"
-    );
-
-
-  container.innerHTML = `
-
-    <div class="view-header">
-
-      <h2>
-        📅 Today's Consultation History
-      </h2>
-
-      <button
-        type="button"
-        class="portal-button light-button"
-        onclick="backToSearch()">
-
-        ← Back
-
-      </button>
-
-    </div>
-
-
-    <div class="portal-message">
-      Loading today's consultations...
-    </div>
-
-  `;
-
-
-  showView(
-    "todayConsultationView"
-  );
-
-
-  const range =
-    getTodayConsultationRange();
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "consultations"
-      )
-      .select("*")
-      .neq(
-        "chief_complaints",
-        "__DIRECT_PRESCRIPTION_UPLOAD__"
-      )
-      .gte(
-        "created_at",
-        range.start
-      )
-      .lt(
-        "created_at",
-        range.end
-      )
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      );
-
-
-  if (error) {
-
-    console.error(
-      "Unable to load today's consultations:",
-      error
-    );
-
-
-    container.innerHTML = `
-
-      <div class="view-header">
-
-        <h2>
-          📅 Today's Consultation History
-        </h2>
-
-        <button
-          type="button"
-          class="portal-button light-button"
-          onclick="backToSearch()">
-
-          ← Back
-
-        </button>
-
-      </div>
-
-
-      <div class="portal-message">
-        Unable to load today's consultation history.
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  todayConsultations =
-    data ||
-    [];
-
-
-  const patientIds =
-    [
-      ...new Set(
-        todayConsultations
-          .map(
-            function(consultation) {
-
-              return Number(
-                consultation.patient_id
-              );
-
-            }
-          )
-          .filter(
-            function(patientId) {
-
-              return Number.isFinite(
-                patientId
-              ) &&
-              patientId > 0;
-
-            }
-          )
-      )
-    ];
-
-
-  todayPatientsById =
-    {};
-
-
-  if (
-    patientIds.length > 0
-  ) {
-
-    const {
-      data:
-        patients,
-      error:
-        patientError
-    } =
-      await supabaseClient
-        .from(
-          "patients"
-        )
-        .select("*")
-        .in(
-          "id",
-          patientIds
-        );
-
-
-    if (patientError) {
-
-      console.error(
-        "Unable to load today's consultation patients:",
-        patientError
-      );
-
-    } else {
-
-      (
-        patients ||
-        []
-      )
-      .forEach(
-        function(patient) {
-
-          todayPatientsById[
-            Number(
-              patient.id
-            )
-          ] =
-            patient;
-
-        }
-      );
-
-    }
-
-  }
-
-
-  const todayLabel =
-    new Date()
-      .toLocaleDateString(
-        "en-IN",
-        {
-          day: "2-digit",
-          month: "short",
-          year: "numeric"
-        }
-      );
-
-
-  container.innerHTML = `
-
-    <div class="view-header">
-
-      <h2>
-        📅 Today's Consultation History
-      </h2>
-
-      <button
-        type="button"
-        class="portal-button light-button"
-        onclick="backToSearch()">
-
-        ← Back
-
-      </button>
-
-    </div>
-
-
-    <div class="today-summary">
-
-      <div>
-
-        <div class="today-summary-title">
-          ${escapeHTML(
-            todayLabel
-          )}
-        </div>
-
-        <div class="today-summary-meta">
-          Latest consultation shown first
-        </div>
-
-      </div>
-
-      <span class="today-consultation-count">
-        ${todayConsultations.length}
-      </span>
-
-    </div>
-
-
-    ${
-      todayConsultations.length
-        ? todayConsultations
-            .map(
-              renderTodayConsultationCard
-            )
-            .join("")
-        : `
-
-            <div class="portal-message">
-              No consultations recorded today.
-            </div>
-
-          `
-    }
-
-
-    <div class="action-row">
-
-      <button
-        type="button"
-        class="portal-button light-button"
-        onclick="backToSearch()">
-
-        ← Back to Consultation Search
-
-      </button>
-
-    </div>
-
-  `;
-
-
-  const badge =
-    document.getElementById(
-      "todayConsultationCount"
-    );
-
-
-  if (badge) {
-
-    badge.textContent =
-      todayConsultations.length;
-
-  }
-
-}
-
-
-/* =========================================================
    SEARCH
    ========================================================= */
 
@@ -964,134 +229,6 @@ async function openTodayConsultationHistory() {
     0 0 0 3px rgba(37,99,235,.08);
 }
 
-
-
-/* =========================================================
-   TODAY'S CONSULTATION HISTORY
-   ========================================================= */
-
-.today-consultation-button {
-  width: 100%;
-  margin-top: 16px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  text-align: left;
-  background:
-    linear-gradient(
-      135deg,
-      #eef6ff,
-      #ffffff
-    );
-  border: 1px solid #d4e5fb;
-  border-radius: 15px;
-  cursor: pointer;
-}
-
-.today-consultation-button:hover {
-  background: #f8fbff;
-}
-
-.today-consultation-button-main {
-  min-width: 0;
-}
-
-.today-consultation-button-title {
-  display: block;
-  color: #172033;
-  font-size: 16px;
-  font-weight: 850;
-}
-
-.today-consultation-button-text {
-  display: block;
-  margin-top: 4px;
-  color: #64748b;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.today-consultation-count {
-  flex: 0 0 auto;
-  min-width: 36px;
-  min-height: 30px;
-  padding: 4px 10px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #2563eb;
-  color: #ffffff;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 850;
-}
-
-.today-summary {
-  margin-bottom: 12px;
-  padding: 13px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  background: #eef6ff;
-  border: 1px solid #d4e5fb;
-  border-radius: 13px;
-}
-
-.today-summary-title {
-  font-size: 16px;
-  font-weight: 850;
-}
-
-.today-summary-meta {
-  margin-top: 4px;
-  color: #64748b;
-  font-size: 12px;
-}
-
-.today-patient-card {
-  margin-top: 12px;
-  padding: 15px;
-  background: #ffffff;
-  border: 1px solid #e0e6ee;
-  border-radius: 15px;
-}
-
-.today-patient-name {
-  font-size: 18px;
-  font-weight: 850;
-}
-
-.today-patient-meta {
-  margin-top: 5px;
-  color: #64748b;
-  font-size: 12px;
-  line-height: 1.65;
-}
-
-.today-consultation-meta {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #e2e8f0;
-  color: #566274;
-  font-size: 13px;
-  line-height: 1.65;
-}
-
-@media(max-width:560px) {
-
-  .today-consultation-button,
-  .today-summary {
-    align-items: flex-start;
-  }
-
-  .today-summary {
-    flex-direction: column;
-  }
-
-}
 
 /* =========================================================
    PATIENT SEARCH RESULT
@@ -1591,6 +728,133 @@ async function openTodayConsultationHistory() {
 }
 
 
+
+/* =========================================================
+   TODAY'S CONSULTATION HISTORY
+   ========================================================= */
+
+.today-consultation-button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  text-align: left;
+  background:
+    linear-gradient(
+      135deg,
+      #eef6ff,
+      #ffffff
+    );
+  border: 1px solid #d4e5fb;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.today-consultation-button:hover {
+  background: #f8fbff;
+}
+
+.today-consultation-button-main {
+  min-width: 0;
+}
+
+.today-consultation-button-title {
+  display: block;
+  color: #172033;
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.today-consultation-button-text {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.today-consultation-count {
+  flex: 0 0 auto;
+  min-width: 36px;
+  min-height: 30px;
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.today-summary {
+  margin-bottom: 12px;
+  padding: 13px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #eef6ff;
+  border: 1px solid #d4e5fb;
+  border-radius: 13px;
+}
+
+.today-summary-title {
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.today-summary-meta {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.today-patient-card {
+  margin-top: 12px;
+  padding: 15px;
+  background: #ffffff;
+  border: 1px solid #e0e6ee;
+  border-radius: 15px;
+}
+
+.today-patient-name {
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.today-patient-meta {
+  margin-top: 5px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.today-consultation-meta {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+  color: #566274;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+@media(max-width:560px) {
+  .today-consultation-button,
+  .today-summary {
+    align-items: flex-start;
+  }
+
+  .today-summary {
+    flex-direction: column;
+  }
+}
+
+
 /* =========================================================
    MOBILE
    ========================================================= */
@@ -1912,6 +1176,7 @@ let todayConsultations =
 let todayPatientsById =
   {};
 
+
 /*
    HISTORY PERIOD RANGE
    Show the present year and previous years only.
@@ -2175,6 +1440,822 @@ async function logoutDoctor() {
 
   window.location.href =
     "doctor-login.html";
+
+}
+
+
+
+/* =========================================================
+   TODAY'S CONSULTATION HISTORY
+   ========================================================= */
+
+function getISTTodayRange() {
+
+  const now =
+    new Date();
+
+
+  const istParts =
+    new Intl.DateTimeFormat(
+      "en-CA",
+      {
+        timeZone:
+          "Asia/Kolkata",
+
+        year:
+          "numeric",
+
+        month:
+          "2-digit",
+
+        day:
+          "2-digit"
+      }
+    )
+    .formatToParts(
+      now
+    );
+
+
+  const parts =
+    {};
+
+
+  istParts.forEach(
+    function(part) {
+
+      if (
+        part.type !==
+        "literal"
+      ) {
+
+        parts[
+          part.type
+        ] =
+          part.value;
+
+      }
+
+    }
+  );
+
+
+  const year =
+    Number(
+      parts.year
+    );
+
+  const month =
+    Number(
+      parts.month
+    );
+
+  const day =
+    Number(
+      parts.day
+    );
+
+
+  /*
+     00:00 IST = previous calendar day 18:30 UTC.
+     Build the UTC instant for today's IST midnight.
+  */
+  const startUTC =
+    new Date(
+      Date.UTC(
+        year,
+        month - 1,
+        day,
+        -5,
+        -30,
+        0,
+        0
+      )
+    );
+
+
+  const endUTC =
+    new Date(
+      startUTC.getTime() +
+      24 * 60 * 60 * 1000
+    );
+
+
+  return {
+    start:
+      startUTC.toISOString(),
+
+    end:
+      endUTC.toISOString(),
+
+    label:
+      new Intl.DateTimeFormat(
+        "en-IN",
+        {
+          timeZone:
+            "Asia/Kolkata",
+
+          day:
+            "2-digit",
+
+          month:
+            "short",
+
+          year:
+            "numeric"
+        }
+      )
+      .format(
+        now
+      )
+  };
+
+}
+
+
+async function loadTodayConsultationCount() {
+
+  const range =
+    getISTTodayRange();
+
+
+  const {
+    count,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "consultations"
+      )
+      .select(
+        "id",
+        {
+          count: "exact",
+          head: true
+        }
+      )
+      .neq(
+        "chief_complaints",
+        "__DIRECT_PRESCRIPTION_UPLOAD__"
+      )
+      .gte(
+        "created_at",
+        range.start
+      )
+      .lt(
+        "created_at",
+        range.end
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Today's consultation count error:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  const badge =
+    document.getElementById(
+      "todayConsultationCount"
+    );
+
+
+  if (badge) {
+
+    badge.textContent =
+      count || 0;
+
+  }
+
+}
+
+
+function setTodayConsultationContext(
+  patientId
+) {
+
+  const id =
+    Number(
+      patientId
+    );
+
+
+  currentPatientId =
+    id;
+
+
+  currentPatient =
+    todayPatientsById[
+      id
+    ] ||
+    null;
+
+}
+
+
+async function openTodayFullConsultation(
+  patientId,
+  consultationId
+) {
+
+  setTodayConsultationContext(
+    patientId
+  );
+
+  await toggleFullConsultation(
+    consultationId
+  );
+
+}
+
+
+async function openTodayEditConsultation(
+  patientId,
+  consultationId
+) {
+
+  setTodayConsultationContext(
+    patientId
+  );
+
+  await openEditConsultation(
+    consultationId
+  );
+
+}
+
+
+async function openTodayPrescriptionHistory(
+  patientId,
+  consultationId
+) {
+
+  setTodayConsultationContext(
+    patientId
+  );
+
+  await togglePrescriptionHistory(
+    consultationId
+  );
+
+}
+
+
+async function openTodayLabHistory(
+  patientId,
+  consultationId
+) {
+
+  setTodayConsultationContext(
+    patientId
+  );
+
+  await toggleLabHistory(
+    consultationId
+  );
+
+}
+
+
+async function openTodayBillHistory(
+  patientId,
+  consultationId
+) {
+
+  setTodayConsultationContext(
+    patientId
+  );
+
+  await toggleBillHistory(
+    consultationId
+  );
+
+}
+
+
+function renderTodayConsultationCard(
+  consultation
+) {
+
+  const patientId =
+    Number(
+      consultation.patient_id
+    );
+
+
+  const patient =
+    todayPatientsById[
+      patientId
+    ] ||
+    {};
+
+
+  return `
+
+    <div class="today-patient-card">
+
+      <div class="today-patient-name">
+
+        👤
+        ${escapeHTML(
+          patient.patient_name ||
+          "Patient"
+        )}
+
+      </div>
+
+
+      <div class="today-patient-meta">
+
+        🆔 Patient ID:
+        ${escapeHTML(
+          patientId
+        )}
+
+        <br>
+
+        📞
+        ${escapeHTML(
+          patient.patient_phone ||
+          "-"
+        )}
+
+        <br>
+
+        🎂 Age:
+        ${escapeHTML(
+          calculateAge(
+            patient
+          )
+        )}
+
+        ${
+          patient.gender
+            ? `
+                &nbsp; • &nbsp;
+                ${escapeHTML(
+                  patient.gender
+                )}
+              `
+            : ""
+        }
+
+      </div>
+
+
+      <div class="today-consultation-meta">
+
+        🕒
+        <strong>
+          Consultation:
+        </strong>
+        ${formatDateTime(
+          consultation.created_at
+        )}
+
+        <br>
+
+        <strong>
+          Diagnosis:
+        </strong>
+        ${escapeHTML(
+          consultation.diagnosis ||
+          "-"
+        )}
+
+      </div>
+
+
+      <div
+        id="fullConsultation-${Number(
+          consultation.id
+        )}"
+        class="full-consultation">
+
+        <div class="portal-message">
+          Loading...
+        </div>
+
+      </div>
+
+
+      <div class="action-row">
+
+        <button
+          type="button"
+          id="viewFullButton-${Number(
+            consultation.id
+          )}"
+          class="portal-button primary-button small-button"
+          onclick="openTodayFullConsultation(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          ▶ View Full Consultation
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button warning-button small-button"
+          onclick="openTodayEditConsultation(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          ✏️ Edit Consultation
+
+        </button>
+
+      </div>
+
+
+      <div class="action-row">
+
+        <button
+          type="button"
+          class="portal-button purple-button small-button"
+          onclick="openTodayPrescriptionHistory(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          💊 Prescription
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button primary-button small-button"
+          onclick="openTodayLabHistory(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          🧪 Lab Reports
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button success-button small-button"
+          onclick="openTodayBillHistory(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          💰 Bills
+
+        </button>
+
+      </div>
+
+
+      <div
+        id="prescriptionPanel-${Number(
+          consultation.id
+        )}"
+        class="full-consultation">
+      </div>
+
+
+      <div
+        id="labPanel-${Number(
+          consultation.id
+        )}"
+        class="full-consultation">
+      </div>
+
+
+      <div
+        id="billPanel-${Number(
+          consultation.id
+        )}"
+        class="full-consultation">
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+async function openTodayConsultationHistory() {
+
+  const container =
+    document.getElementById(
+      "todayConsultationContent"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  container.innerHTML = `
+
+    <div class="view-header">
+
+      <h2>
+        📅 Today's Consultation History
+      </h2>
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="backToSearch()">
+
+        ← Back
+
+      </button>
+
+    </div>
+
+
+    <div class="portal-message">
+      Loading today's consultations...
+    </div>
+
+  `;
+
+
+  showView(
+    "todayConsultationView"
+  );
+
+
+  const range =
+    getISTTodayRange();
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "consultations"
+      )
+      .select("*")
+      .neq(
+        "chief_complaints",
+        "__DIRECT_PRESCRIPTION_UPLOAD__"
+      )
+      .gte(
+        "created_at",
+        range.start
+      )
+      .lt(
+        "created_at",
+        range.end
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Today's consultation history error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="view-header">
+
+        <h2>
+          📅 Today's Consultation History
+        </h2>
+
+        <button
+          type="button"
+          class="portal-button light-button"
+          onclick="backToSearch()">
+
+          ← Back
+
+        </button>
+
+      </div>
+
+
+      <div class="portal-message">
+        Unable to load today's consultation history.
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  todayConsultations =
+    data ||
+    [];
+
+
+  todayPatientsById =
+    {};
+
+
+  const patientIds =
+    [
+      ...new Set(
+        todayConsultations
+          .map(
+            function(item) {
+
+              return Number(
+                item.patient_id
+              );
+
+            }
+          )
+          .filter(
+            function(id) {
+
+              return (
+                Number.isFinite(
+                  id
+                ) &&
+                id > 0
+              );
+
+            }
+          )
+      )
+    ];
+
+
+  if (
+    patientIds.length > 0
+  ) {
+
+    const {
+      data:
+        patients,
+      error:
+        patientError
+    } =
+      await supabaseClient
+        .from(
+          "patients"
+        )
+        .select("*")
+        .in(
+          "id",
+          patientIds
+        );
+
+
+    if (patientError) {
+
+      console.error(
+        "Today's patient details error:",
+        patientError
+      );
+
+    } else {
+
+      (
+        patients ||
+        []
+      )
+      .forEach(
+        function(patient) {
+
+          todayPatientsById[
+            Number(
+              patient.id
+            )
+          ] =
+            patient;
+
+        }
+      );
+
+    }
+
+  }
+
+
+  container.innerHTML = `
+
+    <div class="view-header">
+
+      <h2>
+        📅 Today's Consultation History
+      </h2>
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="backToSearch()">
+
+        ← Back
+
+      </button>
+
+    </div>
+
+
+    <div class="today-summary">
+
+      <div>
+
+        <div class="today-summary-title">
+          ${escapeHTML(
+            range.label
+          )}
+        </div>
+
+        <div class="today-summary-meta">
+          Latest consultation shown first
+        </div>
+
+      </div>
+
+      <span class="today-consultation-count">
+        ${todayConsultations.length}
+      </span>
+
+    </div>
+
+
+    ${
+      todayConsultations.length
+        ? todayConsultations
+            .map(
+              renderTodayConsultationCard
+            )
+            .join("")
+        : `
+
+            <div class="portal-message">
+              No consultations recorded today.
+            </div>
+
+          `
+    }
+
+
+    <div class="action-row">
+
+      <button
+        type="button"
+        class="portal-button light-button"
+        onclick="backToSearch()">
+
+        ← Back to Consultation Search
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  const badge =
+    document.getElementById(
+      "todayConsultationCount"
+    );
+
+
+  if (badge) {
+
+    badge.textContent =
+      todayConsultations.length;
+
+  }
 
 }
 
@@ -8107,14 +8188,6 @@ function openBillInBillingPage(
    ========================================================= */
 
 function backToSearch() {
-
-  todayConsultations =
-    [];
-
-  todayPatientsById =
-    {};
-
-
 
   currentPatient =
     null;
