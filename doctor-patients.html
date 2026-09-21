@@ -283,6 +283,413 @@ textarea {
 
 
 /* =========================================================
+   REGISTRATION DATE SEARCH
+   ========================================================= */
+
+function openRegistrationDateSearch() {
+
+  patientPageReturnURL =
+    null;
+
+  consultationReturnURL =
+    null;
+
+  showView(
+    "registrationDateSearchView"
+  );
+
+  const type =
+    document.getElementById(
+      "registrationDateSearchType"
+    );
+
+  if (type) {
+    type.value = "date";
+  }
+
+  const dateInput =
+    document.getElementById(
+      "registrationSearchDate"
+    );
+
+  if (
+    dateInput &&
+    !dateInput.value
+  ) {
+    dateInput.value =
+      getTodayString();
+  }
+
+  updateRegistrationDateSearchMode();
+
+}
+
+
+function updateRegistrationDateSearchMode() {
+
+  const type =
+    getValue(
+      "registrationDateSearchType"
+    ) || "date";
+
+  const singleGroup =
+    document.getElementById(
+      "registrationSingleDateGroup"
+    );
+
+  const fromGroup =
+    document.getElementById(
+      "registrationFromDateGroup"
+    );
+
+  const toGroup =
+    document.getElementById(
+      "registrationToDateGroup"
+    );
+
+  if (singleGroup) {
+    singleGroup.style.display =
+      type === "date"
+        ? ""
+        : "none";
+  }
+
+  if (fromGroup) {
+    fromGroup.style.display =
+      type === "period"
+        ? ""
+        : "none";
+  }
+
+  if (toGroup) {
+    toGroup.style.display =
+      type === "period"
+        ? ""
+        : "none";
+  }
+
+}
+
+
+function clearRegisteredPatientsSearch() {
+
+  const type =
+    document.getElementById(
+      "registrationDateSearchType"
+    );
+
+  if (type) {
+    type.value = "date";
+  }
+
+  const dateInput =
+    document.getElementById(
+      "registrationSearchDate"
+    );
+
+  const fromInput =
+    document.getElementById(
+      "registrationSearchFromDate"
+    );
+
+  const toInput =
+    document.getElementById(
+      "registrationSearchToDate"
+    );
+
+  if (dateInput) {
+    dateInput.value =
+      getTodayString();
+  }
+
+  if (fromInput) {
+    fromInput.value = "";
+  }
+
+  if (toInput) {
+    toInput.value = "";
+  }
+
+  updateRegistrationDateSearchMode();
+
+  const summary =
+    document.getElementById(
+      "registrationDateSearchSummary"
+    );
+
+  if (summary) {
+    summary.style.display =
+      "none";
+    summary.innerHTML =
+      "";
+  }
+
+  const container =
+    document.getElementById(
+      "registrationDateSearchResults"
+    );
+
+  if (container) {
+    container.innerHTML = `
+      <div class="portal-message">
+        Select a date or period and tap Search.
+      </div>
+    `;
+  }
+
+}
+
+
+function formatRegistrationSearchDate(
+  dateString
+) {
+
+  if (!dateString) {
+    return "-";
+  }
+
+  const parts =
+    dateString.split("-");
+
+  if (parts.length !== 3) {
+    return dateString;
+  }
+
+  const date =
+    new Date(
+      Number(parts[0]),
+      Number(parts[1]) - 1,
+      Number(parts[2])
+    );
+
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+async function searchRegisteredPatientsByDate() {
+
+  const type =
+    getValue(
+      "registrationDateSearchType"
+    ) || "date";
+
+  const selectedDate =
+    getValue(
+      "registrationSearchDate"
+    );
+
+  const fromDate =
+    getValue(
+      "registrationSearchFromDate"
+    );
+
+  const toDate =
+    getValue(
+      "registrationSearchToDate"
+    );
+
+  if (
+    type === "date" &&
+    !selectedDate
+  ) {
+    alert(
+      "Please select a registration date."
+    );
+    return;
+  }
+
+  if (
+    type === "period" &&
+    (
+      !fromDate ||
+      !toDate
+    )
+  ) {
+    alert(
+      "Please select both From Date and To Date."
+    );
+    return;
+  }
+
+  if (
+    type === "period" &&
+    fromDate > toDate
+  ) {
+    alert(
+      "From Date cannot be after To Date."
+    );
+    return;
+  }
+
+  const container =
+    document.getElementById(
+      "registrationDateSearchResults"
+    );
+
+  const summary =
+    document.getElementById(
+      "registrationDateSearchSummary"
+    );
+
+  container.innerHTML = `
+    <div class="portal-message">
+      Searching registered patients...
+    </div>
+  `;
+
+  if (summary) {
+    summary.style.display =
+      "none";
+  }
+
+  let query =
+    supabaseClient
+      .from("patients")
+      .select("*");
+
+  if (type === "date") {
+
+    query =
+      query.eq(
+        "registration_date",
+        selectedDate
+      );
+
+  } else {
+
+    query =
+      query
+        .gte(
+          "registration_date",
+          fromDate
+        )
+        .lte(
+          "registration_date",
+          toDate
+        );
+
+  }
+
+  query =
+    query
+      .order(
+        "registration_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      );
+
+  const {
+    data,
+    error
+  } =
+    await query;
+
+  if (error) {
+
+    console.error(error);
+
+    container.innerHTML = `
+      <div class="portal-message">
+        Unable to search registered patients.
+      </div>
+    `;
+
+    return;
+  }
+
+  const patients =
+    data || [];
+
+  if (summary) {
+
+    const periodText =
+      type === "date"
+        ? formatRegistrationSearchDate(
+            selectedDate
+          )
+        : formatRegistrationSearchDate(
+            fromDate
+          ) +
+          " – " +
+          formatRegistrationSearchDate(
+            toDate
+          );
+
+    summary.innerHTML = `
+      <strong>
+        ${escapeHTML(periodText)}
+      </strong>
+      <br>
+      Total Registered Patients:
+      <strong>
+        ${patients.length}
+      </strong>
+    `;
+
+    summary.style.display =
+      "block";
+
+  }
+
+  if (!patients.length) {
+
+    container.innerHTML = `
+      <div class="portal-message">
+        No registered patients found for the selected
+        ${type === "date" ? "date" : "period"}.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    patients
+      .map(
+        function(patient) {
+
+          return `
+            <div>
+              ${renderPatientResultCard(
+                patient
+              )}
+              <div class="portal-message"
+                   style="margin-top:-8px;margin-bottom:16px;">
+                📅 Registered:
+                <strong>
+                  ${escapeHTML(
+                    formatRegistrationSearchDate(
+                      patient.registration_date
+                    )
+                  )}
+                </strong>
+              </div>
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
    SEARCH
    ========================================================= */
 
@@ -835,6 +1242,34 @@ Tap to view today's registered patients
 
 </button>
 
+
+<button
+  type="button"
+  class="home-button today-button"
+  id="openRegistrationDateSearchButton">
+
+<div class="today-row">
+
+<div>
+
+<span class="home-icon">
+🗓️
+</span>
+
+<span class="home-title">
+Search Registered Patients
+</span>
+
+</div>
+
+</div>
+
+<span class="home-description">
+Search patients by registration date or specific period
+</span>
+
+</button>
+
 </div>
 
 
@@ -923,6 +1358,19 @@ Phone Number *
 <input
   type="tel"
   id="newPatientPhone">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+Date of Registration *
+</label>
+
+<input
+  type="date"
+  id="newPatientRegistrationDate">
 
 </div>
 
@@ -1180,6 +1628,159 @@ Search for a patient.
 
 </div>
 
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     REGISTRATION DATE SEARCH
+     ===================================================== -->
+
+<div
+  id="registrationDateSearchView"
+  class="portal-view">
+
+<div class="portal-card">
+
+<div class="view-header">
+
+<h2>
+🗓️ Search Registered Patients
+</h2>
+
+<button
+  type="button"
+  class="portal-button light-button"
+  onclick="showHomeView()">
+
+← Back
+
+</button>
+
+</div>
+
+
+<div class="form-section">
+
+<h3>
+Search by Registration Date
+</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>
+Search Type
+</label>
+
+<select
+  id="registrationDateSearchType"
+  onchange="updateRegistrationDateSearchMode()">
+
+<option value="date">
+Specific Date
+</option>
+
+<option value="period">
+Specific Period
+</option>
+
+</select>
+
+</div>
+
+
+<div
+  class="form-group"
+  id="registrationSingleDateGroup">
+
+<label>
+Registration Date
+</label>
+
+<input
+  type="date"
+  id="registrationSearchDate">
+
+</div>
+
+
+<div
+  class="form-group"
+  id="registrationFromDateGroup"
+  style="display:none;">
+
+<label>
+From Date
+</label>
+
+<input
+  type="date"
+  id="registrationSearchFromDate">
+
+</div>
+
+
+<div
+  class="form-group"
+  id="registrationToDateGroup"
+  style="display:none;">
+
+<label>
+To Date
+</label>
+
+<input
+  type="date"
+  id="registrationSearchToDate">
+
+</div>
+
+</div>
+
+
+<div class="action-row">
+
+<button
+  type="button"
+  class="portal-button"
+  id="searchRegisteredPatientsButton">
+
+🔎 Search
+
+</button>
+
+<button
+  type="button"
+  class="portal-button light-button"
+  id="clearRegisteredPatientsSearchButton">
+
+Clear
+
+</button>
+
+</div>
+
+</div>
+
+
+<div
+  id="registrationDateSearchSummary"
+  class="portal-message"
+  style="display:none;">
+</div>
+
+
+<div id="registrationDateSearchResults">
+
+<div class="portal-message">
+Select a date or period and tap Search.
+</div>
+
+</div>
 
 </div>
 
@@ -1659,6 +2260,21 @@ function getTodayString() {
       "0"
     )
   );
+
+}
+
+
+function setRegistrationDateToToday() {
+
+  const input =
+    document.getElementById(
+      "newPatientRegistrationDate"
+    );
+
+  if (input) {
+    input.value =
+      getTodayString();
+  }
 
 }
 
@@ -2153,13 +2769,20 @@ async function savePatient() {
     );
 
 
+  const registrationDate =
+    getValue(
+      "newPatientRegistrationDate"
+    );
+
+
   if (
     !patientName ||
-    !patientPhone
+    !patientPhone ||
+    !registrationDate
   ) {
 
     alert(
-      "Patient name and phone number are required."
+      "Patient name, phone number and date of registration are required."
     );
 
     return;
@@ -2180,6 +2803,9 @@ async function savePatient() {
 
     patient_phone:
       patientPhone,
+
+    registration_date:
+      registrationDate,
 
     date_of_birth:
       document
@@ -2494,6 +3120,7 @@ function clearRegistrationForm() {
   [
     "newPatientName",
     "newPatientPhone",
+    "newPatientRegistrationDate",
     "newPatientDOB",
     "newPatientAge",
     "newPatientBloodGroup",
@@ -2527,6 +3154,9 @@ function clearRegistrationForm() {
     .value =
       "";
 
+
+  setRegistrationDateToToday();
+
 }
 
 
@@ -2553,16 +3183,9 @@ async function loadTodayPatientCount() {
           head: true
         }
       )
-      .gte(
-        "created_at",
-        today +
-        "T00:00:00"
-      )
-      .lt(
-        "created_at",
-        getTomorrowISO(
-          today
-        )
+      .eq(
+        "registration_date",
+        today
       );
 
 
@@ -2615,16 +3238,9 @@ async function loadTodayPatients() {
     await supabaseClient
       .from("patients")
       .select("*")
-      .gte(
-        "created_at",
-        today +
-        "T00:00:00"
-      )
-      .lt(
-        "created_at",
-        getTomorrowISO(
-          today
-        )
+      .eq(
+        "registration_date",
+        today
       )
       .order(
         "created_at",
@@ -7625,6 +8241,9 @@ document
         null;
 
 
+      setRegistrationDateToToday();
+
+
       showView(
         "registrationView"
       );
@@ -7692,6 +8311,36 @@ document
       loadTodayPatients();
 
     }
+  );
+
+
+document
+  .getElementById(
+    "openRegistrationDateSearchButton"
+  )
+  .addEventListener(
+    "click",
+    openRegistrationDateSearch
+  );
+
+
+document
+  .getElementById(
+    "searchRegisteredPatientsButton"
+  )
+  .addEventListener(
+    "click",
+    searchRegisteredPatientsByDate
+  );
+
+
+document
+  .getElementById(
+    "clearRegisteredPatientsSearchButton"
+  )
+  .addEventListener(
+    "click",
+    clearRegisteredPatientsSearch
   );
 
 
