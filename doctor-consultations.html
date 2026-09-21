@@ -1499,6 +1499,42 @@ function formatDateTime(value) {
 
 }
 
+function formatConsultationClinicalDate(
+  consultation
+) {
+
+  const dateValue =
+    consultation &&
+    consultation.consultation_date
+      ? consultation.consultation_date
+      : (
+          consultation &&
+          consultation.created_at
+            ? String(
+                consultation.created_at
+              ).slice(
+                0,
+                10
+              )
+            : ""
+        );
+
+  if (!dateValue) {
+    return "-";
+  }
+
+  return formatDate(
+    String(
+      dateValue
+    ).slice(
+      0,
+      10
+    )
+  );
+
+}
+
+
 
 function getTodayString() {
 
@@ -2166,6 +2202,38 @@ async function openTodayBillHistory(
 }
 
 
+async function deleteTodayConsultation(
+  patientId,
+  consultationId
+) {
+
+  setTodayConsultationContext(
+    patientId
+  );
+
+  await deleteConsultation(
+    consultationId
+  );
+
+}
+
+
+async function deleteDateSearchConsultation(
+  patientId,
+  consultationId
+) {
+
+  setDateSearchConsultationContext(
+    patientId
+  );
+
+  await deleteConsultation(
+    consultationId
+  );
+
+}
+
+
 function renderTodayConsultationCard(
   consultation
 ) {
@@ -2238,12 +2306,14 @@ function renderTodayConsultationCard(
 
       <div class="today-consultation-meta">
 
-        🕒
+        📅
         <strong>
-          Consultation:
+          Consultation Date:
         </strong>
-        ${formatDateTime(
-          consultation.created_at
+        ${escapeHTML(
+          formatConsultationClinicalDate(
+            consultation
+          )
         )}
 
         <br>
@@ -2303,6 +2373,21 @@ function renderTodayConsultationCard(
           )">
 
           ✏️ Edit Consultation
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button danger-button small-button"
+          onclick="deleteTodayConsultation(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          🗑 Delete Consultation
 
         </button>
 
@@ -3120,12 +3205,14 @@ function renderDateSearchConsultationCard(
 
       <div class="today-consultation-meta">
 
-        🕒
+        📅
         <strong>
-          Consultation:
+          Consultation Date:
         </strong>
-        ${formatDateTime(
-          consultation.created_at
+        ${escapeHTML(
+          formatConsultationClinicalDate(
+            consultation
+          )
         )}
 
         <br>
@@ -3185,6 +3272,21 @@ function renderDateSearchConsultationCard(
           )">
 
           ✏️ Edit Consultation
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button danger-button small-button"
+          onclick="deleteDateSearchConsultation(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          🗑 Delete Consultation
 
         </button>
 
@@ -3409,12 +3511,22 @@ async function runConsultationDateSearch(
         "__DIRECT_PRESCRIPTION_UPLOAD__"
       )
       .gte(
-        "created_at",
-        firstRange.start
+        "consultation_date",
+        type === "date"
+          ? selectedDate
+          : fromDate
       )
-      .lt(
-        "created_at",
-        lastRange.end
+      .lte(
+        "consultation_date",
+        type === "date"
+          ? selectedDate
+          : toDate
+      )
+      .order(
+        "consultation_date",
+        {
+          ascending: false
+        }
       )
       .order(
         "created_at",
@@ -5095,9 +5207,11 @@ function renderConsultationCard(
 
       <div class="consultation-date">
 
-        📅
-        ${formatDateTime(
-          consultation.created_at
+        📅 Consultation Date:
+        ${escapeHTML(
+          formatConsultationClinicalDate(
+            consultation
+          )
         )}
 
       </div>
@@ -5502,7 +5616,26 @@ async function deleteConsultation(
        REFRESH HISTORY
        ----------------------------------------- */
 
-    if (currentPatientId) {
+    if (
+      consultationNavigationSource ===
+        "today"
+    ) {
+
+      await openTodayConsultationHistory();
+
+    } else if (
+      consultationNavigationSource ===
+        "date-search" &&
+      consultationDateSearchState
+    ) {
+
+      await runConsultationDateSearch(
+        true
+      );
+
+    } else if (
+      currentPatientId
+    ) {
 
       await openPatientHistory(
         currentPatientId,
@@ -7404,6 +7537,32 @@ async function openEditConsultation(
       <div class="form-group">
 
         <label>
+          Consultation Date *
+        </label>
+
+        <input
+          type="date"
+          id="editConsultationDate"
+          value="${escapeHTML(
+            consultation.consultation_date ||
+            (
+              consultation.created_at
+                ? String(
+                    consultation.created_at
+                  ).slice(
+                    0,
+                    10
+                  )
+                : ""
+            )
+          )}">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
           Chief Complaints / Present Symptoms
         </label>
 
@@ -7795,7 +7954,29 @@ async function saveEditedConsultation(
   patientId
 ) {
 
+  const consultationDate =
+    document
+      .getElementById(
+        "editConsultationDate"
+      )
+      .value;
+
+
+  if (!consultationDate) {
+
+    alert(
+      "Please select the consultation date."
+    );
+
+    return;
+
+  }
+
+
   const update = {
+
+    consultation_date:
+      consultationDate,
 
     chief_complaints:
       document
@@ -9777,6 +9958,13 @@ window.openDateSearchLabHistory =
 
 window.openDateSearchBillHistory =
   openDateSearchBillHistory;
+
+
+window.deleteTodayConsultation =
+  deleteTodayConsultation;
+
+window.deleteDateSearchConsultation =
+  deleteDateSearchConsultation;
 
 
 window.openTodayConsultationHistory =
