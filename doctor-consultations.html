@@ -2572,13 +2572,9 @@ async function openTodayConsultationHistory() {
         "chief_complaints",
         "__DIRECT_PRESCRIPTION_UPLOAD__"
       )
-      .gte(
-        "created_at",
-        range.start
-      )
-      .lt(
-        "created_at",
-        range.end
+      .eq(
+        "consultation_date",
+        range.date
       )
       .order(
         "created_at",
