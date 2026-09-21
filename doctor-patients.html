@@ -283,413 +283,6 @@ textarea {
 
 
 /* =========================================================
-   REGISTRATION DATE SEARCH
-   ========================================================= */
-
-function openRegistrationDateSearch() {
-
-  patientPageReturnURL =
-    null;
-
-  consultationReturnURL =
-    null;
-
-  showView(
-    "registrationDateSearchView"
-  );
-
-  const type =
-    document.getElementById(
-      "registrationDateSearchType"
-    );
-
-  if (type) {
-    type.value = "date";
-  }
-
-  const dateInput =
-    document.getElementById(
-      "registrationSearchDate"
-    );
-
-  if (
-    dateInput &&
-    !dateInput.value
-  ) {
-    dateInput.value =
-      getTodayString();
-  }
-
-  updateRegistrationDateSearchMode();
-
-}
-
-
-function updateRegistrationDateSearchMode() {
-
-  const type =
-    getValue(
-      "registrationDateSearchType"
-    ) || "date";
-
-  const singleGroup =
-    document.getElementById(
-      "registrationSingleDateGroup"
-    );
-
-  const fromGroup =
-    document.getElementById(
-      "registrationFromDateGroup"
-    );
-
-  const toGroup =
-    document.getElementById(
-      "registrationToDateGroup"
-    );
-
-  if (singleGroup) {
-    singleGroup.style.display =
-      type === "date"
-        ? ""
-        : "none";
-  }
-
-  if (fromGroup) {
-    fromGroup.style.display =
-      type === "period"
-        ? ""
-        : "none";
-  }
-
-  if (toGroup) {
-    toGroup.style.display =
-      type === "period"
-        ? ""
-        : "none";
-  }
-
-}
-
-
-function clearRegisteredPatientsSearch() {
-
-  const type =
-    document.getElementById(
-      "registrationDateSearchType"
-    );
-
-  if (type) {
-    type.value = "date";
-  }
-
-  const dateInput =
-    document.getElementById(
-      "registrationSearchDate"
-    );
-
-  const fromInput =
-    document.getElementById(
-      "registrationSearchFromDate"
-    );
-
-  const toInput =
-    document.getElementById(
-      "registrationSearchToDate"
-    );
-
-  if (dateInput) {
-    dateInput.value =
-      getTodayString();
-  }
-
-  if (fromInput) {
-    fromInput.value = "";
-  }
-
-  if (toInput) {
-    toInput.value = "";
-  }
-
-  updateRegistrationDateSearchMode();
-
-  const summary =
-    document.getElementById(
-      "registrationDateSearchSummary"
-    );
-
-  if (summary) {
-    summary.style.display =
-      "none";
-    summary.innerHTML =
-      "";
-  }
-
-  const container =
-    document.getElementById(
-      "registrationDateSearchResults"
-    );
-
-  if (container) {
-    container.innerHTML = `
-      <div class="portal-message">
-        Select a date or period and tap Search.
-      </div>
-    `;
-  }
-
-}
-
-
-function formatRegistrationSearchDate(
-  dateString
-) {
-
-  if (!dateString) {
-    return "-";
-  }
-
-  const parts =
-    dateString.split("-");
-
-  if (parts.length !== 3) {
-    return dateString;
-  }
-
-  const date =
-    new Date(
-      Number(parts[0]),
-      Number(parts[1]) - 1,
-      Number(parts[2])
-    );
-
-  return date.toLocaleDateString(
-    "en-IN",
-    {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    }
-  );
-
-}
-
-
-async function searchRegisteredPatientsByDate() {
-
-  const type =
-    getValue(
-      "registrationDateSearchType"
-    ) || "date";
-
-  const selectedDate =
-    getValue(
-      "registrationSearchDate"
-    );
-
-  const fromDate =
-    getValue(
-      "registrationSearchFromDate"
-    );
-
-  const toDate =
-    getValue(
-      "registrationSearchToDate"
-    );
-
-  if (
-    type === "date" &&
-    !selectedDate
-  ) {
-    alert(
-      "Please select a registration date."
-    );
-    return;
-  }
-
-  if (
-    type === "period" &&
-    (
-      !fromDate ||
-      !toDate
-    )
-  ) {
-    alert(
-      "Please select both From Date and To Date."
-    );
-    return;
-  }
-
-  if (
-    type === "period" &&
-    fromDate > toDate
-  ) {
-    alert(
-      "From Date cannot be after To Date."
-    );
-    return;
-  }
-
-  const container =
-    document.getElementById(
-      "registrationDateSearchResults"
-    );
-
-  const summary =
-    document.getElementById(
-      "registrationDateSearchSummary"
-    );
-
-  container.innerHTML = `
-    <div class="portal-message">
-      Searching registered patients...
-    </div>
-  `;
-
-  if (summary) {
-    summary.style.display =
-      "none";
-  }
-
-  let query =
-    supabaseClient
-      .from("patients")
-      .select("*");
-
-  if (type === "date") {
-
-    query =
-      query.eq(
-        "registration_date",
-        selectedDate
-      );
-
-  } else {
-
-    query =
-      query
-        .gte(
-          "registration_date",
-          fromDate
-        )
-        .lte(
-          "registration_date",
-          toDate
-        );
-
-  }
-
-  query =
-    query
-      .order(
-        "registration_date",
-        {
-          ascending: false
-        }
-      )
-      .order(
-        "id",
-        {
-          ascending: false
-        }
-      );
-
-  const {
-    data,
-    error
-  } =
-    await query;
-
-  if (error) {
-
-    console.error(error);
-
-    container.innerHTML = `
-      <div class="portal-message">
-        Unable to search registered patients.
-      </div>
-    `;
-
-    return;
-  }
-
-  const patients =
-    data || [];
-
-  if (summary) {
-
-    const periodText =
-      type === "date"
-        ? formatRegistrationSearchDate(
-            selectedDate
-          )
-        : formatRegistrationSearchDate(
-            fromDate
-          ) +
-          " – " +
-          formatRegistrationSearchDate(
-            toDate
-          );
-
-    summary.innerHTML = `
-      <strong>
-        ${escapeHTML(periodText)}
-      </strong>
-      <br>
-      Total Registered Patients:
-      <strong>
-        ${patients.length}
-      </strong>
-    `;
-
-    summary.style.display =
-      "block";
-
-  }
-
-  if (!patients.length) {
-
-    container.innerHTML = `
-      <div class="portal-message">
-        No registered patients found for the selected
-        ${type === "date" ? "date" : "period"}.
-      </div>
-    `;
-
-    return;
-  }
-
-  container.innerHTML =
-    patients
-      .map(
-        function(patient) {
-
-          return `
-            <div>
-              ${renderPatientResultCard(
-                patient
-              )}
-              <div class="portal-message"
-                   style="margin-top:-8px;margin-bottom:16px;">
-                📅 Registered:
-                <strong>
-                  ${escapeHTML(
-                    formatRegistrationSearchDate(
-                      patient.registration_date
-                    )
-                  )}
-                </strong>
-              </div>
-            </div>
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
    SEARCH
    ========================================================= */
 
@@ -3296,6 +2889,415 @@ async function loadTodayPatients() {
 /* =========================================================
    SEARCH
    ========================================================= */
+
+/* =========================================================
+   REGISTRATION DATE SEARCH
+   ========================================================= */
+
+function openRegistrationDateSearch() {
+
+  patientPageReturnURL =
+    null;
+
+  consultationReturnURL =
+    null;
+
+  showView(
+    "registrationDateSearchView"
+  );
+
+  const type =
+    document.getElementById(
+      "registrationDateSearchType"
+    );
+
+  if (type) {
+    type.value = "date";
+  }
+
+  const dateInput =
+    document.getElementById(
+      "registrationSearchDate"
+    );
+
+  if (
+    dateInput &&
+    !dateInput.value
+  ) {
+    dateInput.value =
+      getTodayString();
+  }
+
+  updateRegistrationDateSearchMode();
+
+}
+
+
+function updateRegistrationDateSearchMode() {
+
+  const type =
+    getValue(
+      "registrationDateSearchType"
+    ) || "date";
+
+  const singleGroup =
+    document.getElementById(
+      "registrationSingleDateGroup"
+    );
+
+  const fromGroup =
+    document.getElementById(
+      "registrationFromDateGroup"
+    );
+
+  const toGroup =
+    document.getElementById(
+      "registrationToDateGroup"
+    );
+
+  if (singleGroup) {
+    singleGroup.style.display =
+      type === "date"
+        ? ""
+        : "none";
+  }
+
+  if (fromGroup) {
+    fromGroup.style.display =
+      type === "period"
+        ? ""
+        : "none";
+  }
+
+  if (toGroup) {
+    toGroup.style.display =
+      type === "period"
+        ? ""
+        : "none";
+  }
+
+}
+
+
+function clearRegisteredPatientsSearch() {
+
+  const type =
+    document.getElementById(
+      "registrationDateSearchType"
+    );
+
+  if (type) {
+    type.value = "date";
+  }
+
+  const dateInput =
+    document.getElementById(
+      "registrationSearchDate"
+    );
+
+  const fromInput =
+    document.getElementById(
+      "registrationSearchFromDate"
+    );
+
+  const toInput =
+    document.getElementById(
+      "registrationSearchToDate"
+    );
+
+  if (dateInput) {
+    dateInput.value =
+      getTodayString();
+  }
+
+  if (fromInput) {
+    fromInput.value = "";
+  }
+
+  if (toInput) {
+    toInput.value = "";
+  }
+
+  updateRegistrationDateSearchMode();
+
+  const summary =
+    document.getElementById(
+      "registrationDateSearchSummary"
+    );
+
+  if (summary) {
+    summary.style.display =
+      "none";
+    summary.innerHTML =
+      "";
+  }
+
+  const container =
+    document.getElementById(
+      "registrationDateSearchResults"
+    );
+
+  if (container) {
+    container.innerHTML = `
+      <div class="portal-message">
+        Select a date or period and tap Search.
+      </div>
+    `;
+  }
+
+}
+
+
+function formatRegistrationSearchDate(
+  dateString
+) {
+
+  if (!dateString) {
+    return "-";
+  }
+
+  const parts =
+    dateString.split("-");
+
+  if (parts.length !== 3) {
+    return dateString;
+  }
+
+  const date =
+    new Date(
+      Number(parts[0]),
+      Number(parts[1]) - 1,
+      Number(parts[2])
+    );
+
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+async function searchRegisteredPatientsByDate() {
+
+  const type =
+    getValue(
+      "registrationDateSearchType"
+    ) || "date";
+
+  const selectedDate =
+    getValue(
+      "registrationSearchDate"
+    );
+
+  const fromDate =
+    getValue(
+      "registrationSearchFromDate"
+    );
+
+  const toDate =
+    getValue(
+      "registrationSearchToDate"
+    );
+
+  if (
+    type === "date" &&
+    !selectedDate
+  ) {
+    alert(
+      "Please select a registration date."
+    );
+    return;
+  }
+
+  if (
+    type === "period" &&
+    (
+      !fromDate ||
+      !toDate
+    )
+  ) {
+    alert(
+      "Please select both From Date and To Date."
+    );
+    return;
+  }
+
+  if (
+    type === "period" &&
+    fromDate > toDate
+  ) {
+    alert(
+      "From Date cannot be after To Date."
+    );
+    return;
+  }
+
+  const container =
+    document.getElementById(
+      "registrationDateSearchResults"
+    );
+
+  const summary =
+    document.getElementById(
+      "registrationDateSearchSummary"
+    );
+
+  container.innerHTML = `
+    <div class="portal-message">
+      Searching registered patients...
+    </div>
+  `;
+
+  if (summary) {
+    summary.style.display =
+      "none";
+  }
+
+  let query =
+    supabaseClient
+      .from("patients")
+      .select("*");
+
+  if (type === "date") {
+
+    query =
+      query.eq(
+        "registration_date",
+        selectedDate
+      );
+
+  } else {
+
+    query =
+      query
+        .gte(
+          "registration_date",
+          fromDate
+        )
+        .lte(
+          "registration_date",
+          toDate
+        );
+
+  }
+
+  query =
+    query
+      .order(
+        "registration_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      );
+
+  const {
+    data,
+    error
+  } =
+    await query;
+
+  if (error) {
+
+    console.error(error);
+
+    container.innerHTML = `
+      <div class="portal-message">
+        Unable to search registered patients.
+      </div>
+    `;
+
+    return;
+  }
+
+  const patients =
+    data || [];
+
+  if (summary) {
+
+    const periodText =
+      type === "date"
+        ? formatRegistrationSearchDate(
+            selectedDate
+          )
+        : formatRegistrationSearchDate(
+            fromDate
+          ) +
+          " – " +
+          formatRegistrationSearchDate(
+            toDate
+          );
+
+    summary.innerHTML = `
+      <strong>
+        ${escapeHTML(periodText)}
+      </strong>
+      <br>
+      Total Registered Patients:
+      <strong>
+        ${patients.length}
+      </strong>
+    `;
+
+    summary.style.display =
+      "block";
+
+  }
+
+  if (!patients.length) {
+
+    container.innerHTML = `
+      <div class="portal-message">
+        No registered patients found for the selected
+        ${type === "date" ? "date" : "period"}.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    patients
+      .map(
+        function(patient) {
+
+          return `
+            <div>
+              ${renderPatientResultCard(
+                patient
+              )}
+              <div class="portal-message"
+                   style="margin-top:-8px;margin-bottom:16px;">
+                📅 Registered:
+                <strong>
+                  ${escapeHTML(
+                    formatRegistrationSearchDate(
+                      patient.registration_date
+                    )
+                  )}
+                </strong>
+              </div>
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+
 
 async function searchPatients() {
 
