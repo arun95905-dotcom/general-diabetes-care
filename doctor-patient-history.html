@@ -1631,6 +1631,12 @@ async function loadConsultations() {
         currentPatientId
       )
       .order(
+        "consultation_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
         "created_at",
         {
           ascending: false
@@ -1682,7 +1688,7 @@ async function loadPrescriptionImages() {
     await supabaseClient
       .from("consultations")
       .select(
-        "id,created_at,prescription_image_url"
+        "id,consultation_date,created_at,prescription_image_url"
       )
       .eq(
         "patient_id",
@@ -1768,6 +1774,10 @@ async function loadPrescriptionImages() {
             image_url:
               image.image_url,
 
+            consultation_date:
+              consultation.consultation_date ||
+              null,
+
             created_at:
               consultation.created_at,
 
@@ -1809,6 +1819,10 @@ async function loadPrescriptionImages() {
 
           image_url:
             legacy,
+
+          consultation_date:
+            consultation.consultation_date ||
+            null,
 
           created_at:
             consultation.created_at,
@@ -2079,53 +2093,29 @@ function getHistoryItems(
 }
 
 
+function getLinkedConsultationDate(
+  item
+) {
+  if (!item) return null;
+  if (item.consultation_date) return item.consultation_date;
+  if (item.consultation_id === null || item.consultation_id === undefined) return null;
+  const consultation = allConsultations.find(function(row) {
+    return Number(row.id) === Number(item.consultation_id);
+  });
+  return consultation && consultation.consultation_date ? consultation.consultation_date : null;
+}
+
 function getHistoryItemDate(
   category,
   item
 ) {
-
-  if (!item) {
-    return null;
+  if (!item) return null;
+  if (category === "consultation") return item.consultation_date || null;
+  if (category === "prescription" || category === "lab" || category === "bill") {
+    return getLinkedConsultationDate(item);
   }
-
-
-  if (
-    category === "consultation" ||
-    category === "prescription"
-  ) {
-
-    return item.created_at ||
-      null;
-
-  }
-
-
-  if (category === "lab") {
-
-    return (
-      item.report_date ||
-      item.created_at ||
-      null
-    );
-
-  }
-
-
-  if (category === "bill") {
-
-    return (
-      item.bill_date ||
-      item.created_at ||
-      null
-    );
-
-  }
-
-
   return null;
-
 }
-
 
 function getHistoryDateParts(
   value
@@ -3494,8 +3484,8 @@ function renderConsultationHistory(
                 <div class="consultation-date">
 
                   📅
-                  ${formatDateTime(
-                    consultation.created_at
+                  ${formatDate(
+                    consultation.consultation_date
                   )}
 
                 </div>
@@ -3835,9 +3825,9 @@ function renderPrescriptionFiles(
 
           <div class="file-meta">
 
-            📅
-            ${formatDateTime(
-              image.created_at
+            📅 Consultation Date:
+            ${formatDate(
+              getLinkedConsultationDate(image)
             )}
 
           </div>
@@ -3958,9 +3948,9 @@ function renderLabFiles(
 
           <div class="file-meta">
 
-            📅
+            📅 Consultation Date:
             ${formatDate(
-              report.report_date
+              getLinkedConsultationDate(report)
             )}
 
             <br>
@@ -4189,9 +4179,9 @@ function renderBillHistory(
 
                 <div class="file-meta">
 
-                  📅
+                  📅 Consultation Date:
                   ${formatDate(
-                    bill.bill_date
+                    getLinkedConsultationDate(bill)
                   )}
 
                   <br>
