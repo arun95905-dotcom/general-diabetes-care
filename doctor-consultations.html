@@ -1008,6 +1008,26 @@ Search for a patient to review consultations.
 </button>
 
 
+<button
+  type="button"
+  id="consultationDateSearchButton"
+  class="today-consultation-button">
+
+  <span class="today-consultation-button-main">
+
+    <span class="today-consultation-button-title">
+      🗓️ Search Consultation History
+    </span>
+
+    <span class="today-consultation-button-text">
+      Search consultations by date or specific period
+    </span>
+
+  </span>
+
+</button>
+
+
 <div class="action-row">
 
 <button
@@ -1021,6 +1041,160 @@ Search for a patient to review consultations.
 
 </div>
 
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CONSULTATION DATE / PERIOD SEARCH
+     ===================================================== -->
+
+<div
+  id="consultationDateSearchView"
+  class="portal-view">
+
+<div class="portal-card">
+
+<div class="view-header">
+
+<h2>
+🗓️ Search Consultation History
+</h2>
+
+<button
+  type="button"
+  class="portal-button light-button"
+  onclick="backToSearch()">
+
+← Back
+
+</button>
+
+</div>
+
+
+<div class="form-section">
+
+<h3>
+Search by Consultation Date
+</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>
+Search Type
+</label>
+
+<select
+  id="consultationDateSearchType"
+  onchange="updateConsultationDateSearchMode()">
+
+<option value="date">
+Specific Date
+</option>
+
+<option value="period">
+Specific Period
+</option>
+
+</select>
+
+</div>
+
+
+<div
+  class="form-group"
+  id="consultationSingleDateGroup">
+
+<label>
+Consultation Date
+</label>
+
+<input
+  type="date"
+  id="consultationSearchDate">
+
+</div>
+
+
+<div
+  class="form-group"
+  id="consultationFromDateGroup"
+  style="display:none;">
+
+<label>
+From Date
+</label>
+
+<input
+  type="date"
+  id="consultationSearchFromDate">
+
+</div>
+
+
+<div
+  class="form-group"
+  id="consultationToDateGroup"
+  style="display:none;">
+
+<label>
+To Date
+</label>
+
+<input
+  type="date"
+  id="consultationSearchToDate">
+
+</div>
+
+</div>
+
+
+<div class="action-row">
+
+<button
+  type="button"
+  class="portal-button primary-button"
+  id="runConsultationDateSearchButton">
+
+🔎 Search
+
+</button>
+
+<button
+  type="button"
+  class="portal-button light-button"
+  id="clearConsultationDateSearchButton">
+
+Clear
+
+</button>
+
+</div>
+
+</div>
+
+
+<div
+  id="consultationDateSearchSummary"
+  class="today-summary"
+  style="display:none;">
+</div>
+
+
+<div id="consultationDateSearchResults">
+
+<div class="portal-message">
+Select a date or period and tap Search.
+</div>
+
+</div>
 
 </div>
 
@@ -1178,6 +1352,9 @@ let todayPatientsById =
 
 let consultationNavigationSource =
   "search";
+
+let consultationDateSearchState =
+  null;
 
 
 
@@ -1519,6 +1696,55 @@ function buildConsultationReturnURL() {
 
 
   if (
+    consultationNavigationSource ===
+      "date-search" &&
+    consultationDateSearchState
+  ) {
+
+    params.set(
+      "view",
+      "date-search"
+    );
+
+    params.set(
+      "search_type",
+      consultationDateSearchState.type
+    );
+
+    if (
+      consultationDateSearchState.type ===
+      "date"
+    ) {
+
+      params.set(
+        "date",
+        consultationDateSearchState.date
+      );
+
+    } else {
+
+      params.set(
+        "from",
+        consultationDateSearchState.from
+      );
+
+      params.set(
+        "to",
+        consultationDateSearchState.to
+      );
+
+    }
+
+    return (
+      window.location.pathname +
+      "?" +
+      params.toString()
+    );
+
+  }
+
+
+  if (
     currentPatientId
   ) {
 
@@ -1578,6 +1804,21 @@ async function returnFromConsultationEdit(
   ) {
 
     await openTodayConsultationHistory();
+
+    return;
+
+  }
+
+
+  if (
+    consultationNavigationSource ===
+      "date-search" &&
+    consultationDateSearchState
+  ) {
+
+    await runConsultationDateSearch(
+      true
+    );
 
     return;
 
@@ -2479,6 +2720,943 @@ async function openTodayConsultationHistory() {
       todayConsultations.length;
 
   }
+
+}
+
+
+/* =========================================================
+   CONSULTATION DATE / PERIOD SEARCH
+   ========================================================= */
+
+function getISTDateRange(
+  dateString
+) {
+
+  const parts =
+    String(
+      dateString ||
+      ""
+    )
+    .split("-")
+    .map(Number);
+
+  if (
+    parts.length !== 3 ||
+    !parts[0] ||
+    !parts[1] ||
+    !parts[2]
+  ) {
+    return null;
+  }
+
+  const startUTC =
+    new Date(
+      Date.UTC(
+        parts[0],
+        parts[1] - 1,
+        parts[2],
+        -5,
+        -30,
+        0,
+        0
+      )
+    );
+
+  const endUTC =
+    new Date(
+      startUTC.getTime() +
+      24 * 60 * 60 * 1000
+    );
+
+  return {
+    start:
+      startUTC.toISOString(),
+    end:
+      endUTC.toISOString()
+  };
+
+}
+
+
+function formatConsultationSearchDate(
+  dateString
+) {
+
+  if (!dateString) {
+    return "-";
+  }
+
+  const parts =
+    String(dateString)
+      .split("-")
+      .map(Number);
+
+  if (
+    parts.length !== 3 ||
+    !parts[0] ||
+    !parts[1] ||
+    !parts[2]
+  ) {
+    return dateString;
+  }
+
+  return new Date(
+    parts[0],
+    parts[1] - 1,
+    parts[2]
+  )
+  .toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function openConsultationDateSearch() {
+
+  setConsultationNavigationSource(
+    "date-search"
+  );
+
+  showView(
+    "consultationDateSearchView"
+  );
+
+  const type =
+    document.getElementById(
+      "consultationDateSearchType"
+    );
+
+  if (
+    type &&
+    !consultationDateSearchState
+  ) {
+    type.value = "date";
+  }
+
+  const dateInput =
+    document.getElementById(
+      "consultationSearchDate"
+    );
+
+  if (
+    dateInput &&
+    !dateInput.value &&
+    !consultationDateSearchState
+  ) {
+    dateInput.value =
+      getTodayString();
+  }
+
+  updateConsultationDateSearchMode();
+
+}
+
+
+function updateConsultationDateSearchMode() {
+
+  const type =
+    document.getElementById(
+      "consultationDateSearchType"
+    ).value;
+
+  document
+    .getElementById(
+      "consultationSingleDateGroup"
+    )
+    .style.display =
+      type === "date"
+        ? ""
+        : "none";
+
+  document
+    .getElementById(
+      "consultationFromDateGroup"
+    )
+    .style.display =
+      type === "period"
+        ? ""
+        : "none";
+
+  document
+    .getElementById(
+      "consultationToDateGroup"
+    )
+    .style.display =
+      type === "period"
+        ? ""
+        : "none";
+
+}
+
+
+function clearConsultationDateSearch() {
+
+  consultationDateSearchState =
+    null;
+
+  const type =
+    document.getElementById(
+      "consultationDateSearchType"
+    );
+
+  type.value =
+    "date";
+
+  document
+    .getElementById(
+      "consultationSearchDate"
+    )
+    .value =
+      getTodayString();
+
+  document
+    .getElementById(
+      "consultationSearchFromDate"
+    )
+    .value =
+      "";
+
+  document
+    .getElementById(
+      "consultationSearchToDate"
+    )
+    .value =
+      "";
+
+  updateConsultationDateSearchMode();
+
+  const summary =
+    document.getElementById(
+      "consultationDateSearchSummary"
+    );
+
+  summary.style.display =
+    "none";
+
+  summary.innerHTML =
+    "";
+
+  document
+    .getElementById(
+      "consultationDateSearchResults"
+    )
+    .innerHTML = `
+      <div class="portal-message">
+        Select a date or period and tap Search.
+      </div>
+    `;
+
+}
+
+
+function setDateSearchConsultationContext(
+  patientId
+) {
+
+  setConsultationNavigationSource(
+    "date-search"
+  );
+
+  currentPatientId =
+    Number(
+      patientId
+    );
+
+}
+
+
+async function openDateSearchFullConsultation(
+  patientId,
+  consultationId
+) {
+
+  setDateSearchConsultationContext(
+    patientId
+  );
+
+  await toggleFullConsultation(
+    consultationId
+  );
+
+}
+
+
+async function openDateSearchEditConsultation(
+  patientId,
+  consultationId
+) {
+
+  setDateSearchConsultationContext(
+    patientId
+  );
+
+  await openEditConsultation(
+    consultationId
+  );
+
+}
+
+
+async function openDateSearchPrescriptionHistory(
+  patientId,
+  consultationId
+) {
+
+  setDateSearchConsultationContext(
+    patientId
+  );
+
+  await togglePrescriptionHistory(
+    consultationId
+  );
+
+}
+
+
+async function openDateSearchLabHistory(
+  patientId,
+  consultationId
+) {
+
+  setDateSearchConsultationContext(
+    patientId
+  );
+
+  await toggleLabHistory(
+    consultationId
+  );
+
+}
+
+
+async function openDateSearchBillHistory(
+  patientId,
+  consultationId
+) {
+
+  setDateSearchConsultationContext(
+    patientId
+  );
+
+  await toggleBillHistory(
+    consultationId
+  );
+
+}
+
+
+function renderDateSearchConsultationCard(
+  consultation,
+  patient
+) {
+
+  const patientId =
+    Number(
+      consultation.patient_id
+    );
+
+  patient =
+    patient ||
+    {};
+
+  return `
+
+    <div class="today-patient-card">
+
+      <div class="today-patient-name">
+
+        👤
+        ${escapeHTML(
+          patient.patient_name ||
+          "Patient"
+        )}
+
+      </div>
+
+
+      <div class="today-patient-meta">
+
+        🆔 Patient ID:
+        ${escapeHTML(
+          patientId
+        )}
+
+        <br>
+
+        📞
+        ${escapeHTML(
+          patient.patient_phone ||
+          "-"
+        )}
+
+        <br>
+
+        🎂 Age:
+        ${escapeHTML(
+          calculateAge(
+            patient
+          )
+        )}
+
+        ${
+          patient.gender
+            ? `
+                &nbsp; • &nbsp;
+                ${escapeHTML(
+                  patient.gender
+                )}
+              `
+            : ""
+        }
+
+      </div>
+
+
+      <div class="today-consultation-meta">
+
+        🕒
+        <strong>
+          Consultation:
+        </strong>
+        ${formatDateTime(
+          consultation.created_at
+        )}
+
+        <br>
+
+        <strong>
+          Diagnosis:
+        </strong>
+        ${escapeHTML(
+          consultation.diagnosis ||
+          "-"
+        )}
+
+      </div>
+
+
+      <div
+        id="fullConsultation-${Number(
+          consultation.id
+        )}"
+        class="full-consultation">
+
+        <div class="portal-message">
+          Loading...
+        </div>
+
+      </div>
+
+
+      <div class="action-row">
+
+        <button
+          type="button"
+          id="viewFullButton-${Number(
+            consultation.id
+          )}"
+          class="portal-button primary-button small-button"
+          onclick="openDateSearchFullConsultation(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          ▶ View Full Consultation
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button warning-button small-button"
+          onclick="openDateSearchEditConsultation(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          ✏️ Edit Consultation
+
+        </button>
+
+      </div>
+
+
+      <div class="action-row">
+
+        <button
+          type="button"
+          class="portal-button purple-button small-button"
+          onclick="openDateSearchPrescriptionHistory(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          💊 Prescription
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button primary-button small-button"
+          onclick="openDateSearchLabHistory(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          🧪 Lab Reports
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button success-button small-button"
+          onclick="openDateSearchBillHistory(
+            ${patientId},
+            ${Number(
+              consultation.id
+            )}
+          )">
+
+          💰 Bills
+
+        </button>
+
+      </div>
+
+
+      <div
+        id="prescriptionPanel-${Number(
+          consultation.id
+        )}"
+        class="full-consultation">
+      </div>
+
+
+      <div
+        id="labPanel-${Number(
+          consultation.id
+        )}"
+        class="full-consultation">
+      </div>
+
+
+      <div
+        id="billPanel-${Number(
+          consultation.id
+        )}"
+        class="full-consultation">
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+async function runConsultationDateSearch(
+  preserveState = false
+) {
+
+  setConsultationNavigationSource(
+    "date-search"
+  );
+
+  const type =
+    document.getElementById(
+      "consultationDateSearchType"
+    ).value;
+
+  const selectedDate =
+    document.getElementById(
+      "consultationSearchDate"
+    ).value;
+
+  const fromDate =
+    document.getElementById(
+      "consultationSearchFromDate"
+    ).value;
+
+  const toDate =
+    document.getElementById(
+      "consultationSearchToDate"
+    ).value;
+
+  if (
+    type === "date" &&
+    !selectedDate
+  ) {
+    alert(
+      "Please select a consultation date."
+    );
+    return;
+  }
+
+  if (
+    type === "period" &&
+    (
+      !fromDate ||
+      !toDate
+    )
+  ) {
+    alert(
+      "Please select both From Date and To Date."
+    );
+    return;
+  }
+
+  if (
+    type === "period" &&
+    fromDate > toDate
+  ) {
+    alert(
+      "From Date cannot be after To Date."
+    );
+    return;
+  }
+
+  consultationDateSearchState =
+    type === "date"
+      ? {
+          type:
+            "date",
+          date:
+            selectedDate
+        }
+      : {
+          type:
+            "period",
+          from:
+            fromDate,
+          to:
+            toDate
+        };
+
+  const firstRange =
+    getISTDateRange(
+      type === "date"
+        ? selectedDate
+        : fromDate
+    );
+
+  const lastRange =
+    getISTDateRange(
+      type === "date"
+        ? selectedDate
+        : toDate
+    );
+
+  if (
+    !firstRange ||
+    !lastRange
+  ) {
+    alert(
+      "Invalid consultation date."
+    );
+    return;
+  }
+
+  const container =
+    document.getElementById(
+      "consultationDateSearchResults"
+    );
+
+  const summary =
+    document.getElementById(
+      "consultationDateSearchSummary"
+    );
+
+  showView(
+    "consultationDateSearchView"
+  );
+
+  container.innerHTML = `
+    <div class="portal-message">
+      Searching consultation history...
+    </div>
+  `;
+
+  summary.style.display =
+    "none";
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "consultations"
+      )
+      .select("*")
+      .neq(
+        "chief_complaints",
+        "__DIRECT_PRESCRIPTION_UPLOAD__"
+      )
+      .gte(
+        "created_at",
+        firstRange.start
+      )
+      .lt(
+        "created_at",
+        lastRange.end
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+  if (error) {
+
+    console.error(
+      "Consultation date search error:",
+      error
+    );
+
+    container.innerHTML = `
+      <div class="portal-message">
+        Unable to search consultation history.
+      </div>
+    `;
+
+    return;
+  }
+
+  const consultations =
+    data ||
+    [];
+
+  const patientIds =
+    [
+      ...new Set(
+        consultations
+          .map(
+            function(item) {
+              return Number(
+                item.patient_id
+              );
+            }
+          )
+          .filter(
+            function(id) {
+              return (
+                Number.isFinite(id) &&
+                id > 0
+              );
+            }
+          )
+      )
+    ];
+
+  const patientsById =
+    {};
+
+  if (
+    patientIds.length > 0
+  ) {
+
+    const {
+      data:
+        patients,
+      error:
+        patientError
+    } =
+      await supabaseClient
+        .from(
+          "patients"
+        )
+        .select("*")
+        .in(
+          "id",
+          patientIds
+        );
+
+    if (patientError) {
+
+      console.error(
+        "Consultation date search patient error:",
+        patientError
+      );
+
+    } else {
+
+      (
+        patients ||
+        []
+      )
+      .forEach(
+        function(patient) {
+
+          patientsById[
+            Number(
+              patient.id
+            )
+          ] =
+            patient;
+
+        }
+      );
+
+    }
+
+  }
+
+  const label =
+    type === "date"
+      ? formatConsultationSearchDate(
+          selectedDate
+        )
+      : formatConsultationSearchDate(
+          fromDate
+        ) +
+        " – " +
+        formatConsultationSearchDate(
+          toDate
+        );
+
+  summary.innerHTML = `
+
+    <div>
+
+      <div class="today-summary-title">
+        ${escapeHTML(
+          label
+        )}
+      </div>
+
+      <div class="today-summary-meta">
+        Latest consultation shown first
+      </div>
+
+    </div>
+
+    <span class="today-consultation-count">
+      ${consultations.length}
+    </span>
+
+  `;
+
+  summary.style.display =
+    "flex";
+
+  if (
+    consultations.length === 0
+  ) {
+
+    container.innerHTML = `
+      <div class="portal-message">
+        No consultations found for the selected
+        ${type === "date" ? "date" : "period"}.
+      </div>
+    `;
+
+  } else {
+
+    container.innerHTML =
+      consultations
+        .map(
+          function(consultation) {
+
+            return renderDateSearchConsultationCard(
+              consultation,
+              patientsById[
+                Number(
+                  consultation.patient_id
+                )
+              ]
+            );
+
+          }
+        )
+        .join("");
+
+  }
+
+  const currentURL =
+    new URL(
+      window.location.href
+    );
+
+  currentURL.searchParams.set(
+    "view",
+    "date-search"
+  );
+
+  currentURL.searchParams.set(
+    "search_type",
+    type
+  );
+
+  currentURL.searchParams.delete(
+    "patient_id"
+  );
+
+  currentURL.searchParams.delete(
+    "year"
+  );
+
+  currentURL.searchParams.delete(
+    "month"
+  );
+
+  if (
+    type === "date"
+  ) {
+
+    currentURL.searchParams.set(
+      "date",
+      selectedDate
+    );
+
+    currentURL.searchParams.delete(
+      "from"
+    );
+
+    currentURL.searchParams.delete(
+      "to"
+    );
+
+  } else {
+
+    currentURL.searchParams.set(
+      "from",
+      fromDate
+    );
+
+    currentURL.searchParams.set(
+      "to",
+      toDate
+    );
+
+    currentURL.searchParams.delete(
+      "date"
+    );
+
+  }
+
+  window.history.replaceState(
+    {},
+    "",
+    currentURL.pathname +
+    currentURL.search
+  );
 
 }
 
@@ -8447,6 +9625,74 @@ async function handleURLPatient() {
 
   if (
     view ===
+    "date-search"
+  ) {
+
+    const searchType =
+      params.get(
+        "search_type"
+      ) === "period"
+        ? "period"
+        : "date";
+
+    document
+      .getElementById(
+        "consultationDateSearchType"
+      )
+      .value =
+        searchType;
+
+    if (
+      searchType === "date"
+    ) {
+
+      document
+        .getElementById(
+          "consultationSearchDate"
+        )
+        .value =
+          params.get(
+            "date"
+          ) ||
+          getTodayString();
+
+    } else {
+
+      document
+        .getElementById(
+          "consultationSearchFromDate"
+        )
+        .value =
+          params.get(
+            "from"
+          ) ||
+          "";
+
+      document
+        .getElementById(
+          "consultationSearchToDate"
+        )
+        .value =
+          params.get(
+            "to"
+          ) ||
+          "";
+
+    }
+
+    updateConsultationDateSearchMode();
+
+    await runConsultationDateSearch(
+      true
+    );
+
+    return true;
+
+  }
+
+
+  if (
+    view ===
     "today"
   ) {
 
@@ -8510,6 +9756,28 @@ async function handleURLPatient() {
 /* =========================================================
    GLOBAL
    ========================================================= */
+
+window.openConsultationDateSearch =
+  openConsultationDateSearch;
+
+window.updateConsultationDateSearchMode =
+  updateConsultationDateSearchMode;
+
+window.openDateSearchFullConsultation =
+  openDateSearchFullConsultation;
+
+window.openDateSearchEditConsultation =
+  openDateSearchEditConsultation;
+
+window.openDateSearchPrescriptionHistory =
+  openDateSearchPrescriptionHistory;
+
+window.openDateSearchLabHistory =
+  openDateSearchLabHistory;
+
+window.openDateSearchBillHistory =
+  openDateSearchBillHistory;
+
 
 window.openTodayConsultationHistory =
   openTodayConsultationHistory;
@@ -8643,6 +9911,38 @@ document
   .addEventListener(
     "click",
     openTodayConsultationHistory
+  );
+
+
+document
+  .getElementById(
+    "consultationDateSearchButton"
+  )
+  .addEventListener(
+    "click",
+    openConsultationDateSearch
+  );
+
+
+document
+  .getElementById(
+    "runConsultationDateSearchButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+      runConsultationDateSearch();
+    }
+  );
+
+
+document
+  .getElementById(
+    "clearConsultationDateSearchButton"
+  )
+  .addEventListener(
+    "click",
+    clearConsultationDateSearch
   );
 
 
