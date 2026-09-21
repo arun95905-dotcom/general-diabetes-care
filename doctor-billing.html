@@ -757,6 +757,26 @@ View today's billing and payment summary
 </button>
 
 
+<button
+  type="button"
+  class="dashboard-option"
+  id="openBillDateSearchButton">
+
+<span class="dashboard-icon">
+🗓️
+</span>
+
+<span class="dashboard-title">
+Search Bill History
+</span>
+
+<span class="dashboard-description">
+Search bills by date or specific period
+</span>
+
+</button>
+
+
 </div>
 
 </div>
@@ -1308,6 +1328,189 @@ Loading today's bills...
 
 
 <!-- =====================================================
+     BILL DATE / PERIOD SEARCH
+     ===================================================== -->
+
+<div
+  id="billDateSearchView"
+  class="billing-view">
+
+<div class="billing-card">
+
+<div class="view-header">
+
+<h2>
+🗓️ Search Bill History
+</h2>
+
+<button
+  type="button"
+  class="billing-button light"
+  onclick="showDashboard()">
+
+← Back
+
+</button>
+
+</div>
+
+
+<div class="form-section">
+
+<h3>
+Search by Bill Date
+</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>
+Search Type
+</label>
+
+<select
+  id="billDateSearchType"
+  onchange="updateBillDateSearchMode()">
+
+<option value="date">
+Specific Date
+</option>
+
+<option value="period">
+Specific Period
+</option>
+
+</select>
+
+</div>
+
+
+<div
+  class="form-group"
+  id="billSingleDateGroup">
+
+<label>
+Bill Date
+</label>
+
+<input
+  type="date"
+  id="billSearchDate">
+
+</div>
+
+
+<div
+  class="form-group"
+  id="billFromDateGroup"
+  style="display:none;">
+
+<label>
+From Date
+</label>
+
+<input
+  type="date"
+  id="billSearchFromDate">
+
+</div>
+
+
+<div
+  class="form-group"
+  id="billToDateGroup"
+  style="display:none;">
+
+<label>
+To Date
+</label>
+
+<input
+  type="date"
+  id="billSearchToDate">
+
+</div>
+
+</div>
+
+
+<div class="billing-actions">
+
+<button
+  type="button"
+  class="billing-button primary"
+  id="runBillDateSearchButton">
+
+🔎 Search
+
+</button>
+
+<button
+  type="button"
+  class="billing-button light"
+  id="clearBillDateSearchButton">
+
+Clear
+
+</button>
+
+</div>
+
+</div>
+
+
+<div
+  id="billDateSearchSummary"
+  class="today-summary-grid"
+  style="display:none;margin-top:15px;">
+
+<div class="summary-box">
+<div class="summary-label">Bills</div>
+<div id="searchBillsCount" class="summary-value">0</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-label">Total Billing</div>
+<div id="searchTotalBilling" class="summary-value">₹0.00</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-label">Paid</div>
+<div id="searchPaidAmount" class="summary-value paid">₹0.00</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-label">Pending / Partial</div>
+<div id="searchPendingAmount" class="summary-value pending">₹0.00</div>
+</div>
+
+</div>
+
+
+<div
+  id="billDateSearchPeriodLabel"
+  class="billing-message"
+  style="display:none;margin-top:14px;">
+</div>
+
+
+<div
+  id="billDateSearchResults"
+  style="margin-top:14px;">
+
+<div class="billing-message">
+Select a date or period and tap Search.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
      SAVED BILL
      ===================================================== -->
 
@@ -1373,6 +1576,9 @@ let editingBillId =
   null;
 
 let billEditReturnState =
+  null;
+
+let billDateSearchState =
   null;
 
 
@@ -1836,6 +2042,17 @@ function getSavedBillBackLabel() {
   }
 
 
+  if (
+    billEditReturnState &&
+    billEditReturnState.view ===
+      "billDateSearch"
+  ) {
+
+    return "← Back to Bill Search";
+
+  }
+
+
   return "← Billing Home";
 
 }
@@ -1894,6 +2111,20 @@ function updateCreateBillBackButton() {
 
       button.textContent =
         "← Back to Today's Bills";
+
+      return;
+
+    }
+
+
+    if (
+      billEditReturnState &&
+      billEditReturnState.view ===
+        "billDateSearch"
+    ) {
+
+      button.textContent =
+        "← Back to Bill Search";
 
       return;
 
@@ -2046,6 +2277,22 @@ async function returnFromCreateBill() {
         returnState;
 
       await returnToTodayBills();
+
+      return;
+
+    }
+
+
+    if (
+      returnState &&
+      returnState.view ===
+        "billDateSearch"
+    ) {
+
+      billEditReturnState =
+        returnState;
+
+      await returnToBillDateSearch();
 
       return;
 
@@ -3679,6 +3926,11 @@ async function editBill(
       "savedBillView"
     );
 
+  const billDateSearchView =
+    document.getElementById(
+      "billDateSearchView"
+    );
+
 
   if (
     previousView &&
@@ -3717,6 +3969,32 @@ async function editBill(
 
       view:
         "todayBills",
+
+      billId:
+        Number(
+          billId
+        )
+
+    };
+
+  } else if (
+    billDateSearchView &&
+    billDateSearchView.classList.contains(
+      "active"
+    )
+  ) {
+
+    billEditReturnState = {
+
+      view:
+        "billDateSearch",
+
+      searchState:
+        billDateSearchState
+          ? {
+              ...billDateSearchState
+            }
+          : null,
 
       billId:
         Number(
@@ -4163,6 +4441,18 @@ async function restoreBillReturnStateAndGoBack(
   }
 
 
+  if (
+    targetView ===
+      "billDateSearch"
+  ) {
+
+    await returnToBillDateSearch();
+
+    return;
+
+  }
+
+
   showDashboard();
 
 }
@@ -4375,6 +4665,23 @@ async function showSavedBill(
                 </button>
 
               `
+              : effectiveBillReturnState &&
+                effectiveBillReturnState.view ===
+                  "billDateSearch"
+                ? `
+
+                  <button
+                    type="button"
+                    class="billing-button light"
+                    onclick="restoreBillReturnStateAndGoBack(
+                      'billDateSearch'
+                    )">
+
+                    ← Back to Bill Search
+
+                  </button>
+
+                `
               : `
 
                 <button
@@ -4842,6 +5149,561 @@ function toggleBillDetails(
   element.classList.toggle(
     "open"
   );
+
+}
+
+
+/* =========================================================
+   BILL DATE / PERIOD SEARCH
+   ========================================================= */
+
+function openBillDateSearch() {
+
+  showView(
+    "billDateSearchView"
+  );
+
+  if (
+    !billDateSearchState
+  ) {
+
+    document
+      .getElementById(
+        "billDateSearchType"
+      )
+      .value =
+        "date";
+
+    document
+      .getElementById(
+        "billSearchDate"
+      )
+      .value =
+        getTodayString();
+
+  }
+
+  updateBillDateSearchMode();
+
+}
+
+
+function updateBillDateSearchMode() {
+
+  const type =
+    document
+      .getElementById(
+        "billDateSearchType"
+      )
+      .value;
+
+  document
+    .getElementById(
+      "billSingleDateGroup"
+    )
+    .style.display =
+      type === "date"
+        ? ""
+        : "none";
+
+  document
+    .getElementById(
+      "billFromDateGroup"
+    )
+    .style.display =
+      type === "period"
+        ? ""
+        : "none";
+
+  document
+    .getElementById(
+      "billToDateGroup"
+    )
+    .style.display =
+      type === "period"
+        ? ""
+        : "none";
+
+}
+
+
+function clearBillDateSearch() {
+
+  billDateSearchState =
+    null;
+
+  document
+    .getElementById(
+      "billDateSearchType"
+    )
+    .value =
+      "date";
+
+  document
+    .getElementById(
+      "billSearchDate"
+    )
+    .value =
+      getTodayString();
+
+  document
+    .getElementById(
+      "billSearchFromDate"
+    )
+    .value =
+      "";
+
+  document
+    .getElementById(
+      "billSearchToDate"
+    )
+    .value =
+      "";
+
+  updateBillDateSearchMode();
+
+  document
+    .getElementById(
+      "billDateSearchSummary"
+    )
+    .style.display =
+      "none";
+
+  document
+    .getElementById(
+      "billDateSearchPeriodLabel"
+    )
+    .style.display =
+      "none";
+
+  document
+    .getElementById(
+      "billDateSearchResults"
+    )
+    .innerHTML = `
+
+      <div class="billing-message">
+        Select a date or period and tap Search.
+      </div>
+
+    `;
+
+}
+
+
+async function runBillDateSearch(
+  stateOverride = null
+) {
+
+  if (stateOverride) {
+
+    billDateSearchState = {
+      ...stateOverride
+    };
+
+    document
+      .getElementById(
+        "billDateSearchType"
+      )
+      .value =
+        billDateSearchState.type;
+
+    if (
+      billDateSearchState.type ===
+        "date"
+    ) {
+
+      document
+        .getElementById(
+          "billSearchDate"
+        )
+        .value =
+          billDateSearchState.date;
+
+    } else {
+
+      document
+        .getElementById(
+          "billSearchFromDate"
+        )
+        .value =
+          billDateSearchState.from;
+
+      document
+        .getElementById(
+          "billSearchToDate"
+        )
+        .value =
+          billDateSearchState.to;
+
+    }
+
+    updateBillDateSearchMode();
+
+  } else {
+
+    const type =
+      document
+        .getElementById(
+          "billDateSearchType"
+        )
+        .value;
+
+    const date =
+      document
+        .getElementById(
+          "billSearchDate"
+        )
+        .value;
+
+    const from =
+      document
+        .getElementById(
+          "billSearchFromDate"
+        )
+        .value;
+
+    const to =
+      document
+        .getElementById(
+          "billSearchToDate"
+        )
+        .value;
+
+    if (
+      type === "date" &&
+      !date
+    ) {
+
+      alert(
+        "Please select a bill date."
+      );
+
+      return;
+
+    }
+
+    if (
+      type === "period" &&
+      (
+        !from ||
+        !to
+      )
+    ) {
+
+      alert(
+        "Please select both From Date and To Date."
+      );
+
+      return;
+
+    }
+
+    if (
+      type === "period" &&
+      from > to
+    ) {
+
+      alert(
+        "From Date cannot be after To Date."
+      );
+
+      return;
+
+    }
+
+    billDateSearchState =
+      type === "date"
+        ? {
+            type:
+              "date",
+            date:
+              date
+          }
+        : {
+            type:
+              "period",
+            from:
+              from,
+            to:
+              to
+          };
+
+  }
+
+
+  showView(
+    "billDateSearchView"
+  );
+
+
+  const container =
+    document.getElementById(
+      "billDateSearchResults"
+    );
+
+  container.innerHTML = `
+
+    <div class="billing-message">
+      🔎 Searching bills...
+    </div>
+
+  `;
+
+
+  let query =
+    supabaseClient
+      .from("billing")
+      .select("*");
+
+
+  if (
+    billDateSearchState.type ===
+      "date"
+  ) {
+
+    query =
+      query.eq(
+        "bill_date",
+        billDateSearchState.date
+      );
+
+  } else {
+
+    query =
+      query
+        .gte(
+          "bill_date",
+          billDateSearchState.from
+        )
+        .lte(
+          "bill_date",
+          billDateSearchState.to
+        );
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await query
+      .order(
+        "bill_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Bill date search error:",
+      error
+    );
+
+    container.innerHTML = `
+
+      <div class="billing-error">
+        Unable to search bill history.
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const bills =
+    data ||
+    [];
+
+
+  let total =
+    0;
+
+  let paid =
+    0;
+
+  let pending =
+    0;
+
+
+  bills.forEach(
+    function(bill) {
+
+      const amount =
+        Number(
+          bill.total_amount ||
+          0
+        );
+
+      total +=
+        amount;
+
+      if (
+        bill.payment_status ===
+          "Paid"
+      ) {
+
+        paid +=
+          amount;
+
+      } else {
+
+        pending +=
+          amount;
+
+      }
+
+    }
+  );
+
+
+  document
+    .getElementById(
+      "searchBillsCount"
+    )
+    .textContent =
+      bills.length;
+
+  document
+    .getElementById(
+      "searchTotalBilling"
+    )
+    .textContent =
+      currency(total);
+
+  document
+    .getElementById(
+      "searchPaidAmount"
+    )
+    .textContent =
+      currency(paid);
+
+  document
+    .getElementById(
+      "searchPendingAmount"
+    )
+    .textContent =
+      currency(pending);
+
+
+  document
+    .getElementById(
+      "billDateSearchSummary"
+    )
+    .style.display =
+      "grid";
+
+
+  const periodLabel =
+    document.getElementById(
+      "billDateSearchPeriodLabel"
+    );
+
+  periodLabel.textContent =
+    billDateSearchState.type ===
+      "date"
+      ? "Bills for " +
+        formatDate(
+          billDateSearchState.date
+        )
+      : "Bills from " +
+        formatDate(
+          billDateSearchState.from
+        ) +
+        " to " +
+        formatDate(
+          billDateSearchState.to
+        );
+
+  periodLabel.style.display =
+    "block";
+
+
+  if (
+    bills.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="billing-message">
+        No bills found for the selected
+        ${billDateSearchState.type === "date"
+          ? "date"
+          : "period"}.
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  await renderBillsList(
+    bills,
+    container
+  );
+
+}
+
+
+async function returnToBillDateSearch() {
+
+  if (
+    !billEditReturnState ||
+    billEditReturnState.view !==
+      "billDateSearch"
+  ) {
+
+    showDashboard();
+
+    return;
+
+  }
+
+
+  const returnState = {
+    ...billEditReturnState
+  };
+
+
+  await runBillDateSearch(
+    returnState.searchState
+  );
+
+
+  const details =
+    document.getElementById(
+      "billDetails-" +
+      returnState.billId
+    );
+
+
+  if (details) {
+
+    details.classList.add(
+      "open"
+    );
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 
 }
 
@@ -6772,6 +7634,20 @@ async function deleteBill(
 
     loadTodayBills();
 
+  } else if (
+    document
+      .getElementById(
+        "billDateSearchView"
+      )
+      .classList.contains(
+        "active"
+      )
+  ) {
+
+    runBillDateSearch(
+      billDateSearchState
+    );
+
   } else {
 
     searchPreviousBills();
@@ -6870,6 +7746,15 @@ window.returnToPatientBillDetails =
 
 window.returnToTodayBills =
   returnToTodayBills;
+
+window.openBillDateSearch =
+  openBillDateSearch;
+
+window.updateBillDateSearchMode =
+  updateBillDateSearchMode;
+
+window.returnToBillDateSearch =
+  returnToBillDateSearch;
 
 window.restoreBillReturnStateAndGoBack =
   restoreBillReturnStateAndGoBack;
@@ -6970,6 +7855,38 @@ document
   .addEventListener(
     "click",
     loadTodayBills
+  );
+
+
+document
+  .getElementById(
+    "openBillDateSearchButton"
+  )
+  .addEventListener(
+    "click",
+    openBillDateSearch
+  );
+
+
+document
+  .getElementById(
+    "runBillDateSearchButton"
+  )
+  .addEventListener(
+    "click",
+    function() {
+      runBillDateSearch();
+    }
+  );
+
+
+document
+  .getElementById(
+    "clearBillDateSearchButton"
+  )
+  .addEventListener(
+    "click",
+    clearBillDateSearch
   );
 
 document
