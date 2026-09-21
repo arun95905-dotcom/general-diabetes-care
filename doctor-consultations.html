@@ -2006,6 +2006,13 @@ function getISTTodayRange() {
     end:
       endUTC.toISOString(),
 
+    date:
+      String(year).padStart(4, "0") +
+      "-" +
+      String(month).padStart(2, "0") +
+      "-" +
+      String(day).padStart(2, "0"),
+
     label:
       new Intl.DateTimeFormat(
         "en-IN",
@@ -2056,13 +2063,9 @@ async function loadTodayConsultationCount() {
         "chief_complaints",
         "__DIRECT_PRESCRIPTION_UPLOAD__"
       )
-      .gte(
-        "created_at",
-        range.start
-      )
-      .lt(
-        "created_at",
-        range.end
+      .eq(
+        "consultation_date",
+        range.date
       );
 
 
