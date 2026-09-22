@@ -3889,6 +3889,38 @@ function patientDetailHTML(
    EDIT PATIENT
    ========================================================= */
 
+let editCampPatientMatches=[];
+let selectedEditCampPatientId=null;
+let editCampMatchTimer=null;
+function scheduleEditCampPatientMatchCheck(){clearTimeout(editCampMatchTimer);editCampMatchTimer=setTimeout(checkCampPatientBeforeEdit,350)}
+async function checkCampPatientBeforeEdit(){
+ const panel=document.getElementById('editCampPatientMatchPanel'); if(!panel||!currentPatientId)return;
+ const rawPhone=getValue('editPatientPhone'),phone=campPhone(rawPhone),name=getValue('editPatientName'),ar=getValue('editPatientAge'),age=ar===''?null:Number(ar);
+ selectedEditCampPatientId=null;editCampPatientMatches=[];
+ if(phone.length<7&&(!name||age===null||Number.isNaN(age))){panel.classList.remove('visible');panel.innerHTML='';return}
+ panel.classList.add('visible');panel.innerHTML='<div class="camp-match-title">🏕️ Checking previous camp records…</div>';
+ try{
+  const linked=await supabaseClient.from('camp_patients').select('id,camp_patient_number,patient_name,phone,age,gender,area_locality,camp_id,medical_camps(camp_name,camp_date)').eq('regular_patient_id',currentPatientId).order('created_at',{ascending:false});
+  if(linked.error)throw linked.error;
+  if((linked.data||[]).length){
+   editCampPatientMatches=linked.data||[];
+   panel.innerHTML='<div class="camp-match-title">🏕️ Already Linked to Camp Patient</div>'+editCampPatientMatches.map(m=>{const c=m.medical_camps||{};return `<div class="camp-match-card"><strong>${campEsc(m.camp_patient_number||m.id)} · ${campEsc(m.patient_name||'-')}</strong><div class="camp-match-meta">${campEsc(c.camp_name||'Medical Camp')} · ${campEsc(campDate(c.camp_date))}<br>Age: ${campEsc(m.age??'-')} · ${campEsc(m.gender||'-')} · Phone: ${campEsc(m.phone||'-')}<br>Area: ${campEsc(m.area_locality||'-')}</div><div class="match-good">✅ Already linked to this regular patient</div></div>`}).join('');return;
+  }
+  let matches=[],mode='';
+  if(phone.length>=7){let q=await supabaseClient.from('camp_patients').select('id,camp_patient_number,patient_name,phone,age,gender,area_locality,camp_id,medical_camps(camp_name,camp_date)').eq('phone',rawPhone.trim()).eq('patient_type','New Patient').is('regular_patient_id',null).order('created_at',{ascending:false});if(q.error)throw q.error;matches=q.data||[];if(matches.length)mode='phone'}
+  if(!matches.length&&name&&age!==null&&!Number.isNaN(age)){let q=await supabaseClient.from('camp_patients').select('id,camp_patient_number,patient_name,phone,age,gender,area_locality,camp_id,medical_camps(camp_name,camp_date)').ilike('patient_name',name.trim()).eq('age',age).eq('patient_type','New Patient').is('regular_patient_id',null).order('created_at',{ascending:false});if(q.error)throw q.error;matches=q.data||[];if(matches.length)mode='name_age'}
+  editCampPatientMatches=matches;renderEditCampPatientMatches(mode);
+ }catch(e){console.error('Camp edit match error:',e);panel.innerHTML='<div class="camp-match-title">🏕️ Camp patient check unavailable</div><div>Patient editing can still continue normally.</div>'}
+}
+function renderEditCampPatientMatches(mode){
+ const panel=document.getElementById('editCampPatientMatchPanel');if(!panel)return;
+ if(!editCampPatientMatches.length){panel.innerHTML='<div class="camp-match-title">🏕️ No unlinked camp patient found</div><div>You can continue editing normally.</div>';return}
+ const ep=campPhone(getValue('editPatientPhone')),en=campNorm(getValue('editPatientName')),ar=getValue('editPatientAge'),ea=ar===''?null:Number(ar);
+ panel.innerHTML='<div class="camp-match-title">🏕️ '+(mode==='phone'?'Camp Patient Found':'Possible Camp Patient Found')+'</div>'+editCampPatientMatches.map(m=>{const c=m.medical_camps||{},ph=!!ep&&campPhone(m.phone)===ep,n=!!en&&campNorm(m.patient_name)===en,a=ea!==null&&Number(m.age)===ea,strong=ph&&n&&a,sel=String(selectedEditCampPatientId)===String(m.id);return `<div class="camp-match-card"><strong>${campEsc(m.camp_patient_number||m.id)} · ${campEsc(m.patient_name||'-')}</strong><div class="camp-match-meta">${campEsc(c.camp_name||'Medical Camp')} · ${campEsc(campDate(c.camp_date))}<br>Age: ${campEsc(m.age??'-')} · ${campEsc(m.gender||'-')} · Phone: ${campEsc(m.phone||'-')}<br>Area: ${campEsc(m.area_locality||'-')}</div><div>${ph?'✓':'✕'} Phone &nbsp; ${n?'✓':'✕'} Name &nbsp; ${a?'✓':'✕'} Age</div><div class="${strong?'match-good':'match-warn'}">${strong?'✅ Strong Match':'⚠️ Possible Match — please verify'}</div><div class="camp-match-actions"><button type="button" class="${sel?'selected':''}" onclick="selectEditCampPatientMatch('${campEsc(m.id)}')">${sel?'✓ Selected to Link':'Link This Camp Patient'}</button></div></div>`}).join('');
+}
+function selectEditCampPatientMatch(id){selectedEditCampPatientId=String(selectedEditCampPatientId)===String(id)?null:String(id);renderEditCampPatientMatches(editCampPatientMatches.some(x=>campPhone(x.phone)===campPhone(getValue('editPatientPhone')))?'phone':'name_age')}
+async function linkSelectedEditCampPatient(patientId){if(!selectedEditCampPatientId||!patientId)return;const r=await supabaseClient.from('camp_patients').update({regular_patient_id:patientId,converted_at:new Date().toISOString()}).eq('id',selectedEditCampPatientId).is('regular_patient_id',null);if(r.error)throw r.error}
+
 async function editPatient(
   patientId
 ) {
@@ -3963,6 +3995,8 @@ async function editPatient(
 
             <input
               id="editPatientName"
+              oninput="scheduleEditCampPatientMatchCheck()"
+              onchange="scheduleEditCampPatientMatchCheck()"
               value="${escapeHTML(
                 patient.patient_name ||
                 ""
@@ -3982,8 +4016,14 @@ async function editPatient(
               value="${escapeHTML(
                 patient.patient_phone ||
                 ""
-              )}">
+              )}"
+              oninput="scheduleEditCampPatientMatchCheck()"
+              onchange="scheduleEditCampPatientMatchCheck()">
 
+          </div>
+
+          <div class="form-group full-width">
+            <div id="editCampPatientMatchPanel" class="camp-match-panel" aria-live="polite"></div>
           </div>
 
 
@@ -4018,6 +4058,8 @@ async function editPatient(
               min="0"
               max="120"
               placeholder="Auto from DOB or enter manually"
+              oninput="scheduleEditCampPatientMatchCheck()"
+              onchange="scheduleEditCampPatientMatchCheck()"
               value="${escapeHTML(
                 patient.age ||
                 ""
@@ -4199,6 +4241,9 @@ async function editPatient(
     "editPatientAge"
   );
 
+  selectedEditCampPatientId = null;
+  scheduleEditCampPatientMatchCheck();
+
 }
 
 
@@ -4344,6 +4389,15 @@ async function saveEditedPatient(
 
   }
 
+  try {
+    await linkSelectedEditCampPatient(patientId);
+  } catch (linkError) {
+    console.error("Camp patient linking error:", linkError);
+    alert("Patient details were updated, but the camp patient could not be linked:\n\n" + (linkError.message || linkError));
+    return;
+  }
+
+  selectedEditCampPatientId = null;
 
   alert(
     "Patient details updated successfully."
