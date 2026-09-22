@@ -2738,11 +2738,17 @@ async function loadPatientConsultations() {
     await supabaseClient
       .from("consultations")
       .select(
-        "id,created_at,diagnosis,chief_complaints"
+        "id,created_at,consultation_date,diagnosis,chief_complaints"
       )
       .eq(
         "patient_id",
         selectedPatient.id
+      )
+      .order(
+        "consultation_date",
+        {
+          ascending: false
+        }
       )
       .order(
         "created_at",
@@ -2812,6 +2818,7 @@ async function loadPatientConsultations() {
 
                 Date:
                 ${formatDate(
+                  consultation.consultation_date ||
                   consultation.created_at
                 )}
 
@@ -3205,7 +3212,7 @@ async function showLinkedConsultation(
     await supabaseClient
       .from("consultations")
       .select(
-        "id,created_at,chief_complaints,diagnosis"
+        "id,created_at,consultation_date,chief_complaints,diagnosis"
       )
       .eq(
         "id",
@@ -3254,6 +3261,7 @@ async function showLinkedConsultation(
       Date:
       <strong>
         ${formatDate(
+          data.consultation_date ||
           data.created_at
         )}
       </strong>
