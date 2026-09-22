@@ -712,6 +712,8 @@ textarea {
 
 }
 
+
+.camp-match-panel{grid-column:1/-1;display:none;border:1px solid #bfdbfe;background:#eff6ff;border-radius:16px;padding:16px}.camp-match-panel.visible{display:block}.camp-match-card{background:#fff;border:1px solid #dbeafe;border-radius:14px;padding:14px;margin-top:10px}.camp-match-title{font-weight:800;color:#1e3a8a}.camp-match-meta{color:#475569;line-height:1.55;margin-top:6px}.camp-match-actions{margin-top:10px}.camp-match-actions button{padding:10px 14px;border-radius:10px;border:1px solid #cbd5e1;font-weight:700}.camp-match-actions button.selected{background:#16a34a;color:#fff}.match-good{color:#15803d;font-weight:800}.match-warn{color:#b45309;font-weight:800}
 </style>
 
 </head>
@@ -953,6 +955,8 @@ Phone Number *
   id="newPatientPhone">
 
 </div>
+
+<div id="campPatientMatchPanel" class="camp-match-panel" aria-live="polite"></div>
 
 
 <div class="form-group">
@@ -2345,73 +2349,43 @@ async function getPatient(
 
 
 /* =========================================================
-   CAMP → REGULAR PATIENT LINK
-   Checks a newly registered regular patient against unlinked
-   NEW camp patients using phone number, then asks for confirmation.
+   CAMP → REGULAR PATIENT PRE-REGISTRATION MATCH
    ========================================================= */
-async function linkNewRegularPatientToCamp(regularPatient) {
-
-  try {
-
-    const phone = String(regularPatient?.patient_phone || "").trim();
-
-    if (!phone) return;
-
-    const { data: matches, error } =
-      await supabaseClient
-        .from("camp_patients")
-        .select(`
-          id,
-          camp_patient_number,
-          patient_name,
-          phone,
-          camp_id,
-          medical_camps (
-            camp_name,
-            camp_date
-          )
-        `)
-        .eq("phone", phone)
-        .eq("patient_type", "New Patient")
-        .is("regular_patient_id", null)
-        .order("created_at", { ascending: false });
-
-    if (error || !matches || !matches.length) return;
-
-    const match = matches[0];
-    const camp = match.medical_camps || {};
-
-    const confirmed = window.confirm(
-      "Previous camp patient found.\n\n" +
-      "Camp: " + (camp.camp_name || "Medical Camp") + "\n" +
-      "Camp Date: " + (camp.camp_date || "-") + "\n" +
-      "Camp Patient: " + (match.patient_name || "-") + "\n" +
-      "Camp Patient ID: " + (match.camp_patient_number || match.id) + "\n\n" +
-      "Link this new regular patient registration to the camp record?"
-    );
-
-    if (!confirmed) return;
-
-    const { error: linkError } =
-      await supabaseClient
-        .from("camp_patients")
-        .update({
-          regular_patient_id: regularPatient.id,
-          converted_at: new Date().toISOString()
-        })
-        .eq("id", match.id)
-        .is("regular_patient_id", null);
-
-    if (linkError) {
-      console.error("Camp patient conversion link error:", linkError);
-    }
-
+let campPatientMatches=[];
+let selectedCampPatientId=null;
+let campMatchTimer=null;
+function campNorm(v){return String(v||'').trim().toLowerCase().replace(/\s+/g,' ')}
+function campPhone(v){return String(v||'').replace(/\D/g,'').slice(-10)}
+function campEsc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function campDate(v){if(!v)return '-';const a=String(v).split('-');return a.length===3?`${a[2]}/${a[1]}/${a[0]}`:v}
+function scheduleCampPatientMatchCheck(){clearTimeout(campMatchTimer);campMatchTimer=setTimeout(checkCampPatientBeforeRegistration,350)}
+async function checkCampPatientBeforeRegistration(){
+ const panel=document.getElementById('campPatientMatchPanel'); if(!panel)return;
+ const rawPhone=getValue('newPatientPhone'), phone=campPhone(rawPhone), name=getValue('newPatientName'), ar=getValue('newPatientAge'), age=ar===''?null:Number(ar);
+ selectedCampPatientId=null; campPatientMatches=[];
+ if(phone.length<7&&(!name||age===null||Number.isNaN(age))){panel.classList.remove('visible');panel.innerHTML='';return}
+ panel.classList.add('visible');panel.innerHTML='<div class="camp-match-title">🏕️ Checking previous camp records…</div>';
+ try{
+  let matches=[],mode='';
+  if(phone.length>=7){
+   let q=await supabaseClient.from('camp_patients').select('id,camp_patient_number,patient_name,phone,age,gender,area_locality,camp_id,medical_camps(camp_name,camp_date)').eq('phone',rawPhone.trim()).eq('patient_type','New Patient').is('regular_patient_id',null).order('created_at',{ascending:false});
+   if(q.error)throw q.error; matches=q.data||[]; if(matches.length)mode='phone';
   }
-  catch (error) {
-    console.error("Camp patient conversion check error:", error);
+  if(!matches.length&&name&&age!==null&&!Number.isNaN(age)){
+   let q=await supabaseClient.from('camp_patients').select('id,camp_patient_number,patient_name,phone,age,gender,area_locality,camp_id,medical_camps(camp_name,camp_date)').ilike('patient_name',name.trim()).eq('age',age).eq('patient_type','New Patient').is('regular_patient_id',null).order('created_at',{ascending:false});
+   if(q.error)throw q.error; matches=q.data||[]; if(matches.length)mode='name_age';
   }
-
+  campPatientMatches=matches; renderCampPatientMatches(mode);
+ }catch(e){console.error('Camp pre-registration match error:',e);panel.innerHTML='<div class="camp-match-title">🏕️ Camp patient check unavailable</div><div>Registration can still continue normally.</div>'}
 }
+function renderCampPatientMatches(mode){
+ const panel=document.getElementById('campPatientMatchPanel');if(!panel)return;
+ if(!campPatientMatches.length){panel.innerHTML='<div class="camp-match-title">🏕️ No unlinked camp patient found</div><div>You can continue with normal registration.</div>';return}
+ const ep=campPhone(getValue('newPatientPhone')),en=campNorm(getValue('newPatientName')),ar=getValue('newPatientAge'),ea=ar===''?null:Number(ar);
+ panel.innerHTML='<div class="camp-match-title">🏕️ '+(mode==='phone'?'Camp Patient Found':'Possible Camp Patient Found')+'</div>'+campPatientMatches.map(m=>{const c=m.medical_camps||{},p=!!ep&&campPhone(m.phone)===ep,n=!!en&&campNorm(m.patient_name)===en,a=ea!==null&&Number(m.age)===ea,strong=p&&n&&a,sel=String(selectedCampPatientId)===String(m.id);return `<div class="camp-match-card"><strong>${campEsc(m.camp_patient_number||m.id)} · ${campEsc(m.patient_name||'-')}</strong><div class="camp-match-meta">${campEsc(c.camp_name||'Medical Camp')} · ${campEsc(campDate(c.camp_date))}<br>Age: ${campEsc(m.age??'-')} · ${campEsc(m.gender||'-')} · Phone: ${campEsc(m.phone||'-')}<br>Area: ${campEsc(m.area_locality||'-')}</div><div>${p?'✓':'✕'} Phone &nbsp; ${n?'✓':'✕'} Name &nbsp; ${a?'✓':'✕'} Age</div><div class="${strong?'match-good':'match-warn'}">${strong?'✅ Strong Match':'⚠️ Possible Match — please verify'}</div><div class="camp-match-actions"><button type="button" class="${sel?'selected':''}" onclick="selectCampPatientMatch('${campEsc(m.id)}')">${sel?'✓ Selected to Link':'Link This Camp Patient'}</button></div></div>`}).join('')
+}
+function selectCampPatientMatch(id){selectedCampPatientId=String(selectedCampPatientId)===String(id)?null:String(id);renderCampPatientMatches(campPatientMatches.some(x=>campPhone(x.phone)===campPhone(getValue('newPatientPhone')))?'phone':'name_age')}
+async function linkSelectedCampPatientToRegularPatient(p){if(!selectedCampPatientId||!p?.id)return;const r=await supabaseClient.from('camp_patients').update({regular_patient_id:p.id,converted_at:new Date().toISOString()}).eq('id',selectedCampPatientId).is('regular_patient_id',null);if(r.error)console.error('Camp conversion link error:',r.error)}
 
 /* =========================================================
    REGISTER PATIENT
@@ -2552,8 +2526,8 @@ async function savePatient() {
     data.id;
 
 
-  /* Check whether this newly registered clinic patient attended a camp. */
-  await linkNewRegularPatientToCamp(data);
+  /* Link the camp record explicitly selected before registration. */
+  await linkSelectedCampPatientToRegularPatient(data);
 
 
   let appointmentLinkedSuccessfully =
@@ -2820,6 +2794,11 @@ function clearRegistrationForm() {
     .value =
       "";
 
+
+  campPatientMatches = [];
+  selectedCampPatientId = null;
+  const campPanel = document.getElementById("campPatientMatchPanel");
+  if (campPanel) { campPanel.innerHTML = ""; campPanel.classList.remove("visible"); }
 
   setRegistrationDateToToday();
 
@@ -8654,6 +8633,10 @@ window.updateAgeFromDOB =
   await loadTodayPatientCount();
 
 })();
+
+
+["newPatientPhone","newPatientName","newPatientAge"].forEach(function(id){const el=document.getElementById(id);if(el){el.addEventListener("input",scheduleCampPatientMatchCheck);el.addEventListener("change",scheduleCampPatientMatchCheck)}});
+window.selectCampPatientMatch=selectCampPatientMatch;
 
 </script>
 
