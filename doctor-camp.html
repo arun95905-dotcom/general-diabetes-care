@@ -16,6 +16,11 @@ body.print-analytics #analyticsPrintArea,body.print-analytics #analyticsPrintAre
 body.print-analytics #analyticsPrintArea{position:absolute;left:0;top:0;width:100%;padding:10px}
 .no-print{display:none!important}
 }@media(max-width:750px){.grid3,.formgrid,.statgrid,.screen-row{grid-template-columns:1fr}.full{grid-column:auto}.test-row{grid-template-columns:1fr}.menu{min-height:120px}}
+
+.analytics-click{cursor:pointer}.analytics-click:hover{background:#eef6ff}.analytics-link{color:#2563eb;font-weight:800;text-decoration:underline;text-underline-offset:2px}
+.chart-box{margin-top:14px;padding:14px;background:#fff;border:1px solid #e2e8f0;border-radius:13px}.chart-title{font-size:13px;font-weight:800;margin-bottom:10px;color:#475569}
+.bar-row{display:grid;grid-template-columns:minmax(95px,1.3fr) 3fr 48px;gap:8px;align-items:center;margin:9px 0;font-size:12px}.bar-track{height:18px;background:#eef2f7;border-radius:999px;overflow:hidden}.bar-fill{height:100%;background:#2563eb;border-radius:999px;min-width:0}
+.donut-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.donut{width:130px;height:130px;border-radius:50%;position:relative;background:conic-gradient(#2563eb 0 var(--p1),#16a34a var(--p1) var(--p2),#f59e0b var(--p2) var(--p3),#dc2626 var(--p3) 100%)}.donut:after{content:"";position:absolute;inset:28px;background:#fff;border-radius:50%}.legend{display:grid;gap:7px;font-size:12px}.legend-row{display:flex;align-items:center;gap:7px}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.analytics-patient-card{padding:13px;margin-top:10px;border:1px solid #e2e8f0;border-radius:13px;background:#fff}.analytics-patient-card strong{font-size:16px}
 </style>
 </head>
 <body>
@@ -43,6 +48,8 @@ body.print-analytics #analyticsPrintArea{position:absolute;left:0;top:0;width:10
 <div id="registerView" class="view"><div id="registerContent"></div></div>
 <div id="patientsView" class="view"><div id="patientsContent"></div></div>
 <div id="analyticsView" class="view"><div id="analyticsContent"></div></div>
+<div id="analyticsPatientsView" class="view"><div id="analyticsPatientsContent"></div></div>
+<div id="campPatientDetailView" class="view"><div id="campPatientDetailContent"></div></div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -109,7 +116,7 @@ ${currentCamp.blood_package_available?`<div class="section"><h3>🧪 ${esc(curre
 function sourceChanged(){referralBox.classList.toggle('hidden',campSource.value!=='Referral by Clinic Patient');otherSourceBox.classList.toggle('hidden',campSource.value!=='Other');}
 function calcBMI(){const h=Number(height.value),w=Number(weight.value);bmi.value=h&&w?(w/((h/100)**2)).toFixed(1):'';}
 const val=id=>document.getElementById(id)?.value?.trim()||'';const num=id=>val(id)?Number(val(id)):null;
-async function saveCampPatient(next){if(!val('patientName')||!val('patientAge')||!val('patientGender')||!val('patientArea')||!val('registrationDate'))return alert('Patient name, age, gender, area/locality and registration date are required.');if(patientType.value==='Existing Clinic Patient'&&!selectedExistingPatient)return alert('Please search and select the existing clinic patient.');if(currentCamp.blood_package_available&&!val('packageOpted'))return alert('Select whether the patient opted for the blood test package.');const tests=[...document.querySelectorAll('.test-row')].map(r=>({name:r.querySelector('.test-name').value.trim(),value:r.querySelector('.test-value').value.trim()})).filter(x=>x.name||x.value);const {data:numberRows,error:numberError}=await supabaseClient.from('camp_patients').select('camp_patient_number').eq('camp_id',currentCamp.id);if(numberError)return alert('Unable to generate Camp Patient ID:\n'+numberError.message);const maxCampNo=(numberRows||[]).reduce((max,row)=>{const m=String(row.camp_patient_number||'').match(/^C(\d+)$/i);return m?Math.max(max,Number(m[1])):max;},0);const campNo=`C${String(maxCampNo+1).padStart(3,'0')}`;const obj={camp_id:currentCamp.id,camp_patient_number:campNo,registration_date:val('registrationDate'),patient_type:patientType.value,existing_patient_id:selectedExistingPatient?.id||null,regular_patient_id:selectedExistingPatient?.id||null,patient_name:val('patientName'),phone:val('patientPhone'),age:num('patientAge'),gender:val('patientGender'),blood_group:val('patientBloodGroup'),address:val('patientAddress'),area_locality:val('patientArea'),camp_source:val('campSource'),referring_patient:val('referringPatient'),source_other:val('sourceOther'),blood_package_opted:currentCamp.blood_package_available?(val('packageOpted')==='true'):null,height_cm:num('height'),weight_kg:num('weight'),bmi:num('bmi'),systolic_bp:num('sbp'),diastolic_bp:num('dbp'),pulse:num('pulse'),spo2:num('spo2'),rbs:num('rbs'),hba1c:num('hba1c'),known_diabetes:val('knownDiabetes')?val('knownDiabetes')==='true':null,diabetes_duration:val('diabetesDuration'),diabetes_treatment:val('diabetesTreatment'),neuropathy_result:currentCamp.neuropathy_enabled?val('neuropathy'):null,neuropathy_notes:currentCamp.neuropathy_enabled?val('neuropathyNotes'):null,retinopathy_result:currentCamp.retinopathy_enabled?val('retinopathy'):null,retinopathy_notes:currentCamp.retinopathy_enabled?val('retinopathyNotes'):null,bmd_result:currentCamp.bmd_enabled?val('bmd'):null,bmd_notes:currentCamp.bmd_enabled?val('bmdNotes'):null,additional_tests:tests,diagnosis:val('diagnosis'),advice:val('advice'),medicines_given:val('medicines'),referral_required:val('referralRequired')==='true',referral_details:val('referralDetails'),followup_required:val('followupRequired')==='true',followup_date:val('followupDate')||null};const {error}=await supabaseClient.from('camp_patients').insert(obj);if(error)return alert('Unable to save camp patient:\n'+error.message);alert(`Camp patient ${campNo} saved.`);next?openRegistration():openCamp(currentCamp.id);}
+async function saveCampPatient(next){if(!val('patientName')||!val('patientAge')||!val('patientGender')||!val('patientArea')||!val('registrationDate'))return alert('Patient name, age, gender, area/locality and registration date are required.');if(patientType.value==='Existing Clinic Patient'&&!selectedExistingPatient)return alert('Please search and select the existing clinic patient.');if(currentCamp.blood_package_available&&!val('packageOpted'))return alert('Select whether the patient opted for the blood test package.');const tests=[...document.querySelectorAll('.test-row')].map(r=>({name:r.querySelector('.test-name').value.trim(),value:r.querySelector('.test-value').value.trim()})).filter(x=>x.name||x.value);const {data:numberRows,error:numberError}=await supabaseClient.from('camp_patients').select('camp_patient_number').eq('camp_id',currentCamp.id);if(numberError)return alert('Unable to generate Camp Patient ID:\n'+numberError.message);const maxCampNo=(numberRows||[]).reduce((max,row)=>{const m=String(row.camp_patient_number||'').match(/^C(\d+)$/i);return m?Math.max(max,Number(m[1])):max;},0);const campNo=`C${String(maxCampNo+1).padStart(3,'0')}`;const obj={camp_id:currentCamp.id,camp_patient_number:campNo,registration_date:val('registrationDate'),patient_type:patientType.value,existing_patient_id:selectedExistingPatient?.id||null,regular_patient_id:selectedExistingPatient?.id||null,patient_name:val('patientName'),phone:val('patientPhone'),age:num('patientAge'),gender:val('patientGender'),blood_group:val('patientBloodGroup'),address:val('patientAddress'),area_locality:val('patientArea'),camp_source:val('campSource'),referring_patient:val('campSource')==='Referral by Clinic Patient'?val('referringPatient'):null,source_other:val('campSource')==='Other'?val('sourceOther'):null,blood_package_opted:currentCamp.blood_package_available?(val('packageOpted')==='true'):null,height_cm:num('height'),weight_kg:num('weight'),bmi:num('bmi'),systolic_bp:num('sbp'),diastolic_bp:num('dbp'),pulse:num('pulse'),spo2:num('spo2'),rbs:num('rbs'),hba1c:num('hba1c'),known_diabetes:val('knownDiabetes')?val('knownDiabetes')==='true':null,diabetes_duration:val('diabetesDuration'),diabetes_treatment:val('diabetesTreatment'),neuropathy_result:currentCamp.neuropathy_enabled?val('neuropathy'):null,neuropathy_notes:currentCamp.neuropathy_enabled?val('neuropathyNotes'):null,retinopathy_result:currentCamp.retinopathy_enabled?val('retinopathy'):null,retinopathy_notes:currentCamp.retinopathy_enabled?val('retinopathyNotes'):null,bmd_result:currentCamp.bmd_enabled?val('bmd'):null,bmd_notes:currentCamp.bmd_enabled?val('bmdNotes'):null,additional_tests:tests,diagnosis:val('diagnosis'),advice:val('advice'),medicines_given:val('medicines'),referral_required:val('referralRequired')==='true',referral_details:val('referralDetails'),followup_required:val('followupRequired')==='true',followup_date:val('followupDate')||null};const {error}=await supabaseClient.from('camp_patients').insert(obj);if(error)return alert('Unable to save camp patient:\n'+error.message);alert(`Camp patient ${campNo} saved.`);next?openRegistration():openCamp(currentCamp.id);}
 async function openCampPatients(){patientsContent.innerHTML=`<div class="card"><div class="headerrow"><h2>👥 Camp Patients</h2><button class="btn light" onclick="openCamp(${currentCamp.id})">← Back</button></div><div class="camp-banner"><strong>${esc(currentCamp.camp_name)}</strong><div class="meta">${fmt(currentCamp.camp_date)}</div></div><div class="list-toolbar"><input id="campPatientSearchInput" placeholder="Camp ID / Name / Phone / Area"><button class="btn primary" onclick="searchCampPatients()">🔍 Search</button></div><div class="actions"><button class="btn success" onclick="openAllCampPatients()">👥 All Patients</button></div><div id="campPatientSearchResults" style="margin-top:14px"><div class="message">Search for a camp patient or open All Patients.</div></div></div>`;showView('patientsView');}
 async function fetchCampPatients(){const {data,error}=await supabaseClient.from('camp_patients').select('*').eq('camp_id',currentCamp.id).order('id',{ascending:true});if(error)throw error;return data||[];}
 async function searchCampPatients(){const q=campPatientSearchInput.value.trim().toLowerCase();if(!q)return alert('Enter Camp ID, patient name, phone number or area/locality.');try{const data=await fetchCampPatients();const found=data.filter(p=>[p.camp_patient_number,p.patient_name,p.phone,p.area_locality].some(v=>String(v??'').toLowerCase().includes(q)));campPatientSearchResults.innerHTML=found.length?renderPatients(found):'<div class="message">No matching camp patient found.</div>';}catch(e){alert(e.message);}}
@@ -155,8 +162,165 @@ if(error)return alert('Unable to delete camp patient:\n'+error.message);
 alert('Camp patient deleted.');openCampPatients();
 }
 
-function group(data,key){const m={};data.forEach(p=>{let v=(p[key]||'Not Entered').trim?.()||p[key]||'Not Entered';m[v]=(m[v]||0)+1});return m;}function groupTable(title,obj,total){return `<div class="section"><h3>${title}</h3><table class="analytics-table"><tr><th>Category</th><th>Patients</th><th>%</th></tr>${Object.entries(obj).sort((a,b)=>b[1]-a[1]).map(([k,n])=>`<tr><td>${esc(k)}</td><td>${n}</td><td>${total?((n/total)*100).toFixed(1):'0.0'}%</td></tr>`).join('')}</table></div>`;}
-async function openAnalytics(){const {data,error}=await supabaseClient.from('camp_patients').select('*').eq('camp_id',currentCamp.id);if(error)return alert(error.message);const total=data.length,male=data.filter(x=>x.gender==='Male').length,female=data.filter(x=>x.gender==='Female').length,ages=data.map(x=>Number(x.age)).filter(Number.isFinite),avg=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'-';const opted=data.filter(x=>x.blood_package_opted===true).length,notOpted=data.filter(x=>x.blood_package_opted===false).length,newPatients=data.filter(x=>x.patient_type==='New Patient'),converted=newPatients.filter(x=>x.regular_patient_id).length;const screen=(key,opts)=>Object.fromEntries(opts.map(o=>[o,data.filter(x=>x[key]===o).length]));analyticsContent.innerHTML=`<div class="card"><div class="headerrow"><h2>📊 Camp Analytics</h2><button class="btn light" onclick="openCamp(${currentCamp.id})">← Back</button></div><div class="camp-banner"><strong>${esc(currentCamp.camp_name)}</strong><div class="meta">${fmt(currentCamp.camp_date)}</div></div><div class="section"><h3>👥 Patient Overview</h3><div class="statgrid"><div class="stat"><b>${total}</b><span>Total Patients</span></div><div class="stat"><b>${male}</b><span>Male</span></div><div class="stat"><b>${female}</b><span>Female</span></div><div class="stat"><b>${avg}</b><span>Average Age</span></div></div></div>${groupTable('📍 Patient Area / Locality',group(data,'area_locality'),total)}${groupTable('📢 How Patients Knew About Camp',group(data,'camp_source'),total)}${currentCamp.blood_package_available?`<div class="section"><h3>🧪 Special Blood Test Package</h3><table class="analytics-table"><tr><td>Total Camp Patients</td><td><b>${total}</b></td></tr><tr><td>Opted for Package</td><td><b>${opted}</b></td></tr><tr><td>Not Opted</td><td><b>${notOpted}</b></td></tr><tr><td>Package Uptake</td><td><b>${total?((opted/total)*100).toFixed(1):'0.0'}%</b></td></tr></table></div>`:''}<div class="section"><h3>👥 Camp → Regular Patient Conversion</h3><table class="analytics-table"><tr><td>New Patients Attended Camp</td><td><b>${newPatients.length}</b></td></tr><tr><td>Converted to Regular Patients</td><td><b>${converted}</b></td></tr><tr><td>Not Yet Converted</td><td><b>${newPatients.length-converted}</b></td></tr><tr><td>Conversion Rate</td><td><b>${newPatients.length?((converted/newPatients.length)*100).toFixed(1):'0.0'}%</b></td></tr></table></div>${currentCamp.neuropathy_enabled?groupTable('🦶 Neuropathy Screening',screen('neuropathy_result',['Normal','Abnormal']),data.filter(x=>x.neuropathy_result).length):''}${currentCamp.retinopathy_enabled?groupTable('👁️ Retinopathy Screening',screen('retinopathy_result',['Normal','Abnormal']),data.filter(x=>x.retinopathy_result).length):''}${currentCamp.bmd_enabled?groupTable('🦴 BMD Screening',screen('bmd_result',['Normal','Osteopenia','Osteoporosis']),data.filter(x=>x.bmd_result).length):''}<div class="actions no-print"><button class="btn primary" onclick="printCampAnalytics()">🖨 Print Report</button></div></div>`;analyticsContent.querySelector('.card').id='analyticsPrintArea';showView('analyticsView');}
+
+let analyticsPatientsData=[];
+let analyticsFilterRegistry={};
+let analyticsReturnFilter=null;
+
+function group(data,key){
+  const m={};
+  data.forEach(p=>{let v=(p[key]||'Not Entered').trim?.()||p[key]||'Not Entered';m[v]=(m[v]||0)+1});
+  return m;
+}
+function pct(n,total){return total?((n/total)*100).toFixed(1):'0.0';}
+function registerAnalyticsFilter(label,fn){const id='af'+Object.keys(analyticsFilterRegistry).length;analyticsFilterRegistry[id]={label,fn};return id;}
+function clickableCount(n,id){return `<span class="analytics-link" onclick="openAnalyticsPatients('${id}')">${n}</span>`;}
+function barChart(obj,total){
+  const max=Math.max(1,...Object.values(obj));
+  return `<div class="chart-box"><div class="chart-title">Bar Chart</div>${Object.entries(obj).map(([k,n])=>`<div class="bar-row analytics-click" onclick="openAnalyticsPatients('${registerAnalyticsFilter(k,p=>false)}')" data-chart-only="1"><span>${esc(k)}</span><div class="bar-track"><div class="bar-fill" style="width:${(n/max)*100}%"></div></div><b>${n}</b></div>`).join('')}</div>`;
+}
+function simpleBarChart(obj){
+  const max=Math.max(1,...Object.values(obj));
+  return `<div class="chart-box"><div class="chart-title">Distribution Chart</div>${Object.entries(obj).map(([k,n])=>`<div class="bar-row"><span>${esc(k)}</span><div class="bar-track"><div class="bar-fill" style="width:${(n/max)*100}%"></div></div><b>${n}</b></div>`).join('')}</div>`;
+}
+function donutChart(obj){
+  const entries=Object.entries(obj),total=entries.reduce((a,[,n])=>a+n,0)||1;
+  let cumulative=0;const stops=[];
+  for(let i=0;i<3;i++){cumulative+=(entries[i]?.[1]||0)/total*100;stops.push(cumulative.toFixed(2)+'%')}
+  const dots=['#2563eb','#16a34a','#f59e0b','#dc2626'];
+  return `<div class="chart-box"><div class="chart-title">Distribution</div><div class="donut-wrap"><div class="donut" style="--p1:${stops[0]};--p2:${stops[1]};--p3:${stops[2]}"></div><div class="legend">${entries.map(([k,n],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${dots[i%4]}"></span>${esc(k)} — ${n} (${pct(n,total)}%)</div>`).join('')}</div></div></div>`;
+}
+function analyticsTable(title,rows,total,chart='bar'){
+  let obj={};
+  const body=rows.map(r=>{
+    obj[r.label]=r.patients.length;
+    const id=registerAnalyticsFilter(`${title.replace(/<[^>]*>/g,'')} — ${r.label}`,p=>r.patients.some(x=>x.id===p.id));
+    return `<tr class="analytics-click" onclick="openAnalyticsPatients('${id}')"><td>${esc(r.label)}</td><td>${clickableCount(r.patients.length,id)}</td><td>${pct(r.patients.length,total)}%</td></tr>`;
+  }).join('');
+  return `<div class="section"><h3>${title}</h3><table class="analytics-table"><tr><th>Category</th><th>Patients</th><th>%</th></tr>${body}</table>${chart==='donut'?donutChart(obj):simpleBarChart(obj)}</div>`;
+}
+function rowsByField(data,key,labels,notDone=true){
+  const rows=labels.map(label=>({label,patients:data.filter(p=>p[key]===label)}));
+  if(notDone) rows.push({label:'Not Done',patients:data.filter(p=>!p[key]||p[key]==='Not Done')});
+  return rows;
+}
+function ageRows(data){
+  const defs=[['< 18',a=>a<18],['18–30',a=>a>=18&&a<=30],['31–40',a=>a>=31&&a<=40],['41–50',a=>a>=41&&a<=50],['51–60',a=>a>=51&&a<=60],['61–70',a=>a>=61&&a<=70],['> 70',a=>a>70]];
+  return defs.map(([label,fn])=>({label,patients:data.filter(p=>Number.isFinite(Number(p.age))&&fn(Number(p.age)))}));
+}
+function hba1cRows(data){
+  return [
+    {label:'Normal (<5.7%)',patients:data.filter(p=>Number(p.hba1c)>0&&Number(p.hba1c)<5.7)},
+    {label:'Prediabetes (5.7–6.4%)',patients:data.filter(p=>Number(p.hba1c)>=5.7&&Number(p.hba1c)<6.5)},
+    {label:'Diabetes (≥6.5%)',patients:data.filter(p=>Number(p.hba1c)>=6.5)},
+    {label:'Not Done',patients:data.filter(p=>!(Number(p.hba1c)>0))}
+  ];
+}
+function bmiRows(data){
+  return [
+    {label:'Underweight (<18.5)',patients:data.filter(p=>Number(p.bmi)>0&&Number(p.bmi)<18.5)},
+    {label:'Normal (18.5–24.9)',patients:data.filter(p=>Number(p.bmi)>=18.5&&Number(p.bmi)<25)},
+    {label:'Overweight (25–29.9)',patients:data.filter(p=>Number(p.bmi)>=25&&Number(p.bmi)<30)},
+    {label:'Obesity (≥30)',patients:data.filter(p=>Number(p.bmi)>=30)},
+    {label:'Not Recorded',patients:data.filter(p=>!(Number(p.bmi)>0))}
+  ];
+}
+function bpRows(data){
+  return [
+    {label:'Normal',patients:data.filter(p=>Number(p.systolic_bp)>0&&Number(p.diastolic_bp)>0&&Number(p.systolic_bp)<120&&Number(p.diastolic_bp)<80)},
+    {label:'Elevated',patients:data.filter(p=>Number(p.systolic_bp)>=120&&Number(p.systolic_bp)<130&&Number(p.diastolic_bp)<80)},
+    {label:'Hypertension',patients:data.filter(p=>(Number(p.systolic_bp)>=130||Number(p.diastolic_bp)>=80)&&(Number(p.systolic_bp)>0||Number(p.diastolic_bp)>0))},
+    {label:'Not Recorded',patients:data.filter(p=>!(Number(p.systolic_bp)>0)&&!(Number(p.diastolic_bp)>0))}
+  ];
+}
+function dynamicRows(data,key){
+  const vals=[...new Set(data.map(p=>(p[key]||'Not Entered').trim?.()||p[key]||'Not Entered'))];
+  return vals.map(v=>({label:v,patients:data.filter(p=>((p[key]||'Not Entered').trim?.()||p[key]||'Not Entered')===v)})).sort((a,b)=>b.patients.length-a.patients.length);
+}
+function additionalTestRows(data){
+  const names={};
+  data.forEach(p=>(p.additional_tests||[]).forEach(t=>{const n=(t.name||'').trim();if(n){(names[n]??=[]).push(p)}}));
+  return Object.entries(names).map(([label,patients])=>({label,patients})).sort((a,b)=>b.patients.length-a.patients.length);
+}
+async function openAnalytics(){
+  const {data,error}=await supabaseClient.from('camp_patients').select('*').eq('camp_id',currentCamp.id);
+  if(error)return alert(error.message);
+  analyticsPatientsData=data||[];analyticsFilterRegistry={};
+  const total=data.length,male=data.filter(x=>x.gender==='Male'),female=data.filter(x=>x.gender==='Female'),other=data.filter(x=>x.gender!=='Male'&&x.gender!=='Female');
+  const ages=data.map(x=>Number(x.age)).filter(Number.isFinite),avg=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'-';
+  const opted=data.filter(x=>x.blood_package_opted===true),notOpted=data.filter(x=>x.blood_package_opted===false);
+  const newPatients=data.filter(x=>x.patient_type==='New Patient'),converted=newPatients.filter(x=>x.regular_patient_id),notConverted=newPatients.filter(x=>!x.regular_patient_id);
+  const totalId=registerAnalyticsFilter('All Camp Patients',()=>true),maleId=registerAnalyticsFilter('Male Patients',p=>p.gender==='Male'),femaleId=registerAnalyticsFilter('Female Patients',p=>p.gender==='Female');
+  const knownYes=data.filter(p=>p.known_diabetes===true),knownNo=data.filter(p=>p.known_diabetes===false),knownUnknown=data.filter(p=>p.known_diabetes!==true&&p.known_diabetes!==false);
+  const conversionRows=[{label:'New Patients Attended Camp',patients:newPatients},{label:'Converted to Regular Patients',patients:converted},{label:'Not Yet Converted',patients:notConverted}];
+  analyticsContent.innerHTML=`<div class="card" id="analyticsPrintArea">
+  <div class="headerrow"><h2>📊 Camp Analytics</h2><button class="btn light no-print" onclick="openCamp(${currentCamp.id})">← Back</button></div>
+  <div class="camp-banner"><strong>${esc(currentCamp.camp_name)}</strong><div class="meta">${fmt(currentCamp.camp_date)} · Total ${total}</div></div>
+
+  <div class="section"><h3>👥 Patient Overview</h3><div class="statgrid">
+  <div class="stat analytics-click" onclick="openAnalyticsPatients('${totalId}')"><b class="analytics-link">${total}</b><span>Total Patients</span></div>
+  <div class="stat analytics-click" onclick="openAnalyticsPatients('${maleId}')"><b class="analytics-link">${male.length}</b><span>Male</span></div>
+  <div class="stat analytics-click" onclick="openAnalyticsPatients('${femaleId}')"><b class="analytics-link">${female.length}</b><span>Female</span></div>
+  <div class="stat"><b>${avg}</b><span>Average Age</span></div></div>
+  ${donutChart({Male:male.length,Female:female.length,Other:other.length})}</div>
+
+  ${analyticsTable('🎂 Age Category Analysis',ageRows(data),total,'bar')}
+  ${analyticsTable('📍 Area / Locality Analysis',dynamicRows(data,'area_locality'),total,'bar')}
+  ${analyticsTable('📢 How Patients Knew About Camp',dynamicRows(data,'camp_source'),total,'donut')}
+
+  ${currentCamp.blood_package_available?analyticsTable('🧪 Special Blood Test Package',[
+    {label:'Opted for Package',patients:opted},{label:'Not Opted',patients:notOpted}
+  ],total,'donut')+`<div class="section"><table class="analytics-table"><tr><td>Package Uptake</td><td><b>${pct(opted.length,total)}%</b></td></tr></table></div>`:''}
+
+  ${analyticsTable('👥 Camp → Regular Patient Conversion',conversionRows,newPatients.length,'bar')}
+  <div class="section"><table class="analytics-table"><tr><td>Conversion Rate</td><td><b>${pct(converted.length,newPatients.length)}%</b></td></tr></table></div>
+
+  ${analyticsTable('🩺 Known Diabetes Analysis',[
+    {label:'Known Diabetes',patients:knownYes},{label:'No Known Diabetes',patients:knownNo},{label:'Not Recorded',patients:knownUnknown}
+  ],total,'donut')}
+  ${analyticsTable('🧪 HbA1c Analysis',hba1cRows(data),total,'bar')}
+  ${analyticsTable('⚖️ BMI Analysis',bmiRows(data),total,'bar')}
+  ${analyticsTable('❤️ Blood Pressure Analysis',bpRows(data),total,'bar')}
+
+  ${currentCamp.neuropathy_enabled?analyticsTable('🦶 Neuropathy Screening',rowsByField(data,'neuropathy_result',['Normal','Abnormal']),total,'bar'):''}
+  ${currentCamp.retinopathy_enabled?analyticsTable('👁️ Retinopathy Screening',rowsByField(data,'retinopathy_result',['Normal','Abnormal']),total,'bar'):''}
+  ${currentCamp.bmd_enabled?analyticsTable('🦴 BMD Screening',rowsByField(data,'bmd_result',['Normal','Osteopenia','Osteoporosis']),total,'bar'):''}
+
+  ${additionalTestRows(data).length?analyticsTable('🧪 Additional Tests Performed',additionalTestRows(data),total,'bar'):''}
+
+  <div class="actions no-print"><button class="btn primary" onclick="printCampAnalytics()">🖨 Print Report</button></div></div>`;
+  showView('analyticsView');
+}
+function openAnalyticsPatients(filterId){
+  const reg=analyticsFilterRegistry[filterId];if(!reg)return;
+  analyticsReturnFilter=filterId;
+  const list=analyticsPatientsData.filter(reg.fn);
+  analyticsPatientsContent.innerHTML=`<div class="card"><div class="headerrow"><div><h2>👥 ${esc(reg.label)}</h2><div class="small">${list.length} patient${list.length===1?'':'s'} · ${esc(currentCamp.camp_name)}</div></div><button class="btn light" onclick="openAnalytics()">← Analytics</button></div>
+  <div class="list-toolbar"><input id="analyticsPatientSearch" placeholder="Search Camp ID / Name / Phone / Area" oninput="filterAnalyticsPatientList()"></div>
+  <div id="analyticsPatientList">${renderAnalyticsPatientCards(list)}</div></div>`;
+  window._analyticsFilteredPatients=list;showView('analyticsPatientsView');
+}
+function renderAnalyticsPatientCards(list){
+  return list.length?list.map(p=>`<div class="analytics-patient-card analytics-drill-patient" data-search="${esc([p.camp_patient_number,p.patient_name,p.phone,p.area_locality].join(' ').toLowerCase())}">
+  <strong>${esc(p.camp_patient_number||p.id)} · ${esc(p.patient_name||'-')}</strong>
+  <div class="meta">${esc(p.age??'-')} / ${esc(p.gender||'-')} · ${esc(p.phone||'-')}<br>📍 ${esc(p.area_locality||'-')}</div>
+  <div class="actions"><button class="btn primary" onclick="openAnalyticsPatientDetail(${p.id})">View Patient</button></div></div>`).join(''):'<div class="message">No patients in this category.</div>';
+}
+function filterAnalyticsPatientList(){
+  const q=val('analyticsPatientSearch').toLowerCase();
+  document.querySelectorAll('.analytics-drill-patient').forEach(el=>el.style.display=el.dataset.search.includes(q)?'block':'none');
+}
+function openAnalyticsPatientDetail(id){
+  const p=analyticsPatientsData.find(x=>x.id===id);if(!p)return;
+  campPatientDetailContent.innerHTML=`<div class="card"><div class="headerrow"><div><h2>👤 Camp Patient Details</h2><div class="small">${esc(currentCamp.camp_name)} · ${fmt(currentCamp.camp_date)}</div></div><button class="btn light" onclick="openAnalyticsPatients('${analyticsReturnFilter}')">← Back</button></div>
+  <div class="camp-banner"><strong>${esc(p.camp_patient_number||p.id)} · ${esc(p.patient_name||'-')}</strong><div class="meta">${esc(p.age??'-')} / ${esc(p.gender||'-')} · ${esc(p.phone||'-')}</div></div>
+  <div class="section"><h3>👤 Patient Details</h3><div class="meta"><b>Patient Type:</b> ${esc(p.patient_type||'-')}<br><b>Registration Date:</b> ${fmt(p.registration_date)}<br><b>Blood Group:</b> ${esc(p.blood_group||'-')}<br><b>Address:</b> ${esc(p.address||'-')}<br><b>Area / Locality:</b> ${esc(p.area_locality||'-')}</div></div>
+  <div class="section"><h3>📢 Camp Details</h3><div class="meta"><b>Source:</b> ${esc(p.camp_source||'-')}<br>${p.referring_patient?`<b>Referring Patient:</b> ${esc(p.referring_patient)}<br>`:''}${p.source_other?`<b>Other Source:</b> ${esc(p.source_other)}<br>`:''}<b>Package:</b> ${p.blood_package_opted===true?'Yes':p.blood_package_opted===false?'No':'-'}</div></div>
+  <div class="section"><h3>🩺 Screening</h3><div class="meta"><b>BP:</b> ${esc(p.systolic_bp??'-')}/${esc(p.diastolic_bp??'-')} · <b>BMI:</b> ${esc(p.bmi??'-')}<br><b>RBS:</b> ${esc(p.rbs??'-')} · <b>HbA1c:</b> ${esc(p.hba1c??'-')}<br><b>Known Diabetes:</b> ${p.known_diabetes===true?'Yes':p.known_diabetes===false?'No':'-'}<br>${currentCamp.neuropathy_enabled?`<b>Neuropathy:</b> ${esc(p.neuropathy_result||'Not Done')} ${p.neuropathy_notes?'— '+esc(p.neuropathy_notes):''}<br>`:''}${currentCamp.retinopathy_enabled?`<b>Retinopathy:</b> ${esc(p.retinopathy_result||'Not Done')} ${p.retinopathy_notes?'— '+esc(p.retinopathy_notes):''}<br>`:''}${currentCamp.bmd_enabled?`<b>BMD:</b> ${esc(p.bmd_result||'Not Done')} ${p.bmd_notes?'— '+esc(p.bmd_notes):''}<br>`:''}<b>Additional Tests:</b> ${esc((p.additional_tests||[]).map(x=>`${x.name}: ${x.value}`).join('; ')||'-')}</div></div>
+  <div class="section"><h3>👨‍⚕️ Doctor Assessment</h3><div class="meta"><b>Diagnosis:</b> ${esc(p.diagnosis||'-')}<br><b>Advice:</b> ${esc(p.advice||'-')}<br><b>Medicines:</b> ${esc(p.medicines_given||'-')}<br><b>Referral:</b> ${p.referral_required?'Yes':'No'} ${p.referral_details?'— '+esc(p.referral_details):''}<br><b>Follow-up:</b> ${p.followup_required?'Yes':'No'} ${p.followup_date?'— '+fmt(p.followup_date):''}</div></div>
+  <div class="actions"><button class="btn light" onclick="openEditCampPatient(${p.id})">✏️ Edit Patient</button></div></div>`;
+  showView('campPatientDetailView');
+}
 function printCampAnalytics(){document.body.classList.add('print-analytics');window.print();setTimeout(()=>document.body.classList.remove('print-analytics'),500);}
 async function logout(){await supabaseClient.auth.signOut();location.href='doctor-login.html';}
 async function init(){const {data:{session}}=await supabaseClient.auth.getSession();if(!session){location.href='doctor-login.html';return;}loading.style.display='none';}
