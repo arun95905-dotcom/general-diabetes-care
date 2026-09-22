@@ -2345,6 +2345,75 @@ async function getPatient(
 
 
 /* =========================================================
+   CAMP → REGULAR PATIENT LINK
+   Checks a newly registered regular patient against unlinked
+   NEW camp patients using phone number, then asks for confirmation.
+   ========================================================= */
+async function linkNewRegularPatientToCamp(regularPatient) {
+
+  try {
+
+    const phone = String(regularPatient?.patient_phone || "").trim();
+
+    if (!phone) return;
+
+    const { data: matches, error } =
+      await supabaseClient
+        .from("camp_patients")
+        .select(`
+          id,
+          camp_patient_number,
+          patient_name,
+          phone,
+          camp_id,
+          medical_camps (
+            camp_name,
+            camp_date
+          )
+        `)
+        .eq("phone", phone)
+        .eq("patient_type", "New Patient")
+        .is("regular_patient_id", null)
+        .order("created_at", { ascending: false });
+
+    if (error || !matches || !matches.length) return;
+
+    const match = matches[0];
+    const camp = match.medical_camps || {};
+
+    const confirmed = window.confirm(
+      "Previous camp patient found.\n\n" +
+      "Camp: " + (camp.camp_name || "Medical Camp") + "\n" +
+      "Camp Date: " + (camp.camp_date || "-") + "\n" +
+      "Camp Patient: " + (match.patient_name || "-") + "\n" +
+      "Camp Patient ID: " + (match.camp_patient_number || match.id) + "\n\n" +
+      "Link this new regular patient registration to the camp record?"
+    );
+
+    if (!confirmed) return;
+
+    const { error: linkError } =
+      await supabaseClient
+        .from("camp_patients")
+        .update({
+          regular_patient_id: regularPatient.id,
+          converted_at: new Date().toISOString()
+        })
+        .eq("id", match.id)
+        .is("regular_patient_id", null);
+
+    if (linkError) {
+      console.error("Camp patient conversion link error:", linkError);
+    }
+
+  }
+  catch (error) {
+    console.error("Camp patient conversion check error:", error);
+  }
+
+}
+
+/* =========================================================
    REGISTER PATIENT
    ========================================================= */
 
@@ -2481,6 +2550,10 @@ async function savePatient() {
 
   currentPatientId =
     data.id;
+
+
+  /* Check whether this newly registered clinic patient attended a camp. */
+  await linkNewRegularPatientToCamp(data);
 
 
   let appointmentLinkedSuccessfully =
