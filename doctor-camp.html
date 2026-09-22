@@ -21,6 +21,13 @@ body.print-analytics #analyticsPrintArea{position:absolute;left:0;top:0;width:10
 .chart-box{margin-top:14px;padding:14px;background:#fff;border:1px solid #e2e8f0;border-radius:13px}.chart-title{font-size:13px;font-weight:800;margin-bottom:10px;color:#475569}
 .bar-row{display:grid;grid-template-columns:minmax(95px,1.3fr) 3fr 48px;gap:8px;align-items:center;margin:9px 0;font-size:12px}.bar-track{height:18px;background:#eef2f7;border-radius:999px;overflow:hidden}.bar-fill{height:100%;background:#2563eb;border-radius:999px;min-width:0}
 .donut-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.donut{width:130px;height:130px;border-radius:50%;position:relative;background:conic-gradient(#2563eb 0 var(--p1),#16a34a var(--p1) var(--p2),#f59e0b var(--p2) var(--p3),#dc2626 var(--p3) 100%)}.donut:after{content:"";position:absolute;inset:28px;background:#fff;border-radius:50%}.legend{display:grid;gap:7px;font-size:12px}.legend-row{display:flex;align-items:center;gap:7px}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.analytics-patient-card{padding:13px;margin-top:10px;border:1px solid #e2e8f0;border-radius:13px;background:#fff}.analytics-patient-card strong{font-size:16px}
+
+@media print{
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  .chart-box,.print-chart-svg,.print-donut-svg{break-inside:avoid;page-break-inside:avoid}
+  .print-chart-svg,.print-donut-svg{display:block !important;visibility:visible !important;overflow:visible !important}
+  svg rect,svg circle,svg text{visibility:visible !important}
+}
 </style>
 </head>
 <body>
@@ -180,15 +187,33 @@ function barChart(obj,total){
   return `<div class="chart-box"><div class="chart-title">Bar Chart</div>${Object.entries(obj).map(([k,n])=>`<div class="bar-row analytics-click" onclick="openAnalyticsPatients('${registerAnalyticsFilter(k,p=>false)}')" data-chart-only="1"><span>${esc(k)}</span><div class="bar-track"><div class="bar-fill" style="width:${(n/max)*100}%"></div></div><b>${n}</b></div>`).join('')}</div>`;
 }
 function simpleBarChart(obj){
-  const max=Math.max(1,...Object.values(obj));
-  return `<div class="chart-box"><div class="chart-title">Distribution Chart</div>${Object.entries(obj).map(([k,n])=>`<div class="bar-row"><span>${esc(k)}</span><div class="bar-track"><div class="bar-fill" style="width:${(n/max)*100}%"></div></div><b>${n}</b></div>`).join('')}</div>`;
+  const entries=Object.entries(obj), max=Math.max(1,...entries.map(([,n])=>n));
+  const rowH=34, labelW=145, chartW=300, totalW=500, h=Math.max(54,entries.length*rowH+12);
+  const rows=entries.map(([k,n],i)=>{
+    const y=18+i*rowH, w=Math.max(0,(Number(n)||0)/max*chartW);
+    return `<text x="0" y="${y+12}" font-size="12" font-family="Arial, sans-serif" fill="#0f172a">${esc(k)}</text>
+      <rect x="${labelW}" y="${y}" width="${chartW}" height="16" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+      <rect x="${labelW}" y="${y}" width="${w}" height="16" rx="8" fill="#2563eb"/>
+      <text x="${labelW+chartW+12}" y="${y+12}" font-size="12" font-weight="700" font-family="Arial, sans-serif" fill="#0f172a">${n}</text>`;
+  }).join('');
+  return `<div class="chart-box"><div class="chart-title">Distribution Chart</div>
+    <svg class="print-chart-svg" viewBox="0 0 ${totalW} ${h}" width="100%" height="${h}" role="img" aria-label="Distribution chart">${rows}</svg>
+  </div>`;
 }
 function donutChart(obj){
-  const entries=Object.entries(obj),total=entries.reduce((a,[,n])=>a+n,0)||1;
-  let cumulative=0;const stops=[];
-  for(let i=0;i<3;i++){cumulative+=(entries[i]?.[1]||0)/total*100;stops.push(cumulative.toFixed(2)+'%')}
-  const dots=['#2563eb','#16a34a','#f59e0b','#dc2626'];
-  return `<div class="chart-box"><div class="chart-title">Distribution</div><div class="donut-wrap"><div class="donut" style="--p1:${stops[0]};--p2:${stops[1]};--p3:${stops[2]}"></div><div class="legend">${entries.map(([k,n],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${dots[i%4]}"></span>${esc(k)} — ${n} (${pct(n,total)}%)</div>`).join('')}</div></div></div>`;
+  const entries=Object.entries(obj),total=entries.reduce((a,[,n])=>a+(Number(n)||0),0)||1;
+  const palette=['#2563eb','#16a34a','#f59e0b','#dc2626','#7c3aed','#0891b2'];
+  let offset=0;
+  const circles=entries.map(([k,n],i)=>{
+    const p=(Number(n)||0)/total*100, dash=`${p} ${100-p}`, el=`<circle cx="70" cy="70" r="48" fill="none" stroke="${palette[i%palette.length]}" stroke-width="22" pathLength="100" stroke-dasharray="${dash}" stroke-dashoffset="${-offset}" transform="rotate(-90 70 70)"/>`;
+    offset+=p; return el;
+  }).join('');
+  const legend=entries.map(([k,n],i)=>`<div class="legend-row"><span class="legend-dot" style="background:${palette[i%palette.length]}"></span>${esc(k)} — ${n} (${pct(n,total)}%)</div>`).join('');
+  return `<div class="chart-box"><div class="chart-title">Distribution</div><div class="donut-wrap">
+    <svg class="print-donut-svg" viewBox="0 0 140 140" width="140" height="140" role="img" aria-label="Distribution chart">
+      <circle cx="70" cy="70" r="48" fill="none" stroke="#eef2f7" stroke-width="22"/>${circles}
+      <circle cx="70" cy="70" r="33" fill="#ffffff"/>
+    </svg><div class="legend">${legend}</div></div></div>`;
 }
 function analyticsTable(title,rows,total,chart='bar'){
   let obj={};
