@@ -1154,6 +1154,33 @@ function formatDateTime(value) {
 }
 
 
+function getConsultationDateValue(consultation) {
+
+  if (!consultation) {
+    return "";
+  }
+
+  return (
+    consultation.consultation_date ||
+    (
+      consultation.created_at
+        ? String(consultation.created_at).slice(0,10)
+        : ""
+    )
+  );
+
+}
+
+
+function formatConsultationClinicalDate(consultation) {
+
+  return formatDate(
+    getConsultationDateValue(consultation)
+  );
+
+}
+
+
 function getTodayString() {
 
   const date =
@@ -1628,12 +1655,10 @@ function renderCompleteConsultationHistory() {
         function(a,b) {
 
           return String(
-            b.created_at ||
-            ""
+            getConsultationDateValue(b)
           ).localeCompare(
             String(
-              a.created_at ||
-              ""
+              getConsultationDateValue(a)
             )
           );
 
@@ -2229,10 +2254,13 @@ function getConsultationPeriod(
   consultation
 ) {
 
-  if (
-    !consultation ||
-    !consultation.created_at
-  ) {
+  const consultationDate =
+    getConsultationDateValue(
+      consultation
+    );
+
+
+  if (!consultationDate) {
 
     return null;
 
@@ -2241,7 +2269,8 @@ function getConsultationPeriod(
 
   const date =
     new Date(
-      consultation.created_at
+      consultationDate +
+      "T00:00:00"
     );
 
 
@@ -2428,12 +2457,10 @@ function getConsultationsForPeriod(
       function(a,b) {
 
         return String(
-          b.created_at ||
-          ""
+          getConsultationDateValue(b)
         ).localeCompare(
           String(
-            a.created_at ||
-            ""
+            getConsultationDateValue(a)
           )
         );
 
@@ -3091,9 +3118,11 @@ function renderConsultationCard(
 
       <div class="consultation-date">
 
-        📅
-        ${formatDateTime(
-          consultation.created_at
+        📅 Consultation Date:
+        ${escapeHTML(
+          formatConsultationClinicalDate(
+            consultation
+          )
         )}
 
       </div>
@@ -5373,6 +5402,24 @@ async function openEditConsultation(
       <div class="form-group">
 
         <label>
+          Consultation Date *
+        </label>
+
+        <input
+          type="date"
+          id="editConsultationDate"
+          value="${escapeHTML(
+            getConsultationDateValue(
+              consultation
+            )
+          )}">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
           Chief Complaints / Present Symptoms
         </label>
 
@@ -5764,7 +5811,29 @@ async function saveEditedConsultation(
   patientId
 ) {
 
+  const consultationDate =
+    document
+      .getElementById(
+        "editConsultationDate"
+      )
+      .value;
+
+
+  if (!consultationDate) {
+
+    alert(
+      "Please select the consultation date."
+    );
+
+    return;
+
+  }
+
+
   const update = {
+
+    consultation_date:
+      consultationDate,
 
     chief_complaints:
       document
