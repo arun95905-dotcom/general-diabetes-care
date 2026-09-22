@@ -956,6 +956,8 @@ Phone Number *
 
 </div>
 
+<div id="regularPatientMatchPanel" class="camp-match-panel" aria-live="polite"></div>
+
 <div id="campPatientMatchPanel" class="camp-match-panel" aria-live="polite"></div>
 
 
@@ -2349,6 +2351,158 @@ async function getPatient(
 
 
 /* =========================================================
+   EXISTING REGULAR PATIENT DUPLICATE CHECK
+   ========================================================= */
+let regularPatientMatches = [];
+let regularPatientCheckTimer = null;
+
+function scheduleRegularPatientCheck() {
+  clearTimeout(regularPatientCheckTimer);
+  regularPatientCheckTimer = setTimeout(checkExistingRegularPatient, 300);
+}
+
+async function findExistingRegularPatients(phoneValue, nameValue) {
+  const phone = campPhone(phoneValue);
+  const name = String(nameValue || "").trim();
+  let matches = [];
+
+  if (phone.length >= 7) {
+    const result = await supabaseClient
+      .from("patients")
+      .select("id,patient_name,patient_phone,age,gender,registration_date,created_at")
+      .ilike("patient_phone", "%" + phone)
+      .order("id", { ascending: false })
+      .limit(10);
+
+    if (result.error) throw result.error;
+    matches = (result.data || []).filter(function(patient) {
+      return campPhone(patient.patient_phone) === phone;
+    });
+  }
+
+  if (!matches.length && name.length >= 3) {
+    const result = await supabaseClient
+      .from("patients")
+      .select("id,patient_name,patient_phone,age,gender,registration_date,created_at")
+      .ilike("patient_name", name)
+      .order("id", { ascending: false })
+      .limit(10);
+
+    if (result.error) throw result.error;
+    matches = (result.data || []).filter(function(patient) {
+      return campNorm(patient.patient_name) === campNorm(name);
+    });
+  }
+
+  return matches;
+}
+
+async function checkExistingRegularPatient() {
+  const panel = document.getElementById("regularPatientMatchPanel");
+  if (!panel) return;
+
+  const phone = getValue("newPatientPhone");
+  const name = getValue("newPatientName");
+
+  regularPatientMatches = [];
+
+  if (campPhone(phone).length < 7 && name.trim().length < 3) {
+    panel.classList.remove("visible");
+    panel.innerHTML = "";
+    return;
+  }
+
+  panel.classList.add("visible");
+  panel.innerHTML = '<div class="camp-match-title">👤 Checking registered patients…</div>';
+
+  try {
+    regularPatientMatches = await findExistingRegularPatients(phone, name);
+    renderRegularPatientMatches();
+  } catch (error) {
+    console.error("Existing patient check error:", error);
+    panel.innerHTML = '<div class="camp-match-title">👤 Registered patient check unavailable</div><div>Please search Patient Management before registering if you suspect this patient already exists.</div>';
+  }
+}
+
+function renderRegularPatientMatches() {
+  const panel = document.getElementById("regularPatientMatchPanel");
+  if (!panel) return;
+
+  if (!regularPatientMatches.length) {
+    panel.innerHTML = '<div class="camp-match-title">👤 No already registered patient found</div><div>The regular patient check found no matching record.</div>';
+    return;
+  }
+
+  const enteredPhone = campPhone(getValue("newPatientPhone"));
+  const enteredName = campNorm(getValue("newPatientName"));
+  const enteredAgeRaw = getValue("newPatientAge");
+  const enteredAge = enteredAgeRaw === "" ? null : Number(enteredAgeRaw);
+
+  const exactDuplicate = regularPatientMatches.some(function(patient) {
+    return enteredPhone &&
+      campPhone(patient.patient_phone) === enteredPhone &&
+      enteredName &&
+      campNorm(patient.patient_name) === enteredName;
+  });
+
+  const sharedPhoneOnly = !exactDuplicate && regularPatientMatches.some(function(patient) {
+    return enteredPhone && campPhone(patient.patient_phone) === enteredPhone;
+  });
+
+  let heading = '⚠️ Possible Existing Patient';
+  let message = 'Please verify the matching patient details before registering.';
+
+  if (exactDuplicate) {
+    heading = '🚨 Patient Already Registered';
+    message = 'The same name and phone number are already registered. Open the existing patient record instead of creating a duplicate.';
+  } else if (sharedPhoneOnly) {
+    heading = '⚠️ Phone Number Already Used';
+    message = 'This phone number belongs to another registered patient. It may be a shared family phone number. If this is a different person, registration can continue.';
+  }
+
+  panel.innerHTML =
+    '<div class="camp-match-title">' + heading + '</div>' +
+    '<div class="match-warn" style="margin-top:6px">' + message + '</div>' +
+    regularPatientMatches.map(function(patient) {
+      const phoneMatch = enteredPhone && campPhone(patient.patient_phone) === enteredPhone;
+      const nameMatch = enteredName && campNorm(patient.patient_name) === enteredName;
+      const ageMatch = enteredAge !== null && !Number.isNaN(enteredAge) && Number(patient.age) === enteredAge;
+      const registrationDate = patient.registration_date || patient.created_at;
+      let statusText = '⚠️ Similar registered patient — please verify';
+      let statusClass = 'match-warn';
+      if (phoneMatch && nameMatch && (enteredAge === null || Number.isNaN(enteredAge) || ageMatch)) {
+        statusText = '🚨 Strong duplicate match';
+        statusClass = 'match-good';
+      } else if (phoneMatch && !nameMatch) {
+        statusText = '👨‍👩‍👧 Shared phone possible — different patient name';
+      } else if (phoneMatch && nameMatch && enteredAge !== null && !Number.isNaN(enteredAge) && !ageMatch) {
+        statusText = '⚠️ Same name and phone, but age differs — verify carefully';
+      }
+      return `<div class="camp-match-card">
+        <strong>Patient ID ${campEsc(patient.id)} · ${campEsc(patient.patient_name || "-")}</strong>
+        <div class="camp-match-meta">Phone: ${campEsc(patient.patient_phone || "-")}<br>Age: ${campEsc(patient.age ?? "-")} · ${campEsc(patient.gender || "-")}<br>Registered: ${campEsc(formatDate(registrationDate))}</div>
+        <div>${phoneMatch ? "✓" : "✕"} Phone &nbsp; ${nameMatch ? "✓" : "✕"} Name &nbsp; ${ageMatch ? "✓" : "✕"} Age</div>
+        <div class="${statusClass}">${statusText}</div>
+        <div class="camp-match-actions"><button type="button" onclick="viewPatientDetails(${Number(patient.id)})">Open Existing Patient</button></div>
+      </div>`;
+    }).join("");
+}
+
+async function getBlockingExistingPatient() {
+  const phone = getValue("newPatientPhone");
+  const name = getValue("newPatientName");
+  const normalizedPhone = campPhone(phone);
+  const normalizedName = campNorm(name);
+  if (normalizedPhone.length < 7 || normalizedName.length < 2) return null;
+
+  const matches = await findExistingRegularPatients(phone, name);
+  return matches.find(function(patient) {
+    return campPhone(patient.patient_phone) === normalizedPhone &&
+      campNorm(patient.patient_name) === normalizedName;
+  }) || null;
+}
+
+/* =========================================================
    CAMP → REGULAR PATIENT PRE-REGISTRATION MATCH
    ========================================================= */
 let campPatientMatches=[];
@@ -2425,6 +2579,28 @@ async function savePatient() {
 
   }
 
+
+  /* Final duplicate guard: block only when BOTH phone number and patient name match.
+     A shared family phone number with a different patient name is allowed. */
+  try {
+    const existingPatient = await getBlockingExistingPatient();
+    if (existingPatient) {
+      regularPatientMatches = [existingPatient];
+      renderRegularPatientMatches();
+      alert(
+        "This patient name and phone number are already registered as Patient ID " +
+        existingPatient.id +
+        " (" +
+        (existingPatient.patient_name || "Existing Patient") +
+        ").\n\nPlease open the existing patient record instead of registering again."
+      );
+      return;
+    }
+  } catch (duplicateCheckError) {
+    console.error("Final duplicate patient check error:", duplicateCheckError);
+    alert("Unable to verify whether this patient is already registered. Please try again before saving to avoid a duplicate record.");
+    return;
+  }
 
   const ageValue =
     getValue(
@@ -2794,6 +2970,10 @@ function clearRegistrationForm() {
     .value =
       "";
 
+
+  regularPatientMatches = [];
+  const regularPanel = document.getElementById("regularPatientMatchPanel");
+  if (regularPanel) { regularPanel.classList.remove("visible"); regularPanel.innerHTML = ""; }
 
   campPatientMatches = [];
   selectedCampPatientId = null;
@@ -8690,6 +8870,7 @@ window.updateAgeFromDOB =
 
 
 ["newPatientPhone","newPatientName","newPatientAge"].forEach(function(id){const el=document.getElementById(id);if(el){el.addEventListener("input",scheduleCampPatientMatchCheck);el.addEventListener("change",scheduleCampPatientMatchCheck)}});
+["newPatientPhone","newPatientName"].forEach(function(id){const el=document.getElementById(id);if(el){el.addEventListener("input",scheduleRegularPatientCheck);el.addEventListener("change",scheduleRegularPatientCheck)}});
 window.selectCampPatientMatch=selectCampPatientMatch;
 
 </script>
