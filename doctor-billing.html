@@ -586,6 +586,53 @@ textarea {
 }
 
 
+
+/* =========================================================
+   PAYMENT / PENDING BILLS
+   ========================================================= */
+
+.payment-box {
+  margin-top: 14px;
+  border-radius: 13px;
+  background: #fffaf0;
+  border: 1px solid #f1d7a5;
+  padding: 15px;
+}
+
+.payment-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.payment-history-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dotted #d6dbe1;
+}
+
+.payment-history-item:last-child {
+  border-bottom: none;
+}
+
+.readonly-amount {
+  background: #f1f5f9 !important;
+  font-weight: 800;
+}
+
+@media(max-width:650px) {
+  .payment-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-history-item {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* =========================================================
    MOBILE
    ========================================================= */
@@ -732,6 +779,27 @@ Previous Bills
 
 <span class="dashboard-description">
 Search and review previous bills
+</span>
+
+</button>
+
+
+
+<button
+  type="button"
+  class="dashboard-option"
+  id="openPendingBillsButton">
+
+<span class="dashboard-icon">
+⏳
+</span>
+
+<span class="dashboard-title">
+Pending Bills
+</span>
+
+<span class="dashboard-description">
+View pending and partially paid bills
 </span>
 
 </button>
@@ -1032,6 +1100,52 @@ Other
 </div>
 
 
+<div
+  id="partialPaymentSection"
+  class="form-section"
+  style="display:none;">
+
+<h3>
+💳 Payment Details
+</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>
+Amount Paid
+</label>
+
+<input
+  type="number"
+  id="amountPaid"
+  min="0"
+  step="0.01"
+  value="0">
+
+</div>
+
+<div class="form-group">
+
+<label>
+Pending Amount
+</label>
+
+<input
+  type="text"
+  id="pendingAmountDisplay"
+  class="readonly-amount"
+  value="₹0.00"
+  readonly>
+
+</div>
+
+</div>
+
+</div>
+
+
 <div class="form-section">
 
 <h3>
@@ -1213,6 +1327,162 @@ Change Patient
 Search for a previous bill.
 </div>
 
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     PENDING BILLS
+     ===================================================== -->
+
+<div
+  id="pendingBillsView"
+  class="billing-view">
+
+<div class="billing-card">
+
+<div class="view-header">
+
+<h2>
+⏳ Pending Bills
+</h2>
+
+<button
+  type="button"
+  class="billing-button light"
+  onclick="showDashboard()">
+
+← Back
+
+</button>
+
+</div>
+
+<div class="today-summary-grid">
+
+<div class="summary-box">
+<div class="summary-label">Outstanding Bills</div>
+<div id="pendingBillsCount" class="summary-value">0</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-label">Total Outstanding</div>
+<div id="pendingBillsTotal" class="summary-value pending">₹0.00</div>
+</div>
+
+</div>
+
+<div id="pendingBillsList">
+
+<div class="billing-message">
+Loading pending bills...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     RECORD PAYMENT
+     ===================================================== -->
+
+<div
+  id="recordPaymentView"
+  class="billing-view">
+
+<div class="billing-card">
+
+<div class="view-header">
+
+<h2>
+💳 Record Balance Payment
+</h2>
+
+<button
+  type="button"
+  class="billing-button light"
+  onclick="returnFromRecordPayment()">
+
+← Back
+
+</button>
+
+</div>
+
+<div id="recordPaymentPatient" class="selected-patient"></div>
+
+<div class="payment-summary-grid">
+
+<div class="summary-box">
+<div class="summary-label">Total Amount</div>
+<div id="recordPaymentTotal" class="summary-value">₹0.00</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-label">Already Paid</div>
+<div id="recordPaymentAlreadyPaid" class="summary-value paid">₹0.00</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-label">Current Pending</div>
+<div id="recordPaymentPending" class="summary-value pending">₹0.00</div>
+</div>
+
+</div>
+
+<div class="form-section">
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Amount Paying Now</label>
+<input type="number" id="balancePaymentAmount" min="0.01" step="0.01">
+</div>
+
+<div class="form-group">
+<label>Payment Method</label>
+<select id="balancePaymentMethod">
+<option value="">Select Payment Method</option>
+<option value="Cash">Cash</option>
+<option value="UPI">UPI</option>
+<option value="Card">Card</option>
+<option value="Bank Transfer">Bank Transfer</option>
+<option value="Other">Other</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Payment Date</label>
+<input type="date" id="balancePaymentDate">
+</div>
+
+<div class="form-group full">
+<label>Notes</label>
+<textarea id="balancePaymentNotes" placeholder="Optional payment notes"></textarea>
+</div>
+
+</div>
+
+<div class="billing-actions">
+<button type="button" class="billing-button success" id="saveBalancePaymentButton">
+💾 Save Payment
+</button>
+</div>
+
+</div>
+
+<div class="form-section">
+<h3>🧾 Payment History</h3>
+<div id="recordPaymentHistory">
+<div class="billing-message">No payments recorded.</div>
+</div>
 </div>
 
 </div>
@@ -1580,6 +1850,12 @@ let billEditReturnState =
 
 let billDateSearchState =
   null;
+
+let recordPaymentBillId =
+  null;
+
+let recordPaymentReturnView =
+  "pendingBills";
 
 
 /* =========================================================
@@ -2382,7 +2658,86 @@ function calculateTotal() {
 
   }
 
+  updatePaymentFields();
+
   return total;
+
+}
+
+
+function updatePaymentFields() {
+
+  const statusElement =
+    document.getElementById("paymentStatus");
+
+  const section =
+    document.getElementById("partialPaymentSection");
+
+  const amountPaidInput =
+    document.getElementById("amountPaid");
+
+  const pendingDisplay =
+    document.getElementById("pendingAmountDisplay");
+
+  if (!statusElement || !section || !amountPaidInput || !pendingDisplay) {
+    return;
+  }
+
+  const status =
+    statusElement.value;
+
+  const total =
+    Number(
+      document.getElementById("consultationFee")?.value || 0
+    ) +
+    Number(
+      document.getElementById("medicineCharges")?.value || 0
+    ) +
+    Number(
+      document.getElementById("procedureCharges")?.value || 0
+    );
+
+  if (status === "Partially Paid") {
+
+    section.style.display =
+      "block";
+
+    let paid =
+      Number(amountPaidInput.value || 0);
+
+    if (paid < 0) {
+      paid = 0;
+    }
+
+    if (paid > total) {
+      paid = total;
+      amountPaidInput.value =
+        total.toFixed(2);
+    }
+
+    pendingDisplay.value =
+      currency(
+        Math.max(0,total - paid)
+      );
+
+  } else {
+
+    section.style.display =
+      "none";
+
+    if (status === "Paid") {
+      amountPaidInput.value =
+        total.toFixed(2);
+      pendingDisplay.value =
+        currency(0);
+    } else {
+      amountPaidInput.value =
+        "0";
+      pendingDisplay.value =
+        currency(total);
+    }
+
+  }
 
 }
 
@@ -3374,6 +3729,44 @@ async function saveBill() {
       .value;
 
 
+  let paidAmount =
+    paymentStatus === "Paid"
+      ? total
+      : paymentStatus === "Pending"
+        ? 0
+        : Number(
+            document
+              .getElementById(
+                "amountPaid"
+              )
+              .value || 0
+          );
+
+
+  if (
+    paymentStatus === "Partially Paid" &&
+    (
+      paidAmount <= 0 ||
+      paidAmount >= total
+    )
+  ) {
+
+    alert(
+      "For Partially Paid, Amount Paid must be greater than ₹0 and less than the Total Amount."
+    );
+
+    return;
+
+  }
+
+
+  const pendingAmount =
+    Math.max(
+      0,
+      total - paidAmount
+    );
+
+
   const notes =
     document
       .getElementById(
@@ -3474,6 +3867,12 @@ async function saveBill() {
     total_amount:
       total,
 
+    paid_amount:
+      paidAmount,
+
+    pending_amount:
+      pendingAmount,
+
     payment_status:
       paymentStatus,
 
@@ -3556,6 +3955,49 @@ async function saveBill() {
     Boolean(
       editingBillId
     );
+
+
+  /*
+     For a newly-created Paid / Partially Paid bill, preserve the
+     initial money received as the first payment-history entry.
+  */
+  if (
+    !wasEditing &&
+    paidAmount > 0
+  ) {
+
+    const {
+      error:
+        paymentHistoryError
+    } =
+      await supabaseClient
+        .from("bill_payments")
+        .insert({
+          bill_id:
+            data.id,
+          patient_id:
+            selectedPatient.id,
+          payment_date:
+            billDate,
+          amount:
+            paidAmount,
+          payment_method:
+            paymentMethod || null,
+          notes:
+            "Initial payment"
+        });
+
+
+    if (paymentHistoryError) {
+
+      console.error(
+        "Initial payment history error:",
+        paymentHistoryError
+      );
+
+    }
+
+  }
 
 
   editingBillId =
@@ -3799,6 +4241,42 @@ function renderBillDetails(
           bill.total_amount
         )}
       </strong>
+
+    </div>
+
+
+    <div class="bill-row">
+
+      <strong>
+        Paid Amount
+      </strong>
+
+      <span class="paid">
+        ${currency(
+          bill.paid_amount ??
+          (bill.payment_status === "Paid"
+            ? bill.total_amount
+            : 0)
+        )}
+      </span>
+
+    </div>
+
+
+    <div class="bill-row">
+
+      <strong>
+        Pending Amount
+      </strong>
+
+      <span class="pending">
+        ${currency(
+          bill.pending_amount ??
+          (bill.payment_status === "Paid"
+            ? 0
+            : bill.total_amount)
+        )}
+      </span>
 
     </div>
 
@@ -4239,6 +4717,24 @@ async function editBill(
     .value =
       bill.payment_method ||
       "";
+
+
+  document
+    .getElementById(
+      "amountPaid"
+    )
+    .value =
+      Number(
+        bill.paid_amount ??
+        (
+          bill.payment_status === "Paid"
+            ? bill.total_amount
+            : 0
+        )
+      );
+
+
+  updatePaymentFields();
 
 
   document
@@ -5066,6 +5562,27 @@ async function renderBillsList(
 
                 <div class="billing-actions">
 
+                  ${
+                    getBillPendingAmount(
+                      bill
+                    ) > 0
+                      ? `
+                        <button
+                          type="button"
+                          class="billing-button success small"
+                          onclick="openRecordPayment(
+                            ${Number(
+                              bill.id
+                            )}
+                          )">
+
+                          💳 Record Payment
+
+                        </button>
+                      `
+                      : ""
+                  }
+
                   <button
                     type="button"
                     class="billing-button warning small"
@@ -5712,6 +6229,689 @@ async function returnToBillDateSearch() {
     top: 0,
     behavior: "smooth"
   });
+
+}
+
+
+/* =========================================================
+   PENDING BILLS / BALANCE PAYMENTS
+   ========================================================= */
+
+function getBillPaidAmount(bill) {
+
+  if (
+    bill.paid_amount !== null &&
+    bill.paid_amount !== undefined
+  ) {
+    return Number(bill.paid_amount || 0);
+  }
+
+  return bill.payment_status === "Paid"
+    ? Number(bill.total_amount || 0)
+    : 0;
+
+}
+
+
+function getBillPendingAmount(bill) {
+
+  if (
+    bill.pending_amount !== null &&
+    bill.pending_amount !== undefined
+  ) {
+    return Number(bill.pending_amount || 0);
+  }
+
+  return Math.max(
+    0,
+    Number(bill.total_amount || 0) -
+    getBillPaidAmount(bill)
+  );
+
+}
+
+
+async function loadPendingBills() {
+
+  showView(
+    "pendingBillsView"
+  );
+
+  const container =
+    document.getElementById(
+      "pendingBillsList"
+    );
+
+  container.innerHTML = `
+    <div class="billing-message">
+      Loading pending bills...
+    </div>
+  `;
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("billing")
+      .select("*")
+      .in(
+        "payment_status",
+        [
+          "Pending",
+          "Partially Paid"
+        ]
+      )
+      .order(
+        "bill_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "id",
+        {
+          ascending: false
+        }
+      );
+
+  if (error) {
+
+    console.error(
+      "Pending bills error:",
+      error
+    );
+
+    container.innerHTML = `
+      <div class="billing-error">
+        Unable to load pending bills.
+      </div>
+    `;
+
+    return;
+  }
+
+  const bills =
+    (data || [])
+      .filter(
+        function(bill) {
+          return getBillPendingAmount(bill) > 0;
+        }
+      );
+
+  const outstanding =
+    bills.reduce(
+      function(sum,bill) {
+        return sum +
+          getBillPendingAmount(bill);
+      },
+      0
+    );
+
+  document
+    .getElementById(
+      "pendingBillsCount"
+    )
+    .textContent =
+      bills.length;
+
+  document
+    .getElementById(
+      "pendingBillsTotal"
+    )
+    .textContent =
+      currency(outstanding);
+
+  if (!bills.length) {
+
+    container.innerHTML = `
+      <div class="billing-message">
+        ✅ No pending bills.
+      </div>
+    `;
+
+    return;
+  }
+
+  await renderBillsList(
+    bills,
+    container
+  );
+
+}
+
+
+async function loadPaymentHistory(
+  billId,
+  containerId
+) {
+
+  const container =
+    document.getElementById(
+      containerId
+    );
+
+  if (!container) {
+    return;
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("bill_payments")
+      .select("*")
+      .eq(
+        "bill_id",
+        billId
+      )
+      .order(
+        "payment_date",
+        {
+          ascending: true
+        }
+      )
+      .order(
+        "id",
+        {
+          ascending: true
+        }
+      );
+
+  if (error) {
+
+    console.error(
+      "Payment history error:",
+      error
+    );
+
+    container.innerHTML = `
+      <div class="billing-error">
+        Unable to load payment history.
+      </div>
+    `;
+
+    return;
+  }
+
+  const payments =
+    data || [];
+
+  if (!payments.length) {
+
+    container.innerHTML = `
+      <div class="billing-message">
+        No payment history recorded.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    payments
+      .map(
+        function(payment) {
+
+          return `
+            <div class="payment-history-item">
+
+              <div>
+                <strong>
+                  ${formatDate(
+                    payment.payment_date
+                  )}
+                </strong>
+              </div>
+
+              <div>
+                ${escapeHTML(
+                  payment.payment_method ||
+                  "-"
+                )}
+              </div>
+
+              <div class="paid">
+                ${currency(
+                  payment.amount
+                )}
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+async function openRecordPayment(
+  billId
+) {
+
+  const pendingView =
+    document.getElementById(
+      "pendingBillsView"
+    );
+
+  const savedView =
+    document.getElementById(
+      "savedBillView"
+    );
+
+  recordPaymentReturnView =
+    pendingView &&
+    pendingView.classList.contains(
+      "active"
+    )
+      ? "pendingBills"
+      : savedView &&
+        savedView.classList.contains(
+          "active"
+        )
+        ? "savedBill"
+        : "pendingBills";
+
+  const result =
+    await getBillAndPatient(
+      billId
+    );
+
+  if (!result) {
+    return;
+  }
+
+  const bill =
+    result.bill;
+
+  const patient =
+    result.patient;
+
+  const pending =
+    getBillPendingAmount(
+      bill
+    );
+
+  if (pending <= 0) {
+
+    alert(
+      "This bill has no pending balance."
+    );
+
+    return;
+  }
+
+  recordPaymentBillId =
+    Number(
+      bill.id
+    );
+
+  document
+    .getElementById(
+      "recordPaymentPatient"
+    )
+    .innerHTML = `
+      <div class="selected-patient-name">
+        👤 ${escapeHTML(
+          patient.patient_name || "-"
+        )}
+      </div>
+
+      <div class="selected-patient-meta">
+        Bill #${escapeHTML(bill.id)}
+        <br>
+        Patient ID:
+        <strong>
+          ${escapeHTML(bill.patient_id)}
+        </strong>
+      </div>
+    `;
+
+  document
+    .getElementById(
+      "recordPaymentTotal"
+    )
+    .textContent =
+      currency(
+        bill.total_amount
+      );
+
+  document
+    .getElementById(
+      "recordPaymentAlreadyPaid"
+    )
+    .textContent =
+      currency(
+        getBillPaidAmount(bill)
+      );
+
+  document
+    .getElementById(
+      "recordPaymentPending"
+    )
+    .textContent =
+      currency(pending);
+
+  const amountInput =
+    document.getElementById(
+      "balancePaymentAmount"
+    );
+
+  amountInput.value =
+    "";
+
+  amountInput.max =
+    pending.toFixed(2);
+
+  document
+    .getElementById(
+      "balancePaymentMethod"
+    )
+    .value =
+      "";
+
+  document
+    .getElementById(
+      "balancePaymentDate"
+    )
+    .value =
+      getTodayString();
+
+  document
+    .getElementById(
+      "balancePaymentNotes"
+    )
+    .value =
+      "";
+
+  showView(
+    "recordPaymentView"
+  );
+
+  await loadPaymentHistory(
+    bill.id,
+    "recordPaymentHistory"
+  );
+
+}
+
+
+async function saveBalancePayment() {
+
+  if (!recordPaymentBillId) {
+    return;
+  }
+
+  const result =
+    await getBillAndPatient(
+      recordPaymentBillId
+    );
+
+  if (!result) {
+    return;
+  }
+
+  const bill =
+    result.bill;
+
+  const patient =
+    result.patient;
+
+  const currentPaid =
+    getBillPaidAmount(
+      bill
+    );
+
+  const currentPending =
+    getBillPendingAmount(
+      bill
+    );
+
+  const amount =
+    Number(
+      document
+        .getElementById(
+          "balancePaymentAmount"
+        )
+        .value || 0
+    );
+
+  const method =
+    document
+      .getElementById(
+        "balancePaymentMethod"
+      )
+      .value;
+
+  const paymentDate =
+    document
+      .getElementById(
+        "balancePaymentDate"
+      )
+      .value;
+
+  const notes =
+    document
+      .getElementById(
+        "balancePaymentNotes"
+      )
+      .value
+      .trim();
+
+  if (
+    amount <= 0
+  ) {
+
+    alert(
+      "Please enter the amount being paid."
+    );
+
+    return;
+  }
+
+  if (
+    amount >
+    currentPending
+  ) {
+
+    alert(
+      "Payment cannot be more than the current pending amount of " +
+      currency(currentPending) +
+      "."
+    );
+
+    return;
+  }
+
+  if (!method) {
+
+    alert(
+      "Please select payment method."
+    );
+
+    return;
+  }
+
+  if (!paymentDate) {
+
+    alert(
+      "Please select payment date."
+    );
+
+    return;
+  }
+
+  const button =
+    document.getElementById(
+      "saveBalancePaymentButton"
+    );
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "⏳ Saving...";
+
+  const newPaid =
+    currentPaid +
+    amount;
+
+  const newPending =
+    Math.max(
+      0,
+      Number(
+        bill.total_amount || 0
+      ) -
+      newPaid
+    );
+
+  const newStatus =
+    newPending <= 0.005
+      ? "Paid"
+      : "Partially Paid";
+
+  const {
+    data:
+      payment,
+    error:
+      paymentError
+  } =
+    await supabaseClient
+      .from("bill_payments")
+      .insert({
+        bill_id:
+          bill.id,
+        patient_id:
+          bill.patient_id,
+        payment_date:
+          paymentDate,
+        amount:
+          amount,
+        payment_method:
+          method,
+        notes:
+          notes || null
+      })
+      .select()
+      .single();
+
+  if (paymentError) {
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "💾 Save Payment";
+
+    alert(
+      "Unable to save payment:\n\n" +
+      paymentError.message
+    );
+
+    return;
+  }
+
+  const {
+    error:
+      billUpdateError
+  } =
+    await supabaseClient
+      .from("billing")
+      .update({
+        paid_amount:
+          newPaid,
+        pending_amount:
+          newPending,
+        payment_status:
+          newStatus,
+        payment_method:
+          method
+      })
+      .eq(
+        "id",
+        bill.id
+      );
+
+  if (billUpdateError) {
+
+    /*
+       Roll back the just-created payment row if the bill
+       balance itself could not be updated.
+    */
+    await supabaseClient
+      .from("bill_payments")
+      .delete()
+      .eq(
+        "id",
+        payment.id
+      );
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "💾 Save Payment";
+
+    alert(
+      "Unable to update bill balance:\n\n" +
+      billUpdateError.message
+    );
+
+    return;
+  }
+
+  button.disabled =
+    false;
+
+  button.textContent =
+    "💾 Save Payment";
+
+  alert(
+    newStatus === "Paid"
+      ? "✅ Balance fully paid. Bill marked as Paid."
+      : "✅ Payment recorded. Remaining balance: " +
+        currency(newPending)
+  );
+
+  if (
+    newStatus === "Paid"
+  ) {
+
+    await loadPendingBills();
+
+    return;
+  }
+
+  await openRecordPayment(
+    bill.id
+  );
+
+}
+
+
+async function returnFromRecordPayment() {
+
+  const billId =
+    recordPaymentBillId;
+
+  if (
+    recordPaymentReturnView ===
+      "savedBill" &&
+    billId
+  ) {
+
+    await showSavedBill(
+      billId,
+      true
+    );
+
+    return;
+  }
+
+  await loadPendingBills();
 
 }
 
@@ -7713,6 +8913,14 @@ function resetBillForm() {
 
   document
     .getElementById(
+      "amountPaid"
+    )
+    .value =
+      "0";
+
+
+  document
+    .getElementById(
       "billingNotes"
     )
     .value =
@@ -7757,6 +8965,15 @@ window.returnToTodayBills =
 
 window.openBillDateSearch =
   openBillDateSearch;
+
+window.loadPendingBills =
+  loadPendingBills;
+
+window.openRecordPayment =
+  openRecordPayment;
+
+window.returnFromRecordPayment =
+  returnFromRecordPayment;
 
 window.updateBillDateSearchMode =
   updateBillDateSearchMode;
@@ -7853,6 +9070,16 @@ document
       );
 
     }
+  );
+
+
+document
+  .getElementById(
+    "openPendingBillsButton"
+  )
+  .addEventListener(
+    "click",
+    loadPendingBills
   );
 
 
@@ -8023,11 +9250,41 @@ document
 
 document
   .getElementById(
+    "paymentStatus"
+  )
+  .addEventListener(
+    "change",
+    updatePaymentFields
+  );
+
+
+document
+  .getElementById(
+    "amountPaid"
+  )
+  .addEventListener(
+    "input",
+    updatePaymentFields
+  );
+
+
+document
+  .getElementById(
     "saveBillButton"
   )
   .addEventListener(
     "click",
     saveBill
+  );
+
+
+document
+  .getElementById(
+    "saveBalancePaymentButton"
+  )
+  .addEventListener(
+    "click",
+    saveBalancePayment
   );
 
 
@@ -8080,6 +9337,8 @@ document
 
 
   calculateTotal();
+
+  updatePaymentFields();
 
 
   const loadedFromURL =
