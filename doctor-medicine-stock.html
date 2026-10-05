@@ -10,8 +10,8 @@
 .scan-btn{background:#6b5bd2;color:#fff}.scan-btn:hover{background:#5949c1}.scan-result{border:1px solid #dcebf0;border-radius:12px;padding:14px;background:#f8fcfd;margin-top:12px}.scan-preview{max-width:100%;max-height:260px;display:block;margin:10px auto;border-radius:10px;border:1px solid #d8e6eb}.scan-progress{font-size:13px;color:#48606b;margin-top:8px}.recognized-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.recognized-grid>div{background:#fff;border:1px solid #dcebf0;border-radius:9px;padding:10px}.recognized-grid b{display:block;color:#48606b;font-size:12px;margin-bottom:4px}@media(max-width:600px){.recognized-grid{grid-template-columns:1fr}}.empty{padding:30px;text-align:center;color:#74838a}.bill-photo-thumb{width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #d4e3e8;cursor:pointer}@media(max-width:900px){.grid,.summary-grid{grid-template-columns:repeat(2,1fr)}.item-grid{grid-template-columns:repeat(2,1fr)}.item-grid .wide{grid-column:1/-1}}@media(max-width:600px){.page{padding:8px}.shell{padding:15px;border-radius:16px}.grid,.menu-grid,.form-grid,.summary-grid,.search-row{grid-template-columns:1fr}.header h1{font-size:25px}.item-grid{grid-template-columns:1fr}.topbar{align-items:stretch}.topbar .btn{width:100%}.footer-actions .btn{width:100%}.table{min-width:900px}}
 
 .stock-entry-list{display:grid;gap:12px}
-.stock-entry-card{border:1px solid #dcebf0;border-radius:14px;background:#fff;padding:15px;cursor:pointer;transition:.15s}
-.stock-entry-card:hover{border-color:#79b8cc;box-shadow:0 5px 16px rgba(33,79,99,.08)}
+.stock-entry-card{border:1px solid #dcebf0;border-radius:14px;background:#fff;padding:15px;transition:.15s}
+.stock-entry-card:hover{border-color:#79b8cc;box-shadow:0 5px 16px rgba(33,79,99,.08)}.scan-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.scan-field{background:#fff;border:1px solid #dcebf0;border-radius:10px;padding:10px}.scan-field label{display:block;font-size:11px;font-weight:800;color:#48606b;margin-bottom:5px}.scan-field input,.scan-field select{width:100%;padding:10px;border:1px solid #cbdde3;border-radius:8px;font:inherit}.scan-confidence{font-size:11px;font-weight:800;margin-top:5px}.confidence-high{color:#237454}.confidence-review{color:#9a6412}.confidence-low{color:#a33b3b}.scan-source-note{padding:10px;border-radius:9px;background:#f5fafc;border:1px solid #dcebf0;font-size:12px;color:#536b75;margin-top:10px}.scan-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}@media(max-width:600px){.scan-field-grid{grid-template-columns:1fr}}
 .stock-entry-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .stock-entry-title{font-weight:800;color:#174b63;font-size:16px}
 .stock-entry-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
@@ -113,7 +113,7 @@
 
 <div id="purchaseListView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>🧾 Purchase Bills</h2><button class="btn" onclick="openPurchaseForm()">+ Add Purchase Bill</button></div><div class="summary-grid"><div class="summary"><span>Total Bills</span><b id="purchaseTotalCount">0</b></div><div class="summary"><span>Pending Bills</span><b id="purchasePendingCount">0</b></div><div class="summary"><span>Paid Bills</span><b id="purchasePaidCount">0</b></div><div class="summary"><span>Pending Amount</span><b id="purchasePendingAmount">₹0.00</b></div></div><div class="search-row"><input id="purchaseSearch" placeholder="Stockist / company / medicine / bill number"><select id="purchaseStatusFilter"><option value="">All</option><option>Paid</option><option>Pending</option></select><input id="purchaseFrom" type="date"><input id="purchaseTo" type="date"><button class="btn secondary" onclick="loadPurchaseBills()">Search</button></div><div id="purchaseBillsTable"></div></div>
 
-<div id="medicineScanModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Scan Medicine</h2><button class="btn secondary" type="button" onclick="closeMedicineScan()">Close</button></div><p class="muted">Use the rear camera for a live barcode/DataMatrix scan, or take/upload a clear medicine photo. If no code is found, the portal uses enhanced OCR and tries multiple image orientations.</p><div class="section"><div class="actions" style="margin-bottom:10px"><button id="startMedicineCameraBtn" class="btn" type="button" onclick="startMedicineCamera()">📹 Start Camera</button><button id="stopMedicineCameraBtn" class="btn secondary hidden" type="button" onclick="stopMedicineCamera()">⏹ Stop Camera</button></div><video id="medicineScanVideo" class="scan-preview hidden" playsinline muted autoplay></video><div class="field"><label>Take / Upload Medicine Photo</label><input id="medicineScanFile" type="file" accept="image/*" capture="environment" onchange="processMedicineScan(this)"></div><div id="medicineScanStatus" class="scan-progress">Choose a photo or start the camera.</div><img id="medicineScanPreview" class="scan-preview hidden" alt="Medicine scan preview"><div id="medicineScanResult" class="scan-result hidden"></div></div><div class="footer-actions"><button class="btn secondary" type="button" onclick="closeMedicineScan()">Cancel</button><button id="useMedicineScanBtn" class="btn success hidden" type="button" onclick="useMedicineScanResult()">✓ Use This Information</button></div></div></div>
+<div id="medicineScanModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 AI-Assisted Medicine Scanner</h2><button class="btn secondary" type="button" onclick="closeMedicineScan()">Close</button></div><p class="muted">Take a clear medicine/package/bill photo. The scanner combines barcode detection and OCR, then lets you review and correct every extracted value before it is entered. It is AI-assisted, not guaranteed to be 100% accurate.</p><div class="section"><div class="actions" style="margin-bottom:10px"><button id="startMedicineCameraBtn" class="btn" type="button" onclick="startMedicineCamera()">📹 Start Camera</button><button id="stopMedicineCameraBtn" class="btn secondary hidden" type="button" onclick="stopMedicineCamera()">⏹ Stop Camera</button></div><video id="medicineScanVideo" class="scan-preview hidden" playsinline muted autoplay></video><div class="field"><label>Take Photo / Upload Photo</label><input id="medicineScanFile" type="file" accept="image/*" capture="environment" onchange="processMedicineScan(this)"></div><div id="medicineScanStatus" class="scan-progress">Choose a photo or start the camera.</div><img id="medicineScanPreview" class="scan-preview hidden" alt="Medicine scan preview"><div id="medicineScanResult" class="scan-result hidden"></div></div><div class="footer-actions"><button class="btn secondary" type="button" onclick="closeMedicineScan()">Cancel</button><button id="useMedicineScanBtn" class="btn success hidden" type="button" onclick="useMedicineScanResult()">✓ Use Reviewed Information</button></div></div></div>
 
 <div id="billDetailModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>🧾 Purchase Bill Details</h2><button class="btn secondary" onclick="closeModal('billDetailModal')">Close</button></div><div id="billDetailContent"></div></div></div>
 <div id="photoModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Purchase Bill Photo</h2><button class="btn secondary" onclick="closeModal('photoModal')">Close</button></div><div id="photoContent"></div></div></div>
@@ -150,9 +150,51 @@ function setTodayDefaults(){const t=todayIST();['purchaseDate','paymentDate','un
 async function refreshDashboard(){await loadMedicines();document.getElementById('statMedicines').textContent=medicines.length;let stock=0,low=0;medicines.forEach(m=>{const q=Number(m.total_stock||0);stock+=q;if(q<=Number(m.minimum_stock_level||0))low++;});document.getElementById('statStock').textContent=stock.toLocaleString('en-IN');document.getElementById('statLow').textContent=low;const today=todayIST(),end=new Date(today+'T00:00:00');end.setDate(end.getDate()+90);const endDate=end.toISOString().slice(0,10);const {data}=await supabaseClient.from('medicine_batches').select('id').gt('quantity',0).lte('expiry_date',endDate).gte('expiry_date',today);document.getElementById('statExpiry').textContent=(data||[]).length;}
 async function loadMedicines(){const {data,error}=await supabaseClient.from('medicines').select('*').order('medicine_name');if(error){console.error(error);medicines=[];return;}const {data:batches}=await supabaseClient.from('medicine_batches').select('medicine_id,quantity');const totals={};(batches||[]).forEach(b=>totals[b.medicine_id]=(totals[b.medicine_id]||0)+Number(b.quantity||0));medicines=(data||[]).map(m=>({...m,total_stock:totals[m.id]||0}));}
 
-function openMedicineCreate(){editingMedicineId=null;document.getElementById('medicineForm').reset();document.getElementById('medicineFormTitle').textContent='➕ Add Medicine';document.getElementById('minimumStockLevel').value=0;openView('medicineFormView');}
-function updatePackFields(){const f=document.getElementById('dosageForm').value;const unit=document.getElementById('packUnit');const label=document.getElementById('unitsPerPackLabel');const map={Tablet:['Strip','Tablets per Strip'],Capsule:['Strip','Capsules per Strip'],Syrup:['Bottle','Volume per Bottle (mL)'],Drops:['Bottle','Volume per Bottle (mL)'],Spray:['Bottle','Units per Bottle'],'Roll-on':['Bottle','Volume per Bottle (mL)'],Sachet:['Sachet/Pack','Sachets per Pack'], 'Mouth Dissolving Strip':['Pack','Strips per Pack'],'Gel / Ointment':['Tube','Weight per Tube (g)'],Cream:['Tube','Weight per Tube (g)'],Lotion:['Bottle','Volume per Bottle (mL)'],Powder:['Pack','Weight per Pack (g)'],Inhaler:['Inhaler','Doses per Inhaler'],Injection:['Vial/Ampoule','Units per Pack'],Other:['Unit/Pack','Units per Pack']};if(map[f]){unit.value=unit.value||map[f][0];label.textContent=map[f][1];}}
-async function saveMedicine(e){e.preventDefault();if(!(await requireSession()))return;const name=document.getElementById('medicineName').value.trim(),strength=document.getElementById('strength').value.trim(),form=document.getElementById('dosageForm').value;if(!name||!form)return;const payload={medicine_name:name,generic_name:document.getElementById('genericName').value.trim()||null,strength:strength||'',dosage_form:form,pack_unit:document.getElementById('packUnit').value.trim()||'Unit/Pack',units_per_pack:Number(document.getElementById('unitsPerPack').value)||null,minimum_stock_level:Number(document.getElementById('minimumStockLevel').value)||0,notes:document.getElementById('medicineNotes').value.trim()||null,updated_at:new Date().toISOString()};let q;if(editingMedicineId)q=await supabaseClient.from('medicines').update(payload).eq('id',editingMedicineId);else q=await supabaseClient.from('medicines').insert(payload).select().single();if(q.error){if(q.error.code==='23505')alert('This medicine already exists with the same name, strength and dosage form.');else showError(q.error.message);return;}if(!editingMedicineId && window.pendingBillItemDiv){
+function openMedicineCreate(){
+  editingMedicineId=null;
+  document.getElementById('medicineForm').reset();
+  document.getElementById('medicineFormTitle').textContent='➕ Add Medicine';
+  document.getElementById('minimumStockLevel').value=0;
+  document.getElementById('packUnit').value='';
+  document.getElementById('baseUnit').value='';
+  document.getElementById('unitsPerPack').value='';
+  updatePackFields(false);
+  openView('medicineFormView');
+}
+function updatePackFields(applyDefaults=true){
+  const f=document.getElementById('dosageForm').value;
+  const unit=document.getElementById('packUnit');
+  const base=document.getElementById('baseUnit');
+  const upp=document.getElementById('unitsPerPack');
+  const label=document.getElementById('unitsPerPackLabel');
+  const map={
+    Tablet:['Strip','Tablet','10','Tablets per Strip'],
+    Capsule:['Strip','Capsule','10','Capsules per Strip'],
+    Syrup:['Bottle','mL','100','Volume per Bottle (mL)'],
+    'Roll-on':['Bottle','mL','10','Volume per Bottle (mL)'],
+    Spray:['Bottle','mL','100','Volume per Bottle (mL)'],
+    Drops:['Bottle','mL','10','Volume per Bottle (mL)'],
+    Sachet:['Sachet/Pack','Sachet','1','Sachets per Pack'],
+    'Mouth Dissolving Strip':['Pack','Strip','10','Strips per Pack'],
+    'Gel / Ointment':['Tube','g','30','Weight per Tube (g)'],
+    Cream:['Tube','g','30','Weight per Tube (g)'],
+    Lotion:['Bottle','mL','100','Volume per Bottle (mL)'],
+    Powder:['Pack','g','100','Weight per Pack (g)'],
+    Inhaler:['Inhaler','Dose','1','Doses per Inhaler'],
+    Injection:['Vial/Ampoule','mL','1','Volume / Units per Pack'],
+    Other:['Unit/Pack','Unit','1','Units per Pack']
+  };
+  const d=map[f];
+  if(d){
+    label.textContent=d[3];
+    if(applyDefaults){
+      unit.value=d[0]; base.value=d[1]; upp.value=d[2];
+    }
+  }else{
+    label.textContent='Units per Pack *';
+  }
+}
+async function saveMedicine(e){e.preventDefault();if(!(await requireSession()))return;const name=document.getElementById('medicineName').value.trim(),strength=document.getElementById('strength').value.trim(),form=document.getElementById('dosageForm').value;if(!name||!form)return;const payload={medicine_name:name,generic_name:document.getElementById('genericName').value.trim()||null,strength:strength||'',dosage_form:form,pack_unit:document.getElementById('packUnit').value.trim()||'Unit/Pack',base_unit:document.getElementById('baseUnit').value.trim()||'Unit',units_per_pack:Number(document.getElementById('unitsPerPack').value)||null,minimum_stock_level:Number(document.getElementById('minimumStockLevel').value)||0,notes:document.getElementById('medicineNotes').value.trim()||null,updated_at:new Date().toISOString()};let q;if(editingMedicineId)q=await supabaseClient.from('medicines').update(payload).eq('id',editingMedicineId);else q=await supabaseClient.from('medicines').insert(payload).select().single();if(q.error){if(q.error.code==='23505')alert('This medicine already exists with the same name, strength and dosage form.');else showError(q.error.message);return;}if(!editingMedicineId && window.pendingBillItemDiv){
   await loadMedicines();
   const target=window.pendingBillItemDiv;
   target.dataset.medicineId=q.data?.id||'';
@@ -192,7 +234,25 @@ async function viewPurchasePhoto(path,url,privateBucket=false){let src=url;if(!s
 async function deletePurchaseBill(id){if(!confirm('Delete this purchase bill? The system will first check whether its purchased stock has already been dispensed.'))return;const {data:tx}=await supabaseClient.from('medicine_stock_transactions').select('id,medicine_id,batch_id,quantity').eq('purchase_bill_id',id).eq('transaction_type','DISPENSED');if(tx&&tx.length){alert('This purchase has already been involved in dispensing records. It cannot be safely deleted. Use an adjustment instead.');return;}const {data:items}=await supabaseClient.from('purchase_bill_items').select('*').eq('purchase_bill_id',id);for(const i of items||[]){const {data:b}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',i.medicine_id).eq('batch_number',i.batch_number).maybeSingle();if(b){const nq=Number(b.quantity)-Number(i.quantity);if(nq<0){alert('Cannot delete: current stock is lower than the quantity originally purchased.');return;}await supabaseClient.from('medicine_batches').update({quantity:nq,updated_at:new Date().toISOString()}).eq('id',b.id);}}const {data:b}=await supabaseClient.from('purchase_bills').select('bill_photo_path').eq('id',id).single();await supabaseClient.from('medicine_stock_transactions').delete().eq('purchase_bill_id',id);const del=await supabaseClient.from('purchase_bills').delete().eq('id',id);if(del.error){showError(del.error.message);return;}if(b?.bill_photo_path)await supabaseClient.storage.from(PHOTO_BUCKET).remove([b.bill_photo_path]);alert('Purchase bill deleted and associated remaining purchase stock removed.');await loadPurchaseBills();await refreshDashboard();}
 
 async function loadMedicineList(){await loadMedicines();const s=(document.getElementById('medicineSearch')?.value||'').toLowerCase().trim();const list=medicines.filter(m=>!s||`${m.medicine_name} ${m.generic_name||''} ${m.strength||''} ${m.dosage_form}`.toLowerCase().includes(s));document.getElementById('medicineListTable').innerHTML=list.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Form</th><th>Unit/Pack</th><th>Stock</th><th>Minimum</th><th>Status</th><th>Actions</th></tr></thead><tbody>${list.map(m=>`<tr><td><b>${esc(m.medicine_name)}</b><br><span class="muted">${esc(m.generic_name||'')} ${esc(m.strength||'')}</span></td><td>${esc(m.dosage_form)}</td><td>${esc(m.pack_unit)}</td><td>${m.total_stock}</td><td>${m.minimum_stock_level}</td><td class="${Number(m.total_stock)<=Number(m.minimum_stock_level)?'low':'normal'}">${Number(m.total_stock)<=Number(m.minimum_stock_level)?'⚠️ Low':'🟢 Normal'}</td><td><div class="actions"><button class="btn small" onclick="viewMedicineDetails(${m.id})">View</button><button class="btn secondary small" onclick="editMedicine(${m.id})">Edit</button><button class="btn danger small" onclick="deleteMedicine(${m.id})">Delete</button></div></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No medicines found.</div>';}
-async function editMedicine(id){const m=medicines.find(x=>x.id===id);if(!m)return;editingMedicineId=id;document.getElementById('medicineFormTitle').textContent='✏️ Edit Medicine';document.getElementById('medicineId').value=id;document.getElementById('medicineName').value=m.medicine_name;document.getElementById('genericName').value=m.generic_name||'';document.getElementById('strength').value=m.strength||'';document.getElementById('dosageForm').value=m.dosage_form;document.getElementById('packUnit').value=m.pack_unit;document.getElementById('unitsPerPack').value=m.units_per_pack||'';document.getElementById('minimumStockLevel').value=m.minimum_stock_level||0;document.getElementById('medicineNotes').value=m.notes||'';updatePackFields();openView('medicineFormView');}
+async function editMedicine(id){
+  await loadMedicines();
+  const m=medicines.find(x=>x.id===id);
+  if(!m)return;
+  editingMedicineId=id;
+  document.getElementById('medicineFormTitle').textContent='✏️ Edit Medicine';
+  document.getElementById('medicineId').value=id;
+  document.getElementById('medicineName').value=m.medicine_name||'';
+  document.getElementById('genericName').value=m.generic_name||'';
+  document.getElementById('strength').value=m.strength||'';
+  document.getElementById('dosageForm').value=m.dosage_form||'';
+  document.getElementById('packUnit').value=m.pack_unit||'';
+  document.getElementById('baseUnit').value=m.base_unit||'';
+  document.getElementById('unitsPerPack').value=m.units_per_pack||1;
+  document.getElementById('minimumStockLevel').value=m.minimum_stock_level||0;
+  document.getElementById('medicineNotes').value=m.notes||'';
+  updatePackFields(false);
+  openView('medicineFormView');
+}
 async function deleteMedicine(id){const {count}=await supabaseClient.from('medicine_batches').select('id',{count:'exact',head:true}).eq('medicine_id',id);if(Number(count||0)>0){alert('This medicine has stock/batches and cannot be deleted. Keep the medicine record and set stock to zero instead.');return;}if(!confirm('Delete this medicine?'))return;const r=await supabaseClient.from('medicines').delete().eq('id',id);if(r.error){showError(r.error.message);return;}await loadMedicineList();await refreshDashboard();}
 async function viewMedicineDetails(id){const m=medicines.find(x=>x.id===id);if(!m)return;const {data:batches}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',id).order('expiry_date');const {data:tx}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('medicine_id',id).order('transaction_date',{ascending:false}).limit(50);document.getElementById('medicineDetailContent').innerHTML=`<div class="section"><div class="form-grid"><div><b>Medicine</b><br>${esc(m.medicine_name)}</div><div><b>Generic</b><br>${esc(m.generic_name||'-')}</div><div><b>Strength</b><br>${esc(m.strength||'-')}</div><div><b>Dosage Form</b><br>${esc(m.dosage_form)}</div><div><b>Unit/Pack</b><br>${esc(m.pack_unit)}</div><div><b>Minimum Stock Level</b><br>${m.minimum_stock_level}</div></div></div><div class="section"><h3>Batch / Stock Details</h3><div class="table-wrap"><table class="table"><thead><tr><th>Batch</th><th>Expiry</th><th>Stock</th><th>MRP/Unit</th><th>Purchase/Unit</th><th>Source</th><th>Actions</th></tr></thead><tbody>${(batches||[]).map(b=>`<tr><td>${esc(b.batch_number)}</td><td>${fmtDate(b.expiry_date)}</td><td>${b.quantity} ${esc(b.unit_name)}</td><td>${currency(b.mrp_per_unit)}</td><td>${currency(b.purchase_price_per_unit)}</td><td>${b.last_purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${b.last_purchase_bill_id})">Bill #${b.last_purchase_bill_id}</span>`:'-'}</td><td><button class="btn secondary small" onclick="editBatch(${b.id})">Edit</button><button class="btn danger small" onclick="deleteBatch(${b.id},${id})">Delete</button></td></tr>`).join('')}</tbody></table></div></div><div class="section"><h3>Stock Source History</h3><div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Qty</th><th>Source</th></tr></thead><tbody>${(tx||[]).map(t=>`<tr><td>${fmtDate(t.transaction_date)}</td><td>${esc(t.transaction_type)}</td><td>${t.direction==='IN'?'+':'-'}${t.quantity}</td><td>${t.purchase_bill_id?`🧾 Bill #${t.purchase_bill_id}`:'Manual stock transaction'}</td></tr>`).join('')}</tbody></table></div></div><div class="footer-actions"><button class="btn secondary" onclick="closeModal('medicineDetailModal');editMedicine(${id})">✏️ Edit Medicine</button><button class="btn danger" onclick="closeModal('medicineDetailModal');deleteMedicine(${id})">🗑 Delete Medicine</button></div>`;showModal('medicineDetailModal');}
 async function editBatch(id){const {data:b}=await supabaseClient.from('medicine_batches').select('*').eq('id',id).single();if(!b)return;const qty=prompt('Quantity in stock',b.quantity);if(qty===null)return;const mrp=prompt('MRP per Unit/Pack',b.mrp_per_unit);if(mrp===null)return;const pp=prompt('Purchase Price per Unit/Pack',b.purchase_price_per_unit);if(pp===null)return;const r=await supabaseClient.from('medicine_batches').update({quantity:Number(qty),mrp_per_unit:Number(mrp),purchase_price_per_unit:Number(pp),updated_at:new Date().toISOString()}).eq('id',id);if(r.error){showError(r.error.message);return;}alert('Batch updated.');await refreshDashboard();}
@@ -569,13 +629,48 @@ function monthYearFromText(text){
   return '';
 }
 function extractScanFields(text){
-  const raw=String(text||'').replace(/\r/g,'\n'); const flat=raw.replace(/\n+/g,'\n');
-  let batch='',m=flat.match(/(?:B\.?\s*No\.?|Batch(?:\s*No\.?|\s*Number)?)[\s:.-]*([A-Z0-9][A-Z0-9\/-]{2,})/i);if(m)batch=m[1].trim();
-  let mrp='';m=flat.match(/(?:M\.?R\.?P\.?|MRP|MAX\.?\s*RETAIL\s*PRICE)[^0-9]{0,25}(?:Rs\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);if(m)mrp=m[1];
+  const raw=String(text||'').replace(/\r/g,'\n');
+  const flat=raw.replace(/\n+/g,'\n');
+
+  let batch='',m=flat.match(/(?:B\.?\s*No\.?|Batch(?:\s*No\.?|\s*Number)?)[\s:.-]*([A-Z0-9][A-Z0-9\/-]{2,})/i);
+  if(m)batch=m[1].trim();
+
+  let mrp='';
+  m=flat.match(/(?:M\.?R\.?P\.?|MRP|MAX\.?\s*RETAIL\s*PRICE)[^0-9]{0,25}(?:Rs\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);
+  if(m)mrp=m[1];
+
+  let purchasePrice='';
+  m=flat.match(/(?:P(?:URCHASE)?\.?\s*(?:PRICE|RATE)|P\.?\s*RATE|PTR|COST)[^0-9]{0,25}(?:Rs\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);
+  if(m)purchasePrice=m[1];
+
+  let quantity='';
+  m=flat.match(/(?:QTY|QUANTITY)[^0-9]{0,15}([0-9]+(?:\.[0-9]+)?)/i);
+  if(m)quantity=m[1];
+
   const expiry=monthYearFromText(flat);
-  let company='';const lines=flat.split(/\n/).map(x=>normalizeScanText(x)).filter(Boolean);const companyIndex=lines.findIndex(x=>/(marketed|manufactured|mfg\.?\s*by)/i.test(x));if(companyIndex>=0){const same=lines[companyIndex].replace(/^.*?(?:marketed|manufactured|mfg\.?\s*by)[^:]*[:\-]?\s*/i,'').trim();company=same.length>3?same:(lines[companyIndex+1]||'');}if(!company){const hit=lines.find(x=>/\b(?:SAN\s*LABS|MICRO\s*LABS|ARISTO|SUN\s*PHARMA|CIPLA|TORRENT|ABBOTT|MANKIND|ALBERT\s*DAVID)\b/i.test(x));if(hit)company=hit;}
-  return {batch,expiry,mrp,company,raw:flat};
+
+  let company='';
+  const lines=flat.split(/\n/).map(x=>normalizeScanText(x)).filter(Boolean);
+  const companyIndex=lines.findIndex(x=>/(marketed|manufactured|mfg\.?\s*by)/i.test(x));
+  if(companyIndex>=0){
+    const same=lines[companyIndex].replace(/^.*?(?:marketed|manufactured|mfg\.?\s*by)[^:]*[:\-]?\s*/i,'').trim();
+    company=same.length>3?same:(lines[companyIndex+1]||'');
+  }
+  if(!company){
+    const hit=lines.find(x=>/\b(?:SAN\s*LABS|MICRO\s*LABS|ARISTO|SUN\s*PHARMA|CIPLA|TORRENT|ABBOTT|MANKIND|ALBERT\s*DAVID|EAST\s*INDIA\s*PHARMACEUTICAL)\b/i.test(x));
+    if(hit)company=hit;
+  }
+
+  let stockist='';
+  const stockistIndex=lines.findIndex(x=>/(stockist|distributor|wholesaler|supplied\s*by)/i.test(x));
+  if(stockistIndex>=0){
+    stockist=lines[stockistIndex].replace(/^.*?(?:stockist|distributor|wholesaler|supplied\s*by)[^:]*[:\-]?\s*/i,'').trim();
+    if(stockist.length<3)stockist=lines[stockistIndex+1]||'';
+  }
+
+  return {batch,expiry,mrp,purchasePrice,quantity,company,stockist,raw:flat};
 }
+
 async function decodeBarcodeWithZXing(file){
   try{if(!window.ZXingBrowser?.BrowserMultiFormatReader)return '';const reader=new ZXingBrowser.BrowserMultiFormatReader();const url=URL.createObjectURL(file);const img=new Image();img.src=url;await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;});const r=await reader.decodeFromImageElement(img);URL.revokeObjectURL(url);return r?.getText?.()||'';}catch(e){return '';}
 }
@@ -597,34 +692,189 @@ function findBestMedicine(ocrText){
 }
 async function processMedicineScan(input){const file=input.files?.[0];if(!file)return;await processMedicineScanFile(file,false,'');}
 async function processMedicineScanFile(file,fromCamera=false,barcodeHint=''){
-  if(!file||medicineScanBusy)return;medicineScanBusy=true;
-  const status=document.getElementById('medicineScanStatus'),preview=document.getElementById('medicineScanPreview'),result=document.getElementById('medicineScanResult'),useBtn=document.getElementById('useMedicineScanBtn');
+  if(!file||medicineScanBusy)return;
+  medicineScanBusy=true;
+  const status=document.getElementById('medicineScanStatus');
+  const preview=document.getElementById('medicineScanPreview');
+  const result=document.getElementById('medicineScanResult');
+  const useBtn=document.getElementById('useMedicineScanBtn');
   try{
-    const url=URL.createObjectURL(file);preview.src=url;preview.classList.remove('hidden');result.classList.add('hidden');useBtn.classList.add('hidden');
+    const url=URL.createObjectURL(file);
+    preview.src=url;
+    preview.classList.remove('hidden');
+    result.classList.add('hidden');
+    useBtn.classList.add('hidden');
     status.textContent=fromCamera?'Camera image captured. Reading printed details…':'Reading barcode / DataMatrix…';
-    const barcode=barcodeHint||await detectBarcode(file);status.textContent=barcode?'Barcode/DataMatrix detected. Reading printed details…':'No readable barcode found. Running enhanced OCR…';
-    let ocrText='';try{ocrText=await ocrMedicineImage(file,status);}catch(e){console.error(e);status.textContent='OCR could not complete. Please take a clearer photo or enter the information manually.';}
-    const fields=extractScanFields(ocrText);await loadMedicines();const best=findBestMedicine(ocrText);
-    medicineScanData={barcode,ocrText,fields,medicine:best};
-    result.innerHTML=`<h3 style="margin-top:0;color:#20586f">Recognized Information</h3><div class="recognized-grid"><div><b>Medicine</b>${best?esc(`${best.medicine_name}${best.strength?' '+best.strength:''}`):esc('Not confidently matched')}</div><div><b>Batch</b>${esc(fields.batch||'Not detected')}</div><div><b>Expiry</b>${esc(fields.expiry||'Not detected')}</div><div><b>MRP</b>${fields.mrp?currency(fields.mrp):'Not detected'}</div><div><b>Pharma Company</b>${esc(fields.company||'Not detected')}</div><div><b>Barcode</b>${esc(barcode||'Not detected')}</div></div><details style="margin-top:10px"><summary>View OCR text</summary><pre style="white-space:pre-wrap;font-size:12px">${esc(ocrText||'No readable text')}</pre></details><div class="notice">Please verify everything before saving. For best results, photograph the original strip/box directly rather than a screenshot.</div>`;
-    result.classList.remove('hidden');useBtn.classList.remove('hidden');status.textContent=barcode?'Scan + OCR complete.':'OCR complete.';
-  }finally{medicineScanBusy=false;}
+
+    const barcode=barcodeHint||await detectBarcode(file);
+    status.textContent=barcode?'Barcode/DataMatrix detected. Reading printed details…':'No readable barcode found. Running enhanced OCR…';
+
+    let ocrText='';
+    try{
+      ocrText=await ocrMedicineImage(file,status);
+    }catch(e){
+      console.error(e);
+      status.textContent='OCR could not complete. You can still enter the values manually.';
+    }
+
+    const fields=extractScanFields(ocrText);
+    await loadMedicines();
+    const best=findBestMedicine(ocrText);
+    const guessedName=best?.medicine_name||guessMedicineNameFromOcr(ocrText);
+    const guessedStrength=best?.strength||guessStrengthFromOcr(ocrText);
+    const guessedGeneric=best?.generic_name||'';
+
+    medicineScanData={
+      barcode,
+      ocrText,
+      fields,
+      medicine:best,
+      guessedName,
+      guessedStrength,
+      guessedGeneric
+    };
+
+    renderMedicineScanReview();
+    result.classList.remove('hidden');
+    useBtn.classList.remove('hidden');
+    status.textContent=barcode?'Scan + OCR complete. Review every field before using.':'OCR complete. Review every field before using.';
+  }finally{
+    medicineScanBusy=false;
+  }
 }
+
+function scanConfidence(value,kind='normal'){
+  if(value===undefined||value===null||String(value).trim()==='')return '<div class="scan-confidence confidence-low">🔴 Not detected — enter manually</div>';
+  if(kind==='matched')return '<div class="scan-confidence confidence-high">🟢 Matched to your medicine list</div>';
+  return '<div class="scan-confidence confidence-review">🟡 Review before saving</div>';
+}
+
+function scanInput(label,id,value,type='text',extra=''){
+  return `<div class="scan-field"><label>${esc(label)}</label><input id="${id}" type="${type}" value="${esc(value??'')}" ${extra}>${scanConfidence(value)}</div>`;
+}
+
+function renderMedicineScanReview(){
+  const result=document.getElementById('medicineScanResult');
+  const d=medicineScanData||{},f=d.fields||{},t=medicineScanTarget||{};
+  const expiryValue=f.expiry||'';
+  const target=t.type||'unbilled';
+
+  let html=`<h3 style="margin-top:0;color:#20586f">🤖 Review Extracted Information</h3>
+  <div class="scan-source-note"><b>Important:</b> AI/OCR may misread medicine names, batch numbers, prices or dates. Every field below is editable. Verify it against the original photo before saving.</div>
+  <div class="scan-field-grid">`;
+
+  if(target==='master'){
+    html+=scanInput('Medicine Name','scanMedicineName',d.guessedName||'','text','required');
+    html+=scanInput('Generic Name','scanGenericName',d.guessedGeneric||'');
+    html+=scanInput('Strength','scanStrength',d.guessedStrength||'');
+    html+=`<div class="scan-field"><label>Dosage Form</label><select id="scanDosageForm"><option value="">Select</option>${['Tablet','Capsule','Syrup','Roll-on','Spray','Drops','Sachet','Mouth Dissolving Strip','Gel / Ointment','Cream','Lotion','Powder','Inhaler','Injection','Other'].map(x=>`<option ${d.medicine?.dosage_form===x?'selected':''}>${esc(x)}</option>`).join('')}</select>${scanConfidence(d.medicine?.dosage_form,'matched')}</div>`;
+    html+=scanInput('Unit / Pack','scanPackUnit',d.medicine?.pack_unit||'');
+    html+=scanInput('Base Unit','scanBaseUnit',d.medicine?.base_unit||'');
+    html+=scanInput('Units per Pack','scanUnitsPerPack',d.medicine?.units_per_pack||'','number','min="0.01" step="0.01"');
+    html+=scanInput('Pharma Company','scanCompany',f.company||'');
+  }else{
+    html+=scanInput('Medicine Name','scanMedicineName',d.guessedName||'','text','required');
+    html+=scanInput('Batch Number','scanBatch',f.batch||'');
+    html+=scanInput('Expiry','scanExpiry',expiryValue,'month');
+    html+=scanInput('MRP / Pack','scanMrp',f.mrp||'','number','min="0" step="0.01"');
+    html+=scanInput('Purchase Price / Pack','scanPurchasePrice',f.purchasePrice||'','number','min="0" step="0.01"');
+    html+=scanInput('Quantity (Packs)','scanQuantity',f.quantity||'','number','min="0.01" step="0.01"');
+    html+=scanInput('Pharma Company','scanCompany',f.company||'');
+    html+=scanInput('Stockist','scanStockist',f.stockist||'');
+    html+=scanInput('Barcode / Code','scanBarcode',d.barcode||'');
+  }
+
+  html+=`</div>
+  <div class="scan-actions">
+    <button type="button" class="btn secondary" onclick="renderMedicineScanReview()">↻ Refresh Review</button>
+  </div>
+  <details style="margin-top:12px"><summary>View raw OCR text</summary><pre style="white-space:pre-wrap;font-size:12px">${esc(d.ocrText||'No readable text')}</pre></details>`;
+  result.innerHTML=html;
+}
+
+function guessMedicineNameFromOcr(text){
+  const lines=String(text||'').split(/\n/).map(x=>normalizeScanText(x)).filter(x=>x.length>=3);
+  const bad=/^(batch|b\.?\s*no|m\.?r\.?p|mrp|expiry|exp|manufactured|marketed|mfg|composition|each|tablet|capsule|syrup|store|price|quantity|qty|ip|usp|bp|mg|ml|g)$/i;
+  const candidate=lines.find(x=>/[A-Za-z]{3,}/.test(x)&&!bad.test(x)&&x.length<=80);
+  return candidate||'';
+}
+
+function guessStrengthFromOcr(text){
+  const m=String(text||'').match(/\b\d+(?:\.\d+)?\s*(?:mg|mcg|g|kg|ml|mL|IU|%)(?:\s*\/\s*\w+)?\b/i);
+  return m?m[0]:'';
+}
+
 function useMedicineScanResult(){
   if(!medicineScanTarget||!medicineScanData){alert('No scan result is available.');return;}
-  const d=medicineScanData,f=d.fields,t=medicineScanTarget;
+  const d=medicineScanData;
+  const f=d.fields||{};
+  const t=medicineScanTarget;
+
+  const val=id=>(document.getElementById(id)?.value||'').trim();
+
   if(t.type==='master'){
-    if(d.medicine){document.getElementById('medicineName').value=d.medicine.medicine_name||'';document.getElementById('genericName').value=d.medicine.generic_name||'';document.getElementById('strength').value=d.medicine.strength||'';document.getElementById('dosageForm').value=d.medicine.dosage_form||'';document.getElementById('packUnit').value=d.medicine.pack_unit||'';document.getElementById('baseUnit').value=d.medicine.base_unit||'';document.getElementById('unitsPerPack').value=d.medicine.units_per_pack||'';updateMinimumStockHelp();}else if(f.company){document.getElementById('medicineNotes').value=`Manufacturer/Company detected: ${f.company}`;}
-    closeMedicineScan();alert('Recognized information has been entered. Please verify the medicine fields before saving.');return;
+    document.getElementById('medicineName').value=val('scanMedicineName');
+    document.getElementById('genericName').value=val('scanGenericName');
+    document.getElementById('strength').value=val('scanStrength');
+    document.getElementById('dosageForm').value=val('scanDosageForm');
+    document.getElementById('packUnit').value=val('scanPackUnit');
+    document.getElementById('baseUnit').value=val('scanBaseUnit');
+    document.getElementById('unitsPerPack').value=val('scanUnitsPerPack');
+    updatePackFields(false);
+    if(val('scanCompany'))document.getElementById('medicineNotes').value=`Manufacturer/Company detected: ${val('scanCompany')}`;
+    closeMedicineScan();
+    alert('Reviewed scan information has been entered. Verify the medicine fields once more before saving.');
+    return;
   }
-  const div=t.row;if(!div){alert('No stock/purchase row is selected.');return;}
-  if(d.medicine){if(t.type==='bill')selectBillMedicine(div,d.medicine.id,true);else selectUnbilledMedicine(div,d.medicine.id,true);}
-  if(f.batch)div.querySelector(t.type==='bill'?'.bill-batch':'.unbilled-batch').value=f.batch;
-  if(f.expiry){const el=div.querySelector(t.type==='bill'?'.bill-expiry':'.unbilled-expiry');if(t.type==='bill')el.value=f.expiry+'-01';else el.value=f.expiry;}
-  if(f.mrp)div.querySelector(t.type==='bill'?'.bill-mrp':'.unbilled-mrp').value=f.mrp;
+
+  const div=t.row;
+  if(!div){alert('No purchase/stock row is selected.');return;}
+
+  const medicineName=val('scanMedicineName');
+  const matched=d.medicine;
+  if(matched){
+    if(t.type==='bill')selectBillMedicine(div,matched.id,true);
+    else selectUnbilledMedicine(div,matched.id,true);
+  }else if(medicineName){
+    const input=div.querySelector(t.type==='bill'?'.bill-medicine':'.unbilled-medicine');
+    if(input)input.value=medicineName;
+  }
+
+  if(val('scanBatch')){
+    const el=div.querySelector(t.type==='bill'?'.bill-batch':'.unbilled-batch');
+    if(el)el.value=val('scanBatch');
+  }
+  if(val('scanExpiry')){
+    const el=div.querySelector(t.type==='bill'?'.bill-expiry':'.unbilled-expiry');
+    if(el)el.value=val('scanExpiry');
+  }
+  if(val('scanMrp')){
+    const el=div.querySelector(t.type==='bill'?'.bill-mrp':'.unbilled-mrp');
+    if(el)el.value=val('scanMrp');
+  }
+  if(val('scanPurchasePrice')){
+    const el=div.querySelector(t.type==='bill'?'.bill-price':'.unbilled-price');
+    if(el)el.value=val('scanPurchasePrice');
+  }
+  if(val('scanQuantity')){
+    const el=div.querySelector(t.type==='bill'?'.bill-qty':'.unbilled-qty');
+    if(el)el.value=val('scanQuantity');
+  }
+
+  const company=val('scanCompany');
+  const stockist=val('scanStockist');
+  if(company){
+    const companyInput=document.getElementById(t.type==='bill'?'pharmaCompanyName':'unbilledCompany');
+    if(companyInput)companyInput.value=company;
+  }
+  if(stockist){
+    const stockistInput=document.getElementById(t.type==='bill'?'stockistName':'unbilledStockist');
+    if(stockistInput)stockistInput.value=stockist;
+  }
+
   if(t.type==='bill')updateBillTotals();else updateUnbilledTotals(div);
-  if(f.company){const companyInput=document.getElementById(t.type==='bill'?'pharmaCompanyName':'unbilledCompany');if(companyInput&&!companyInput.value.trim())companyInput.value=f.company;}
-  closeMedicineScan();alert('Recognized information has been entered. Please verify it before saving.');
+  closeMedicineScan();
+  alert('Reviewed scan information has been entered. Verify it against the original image before saving.');
 }
 
 async function saveUnbilledStock(e){e.preventDefault();if(!(await requireSession()))return;try{const rows=[...document.querySelectorAll('#unbilledItems .bill-item')];if(!rows.length)return;const {data:entry,error:ee}=await supabaseClient.from('medicine_stock_entries').insert({entry_date:document.getElementById('unbilledDate').value,stockist_name:document.getElementById('unbilledStockist').value.trim()||null,pharma_company_name:document.getElementById('unbilledCompany').value.trim()||null,reference_number:document.getElementById('unbilledReference').value.trim()||null,status:'UNBILLED'}).select().single();if(ee)throw ee;for(const row of rows){const medicineId=Number(row.querySelector('.unbilled-medicine-id').value),batch=row.querySelector('.unbilled-batch').value.trim(),expiryMonth=row.querySelector('.unbilled-expiry').value,expiry=expiryMonth?expiryMonth+'-01':'',qty=Number(row.querySelector('.unbilled-qty').value)||0,units=Number(row.querySelector('.unbilled-units-per-pack').value)||1;if(!medicineId||!batch||!expiry||qty<=0)throw new Error('Complete medicine, batch, expiry and quantity for every item.');const mrp=Number(row.querySelector('.unbilled-mrp').value)||0,price=Number(row.querySelector('.unbilled-price').value)||0,baseQty=qty*units;const {data:item,error:ie}=await supabaseClient.from('medicine_stock_entry_items').insert({stock_entry_id:entry.id,medicine_id:medicineId,batch_number:batch,expiry_date:expiry,unit_name:await getMedicineUnit(medicineId),units_per_pack:units,quantity_packs:qty,quantity_base_units:baseQty,mrp_per_unit:mrp,purchase_price_per_unit:price,linked_quantity_base_units:0}).select().single();if(ie)throw ie;await addUnbilledStockToBatch(entry,item,medicineId,batch,expiry,qty,baseQty,mrp,price);}alert('Unbilled stock saved successfully.');openView('mainView');await refreshDashboard();}catch(err){showError(err.message);}}
@@ -723,7 +973,7 @@ async function loadStockEntryHistory(){
     const unlinked=Math.max(0,r.totalBase-linked);
     const billRefs=[...new Map(r.bills.map(b=>[b.purchase_bill_id,b])).values()].map(b=>b.purchase_bills?.bill_number).filter(Boolean);
     const canEdit=r.status==='UNBILLED';
-    return `<div class="stock-entry-card" onclick="viewStockEntry(${r.entry.id})">
+    return `<div class="stock-entry-card">
       <div class="stock-entry-head"><div><div class="stock-entry-title">Stock Entry #SE-${String(r.entry.id).padStart(5,'0')}</div><div class="muted">${fmtDate(r.entry.entry_date)} · ${itemNames||'No medicine items'}${more}</div></div><span class="badge stock-entry-status ${st.cls}">${st.label}</span></div>
       <div class="stock-entry-meta">
         <div><b>Total Entered</b>${esc(formatBaseUnitsForItems(r.items,units))}</div>
@@ -733,8 +983,8 @@ async function loadStockEntryHistory(){
       </div>
       <div class="muted" style="margin-top:10px">${esc(r.entry.stockist_name||'No stockist')} ${r.entry.pharma_company_name?'· '+esc(r.entry.pharma_company_name):''}${r.entry.reference_number?' · Ref: '+esc(r.entry.reference_number):''}</div>
       <div class="stock-entry-actions">
-        <button class="btn small" onclick="event.stopPropagation();viewStockEntry(${r.entry.id})">View</button>
-        ${canEdit?`<button class="btn secondary small" onclick="event.stopPropagation();editStockEntry(${r.entry.id})">✏️ Edit</button><button class="btn danger small" onclick="event.stopPropagation();deleteStockEntry(${r.entry.id})">🗑 Delete</button>`:'<span class="muted">🔒 Linked stock entry — edit through linked purchase bill/adjustment</span>'}
+        <button type="button" class="btn small" onclick="viewStockEntry(${r.entry.id})">👁 View</button>
+        ${canEdit?`<button type="button" class="btn secondary small" onclick="editStockEntry(${r.entry.id})">✏️ Edit</button><button type="button" class="btn danger small" onclick="deleteStockEntry(${r.entry.id})">🗑 Delete</button>`:'<span class="muted">🔒 Linked stock entry — edit through linked purchase bill/adjustment</span>'}
       </div>
     </div>`;
   }).join('')}</div>`:'<div class="empty">No stock entries match the selected filters.</div>';
@@ -813,6 +1063,7 @@ async function editStockEntry(id){
       alert('This stock entry is already linked to a purchase bill. Edit the linked purchase bill or use Stock Adjustment so the stock audit remains correct.');
       return;
     }
+    closeModal('stockEntryDetailModal');
     document.getElementById('stockEntryDetailTitle').textContent=`✏️ Edit Stock Entry #SE-${String(id).padStart(5,'0')}`;
     document.getElementById('stockEntryDetailContent').innerHTML=`
       <form id="stockEntryEditForm" onsubmit="saveStockEntryEdit(event,${id})">
@@ -838,6 +1089,7 @@ async function editStockEntry(id){
         }).join('')}</div>
         <div class="footer-actions"><button type="button" class="btn secondary" onclick="viewStockEntry(${id})">Cancel</button><button class="btn" type="submit">Save Stock Entry Changes</button></div>
       </form>`;
+    showModal('stockEntryDetailModal');
   }catch(e){showError(e.message);}
 }
 
@@ -911,8 +1163,9 @@ async function deleteStockEntry(id){
     }
     if(!items.length){if(confirm('Delete this empty stock entry?')){await supabaseClient.from('medicine_stock_entries').delete().eq('id',id);await loadStockEntryHistory();}return;}
     for(const item of items){
-      const {data:tx,error:te}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('stock_entry_item_id',item.id).eq('transaction_type','PURCHASE').limit(1).single();
+      const {data:tx,error:te}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('stock_entry_item_id',item.id).eq('transaction_type','PURCHASE').limit(1).maybeSingle();
       if(te)throw te;
+      if(!tx)throw new Error(`Purchase stock transaction is missing for ${item.medicines?.medicine_name||'this item'}. Deletion is blocked to protect the audit trail.`);
       const {data:out,error:oe}=await supabaseClient.from('medicine_stock_transactions').select('id').eq('batch_id',tx.batch_id).eq('direction','OUT').limit(1);
       if(oe)throw oe;
       if((out||[]).length){
@@ -922,8 +1175,9 @@ async function deleteStockEntry(id){
     }
     if(!confirm(`Delete Stock Entry #SE-${String(id).padStart(5,'0')}? This will reverse its received stock and remove the entry. This action is safe only because it is still unbilled and no stock from its batches has been removed.`))return;
     for(const item of items){
-      const {data:tx,error:te}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('stock_entry_item_id',item.id).eq('transaction_type','PURCHASE').limit(1).single();
+      const {data:tx,error:te}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('stock_entry_item_id',item.id).eq('transaction_type','PURCHASE').limit(1).maybeSingle();
       if(te)throw te;
+      if(!tx)throw new Error(`Purchase stock transaction is missing for ${item.medicines?.medicine_name||'this item'}. Deletion is blocked to protect the audit trail.`);
       const {data:batch,error:be}=await supabaseClient.from('medicine_batches').select('*').eq('id',tx.batch_id).single();
       if(be)throw be;
       const units=Number(tx.units_per_pack||batch.units_per_pack||1);
