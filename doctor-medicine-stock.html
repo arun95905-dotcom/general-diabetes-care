@@ -8,7 +8,28 @@
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f8fb;color:#26343b}.page{max-width:1250px;margin:auto;padding:18px}.shell{background:#fff;border-radius:22px;box-shadow:0 8px 30px rgba(33,79,99,.12);padding:24px}.header{text-align:center;padding:10px 10px 20px}.header-icon{font-size:42px}.label{font-size:12px;letter-spacing:2px;font-weight:700;color:#2d8eb2;margin:8px 0}.header h1{margin:0;font-size:30px;color:#174b63}.sub{margin:8px 0 0;color:#6d7b82}.view{display:none}.view.active{display:block}.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;background:#1e7fa3;color:#fff}.btn.secondary{background:#eef5f8;color:#24566a}.btn.danger{background:#c94d4d}.btn.success{background:#27845f}.btn.small{padding:7px 10px;font-size:12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#f9fcfd;border:1px solid #dcebf0;border-radius:16px;padding:18px}.stat{min-height:120px}.stat-icon{font-size:28px}.stat-label{font-size:13px;color:#6b7c84;margin-top:8px}.stat-value{font-size:25px;font-weight:800;color:#174b63;margin-top:5px}.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0}.menu{min-height:115px;text-align:left;background:#fff;border:1px solid #d8e8ed;border-radius:16px;padding:18px;cursor:pointer;box-shadow:0 4px 14px rgba(33,79,99,.05)}.menu:hover{border-color:#79b8cc}.menu-icon{font-size:28px}.menu strong{display:block;margin:8px 0 4px;color:#174b63}.menu span{font-size:13px;color:#6c7c83}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field label{display:block;font-size:13px;font-weight:700;color:#48606b;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid #cbdde3;border-radius:9px;font:inherit;background:#fff}.field textarea{min-height:80px;resize:vertical}.full{grid-column:1/-1}.section{border:1px solid #dcebf0;border-radius:15px;padding:16px;margin-bottom:16px}.section h3{margin:0 0 14px;color:#20586f}.items-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.bill-item{border:1px solid #dce8ed;border-radius:13px;padding:14px;margin:12px 0;background:#fbfdfe}.item-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr auto;gap:10px;align-items:end}.search-row{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;margin-bottom:14px}.table-wrap{overflow:auto;border:1px solid #dcebf0;border-radius:12px}.table{width:100%;border-collapse:collapse;min-width:800px}.table th,.table td{padding:11px;border-bottom:1px solid #e7eef1;text-align:left;font-size:13px}.table th{background:#f3f8fa;color:#48606b}.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:11px;font-weight:800}.paid{background:#def5e9;color:#1d7654}.pending{background:#fff0d8;color:#9a6412}.low{color:#a33b3b;font-weight:800}.normal{color:#237454;font-weight:800}.actions{display:flex;gap:7px;flex-wrap:wrap}.muted{color:#73838a;font-size:13px}.notice{padding:12px;border-radius:10px;background:#fff7df;color:#795916;margin:10px 0;font-size:13px}.success-box{padding:12px;border-radius:10px;background:#e7f7ef;color:#20694d;margin:10px 0;font-size:13px}.hidden{display:none!important}.modal-backdrop{position:fixed;inset:0;background:rgba(14,35,44,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modal-backdrop.show{display:flex}.modal{background:#fff;border-radius:18px;max-width:900px;width:100%;max-height:92vh;overflow:auto;padding:20px}.modal img{max-width:100%;max-height:65vh;display:block;margin:auto;border-radius:10px}.photo-link{font-weight:700;color:#1b789b;cursor:pointer}.autocomplete{position:relative}.suggestions{position:absolute;z-index:20;left:0;right:0;background:#fff;border:1px solid #cbdde3;border-radius:9px;max-height:220px;overflow:auto;box-shadow:0 8px 18px rgba(0,0,0,.1)}.suggestion{padding:10px;cursor:pointer;border-bottom:1px solid #edf2f4}.suggestion:hover{background:#f1f8fa}.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.summary{padding:16px;border-radius:14px;background:#f5fafc;border:1px solid #dcebf0}.summary b{display:block;font-size:22px;color:#174b63;margin-top:5px}.radio-row{display:flex;gap:18px;flex-wrap:wrap}.radio-row label{font-weight:600;font-size:13px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab{border:1px solid #d5e3e9;background:#f1f6f9;color:#315b6c;border-radius:9px;padding:9px 12px;font-weight:800;cursor:pointer}.tab.active{background:#1e7fa3;color:#fff;border-color:#1e7fa3}.stock-mode-note{padding:12px;border-radius:10px;background:#eef8fb;color:#315f70;border:1px solid #d3ebf2;margin-bottom:14px;font-size:12px;line-height:1.5}.footer-actions{display:flex;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap}
 .scan-btn{background:#6b5bd2;color:#fff}.scan-btn:hover{background:#5949c1}.scan-result{border:1px solid #dcebf0;border-radius:12px;padding:14px;background:#f8fcfd;margin-top:12px}.scan-preview{max-width:100%;max-height:260px;display:block;margin:10px auto;border-radius:10px;border:1px solid #d8e6eb}.scan-progress{font-size:13px;color:#48606b;margin-top:8px}.recognized-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.recognized-grid>div{background:#fff;border:1px solid #dcebf0;border-radius:9px;padding:10px}.recognized-grid b{display:block;color:#48606b;font-size:12px;margin-bottom:4px}@media(max-width:600px){.recognized-grid{grid-template-columns:1fr}}.empty{padding:30px;text-align:center;color:#74838a}.bill-photo-thumb{width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #d4e3e8;cursor:pointer}@media(max-width:900px){.grid,.summary-grid{grid-template-columns:repeat(2,1fr)}.item-grid{grid-template-columns:repeat(2,1fr)}.item-grid .wide{grid-column:1/-1}}@media(max-width:600px){.page{padding:8px}.shell{padding:15px;border-radius:16px}.grid,.menu-grid,.form-grid,.summary-grid,.search-row{grid-template-columns:1fr}.header h1{font-size:25px}.item-grid{grid-template-columns:1fr}.topbar{align-items:stretch}.topbar .btn{width:100%}.footer-actions .btn{width:100%}.table{min-width:900px}}
-.link-button{background:none;border:0;padding:0;margin:0;text-align:left;color:inherit;cursor:pointer;font:inherit}.link-button:hover{text-decoration:underline}</style>
+
+.stock-entry-list{display:grid;gap:12px}
+.stock-entry-card{border:1px solid #dcebf0;border-radius:14px;background:#fff;padding:15px;cursor:pointer;transition:.15s}
+.stock-entry-card:hover{border-color:#79b8cc;box-shadow:0 5px 16px rgba(33,79,99,.08)}
+.stock-entry-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.stock-entry-title{font-weight:800;color:#174b63;font-size:16px}
+.stock-entry-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
+.stock-entry-meta>div{background:#f7fbfc;border-radius:10px;padding:10px}
+.stock-entry-meta b{display:block;color:#48606b;font-size:11px;margin-bottom:4px}
+.stock-entry-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.stock-entry-status{white-space:nowrap}
+.status-unbilled{background:#fff0d8;color:#9a6412}
+.status-partial{background:#eaf0ff;color:#405c9b}
+.status-linked{background:#def5e9;color:#1d7654}
+.detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.detail-box{background:#f7fbfc;border:1px solid #e2edf1;border-radius:10px;padding:11px}
+.detail-box b{display:block;font-size:11px;color:#48606b;margin-bottom:4px}
+.stock-entry-edit-item{border:1px solid #dcebf0;border-radius:12px;padding:13px;margin:10px 0;background:#fbfdfe}
+@media(max-width:700px){.stock-entry-meta,.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.stock-entry-head{display:block}.stock-entry-status{margin-top:8px;display:inline-block}.stock-entry-meta,.detail-grid{grid-template-columns:1fr}}
+
+</style>
 </head>
 <body>
 <div class="page"><div class="shell">
@@ -29,7 +50,8 @@
     <button class="menu" onclick="openView('medicineListView');loadMedicineList()"><div class="menu-icon">🔍</div><strong>MEDICINE LIST</strong><span>Search medicines, batches and current stock.</span></button>
     <button class="menu" onclick="openView('lowStockView');loadLowStock()"><div class="menu-icon">⚠️</div><strong>LOW STOCK</strong><span>Medicines at or below minimum stock level.</span></button>
     <button class="menu" onclick="openView('expiryView');loadExpiry()"><div class="menu-icon">⏰</div><strong>EXPIRY ALERTS</strong><span>Review batches approaching expiry.</span></button>
-    <button class="menu" onclick="openView('historyView');loadStockInventoryList();loadStockHistory()"><div class="menu-icon">📋</div><strong>STOCK HISTORY</strong><span>Trace every stock movement and its source.</span></button>
+    <button class="menu" onclick="openView('stockEntryHistoryView');loadStockEntryHistory()"><div class="menu-icon">📋</div><strong>STOCK HISTORY</strong><span>View stock entries, billed/unbilled quantity, source and edit/delete safely.</span></button>
+    <button class="menu" onclick="openView('movementHistoryView');loadStockMovementHistory()"><div class="menu-icon">🔄</div><strong>STOCK MOVEMENT HISTORY</strong><span>Audit every purchase, dispensing, damage, expiry, return and adjustment.</span></button>
     <button class="menu" onclick="openView('analyticsView');loadAnalytics()"><div class="menu-icon">📊</div><strong>MEDICINE ANALYTICS</strong><span>Purchase, dispensing and gross profit by date or period.</span></button>
   </div>
 </div>
@@ -76,9 +98,14 @@
 <div id="lowStockView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>⚠️ Low Stock</h2></div><div id="lowStockTable"></div></div>
 <div id="expiryView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>⏰ Expiry Alerts</h2></div><div class="search-row"><select id="expiryDays"><option value="30">Next 30 Days</option><option value="90" selected>Next 3 Months</option><option value="180">Next 6 Months</option><option value="0">All</option></select><button class="btn secondary" onclick="loadExpiry()">Search</button></div><div id="expiryTable"></div></div>
 
-<div id="historyView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>📋 Stock History</h2></div>
-<div class="section"><h3>📦 Current Medicine Stock</h3><div class="search-row"><input id="stockInventorySearch" placeholder="Search medicine / generic / strength / form" oninput="loadStockInventoryList()"><button class="btn secondary" onclick="loadStockInventoryList()">Search</button></div><div id="stockInventoryTable"></div></div>
-<div class="section"><h3>📜 Stock Movement History</h3><div class="search-row"><input id="historySearch" placeholder="Medicine / batch / bill number"><select id="historyType"><option value="">All Types</option><option>PURCHASE</option><option>DISPENSED</option><option>ADJUSTMENT</option><option>EXPIRED</option><option>DAMAGED</option><option>RETURNED</option></select><input id="historyDate" type="date"><button class="btn secondary" onclick="loadStockHistory()">Search</button></div><div id="historyTable"></div></div></div>
+<div id="stockEntryHistoryView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>📋 Stock Entry History</h2></div>
+<div class="stock-mode-note"><b>Stock History shows stock received/entered.</b> It is separate from Stock Movement History, which is the audit trail of every stock change after entry.</div>
+<div class="search-row"><input id="stockEntryHistorySearch" placeholder="Medicine / batch / stockist / company / bill / reference"><select id="stockEntryBillingFilter"><option value="">All Billing Status</option><option value="UNBILLED">Unbilled</option><option value="PARTIALLY_LINKED">Partially Billed</option><option value="LINKED">Fully Billed</option></select><input id="stockEntryFrom" type="date"><input id="stockEntryTo" type="date"><button class="btn secondary" onclick="loadStockEntryHistory()">Search</button></div>
+<div id="stockEntryHistoryTable"></div></div>
+
+<div id="movementHistoryView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>🔄 Stock Movement History</h2></div>
+<div class="stock-mode-note">Read-only audit trail. Use this to answer <b>what happened to the stock</b> — purchase, dispensing, adjustment, damage, expiry or return. Corrections should be made through the relevant stock-entry or adjustment workflow, not by rewriting old movements.</div>
+<div class="search-row"><input id="movementHistorySearch" placeholder="Medicine / batch / bill / stockist / reference"><select id="movementHistoryType"><option value="">All Types</option><option>PURCHASE</option><option>DISPENSED</option><option>ADJUSTMENT</option><option>EXPIRED</option><option>DAMAGED</option><option>RETURNED</option></select><input id="movementHistoryDate" type="date"><button class="btn secondary" onclick="loadStockMovementHistory()">Search</button></div><div id="movementHistoryTable"></div></div>
 
 <div id="analyticsView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>📊 Medicine Analytics</h2></div>
 <div class="section"><h3>Period</h3><div class="radio-row"><label><input type="radio" name="analyticsPeriod" value="today" onchange="applyAnalyticsPeriod()"> Today</label><label><input type="radio" name="analyticsPeriod" value="month" checked onchange="applyAnalyticsPeriod()"> This Month</label><label><input type="radio" name="analyticsPeriod" value="date" onchange="applyAnalyticsPeriod()"> Specific Date</label><label><input type="radio" name="analyticsPeriod" value="custom" onchange="applyAnalyticsPeriod()"> Custom Period</label></div><div class="form-grid" style="margin-top:12px"><div class="field"><label>From</label><input id="analyticsFrom" type="date"></div><div class="field"><label>To</label><input id="analyticsTo" type="date"></div></div><button class="btn" style="margin-top:12px" onclick="loadAnalytics()">🔍 Search</button></div>
@@ -86,19 +113,12 @@
 
 <div id="purchaseListView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>🧾 Purchase Bills</h2><button class="btn" onclick="openPurchaseForm()">+ Add Purchase Bill</button></div><div class="summary-grid"><div class="summary"><span>Total Bills</span><b id="purchaseTotalCount">0</b></div><div class="summary"><span>Pending Bills</span><b id="purchasePendingCount">0</b></div><div class="summary"><span>Paid Bills</span><b id="purchasePaidCount">0</b></div><div class="summary"><span>Pending Amount</span><b id="purchasePendingAmount">₹0.00</b></div></div><div class="search-row"><input id="purchaseSearch" placeholder="Stockist / company / medicine / bill number"><select id="purchaseStatusFilter"><option value="">All</option><option>Paid</option><option>Pending</option></select><input id="purchaseFrom" type="date"><input id="purchaseTo" type="date"><button class="btn secondary" onclick="loadPurchaseBills()">Search</button></div><div id="purchaseBillsTable"></div></div>
 
-<div id="medicineScanModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Scan Medicine</h2><button class="btn secondary" type="button" onclick="closeMedicineScan()">Close</button></div><p class="muted">Use the rear camera for a live barcode/DataMatrix scan, or take/upload a clear medicine photo. If no code is found, the portal uses enhanced OCR and tries multiple image orientations.</p><div class="section"><div class="actions" style="margin-bottom:10px"><button id="startMedicineCameraBtn" class="btn" type="button" onclick="startMedicineCamera()">📹 Start Camera</button><button id="stopMedicineCameraBtn" class="btn secondary hidden" type="button" onclick="stopMedicineCamera()">⏹ Stop Camera</button></div><video id="medicineScanVideo" class="scan-preview hidden" playsinline muted autoplay></video><div class="field"><label>Medicine Photo</label>
-<div class="actions" style="gap:10px;flex-wrap:wrap">
-<button type="button" class="btn" onclick="openMedicinePhotoCamera()">📷 Take Photo</button>
-<button type="button" class="btn secondary" onclick="openMedicinePhotoUpload()">📁 Upload Photo</button>
-</div>
-<input id="medicineScanCameraFile" type="file" accept="image/*" capture="environment" class="hidden" onchange="processMedicineScan(this)">
-<input id="medicineScanUploadFile" type="file" accept="image/*" class="hidden" onchange="processMedicineScan(this)">
-<div class="muted" style="margin-top:8px">Take a new medicine photo or choose an existing photo from your phone/files.</div>
-</div><div id="medicineScanStatus" class="scan-progress">Choose a photo or start the camera.</div><img id="medicineScanPreview" class="scan-preview hidden" alt="Medicine scan preview"><div id="medicineScanResult" class="scan-result hidden"></div></div><div class="footer-actions"><button class="btn secondary" type="button" onclick="closeMedicineScan()">Cancel</button><button id="useMedicineScanBtn" class="btn success hidden" type="button" onclick="useMedicineScanResult()">✓ Use This Information</button></div></div></div>
+<div id="medicineScanModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Scan Medicine</h2><button class="btn secondary" type="button" onclick="closeMedicineScan()">Close</button></div><p class="muted">Use the rear camera for a live barcode/DataMatrix scan, or take/upload a clear medicine photo. If no code is found, the portal uses enhanced OCR and tries multiple image orientations.</p><div class="section"><div class="actions" style="margin-bottom:10px"><button id="startMedicineCameraBtn" class="btn" type="button" onclick="startMedicineCamera()">📹 Start Camera</button><button id="stopMedicineCameraBtn" class="btn secondary hidden" type="button" onclick="stopMedicineCamera()">⏹ Stop Camera</button></div><video id="medicineScanVideo" class="scan-preview hidden" playsinline muted autoplay></video><div class="field"><label>Take / Upload Medicine Photo</label><input id="medicineScanFile" type="file" accept="image/*" capture="environment" onchange="processMedicineScan(this)"></div><div id="medicineScanStatus" class="scan-progress">Choose a photo or start the camera.</div><img id="medicineScanPreview" class="scan-preview hidden" alt="Medicine scan preview"><div id="medicineScanResult" class="scan-result hidden"></div></div><div class="footer-actions"><button class="btn secondary" type="button" onclick="closeMedicineScan()">Cancel</button><button id="useMedicineScanBtn" class="btn success hidden" type="button" onclick="useMedicineScanResult()">✓ Use This Information</button></div></div></div>
 
 <div id="billDetailModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>🧾 Purchase Bill Details</h2><button class="btn secondary" onclick="closeModal('billDetailModal')">Close</button></div><div id="billDetailContent"></div></div></div>
 <div id="photoModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Purchase Bill Photo</h2><button class="btn secondary" onclick="closeModal('photoModal')">Close</button></div><div id="photoContent"></div></div></div>
 <div id="medicineDetailModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>💊 Medicine Details</h2><button class="btn secondary" onclick="closeModal('medicineDetailModal')">Close</button></div><div id="medicineDetailContent"></div></div></div>
+<div id="stockEntryDetailModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2 id="stockEntryDetailTitle">📦 Stock Entry Details</h2><button class="btn secondary" onclick="closeModal('stockEntryDetailModal')">Close</button></div><div id="stockEntryDetailContent"></div></div></div>
 
 </div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -110,7 +130,6 @@ const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
 const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const PHOTO_BUCKET="medicine-purchase-bills";
 let medicines=[]; let selectedTransactionMedicine=null; let billItemCounter=0; let editingMedicineId=null; let editingPurchaseBillId=null; let existingPurchasePhotoPath=null; let existingPurchasePhotoUrl=null;
-let medicineOcrWorker=null; let medicineOcrWorkerPromise=null; let medicineOcrWarm=false;
 
 function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function currency(v){return '₹'+Number(v||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -126,7 +145,7 @@ function showModal(id){document.getElementById(id).classList.add('show');}
 function showError(msg){alert('Unable to complete this action.\n\n'+msg);}
 async function requireSession(){const {data,error}=await supabaseClient.auth.getSession();if(error||!data.session){window.location.href='doctor-login.html';return null;}return data.session;}
 
-async function init(){if(!(await requireSession()))return;setTodayDefaults();await refreshDashboard();warmMedicineOcr();}
+async function init(){if(!(await requireSession()))return;setTodayDefaults();await refreshDashboard();}
 function setTodayDefaults(){const t=todayIST();['purchaseDate','paymentDate','unbilledDate','dispenseDate','adjustDate','analyticsTo'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=t;});const from=document.getElementById('analyticsFrom');if(from&&!from.value)from.value=firstDayIST();}
 async function refreshDashboard(){await loadMedicines();document.getElementById('statMedicines').textContent=medicines.length;let stock=0,low=0;medicines.forEach(m=>{const q=Number(m.total_stock||0);stock+=q;if(q<=Number(m.minimum_stock_level||0))low++;});document.getElementById('statStock').textContent=stock.toLocaleString('en-IN');document.getElementById('statLow').textContent=low;const today=todayIST(),end=new Date(today+'T00:00:00');end.setDate(end.getDate()+90);const endDate=end.toISOString().slice(0,10);const {data}=await supabaseClient.from('medicine_batches').select('id').gt('quantity',0).lte('expiry_date',endDate).gte('expiry_date',today);document.getElementById('statExpiry').textContent=(data||[]).length;}
 async function loadMedicines(){const {data,error}=await supabaseClient.from('medicines').select('*').order('medicine_name');if(error){console.error(error);medicines=[];return;}const {data:batches}=await supabaseClient.from('medicine_batches').select('medicine_id,quantity');const totals={};(batches||[]).forEach(b=>totals[b.medicine_id]=(totals[b.medicine_id]||0)+Number(b.quantity||0));medicines=(data||[]).map(m=>({...m,total_stock:totals[m.id]||0}));}
@@ -188,7 +207,6 @@ function prepareStockEntry(){document.getElementById('transactionDate').value=to
 function updateTransactionForm(){}
 async function saveStockTransaction(e){e.preventDefault();const medicineId=Number(document.getElementById('transactionMedicineId').value),batchId=Number(document.getElementById('transactionBatch').value),type=document.getElementById('transactionType').value,qty=Number(document.getElementById('transactionQuantity').value);if(!medicineId||!batchId||qty<=0){alert('Select medicine, batch and quantity.');return;}const {data:b,error}=await supabaseClient.from('medicine_batches').select('*').eq('id',batchId).single();if(error){showError(error.message);return;}const outbound=type!=='ADJUSTMENT';if(outbound&&Number(b.quantity)<qty){alert(`Insufficient stock. Available: ${b.quantity} ${b.unit_name}`);return;}let newQty=Number(b.quantity);if(type==='ADJUSTMENT'){const mode=confirm('For ADJUSTMENT, press OK to ADD the quantity to stock. Press Cancel to REMOVE the quantity from stock.');if(mode)newQty+=qty;else{if(newQty<qty){alert('Cannot reduce below zero.');return;}newQty-=qty;}}else if(type==='RETURNED'){newQty-=qty;}else newQty-=qty;const r=await supabaseClient.from('medicine_batches').update({quantity:newQty,updated_at:new Date().toISOString()}).eq('id',batchId);if(r.error){showError(r.error.message);return;}const direction=(type==='ADJUSTMENT'?newQty>=Number(b.quantity)?'IN':'OUT':'OUT');const tx=await supabaseClient.from('medicine_stock_transactions').insert({medicine_id:medicineId,batch_id:batchId,transaction_type:type,quantity:qty,direction,transaction_date:document.getElementById('transactionDate').value,mrp_per_unit:b.mrp_per_unit,purchase_price_per_unit:b.purchase_price_per_unit,notes:document.getElementById('transactionNotes').value.trim()||null});if(tx.error){await supabaseClient.from('medicine_batches').update({quantity:Number(b.quantity)}).eq('id',batchId);showError(tx.error.message);return;}alert('Stock transaction saved.');prepareStockEntry();await refreshDashboard();}
 
-async function loadStockHistory(){const search=(document.getElementById('historySearch')?.value||'').trim().toLowerCase(),type=document.getElementById('historyType')?.value||'',date=document.getElementById('historyDate')?.value||'';let q=supabaseClient.from('medicine_stock_transactions').select('*,medicines(medicine_name,strength),medicine_batches(batch_number),purchase_bills(bill_number,stockist_name)').order('transaction_date',{ascending:false}).order('id',{ascending:false}).limit(500);if(type)q=q.eq('transaction_type',type);if(date)q=q.eq('transaction_date',date);const {data,error}=await q;if(error){showError(error.message);return;}let rows=data||[];if(search)rows=rows.filter(t=>`${t.medicines?.medicine_name||''} ${t.medicines?.strength||''} ${t.medicine_batches?.batch_number||''} ${t.purchase_bills?.bill_number||''} ${t.purchase_bills?.stockist_name||''}`.toLowerCase().includes(search));document.getElementById('historyTable').innerHTML=rows.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Medicine</th><th>Batch</th><th>Type</th><th>Qty</th><th>Source</th></tr></thead><tbody>${rows.map(t=>`<tr><td>${fmtDate(t.transaction_date)}</td><td>${esc(t.medicines?.medicine_name||'')} ${esc(t.medicines?.strength||'')}</td><td>${esc(t.medicine_batches?.batch_number||'-')}</td><td>${esc(t.transaction_type)}</td><td>${t.direction==='IN'?'+':'-'}${t.quantity}</td><td>${t.purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${t.purchase_bill_id})">Bill ${esc(t.purchase_bills?.bill_number||t.purchase_bill_id)}</span>`:'Manual transaction'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No stock history found.</div>';}
 
 function applyAnalyticsPeriod(){const mode=document.querySelector('input[name="analyticsPeriod"]:checked')?.value||'month',t=todayIST();if(mode==='today'){document.getElementById('analyticsFrom').value=t;document.getElementById('analyticsTo').value=t;}else if(mode==='month'){document.getElementById('analyticsFrom').value=firstDayIST();document.getElementById('analyticsTo').value=t;}else if(mode==='date'){document.getElementById('analyticsFrom').value=t;document.getElementById('analyticsTo').value=t;}}
 async function loadAnalytics(){let from=document.getElementById('analyticsFrom').value,to=document.getElementById('analyticsTo').value;if(!from||!to){alert('Select a date or period.');return;}if(from>to){alert('From date cannot be after To date.');return;}const toExclusive=nextDay(to);const [purchases,dispensed]=await Promise.all([supabaseClient.from('purchase_bill_items').select('*,purchase_bills!inner(purchase_date,stockist_name,pharma_company_name,bill_number),medicines(medicine_name,generic_name,strength,dosage_form)').gte('purchase_bills.purchase_date',from).lt('purchase_bills.purchase_date',toExclusive),supabaseClient.from('medicine_stock_transactions').select('*,medicines(medicine_name,generic_name,strength,dosage_form)').eq('transaction_type','DISPENSED').gte('transaction_date',from).lte('transaction_date',to)]);if(purchases.error){showError(purchases.error.message);return;}if(dispensed.error){showError(dispensed.error.message);return;}const p=purchases.data||[],d=dispensed.data||[];const pTotal=p.reduce((s,x)=>s+Number(x.line_amount||0),0),pUnits=p.reduce((s,x)=>s+Number(x.quantity||0),0);const dUnits=d.reduce((s,x)=>s+Number(x.quantity||0),0),dMRP=d.reduce((s,x)=>s+Number(x.quantity||0)*Number(x.mrp_per_unit||0),0),dCost=d.reduce((s,x)=>s+Number(x.quantity||0)*Number(x.purchase_price_per_unit||0),0),profit=dMRP-dCost;const pm={};p.forEach(x=>{const k=x.medicine_id;pm[k]??={name:`${x.medicines?.medicine_name||''} ${x.medicines?.strength||''}`.trim(),qty:0,amount:0};pm[k].qty+=Number(x.quantity);pm[k].amount+=Number(x.line_amount||0);});const dm={};d.forEach(x=>{const k=x.medicine_id;dm[k]??={name:`${x.medicines?.medicine_name||''} ${x.medicines?.strength||''}`.trim(),qty:0,mrp:0,cost:0};dm[k].qty+=Number(x.quantity);dm[k].mrp+=Number(x.quantity)*Number(x.mrp_per_unit||0);dm[k].cost+=Number(x.quantity)*Number(x.purchase_price_per_unit||0);});const purchaseRows=Object.values(pm).sort((a,b)=>b.amount-a.amount),dispenseRows=Object.values(dm).sort((a,b)=>(b.mrp-b.cost)-(a.mrp-a.cost));document.getElementById('analyticsContent').innerHTML=`<div class="summary-grid"><div class="summary"><span>Purchase Bills / Items</span><b>${p.length}</b></div><div class="summary"><span>Purchased Units</span><b>${pUnits}</b></div><div class="summary"><span>Purchase Amount</span><b>${currency(pTotal)}</b></div><div class="summary"><span>Dispensing Gross Profit</span><b>${currency(profit)}</b></div></div><div class="section"><h3>🛒 Purchased Medicines</h3>${purchaseRows.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Units</th><th>Purchase Value</th></tr></thead><tbody>${purchaseRows.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.qty}</td><td>${currency(x.amount)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No purchases in selected period.</div>'}</div><div class="section"><h3>📅 Purchase Bill Details</h3>${p.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Medicine</th><th>Stockist</th><th>Company</th><th>Bill</th><th>Qty</th><th>Amount</th></tr></thead><tbody>${p.map(x=>`<tr><td>${fmtDate(x.purchase_bills.purchase_date)}</td><td>${esc(x.medicines?.medicine_name||'')} ${esc(x.medicines?.strength||'')}</td><td>${esc(x.purchase_bills.stockist_name)}</td><td>${esc(x.purchase_bills.pharma_company_name||'-')}</td><td>${esc(x.purchase_bills.bill_number)}</td><td>${x.quantity}</td><td>${currency(x.line_amount)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No purchase details.</div>'}</div><div class="section"><h3>💰 Dispensing Profit</h3><div class="summary-grid"><div class="summary"><span>Dispensed Units</span><b>${dUnits}</b></div><div class="summary"><span>MRP Value</span><b>${currency(dMRP)}</b></div><div class="summary"><span>Purchase Cost</span><b>${currency(dCost)}</b></div><div class="summary"><span>Gross Profit</span><b>${currency(profit)}</b></div></div>${dispenseRows.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Units</th><th>MRP Value</th><th>Cost</th><th>Gross Profit</th></tr></thead><tbody>${dispenseRows.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.qty}</td><td>${currency(x.mrp)}</td><td>${currency(x.cost)}</td><td>${currency(x.mrp-x.cost)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No dispensing transactions in selected period.</div>'}</div>`;}
@@ -217,33 +235,16 @@ function dosageDefaultsV2(form){
   }[form]||['','',''];
 }
 
-function updatePackFields(applyDefaults=false){
+function updatePackFields(applyDefaults=true){
   const form=document.getElementById('dosageForm')?.value||'';
-  const defaults={
-    Tablet:['Strip','Tablet',10],
-    Capsule:['Strip','Capsule',10],
-    Syrup:['Bottle','mL',100],
-    'Roll-on':['Bottle','mL',10],
-    Spray:['Bottle','mL',100],
-    Drops:['Bottle','mL',10],
-    Sachet:['Sachet/Pack','Sachet',1],
-    'Mouth Dissolving Strip':['Pack','Strip',10],
-    'Gel / Ointment':['Tube','g',30],
-    Cream:['Tube','g',30],
-    Lotion:['Bottle','mL',100],
-    Powder:['Pack','g',100],
-    Inhaler:['Inhaler','Dose',1],
-    Injection:['Vial/Ampoule','mL',1],
-    Other:['Unit/Pack','Unit',1]
-  };
-  const d=defaults[form];
-  if(d && applyDefaults){
+  const label=document.getElementById('unitsPerPackLabel');
+  const d=dosageDefaultsV2(form);
+  if(label)label.textContent='Units per Pack *';
+  if(applyDefaults && form && d[0]){
     document.getElementById('packUnit').value=d[0];
     document.getElementById('baseUnit').value=d[1];
     document.getElementById('unitsPerPack').value=d[2];
   }
-  const label=document.getElementById('unitsPerPackLabel');
-  if(label)label.textContent='Units per Pack *';
   updateMinimumStockHelp();
 }
 
@@ -521,7 +522,8 @@ function openMedicineScan(button,targetType='unbilled'){
   medicineScanTarget={type:targetType,row};
   medicineScanData=null;
   stopMedicineCamera();
-  ['medicineScanCameraFile','medicineScanUploadFile'].forEach(id=>{const file=document.getElementById(id);if(file)file.value='';});
+  const file=document.getElementById('medicineScanFile');
+  if(file)file.value='';
   document.getElementById('medicineScanPreview').classList.add('hidden');
   document.getElementById('medicineScanResult').classList.add('hidden');
   document.getElementById('useMedicineScanBtn').classList.add('hidden');
@@ -567,22 +569,11 @@ function monthYearFromText(text){
   return '';
 }
 function extractScanFields(text){
-  const raw=String(text||'').replace(/\r/g,'\n');const flat=raw.replace(/\n+/g,'\n');const lines=flat.split(/\n/).map(x=>normalizeScanText(x)).filter(Boolean);
-  let batch='';
-  let m=flat.match(/(?:B\.?\s*NO\.?|BATCH\s*(?:NO\.?|NUMBER)?)[\s:.-]*([A-Z0-9][A-Z0-9\/-]{2,})/i);
-  if(m)batch=m[1].trim();
-  let mrp='';
-  m=flat.match(/(?:M\.?\s*R\.?\s*P\.?|MAX\.?\s*RETAIL\s*PRICE)[^0-9]{0,35}(?:RS\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);
-  if(!m)m=flat.match(/\bMRP\s*[:\-]?\s*(?:RS\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);
-  if(m)mrp=m[1];
-  let expiry='';
-  m=flat.match(/(?:EXP(?:IRY)?\.?\s*(?:DATE)?|EXP\.?\s*DT?)[^0-9A-Z]{0,15}([A-Z]{3}\s*[-\/.]?\s*20\d{2}|\d{1,2}\s*[-\/.]\s*20\d{2}|20\d{2}\s*[-\/.]\s*\d{1,2}|\d{1,2}\s*[-\/.]\s*\d{2})/i);
-  if(m){const x=m[1].replace(/\s+/g,'');const mm=x.match(/([A-Z]{3})[-\/.]?(20\d{2}|\d{2})/i);if(mm){const months={JAN:1,FEB:2,MAR:3,APR:4,MAY:5,JUN:6,JUL:7,AUG:8,SEP:9,OCT:10,NOV:11,DEC:12};expiry=`${mm[2].length===2?2000+Number(mm[2]):mm[2]}-${String(months[mm[1].toUpperCase()]).padStart(2,'0')}`;}else{const p=x.split(/[\/.\-]/);if(p.length===2){let a=Number(p[0]),b=Number(p[1]);if(a>=2000)expiry=`${a}-${String(b).padStart(2,'0')}`;else expiry=`${b<100?2000+b:b}-${String(a).padStart(2,'0')}`;}}}
-  if(!expiry)expiry=monthYearFromText(flat);
-  let company='';
-  const companyIndex=lines.findIndex(x=>/(marketed|manufactured|mfg\.?\s*by|manufactured\s*at)/i.test(x));
-  if(companyIndex>=0){const same=lines[companyIndex].replace(/^.*?(?:marketed|manufactured|mfg\.?\s*by|manufactured\s*at)[^:]*[:\-]?\s*/i,'').trim();company=same.length>3?same:(lines[companyIndex+1]||'');}
-  if(!company){const hit=lines.find(x=>/\b(?:SAN\s*LABS|MICRO\s*LABS|ARISTO|SUN\s*PHARMA|CIPLA|TORRENT|ABBOTT|MANKIND|ALBERT\s*DAVID|AKUMS)\b/i.test(x));if(hit)company=hit;}
+  const raw=String(text||'').replace(/\r/g,'\n'); const flat=raw.replace(/\n+/g,'\n');
+  let batch='',m=flat.match(/(?:B\.?\s*No\.?|Batch(?:\s*No\.?|\s*Number)?)[\s:.-]*([A-Z0-9][A-Z0-9\/-]{2,})/i);if(m)batch=m[1].trim();
+  let mrp='';m=flat.match(/(?:M\.?R\.?P\.?|MRP|MAX\.?\s*RETAIL\s*PRICE)[^0-9]{0,25}(?:Rs\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);if(m)mrp=m[1];
+  const expiry=monthYearFromText(flat);
+  let company='';const lines=flat.split(/\n/).map(x=>normalizeScanText(x)).filter(Boolean);const companyIndex=lines.findIndex(x=>/(marketed|manufactured|mfg\.?\s*by)/i.test(x));if(companyIndex>=0){const same=lines[companyIndex].replace(/^.*?(?:marketed|manufactured|mfg\.?\s*by)[^:]*[:\-]?\s*/i,'').trim();company=same.length>3?same:(lines[companyIndex+1]||'');}if(!company){const hit=lines.find(x=>/\b(?:SAN\s*LABS|MICRO\s*LABS|ARISTO|SUN\s*PHARMA|CIPLA|TORRENT|ABBOTT|MANKIND|ALBERT\s*DAVID)\b/i.test(x));if(hit)company=hit;}
   return {batch,expiry,mrp,company,raw:flat};
 }
 async function decodeBarcodeWithZXing(file){
@@ -592,90 +583,31 @@ async function detectBarcode(file){
   const z=await decodeBarcodeWithZXing(file);if(z)return z;
   try{if(!('BarcodeDetector' in window))return '';const supported=await BarcodeDetector.getSupportedFormats();const formats=supported.filter(x=>['data_matrix','qr_code','code_128','ean_13','ean_8','upc_a','upc_e','code_39','code_93','codabar','itf'].includes(x));if(!formats.length)return '';const detector=new BarcodeDetector({formats});const bitmap=await createImageBitmap(file);const codes=await detector.detect(bitmap);bitmap.close?.();return codes?.[0]?.rawValue||'';}catch(e){return '';}
 }
-function imageToCanvas(file,maxSize=2200){return new Promise((resolve,reject)=>{const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{try{const scale=Math.min(1,maxSize/Math.max(img.naturalWidth,img.naturalHeight));const w=Math.max(1,Math.round(img.naturalWidth*scale)),h=Math.max(1,Math.round(img.naturalHeight*scale));const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,w,h);URL.revokeObjectURL(url);resolve(c);}catch(e){URL.revokeObjectURL(url);reject(e);}};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Unable to read image.'));};img.src=url;});}
-
-async function warmMedicineOcr(){
-  if(medicineOcrWorker||medicineOcrWorkerPromise||!window.Tesseract)return medicineOcrWorker;
-  medicineOcrWorkerPromise=(async()=>{
-    try{
-      const worker=await Tesseract.createWorker('eng',1,{logger:m=>{if(m.status==='loading language model'||m.status==='loading tesseract core'){const s=document.getElementById('medicineScanStatus');if(s&&!medicineOcrWarm)s.textContent='Preparing fast OCR engine…';}}});
-      await worker.setParameters({tessedit_pageseg_mode:'11',preserve_interword_spaces:'1',user_defined_dpi:'300'});
-      medicineOcrWorker=worker;medicineOcrWarm=true;return worker;
-    }catch(e){console.warn('Fast OCR worker initialization failed',e);medicineOcrWorker=null;return null;}
-    finally{medicineOcrWorkerPromise=null;}
-  })();
-  return medicineOcrWorkerPromise;
-}
-
-function preprocessMedicineCanvas(source){
-  const c=document.createElement('canvas');c.width=source.width;c.height=source.height;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(source,0,0);
-  const img=ctx.getImageData(0,0,c.width,c.height),d=img.data;
-  // Fast grayscale + contrast enhancement. Avoid expensive multi-pass OCR.
-  for(let i=0;i<d.length;i+=4){const y=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2];let v=(y-128)*1.35+128;v=v<0?0:v>255?255:v;d[i]=d[i+1]=d[i+2]=v;}
-  ctx.putImageData(img,0,0);return c;
-}
-
+function imageToCanvas(file,angle=0,cropCenter=false){return new Promise((resolve,reject)=>{const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{try{const max=1800,scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));const w=Math.max(1,Math.round(img.naturalWidth*scale)),h=Math.max(1,Math.round(img.naturalHeight*scale));const c=document.createElement('canvas'),ctx=c.getContext('2d');if(angle%180!==0){c.width=h;c.height=w;}else{c.width=w;c.height=h;}ctx.save();ctx.translate(c.width/2,c.height/2);ctx.rotate(angle*Math.PI/180);ctx.drawImage(img,-w/2,-h/2,w,h);ctx.restore();URL.revokeObjectURL(url);resolve(c);}catch(e){URL.revokeObjectURL(url);reject(e);}};img.onerror=reject;img.src=url;});}
 async function ocrMedicineImage(file,status){
   if(!window.Tesseract)throw new Error('OCR library not loaded');
-  const started=Date.now();
-  let worker=medicineOcrWorker||await warmMedicineOcr();
-  if(!worker)throw new Error('Fast OCR engine could not be initialized');
-  status.textContent=medicineOcrWarm?'Fast OCR: reading medicine text…':'Fast OCR: preparing engine…';
-  const source=await imageToCanvas(file,2200);
-  const canvas=preprocessMedicineCanvas(source);
-  // Tesseract v5 supports automatic rotation in one recognition pass, avoiding the previous 3-pass OCR.
-  const r=await worker.recognize(canvas,{rotateAuto:true},{text:true});
-  const elapsed=Math.round((Date.now()-started)/1000);
-  status.textContent=`OCR complete in ${elapsed}s.`;
-  return r.data?.text||'';
+  const canvases=[];for(const a of [0,90,-90])canvases.push(await imageToCanvas(file,a));
+  const results=[];for(let i=0;i<canvases.length;i++){status.textContent=`Enhanced OCR: orientation ${i+1}/3…`;try{const r=await Tesseract.recognize(canvases[i],'eng',{logger:m=>{if(m.status==='recognizing text')status.textContent=`Enhanced OCR ${i+1}/3… ${Math.round((m.progress||0)*100)}%`;},tessedit_pageseg_mode:'6'});if(r.data?.text)results.push(r.data.text);}catch(e){console.warn('OCR orientation failed',e);}}
+  return results.join('\n');
 }
 function findBestMedicine(ocrText){
-  const norm=normalizeMedicineText(ocrText);const words=norm.split(' ').filter(Boolean);let best=null,bestScore=0;
-  for(const med of medicines){
-    const candidates=[med.medicine_name,`${med.medicine_name} ${med.strength||''}`,med.generic_name||''].filter(Boolean);let score=0;
-    for(const c of candidates){
-      const n=normalizeMedicineText(c);if(!n)continue;
-      if(norm.includes(n))score+=20;
-      const toks=n.split(' ').filter(x=>x.length>2);
-      for(const tok of toks){
-        if(words.includes(tok))score+=8;
-        else if(words.some(w=>w.length>=4&&Math.abs(w.length-tok.length)<=2&&levenshtein(w,tok)<=Math.max(1,Math.floor(tok.length/4))))score+=4;
-      }
-    }
-    if(score>bestScore){bestScore=score;best=med;}
-  }
-  return bestScore>=6?best:null;
+  const norm=normalizeMedicineText(ocrText);let best=null,bestScore=0;
+  for(const med of medicines){const candidates=[med.medicine_name,`${med.medicine_name} ${med.strength||''}`,med.generic_name||''].filter(Boolean);let score=0;for(const c of candidates){const n=normalizeMedicineText(c);if(n&&norm.includes(n))score+=Math.min(10,n.length/2);const toks=n.split(' ').filter(x=>x.length>2);for(const tok of toks){if(norm.includes(tok))score+=2;const words=norm.split(' ');if(words.some(w=>w.length>=Math.max(4,tok.length-2)&&levenshtein(w,tok)<=Math.max(1,Math.floor(tok.length/5))))score+=1;}}if(score>bestScore){bestScore=score;best=med;}}
+  return bestScore>=3?best:null;
 }
-function openMedicinePhotoCamera(){
-  const el=document.getElementById('medicineScanCameraFile');
-  if(el){el.value='';el.click();}
-}
-function openMedicinePhotoUpload(){
-  const el=document.getElementById('medicineScanUploadFile');
-  if(el){el.value='';el.click();}
-}
-
 async function processMedicineScan(input){const file=input.files?.[0];if(!file)return;await processMedicineScanFile(file,false,'');}
 async function processMedicineScanFile(file,fromCamera=false,barcodeHint=''){
   if(!file||medicineScanBusy)return;medicineScanBusy=true;
   const status=document.getElementById('medicineScanStatus'),preview=document.getElementById('medicineScanPreview'),result=document.getElementById('medicineScanResult'),useBtn=document.getElementById('useMedicineScanBtn');
   try{
     const url=URL.createObjectURL(file);preview.src=url;preview.classList.remove('hidden');result.classList.add('hidden');useBtn.classList.add('hidden');
-    const started=Date.now();
-    status.textContent=fromCamera?'Camera image captured. Scanning…':'Scanning barcode…';
-    const barcode=barcodeHint||await detectBarcode(file);
-    let ocrText='';
-    if(barcode)status.textContent='Barcode/DataMatrix detected. Reading medicine details…';else status.textContent='No code found. Fast OCR reading text…';
-    try{
-      const remaining=28000-(Date.now()-started);
-      if(remaining<=1000)throw new Error('Scan time limit reached');
-      ocrText=await Promise.race([ocrMedicineImage(file,status),new Promise((_,reject)=>setTimeout(()=>reject(new Error('OCR timeout')),remaining))]);
-    }catch(e){console.warn('Fast OCR failed/timeout',e);status.textContent='OCR could not finish within 30 seconds. Please take a closer, well-focused photo.';}
+    status.textContent=fromCamera?'Camera image captured. Reading printed details…':'Reading barcode / DataMatrix…';
+    const barcode=barcodeHint||await detectBarcode(file);status.textContent=barcode?'Barcode/DataMatrix detected. Reading printed details…':'No readable barcode found. Running enhanced OCR…';
+    let ocrText='';try{ocrText=await ocrMedicineImage(file,status);}catch(e){console.error(e);status.textContent='OCR could not complete. Please take a clearer photo or enter the information manually.';}
     const fields=extractScanFields(ocrText);await loadMedicines();const best=findBestMedicine(ocrText);
     medicineScanData={barcode,ocrText,fields,medicine:best};
-    result.innerHTML=`<h3 style="margin-top:0;color:#20586f">Recognized Information</h3><div class="recognized-grid"><div><b>Medicine</b>${best?esc(`${best.medicine_name}${best.strength?' '+best.strength:''}`):esc('Not confidently matched')}</div><div><b>Batch</b>${esc(fields.batch||'Not detected')}</div><div><b>Expiry</b>${esc(fields.expiry||'Not detected')}</div><div><b>MRP</b>${fields.mrp?currency(fields.mrp):'Not detected'}</div><div><b>Pharma Company</b>${esc(fields.company||'Not detected')}</div><div><b>Barcode</b>${esc(barcode||'Not detected')}</div></div><details style="margin-top:10px"><summary>View OCR text</summary><pre style="white-space:pre-wrap;font-size:12px">${esc(ocrText||'No readable text')}</pre></details><div class="notice">Fast scan uses one optimized OCR pass with automatic rotation. Verify all fields before saving.</div>`;
-    result.classList.remove('hidden');useBtn.classList.remove('hidden');
-    if(!ocrText&&!barcode)status.textContent='No readable information found. Please retake the photo closer and in focus.';
+    result.innerHTML=`<h3 style="margin-top:0;color:#20586f">Recognized Information</h3><div class="recognized-grid"><div><b>Medicine</b>${best?esc(`${best.medicine_name}${best.strength?' '+best.strength:''}`):esc('Not confidently matched')}</div><div><b>Batch</b>${esc(fields.batch||'Not detected')}</div><div><b>Expiry</b>${esc(fields.expiry||'Not detected')}</div><div><b>MRP</b>${fields.mrp?currency(fields.mrp):'Not detected'}</div><div><b>Pharma Company</b>${esc(fields.company||'Not detected')}</div><div><b>Barcode</b>${esc(barcode||'Not detected')}</div></div><details style="margin-top:10px"><summary>View OCR text</summary><pre style="white-space:pre-wrap;font-size:12px">${esc(ocrText||'No readable text')}</pre></details><div class="notice">Please verify everything before saving. For best results, photograph the original strip/box directly rather than a screenshot.</div>`;
+    result.classList.remove('hidden');useBtn.classList.remove('hidden');status.textContent=barcode?'Scan + OCR complete.':'OCR complete.';
   }finally{medicineScanBusy=false;}
 }
 function useMedicineScanResult(){
@@ -725,14 +657,307 @@ function packTextV2(m,base){
 async function loadExpiry(){const days=Number(document.getElementById('expiryDays').value),today=todayIST();let q=supabaseClient.from('medicine_batches').select('*,medicines(medicine_name,strength,pack_unit,base_unit,units_per_pack)').gt('quantity_base_units',0).order('expiry_date');if(days>0){q=q.gte('expiry_date',today).lte('expiry_date',addDaysV2(today,days));}const {data,error}=await q;if(error){showError(error.message);return;}document.getElementById('expiryTable').innerHTML=(data||[]).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Batch</th><th>Expiry</th><th>Remaining Stock</th><th>Source</th></tr></thead><tbody>${data.map(b=>`<tr><td>${esc(b.medicines?.medicine_name||'')} ${esc(b.medicines?.strength||'')}</td><td>${esc(b.batch_number)}</td><td>${fmtDate(b.expiry_date)}</td><td>${esc(packTextV2(b.medicines||{},Number(b.quantity_base_units||0)))}</td><td>${b.last_purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${b.last_purchase_bill_id})">Bill</span>`:'📦 Stock Entry'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No expiring stock found for this period.</div>';}
 function addDaysV2(date,days){const d=new Date(date+'T00:00:00');d.setDate(d.getDate()+days);return d.toISOString().slice(0,10);}
 
-async function loadStockInventoryList(){
-  await loadMedicines();
-  const s=(document.getElementById('stockInventorySearch')?.value||'').trim().toLowerCase();
-  const list=medicines.filter(m=>!s||`${m.medicine_name||''} ${m.generic_name||''} ${m.strength||''} ${m.dosage_form||''} ${m.pack_unit||''} ${m.base_unit||''}`.toLowerCase().includes(s));
-  document.getElementById('stockInventoryTable').innerHTML=list.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Form</th><th>Unit / Pack</th><th>Current Stock</th><th>Minimum</th><th>Status</th><th>Actions</th></tr></thead><tbody>${list.map(m=>{const stock=Number(m.total_stock_base_units||m.total_stock||0),min=Number(m.minimum_stock_base_units??Number(m.minimum_stock_level||0)*Number(m.units_per_pack||1)),low=stock<=min;return `<tr><td><button type="button" class="link-button" onclick="viewMedicineDetails(${m.id})"><b>${esc(m.medicine_name)}</b></button><div class="muted">${esc(m.generic_name||'')} ${esc(m.strength||'')}</div></td><td>${esc(m.dosage_form||'-')}</td><td>${esc(m.pack_unit||'-')}<div class="muted">1 pack = ${Number(m.units_per_pack||1).toLocaleString('en-IN')} ${esc(m.base_unit||'units')}</div></td><td><b>${esc(packTextV2(m,stock))}</b></td><td>${Number(m.minimum_stock_level||0).toLocaleString('en-IN')} ${esc(m.pack_unit||'packs')}</td><td class="${low?'low':'normal'}">${low?'⚠️ Low':'🟢 Normal'}</td><td><div class="actions"><button class="btn small" onclick="viewMedicineDetails(${m.id})">View</button><button class="btn secondary small" onclick="editMedicine(${m.id})">Edit</button><button class="btn danger small" onclick="deleteMedicine(${m.id})">Delete</button></div></td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty">No medicines found.</div>';
+
+
+function stockEntryStatusInfo(status){
+  const s=String(status||'UNBILLED').toUpperCase();
+  if(s==='LINKED')return {label:'Fully Billed',cls:'status-linked'};
+  if(s==='PARTIALLY_LINKED')return {label:'Partially Billed',cls:'status-partial'};
+  return {label:'Unbilled',cls:'status-unbilled'};
 }
 
-async function loadStockHistory(){const search=(document.getElementById('historySearch').value||'').trim().toLowerCase(),type=document.getElementById('historyType').value||'',date=document.getElementById('historyDate').value||'';let q=supabaseClient.from('medicine_stock_transactions').select('*,medicines(medicine_name,strength,pack_unit,base_unit,units_per_pack),medicine_batches(batch_number),purchase_bills(bill_number,stockist_name),medicine_stock_entries(reference_number,status)').order('transaction_date',{ascending:false}).order('id',{ascending:false}).limit(1000);if(type)q=q.eq('transaction_type',type);if(date)q=q.eq('transaction_date',date);const {data,error}=await q;if(error){showError(error.message);return;}let rows=(data||[]).filter(t=>!search||`${t.medicines?.medicine_name||''} ${t.medicines?.strength||''} ${t.medicine_batches?.batch_number||''} ${t.purchase_bills?.bill_number||''} ${t.purchase_bills?.stockist_name||''} ${t.medicine_stock_entries?.reference_number||''}`.toLowerCase().includes(search));document.getElementById('historyTable').innerHTML=rows.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Medicine</th><th>Batch</th><th>Type</th><th>Quantity</th><th>Source</th><th>Notes</th></tr></thead><tbody>${rows.map(t=>`<tr><td>${fmtDate(t.transaction_date)}</td><td>${esc(t.medicines?.medicine_name||'')} ${esc(t.medicines?.strength||'')}</td><td>${esc(t.medicine_batches?.batch_number||'-')}</td><td>${esc(t.transaction_type)}</td><td class="${t.direction==='OUT'?'low':'normal'}">${t.direction==='IN'?'+':'-'}${Number(t.quantity_base_units??t.quantity).toLocaleString('en-IN')} ${esc(t.medicines?.base_unit||'units')}</td><td>${t.purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${t.purchase_bill_id})">${esc(t.purchase_bills?.bill_number||'Bill')}</span>`:t.stock_entry_id?'📦 Unbilled Purchase':'Manual'}</td><td>${esc(t.notes||'-')}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No stock history found.</div>';}
+function stockEntrySearchText(entry,items,bills){
+  const itemText=(items||[]).map(i=>`${i.medicines?.medicine_name||''} ${i.medicines?.generic_name||''} ${i.medicines?.strength||''} ${i.batch_number||''}`).join(' ');
+  const billText=(bills||[]).map(b=>`${b.bill_number||''} ${b.purchase_bills?.stockist_name||''}`).join(' ');
+  return `${entry.id||''} ${entry.entry_date||''} ${entry.stockist_name||''} ${entry.pharma_company_name||''} ${entry.reference_number||''} ${itemText} ${billText}`.toLowerCase();
+}
+
+async function loadStockEntryHistory(){
+  const search=(document.getElementById('stockEntryHistorySearch')?.value||'').trim().toLowerCase();
+  const statusFilter=document.getElementById('stockEntryBillingFilter')?.value||'';
+  const from=document.getElementById('stockEntryFrom')?.value||'';
+  const to=document.getElementById('stockEntryTo')?.value||'';
+
+  let q=supabaseClient.from('medicine_stock_entries').select('*').order('entry_date',{ascending:false}).order('id',{ascending:false}).limit(500);
+  if(from)q=q.gte('entry_date',from);
+  if(to)q=q.lte('entry_date',to);
+  const {data:entries,error}=await q;
+  if(error){showError(error.message);return;}
+  const list=entries||[];
+  if(!list.length){
+    document.getElementById('stockEntryHistoryTable').innerHTML='<div class="empty">No stock entries found.</div>';
+    return;
+  }
+
+  const ids=list.map(x=>x.id);
+  const {data:items,error:ie}=await supabaseClient.from('medicine_stock_entry_items').select('*,medicines(medicine_name,generic_name,strength,pack_unit,base_unit,units_per_pack)').in('stock_entry_id',ids).order('id');
+  if(ie){showError(ie.message);return;}
+  const allItems=items||[];
+  const itemIds=allItems.map(x=>x.id);
+  let billItems=[];
+  if(itemIds.length){
+    const {data:bi,error:be}=await supabaseClient.from('purchase_bill_items').select('id,purchase_bill_id,stock_entry_item_id,linked_existing_stock_units,quantity,quantity_base_units,purchase_bills(id,bill_number,stockist_name,purchase_date,payment_status)').in('stock_entry_item_id',itemIds);
+    if(be){showError(be.message);return;}
+    billItems=bi||[];
+  }
+
+  const rows=[];
+  for(const entry of list){
+    const its=allItems.filter(i=>Number(i.stock_entry_id)===Number(entry.id));
+    const bis=billItems.filter(b=>its.some(i=>Number(i.id)===Number(b.stock_entry_item_id)));
+    let totalBase=0,linkedBase=0;
+    its.forEach(i=>{totalBase+=Number(i.quantity_base_units||0);linkedBase+=Number(i.linked_quantity_base_units||0);});
+    const derivedStatus=linkedBase>=totalBase&&totalBase>0?'LINKED':linkedBase>0?'PARTIALLY_LINKED':'UNBILLED';
+    const status=entry.status||derivedStatus;
+    if(statusFilter && status!==statusFilter)continue;
+    if(search && !stockEntrySearchText(entry,its,bis).includes(search))continue;
+    rows.push({entry,items:its,bills:bis,totalBase,linkedBase,status});
+  }
+
+  const html=rows.length?`<div class="stock-entry-list">${rows.map(r=>{
+    const st=stockEntryStatusInfo(r.status);
+    const itemNames=r.items.slice(0,3).map(i=>`${esc(i.medicines?.medicine_name||'Medicine')}${i.medicines?.strength?' '+esc(i.medicines.strength):''}`).join(', ');
+    const more=r.items.length>3?` + ${r.items.length-3} more`:'';
+    const units=r.items.reduce((n,i)=>n+Number(i.quantity_base_units||0),0);
+    const linked=r.linkedBase;
+    const unlinked=Math.max(0,r.totalBase-linked);
+    const billRefs=[...new Map(r.bills.map(b=>[b.purchase_bill_id,b])).values()].map(b=>b.purchase_bills?.bill_number).filter(Boolean);
+    const canEdit=r.status==='UNBILLED';
+    return `<div class="stock-entry-card" onclick="viewStockEntry(${r.entry.id})">
+      <div class="stock-entry-head"><div><div class="stock-entry-title">Stock Entry #SE-${String(r.entry.id).padStart(5,'0')}</div><div class="muted">${fmtDate(r.entry.entry_date)} · ${itemNames||'No medicine items'}${more}</div></div><span class="badge stock-entry-status ${st.cls}">${st.label}</span></div>
+      <div class="stock-entry-meta">
+        <div><b>Total Entered</b>${esc(formatBaseUnitsForItems(r.items,units))}</div>
+        <div><b>Billed / Linked</b>${esc(formatBaseUnitsForItems(r.items,linked))}</div>
+        <div><b>Unbilled Remaining</b>${esc(formatBaseUnitsForItems(r.items,unlinked))}</div>
+        <div><b>Source</b>${billRefs.length?`🧾 ${esc(billRefs.join(', '))}`:'📦 Unbilled Purchase'}</div>
+      </div>
+      <div class="muted" style="margin-top:10px">${esc(r.entry.stockist_name||'No stockist')} ${r.entry.pharma_company_name?'· '+esc(r.entry.pharma_company_name):''}${r.entry.reference_number?' · Ref: '+esc(r.entry.reference_number):''}</div>
+      <div class="stock-entry-actions">
+        <button class="btn small" onclick="event.stopPropagation();viewStockEntry(${r.entry.id})">View</button>
+        ${canEdit?`<button class="btn secondary small" onclick="event.stopPropagation();editStockEntry(${r.entry.id})">✏️ Edit</button><button class="btn danger small" onclick="event.stopPropagation();deleteStockEntry(${r.entry.id})">🗑 Delete</button>`:'<span class="muted">🔒 Linked stock entry — edit through linked purchase bill/adjustment</span>'}
+      </div>
+    </div>`;
+  }).join('')}</div>`:'<div class="empty">No stock entries match the selected filters.</div>';
+  document.getElementById('stockEntryHistoryTable').innerHTML=html;
+}
+
+function formatBaseUnitsForItems(items,base){
+  if(!base)return '0 base units';
+  const first=(items||[])[0]?.medicines;
+  if(first && items.length===1)return packTextV2(first,base);
+  return `${Number(base).toLocaleString('en-IN')} base units`;
+}
+
+async function fetchStockEntryBundle(id){
+  const {data:entry,error:ee}=await supabaseClient.from('medicine_stock_entries').select('*').eq('id',id).single();
+  if(ee)throw ee;
+  const {data:items,error:ie}=await supabaseClient.from('medicine_stock_entry_items').select('*,medicines(medicine_name,generic_name,strength,dosage_form,pack_unit,base_unit,units_per_pack)').eq('stock_entry_id',id).order('id');
+  if(ie)throw ie;
+  const ids=(items||[]).map(x=>x.id);
+  let bills=[];
+  if(ids.length){
+    const {data:bi,error:be}=await supabaseClient.from('purchase_bill_items').select('*,purchase_bills(id,bill_number,stockist_name,purchase_date,payment_status,pharma_company_name)').in('stock_entry_item_id',ids);
+    if(be)throw be;
+    bills=bi||[];
+  }
+  return {entry,items:items||[],bills};
+}
+
+async function viewStockEntry(id,openEdit=false){
+  try{
+    const {entry,items,bills}=await fetchStockEntryBundle(id);
+    const status=entry.status||'UNBILLED';
+    const st=stockEntryStatusInfo(status);
+    let total=0,linked=0;
+    items.forEach(i=>{total+=Number(i.quantity_base_units||0);linked+=Number(i.linked_quantity_base_units||0);});
+    const unlinked=Math.max(0,total-linked);
+    const billRefs=[...new Map(bills.map(b=>[b.purchase_bill_id,b])).values()];
+    document.getElementById('stockEntryDetailTitle').textContent=`📦 Stock Entry #SE-${String(id).padStart(5,'0')}`;
+    document.getElementById('stockEntryDetailContent').innerHTML=`
+      <div class="section"><div class="detail-grid">
+        <div class="detail-box"><b>Entry Date</b>${fmtDate(entry.entry_date)}</div>
+        <div class="detail-box"><b>Status</b><span class="badge ${st.cls}">${st.label}</span></div>
+        <div class="detail-box"><b>Stockist</b>${esc(entry.stockist_name||'-')}</div>
+        <div class="detail-box"><b>Pharma Company</b>${esc(entry.pharma_company_name||'-')}</div>
+        <div class="detail-box"><b>Reference</b>${esc(entry.reference_number||'-')}</div>
+        <div class="detail-box"><b>Total Entered</b>${esc(formatBaseUnitsForItems(items,total))}</div>
+        <div class="detail-box"><b>Billed / Linked</b>${esc(formatBaseUnitsForItems(items,linked))}</div>
+        <div class="detail-box"><b>Unbilled Remaining</b>${esc(formatBaseUnitsForItems(items,unlinked))}</div>
+      </div></div>
+      <div class="section"><h3>📦 Stock Entry Items</h3>${items.length?items.map(i=>{
+        const linkedQty=Number(i.linked_quantity_base_units||0),base=Number(i.quantity_base_units||0),remain=Math.max(0,base-linkedQty);
+        const linkedBills=bills.filter(b=>Number(b.stock_entry_item_id)===Number(i.id));
+        return `<div class="stock-entry-edit-item"><div class="detail-grid">
+          <div class="detail-box"><b>Medicine</b>${esc(i.medicines?.medicine_name||'-')} ${esc(i.medicines?.strength||'')}</div>
+          <div class="detail-box"><b>Batch</b>${esc(i.batch_number||'-')}</div>
+          <div class="detail-box"><b>Expiry</b>${fmtDate(i.expiry_date)}</div>
+          <div class="detail-box"><b>Unit / Pack</b>${esc(i.unit_name||i.medicines?.pack_unit||'-')} · ${Number(i.units_per_pack||i.medicines?.units_per_pack||1)} ${esc(i.medicines?.base_unit||'base units')} / pack</div>
+          <div class="detail-box"><b>Quantity Entered</b>${Number(i.quantity_packs||0).toLocaleString('en-IN')} packs · ${Number(base).toLocaleString('en-IN')} ${esc(i.medicines?.base_unit||'base units')}</div>
+          <div class="detail-box"><b>Billed / Linked</b>${Number(linkedQty).toLocaleString('en-IN')} ${esc(i.medicines?.base_unit||'base units')}</div>
+          <div class="detail-box"><b>Unbilled</b>${Number(remain).toLocaleString('en-IN')} ${esc(i.medicines?.base_unit||'base units')}</div>
+          <div class="detail-box"><b>Purchase Value</b>${currency(Number(i.quantity_packs||0)*Number(i.purchase_price_per_unit||0))}</div>
+          <div class="detail-box"><b>MRP / Pack</b>${currency(i.mrp_per_unit)}</div>
+          <div class="detail-box"><b>Purchase / Pack</b>${currency(i.purchase_price_per_unit)}</div>
+        </div>${linkedBills.length?`<div class="muted" style="margin-top:8px">🧾 Linked bill(s): ${linkedBills.map(b=>`<span class="photo-link" onclick="viewPurchaseBill(${b.purchase_bill_id})">${esc(b.purchase_bills?.bill_number||'Bill')}</span>`).join(', ')}</div>`:''}</div>`;
+      }).join(''):'<div class="empty">No stock items found.</div>'}</div>
+      <div class="footer-actions">${status==='UNBILLED'?`<button class="btn secondary" onclick="editStockEntry(${id})">✏️ Edit Stock Entry</button><button class="btn danger" onclick="deleteStockEntry(${id})">🗑 Delete Stock Entry</button>`:`<span class="muted">🔒 This entry is ${st.label.toLowerCase()}. Linked purchase details should be corrected from the purchase bill or with a stock adjustment.</span>`}</div>`;
+    showModal('stockEntryDetailModal');
+    if(openEdit)editStockEntry(id);
+  }catch(e){showError(e.message);}
+}
+
+async function editStockEntry(id){
+  try{
+    const {entry,items,bills}=await fetchStockEntryBundle(id);
+    if(String(entry.status||'UNBILLED')!=='UNBILLED'){
+      alert('This stock entry is already linked to a purchase bill. Edit the linked purchase bill or use Stock Adjustment so the stock audit remains correct.');
+      return;
+    }
+    document.getElementById('stockEntryDetailTitle').textContent=`✏️ Edit Stock Entry #SE-${String(id).padStart(5,'0')}`;
+    document.getElementById('stockEntryDetailContent').innerHTML=`
+      <form id="stockEntryEditForm" onsubmit="saveStockEntryEdit(event,${id})">
+        <div class="section"><div class="form-grid">
+          <div class="field"><label>Entry Date *</label><input id="editEntryDate" type="date" value="${esc(entry.entry_date||'')}" required></div>
+          <div class="field"><label>Stockist Name</label><input id="editEntryStockist" value="${esc(entry.stockist_name||'')}"></div>
+          <div class="field"><label>Pharma Company Name</label><input id="editEntryCompany" value="${esc(entry.pharma_company_name||'')}"></div>
+          <div class="field"><label>Reference Number</label><input id="editEntryReference" value="${esc(entry.reference_number||'')}"></div>
+        </div></div>
+        <div class="section"><h3>Medicine Items</h3>${items.map(i=>{
+          const units=Number(i.units_per_pack||i.medicines?.units_per_pack||1);
+          return `<div class="stock-entry-edit-item">
+            <div class="detail-grid"><div class="detail-box"><b>Medicine</b>${esc(i.medicines?.medicine_name||'-')} ${esc(i.medicines?.strength||'')}</div><div class="detail-box"><b>Batch</b>${esc(i.batch_number||'-')}</div><div class="detail-box"><b>Units per Pack</b>${units}</div><div class="detail-box"><b>Current Quantity</b>${Number(i.quantity_packs||0)} packs</div></div>
+            <input type="hidden" name="itemId" value="${i.id}">
+            <div class="form-grid" style="margin-top:10px">
+              <div class="field"><label>Quantity (Packs) *</label><input name="qty" type="number" min="0.01" step="0.01" value="${Number(i.quantity_packs||0)}" required></div>
+              <div class="field"><label>Expiry *</label><input name="expiry" type="date" value="${esc(i.expiry_date||'')}" required></div>
+              <div class="field"><label>MRP / Pack</label><input name="mrp" type="number" min="0" step="0.01" value="${Number(i.mrp_per_unit||0)}"></div>
+              <div class="field"><label>Purchase Price / Pack</label><input name="price" type="number" min="0" step="0.01" value="${Number(i.purchase_price_per_unit||0)}"></div>
+            </div>
+            <div class="muted">Medicine and Batch are locked for this safe edit. If the medicine/batch is wrong, use a corrective stock workflow rather than silently moving the audit trail.</div>
+          </div>`;
+        }).join('')}</div>
+        <div class="footer-actions"><button type="button" class="btn secondary" onclick="viewStockEntry(${id})">Cancel</button><button class="btn" type="submit">Save Stock Entry Changes</button></div>
+      </form>`;
+  }catch(e){showError(e.message);}
+}
+
+async function saveStockEntryEdit(e,id){
+  e.preventDefault();
+  if(!(await requireSession()))return;
+  try{
+    const {entry,items}=await fetchStockEntryBundle(id);
+    if(String(entry.status||'UNBILLED')!=='UNBILLED')throw new Error('This stock entry is already linked to a purchase bill.');
+    const form=e.target;
+    const itemRows=[...form.querySelectorAll('.stock-entry-edit-item')];
+    const newDate=document.getElementById('editEntryDate').value;
+    const {error:ue}=await supabaseClient.from('medicine_stock_entries').update({
+      entry_date:newDate,
+      stockist_name:document.getElementById('editEntryStockist').value.trim()||null,
+      pharma_company_name:document.getElementById('editEntryCompany').value.trim()||null,
+      reference_number:document.getElementById('editEntryReference').value.trim()||null,
+      updated_at:new Date().toISOString()
+    }).eq('id',id);
+    if(ue)throw ue;
+
+    for(const row of itemRows){
+      const itemId=Number(row.querySelector('input[name="itemId"]').value);
+      const original=items.find(x=>Number(x.id)===itemId);
+      if(!original)continue;
+      const qtyPacks=Number(row.querySelector('input[name="qty"]').value)||0;
+      const expiry=row.querySelector('input[name="expiry"]').value;
+      const mrp=Number(row.querySelector('input[name="mrp"]').value)||0;
+      const price=Number(row.querySelector('input[name="price"]').value)||0;
+      const units=Number(original.units_per_pack||original.medicines?.units_per_pack||1);
+      if(qtyPacks<=0||!expiry)throw new Error('Quantity and expiry are required.');
+      const oldBase=Number(original.quantity_base_units||0);
+      const newBase=qtyPacks*units;
+      const delta=newBase-oldBase;
+
+      const {data:tx,error:te}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('stock_entry_item_id',itemId).eq('transaction_type','PURCHASE').limit(1).single();
+      if(te)throw te;
+      const {data:batch,error:be}=await supabaseClient.from('medicine_batches').select('*').eq('id',tx.batch_id).single();
+      if(be)throw be;
+      const currentBase=Number(batch.quantity_base_units??Number(batch.quantity||0)*units);
+      if(delta<0 && currentBase < Math.abs(delta))throw new Error(`Cannot reduce ${original.medicines?.medicine_name||'stock'} below current available batch stock.`);
+      const updatedBase=currentBase+delta;
+
+      const {error:bi}=await supabaseClient.from('medicine_stock_entry_items').update({
+        expiry_date:expiry,quantity_packs:qtyPacks,quantity_base_units:newBase,mrp_per_unit:mrp,purchase_price_per_unit:price
+      }).eq('id',itemId);
+      if(bi)throw bi;
+      const {error:tu}=await supabaseClient.from('medicine_stock_transactions').update({
+        quantity:qtyPacks,quantity_base_units:newBase,units_per_pack:units,transaction_date:newDate,mrp_per_unit:mrp,purchase_price_per_unit:price,notes:'Unbilled purchase stock'
+      }).eq('id',tx.id);
+      if(tu)throw tu;
+      const {error:bu}=await supabaseClient.from('medicine_batches').update({
+        quantity:updatedBase/units,quantity_base_units:updatedBase,expiry_date:expiry,mrp_per_unit:mrp,purchase_price_per_unit:price,updated_at:new Date().toISOString()
+      }).eq('id',batch.id);
+      if(bu)throw bu;
+    }
+    alert('Stock entry updated successfully.');
+    closeModal('stockEntryDetailModal');
+    await loadStockEntryHistory();
+    await refreshDashboard();
+  }catch(err){showError(err.message);}
+}
+
+async function deleteStockEntry(id){
+  if(!(await requireSession()))return;
+  try{
+    const {entry,items}=await fetchStockEntryBundle(id);
+    if(String(entry.status||'UNBILLED')!=='UNBILLED'){
+      alert('This stock entry cannot be deleted because it has been linked to a purchase bill. Keep the audit trail and correct it through the linked bill or stock adjustment.');
+      return;
+    }
+    if(!items.length){if(confirm('Delete this empty stock entry?')){await supabaseClient.from('medicine_stock_entries').delete().eq('id',id);await loadStockEntryHistory();}return;}
+    for(const item of items){
+      const {data:tx,error:te}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('stock_entry_item_id',item.id).eq('transaction_type','PURCHASE').limit(1).single();
+      if(te)throw te;
+      const {data:out,error:oe}=await supabaseClient.from('medicine_stock_transactions').select('id').eq('batch_id',tx.batch_id).eq('direction','OUT').limit(1);
+      if(oe)throw oe;
+      if((out||[]).length){
+        alert(`Cannot delete safely. ${item.medicines?.medicine_name||'This medicine'} batch has already had stock removed/dispensed. Use Stock Adjustment instead.`);
+        return;
+      }
+    }
+    if(!confirm(`Delete Stock Entry #SE-${String(id).padStart(5,'0')}? This will reverse its received stock and remove the entry. This action is safe only because it is still unbilled and no stock from its batches has been removed.`))return;
+    for(const item of items){
+      const {data:tx,error:te}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('stock_entry_item_id',item.id).eq('transaction_type','PURCHASE').limit(1).single();
+      if(te)throw te;
+      const {data:batch,error:be}=await supabaseClient.from('medicine_batches').select('*').eq('id',tx.batch_id).single();
+      if(be)throw be;
+      const units=Number(tx.units_per_pack||batch.units_per_pack||1);
+      const removeBase=Number(tx.quantity_base_units??Number(tx.quantity||0)*units);
+      const currentBase=Number(batch.quantity_base_units??Number(batch.quantity||0)*units);
+      if(currentBase<removeBase)throw new Error(`Batch stock is already lower than this entry quantity; deletion is blocked.`);
+      const newBase=currentBase-removeBase;
+      const {error:bu}=await supabaseClient.from('medicine_batches').update({quantity:newBase/units,quantity_base_units:newBase,updated_at:new Date().toISOString()}).eq('id',batch.id);
+      if(bu)throw bu;
+      const {error:td}=await supabaseClient.from('medicine_stock_transactions').delete().eq('id',tx.id);
+      if(td)throw td;
+      const {error:idErr}=await supabaseClient.from('medicine_stock_entry_items').delete().eq('id',item.id);
+      if(idErr)throw idErr;
+    }
+    const {error:ed}=await supabaseClient.from('medicine_stock_entries').delete().eq('id',id);
+    if(ed)throw ed;
+    alert('Stock entry deleted successfully.');
+    await loadStockEntryHistory();
+    await refreshDashboard();
+  }catch(err){showError(err.message);}
+}
+
+async function loadStockMovementHistory(){
+  const search=(document.getElementById('movementHistorySearch')?.value||'').trim().toLowerCase();
+  const type=document.getElementById('movementHistoryType')?.value||'';
+  const date=document.getElementById('movementHistoryDate')?.value||'';
+  let q=supabaseClient.from('medicine_stock_transactions').select('*,medicines(medicine_name,strength,pack_unit,base_unit,units_per_pack),medicine_batches(batch_number),purchase_bills(bill_number,stockist_name),medicine_stock_entries(reference_number,status)').order('transaction_date',{ascending:false}).order('id',{ascending:false}).limit(1000);
+  if(type)q=q.eq('transaction_type',type);
+  if(date)q=q.eq('transaction_date',date);
+  const {data,error}=await q;
+  if(error){showError(error.message);return;}
+  const rows=(data||[]).filter(t=>!search||`${t.medicines?.medicine_name||''} ${t.medicines?.strength||''} ${t.medicine_batches?.batch_number||''} ${t.purchase_bills?.bill_number||''} ${t.purchase_bills?.stockist_name||''} ${t.medicine_stock_entries?.reference_number||''}`.toLowerCase().includes(search));
+  document.getElementById('movementHistoryTable').innerHTML=rows.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Medicine</th><th>Batch</th><th>Type</th><th>Quantity</th><th>Source</th><th>Notes</th></tr></thead><tbody>${rows.map(t=>`<tr><td>${fmtDate(t.transaction_date)}</td><td>${esc(t.medicines?.medicine_name||'')} ${esc(t.medicines?.strength||'')}</td><td>${esc(t.medicine_batches?.batch_number||'-')}</td><td>${esc(t.transaction_type)}</td><td class="${t.direction==='OUT'?'low':'normal'}">${t.direction==='IN'?'+':'-'}${Number(t.quantity_base_units??t.quantity).toLocaleString('en-IN')} ${esc(t.medicines?.base_unit||'units')}</td><td>${t.purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${t.purchase_bill_id})">${esc(t.purchase_bills?.bill_number||'Bill')}</span>`:t.stock_entry_id?`📦 <span class="photo-link" onclick="viewStockEntry(${t.stock_entry_id})">Stock Entry</span>`:'Manual'}</td><td>${esc(t.notes||'-')}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No stock movements found.</div>';
+}
 
 function applyAnalyticsPeriod(){const mode=document.querySelector('input[name="analyticsPeriod"]:checked')?.value||'month',t=todayIST();if(mode==='today'){document.getElementById('analyticsFrom').value=t;document.getElementById('analyticsTo').value=t;}else if(mode==='month'){document.getElementById('analyticsFrom').value=firstDayIST();document.getElementById('analyticsTo').value=t;}else if(mode==='date'){document.getElementById('analyticsFrom').value=t;document.getElementById('analyticsTo').value=t;}}
 
