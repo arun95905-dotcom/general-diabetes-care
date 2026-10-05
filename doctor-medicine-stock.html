@@ -39,7 +39,7 @@
 <div class="field"><label>Medicine Name * <button type="button" class="btn small scan-btn" onclick="openMedicineScan(this,'master')">📷 Scan / Photo</button></label><input id="medicineName" required></div>
 <div class="field"><label>Generic Name</label><input id="genericName"></div>
 <div class="field"><label>Strength</label><input id="strength" placeholder="e.g. 500 mg"></div>
-<div class="field"><label>Dosage Form *</label><select id="dosageForm" required onchange="updatePackFields()"><option value="">Select</option><option>Tablet</option><option>Capsule</option><option>Syrup</option><option>Roll-on</option><option>Spray</option><option>Drops</option><option>Sachet</option><option>Mouth Dissolving Strip</option><option>Gel / Ointment</option><option>Cream</option><option>Lotion</option><option>Powder</option><option>Inhaler</option><option>Injection</option><option>Other</option></select></div>
+<div class="field"><label>Dosage Form *</label><select id="dosageForm" required onchange="updatePackFields(true)"><option value="">Select</option><option>Tablet</option><option>Capsule</option><option>Syrup</option><option>Roll-on</option><option>Spray</option><option>Drops</option><option>Sachet</option><option>Mouth Dissolving Strip</option><option>Gel / Ointment</option><option>Cream</option><option>Lotion</option><option>Powder</option><option>Inhaler</option><option>Injection</option><option>Other</option></select></div>
 <div class="field"><label>Unit / Pack *</label><input id="packUnit" placeholder="e.g. Strip, Bottle, Tube, Vial" required></div>
 <div class="field"><label>Base Unit *</label><input id="baseUnit" placeholder="e.g. Tablet, Capsule, Bottle, Tube" required><div class="muted">For tablets/capsules, this is the individual tablet/capsule.</div></div>
 <div class="field"><label id="unitsPerPackLabel">Units per Pack *</label><input id="unitsPerPack" type="number" min="0.01" step="0.01" placeholder="e.g. 10"><div class="muted">Example: 1 Strip = 10 Tablets; 1 Bottle = 100 mL. Enter this individually for each medicine.</div></div>
@@ -84,7 +84,15 @@
 
 <div id="purchaseListView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>🧾 Purchase Bills</h2><button class="btn" onclick="openPurchaseForm()">+ Add Purchase Bill</button></div><div class="summary-grid"><div class="summary"><span>Total Bills</span><b id="purchaseTotalCount">0</b></div><div class="summary"><span>Pending Bills</span><b id="purchasePendingCount">0</b></div><div class="summary"><span>Paid Bills</span><b id="purchasePaidCount">0</b></div><div class="summary"><span>Pending Amount</span><b id="purchasePendingAmount">₹0.00</b></div></div><div class="search-row"><input id="purchaseSearch" placeholder="Stockist / company / medicine / bill number"><select id="purchaseStatusFilter"><option value="">All</option><option>Paid</option><option>Pending</option></select><input id="purchaseFrom" type="date"><input id="purchaseTo" type="date"><button class="btn secondary" onclick="loadPurchaseBills()">Search</button></div><div id="purchaseBillsTable"></div></div>
 
-<div id="medicineScanModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Scan Medicine</h2><button class="btn secondary" type="button" onclick="closeMedicineScan()">Close</button></div><p class="muted">Use the rear camera for a live barcode/DataMatrix scan, or take/upload a clear medicine photo. If no code is found, the portal uses enhanced OCR and tries multiple image orientations.</p><div class="section"><div class="actions" style="margin-bottom:10px"><button id="startMedicineCameraBtn" class="btn" type="button" onclick="startMedicineCamera()">📹 Start Camera</button><button id="stopMedicineCameraBtn" class="btn secondary hidden" type="button" onclick="stopMedicineCamera()">⏹ Stop Camera</button></div><video id="medicineScanVideo" class="scan-preview hidden" playsinline muted autoplay></video><div class="field"><label>Take / Upload Medicine Photo</label><input id="medicineScanFile" type="file" accept="image/*" capture="environment" onchange="processMedicineScan(this)"></div><div id="medicineScanStatus" class="scan-progress">Choose a photo or start the camera.</div><img id="medicineScanPreview" class="scan-preview hidden" alt="Medicine scan preview"><div id="medicineScanResult" class="scan-result hidden"></div></div><div class="footer-actions"><button class="btn secondary" type="button" onclick="closeMedicineScan()">Cancel</button><button id="useMedicineScanBtn" class="btn success hidden" type="button" onclick="useMedicineScanResult()">✓ Use This Information</button></div></div></div>
+<div id="medicineScanModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Scan Medicine</h2><button class="btn secondary" type="button" onclick="closeMedicineScan()">Close</button></div><p class="muted">Use the rear camera for a live barcode/DataMatrix scan, or take/upload a clear medicine photo. If no code is found, the portal uses enhanced OCR and tries multiple image orientations.</p><div class="section"><div class="actions" style="margin-bottom:10px"><button id="startMedicineCameraBtn" class="btn" type="button" onclick="startMedicineCamera()">📹 Start Camera</button><button id="stopMedicineCameraBtn" class="btn secondary hidden" type="button" onclick="stopMedicineCamera()">⏹ Stop Camera</button></div><video id="medicineScanVideo" class="scan-preview hidden" playsinline muted autoplay></video><div class="field"><label>Medicine Photo</label>
+<div class="actions" style="gap:10px;flex-wrap:wrap">
+<button type="button" class="btn" onclick="openMedicinePhotoCamera()">📷 Take Photo</button>
+<button type="button" class="btn secondary" onclick="openMedicinePhotoUpload()">📁 Upload Photo</button>
+</div>
+<input id="medicineScanCameraFile" type="file" accept="image/*" capture="environment" class="hidden" onchange="processMedicineScan(this)">
+<input id="medicineScanUploadFile" type="file" accept="image/*" class="hidden" onchange="processMedicineScan(this)">
+<div class="muted" style="margin-top:8px">Take a new medicine photo or choose an existing photo from your phone/files.</div>
+</div><div id="medicineScanStatus" class="scan-progress">Choose a photo or start the camera.</div><img id="medicineScanPreview" class="scan-preview hidden" alt="Medicine scan preview"><div id="medicineScanResult" class="scan-result hidden"></div></div><div class="footer-actions"><button class="btn secondary" type="button" onclick="closeMedicineScan()">Cancel</button><button id="useMedicineScanBtn" class="btn success hidden" type="button" onclick="useMedicineScanResult()">✓ Use This Information</button></div></div></div>
 
 <div id="billDetailModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>🧾 Purchase Bill Details</h2><button class="btn secondary" onclick="closeModal('billDetailModal')">Close</button></div><div id="billDetailContent"></div></div></div>
 <div id="photoModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Purchase Bill Photo</h2><button class="btn secondary" onclick="closeModal('photoModal')">Close</button></div><div id="photoContent"></div></div></div>
@@ -206,12 +214,33 @@ function dosageDefaultsV2(form){
   }[form]||['','',''];
 }
 
-function updatePackFields(){
-  const form=document.getElementById('dosageForm').value;
+function updatePackFields(applyDefaults=false){
+  const form=document.getElementById('dosageForm')?.value||'';
+  const defaults={
+    Tablet:['Strip','Tablet',10],
+    Capsule:['Strip','Capsule',10],
+    Syrup:['Bottle','mL',100],
+    'Roll-on':['Bottle','mL',10],
+    Spray:['Bottle','mL',100],
+    Drops:['Bottle','mL',10],
+    Sachet:['Sachet/Pack','Sachet',1],
+    'Mouth Dissolving Strip':['Pack','Strip',10],
+    'Gel / Ointment':['Tube','g',30],
+    Cream:['Tube','g',30],
+    Lotion:['Bottle','mL',100],
+    Powder:['Pack','g',100],
+    Inhaler:['Inhaler','Dose',1],
+    Injection:['Vial/Ampoule','mL',1],
+    Other:['Unit/Pack','Unit',1]
+  };
+  const d=defaults[form];
+  if(d && applyDefaults){
+    document.getElementById('packUnit').value=d[0];
+    document.getElementById('baseUnit').value=d[1];
+    document.getElementById('unitsPerPack').value=d[2];
+  }
   const label=document.getElementById('unitsPerPackLabel');
   if(label)label.textContent='Units per Pack *';
-  // IMPORTANT: Unit/Pack, Base Unit and Units per Pack are independent medicine-specific values.
-  // Changing dosage form must never overwrite values already entered by the user.
   updateMinimumStockHelp();
 }
 
@@ -263,7 +292,7 @@ function openMedicineCreate(fromContext=false){
   document.getElementById('medicineId').value='';
   document.getElementById('medicineFormTitle').textContent='➕ Add Medicine';
   document.getElementById('minimumStockLevel').value=0;
-  updatePackFields();
+  updatePackFields(true);
   openView('medicineFormView');
 }
 
@@ -489,8 +518,7 @@ function openMedicineScan(button,targetType='unbilled'){
   medicineScanTarget={type:targetType,row};
   medicineScanData=null;
   stopMedicineCamera();
-  const file=document.getElementById('medicineScanFile');
-  if(file)file.value='';
+  ['medicineScanCameraFile','medicineScanUploadFile'].forEach(id=>{const file=document.getElementById(id);if(file)file.value='';});
   document.getElementById('medicineScanPreview').classList.add('hidden');
   document.getElementById('medicineScanResult').classList.add('hidden');
   document.getElementById('useMedicineScanBtn').classList.add('hidden');
@@ -562,6 +590,15 @@ function findBestMedicine(ocrText){
   for(const med of medicines){const candidates=[med.medicine_name,`${med.medicine_name} ${med.strength||''}`,med.generic_name||''].filter(Boolean);let score=0;for(const c of candidates){const n=normalizeMedicineText(c);if(n&&norm.includes(n))score+=Math.min(10,n.length/2);const toks=n.split(' ').filter(x=>x.length>2);for(const tok of toks){if(norm.includes(tok))score+=2;const words=norm.split(' ');if(words.some(w=>w.length>=Math.max(4,tok.length-2)&&levenshtein(w,tok)<=Math.max(1,Math.floor(tok.length/5))))score+=1;}}if(score>bestScore){bestScore=score;best=med;}}
   return bestScore>=3?best:null;
 }
+function openMedicinePhotoCamera(){
+  const el=document.getElementById('medicineScanCameraFile');
+  if(el){el.value='';el.click();}
+}
+function openMedicinePhotoUpload(){
+  const el=document.getElementById('medicineScanUploadFile');
+  if(el){el.value='';el.click();}
+}
+
 async function processMedicineScan(input){const file=input.files?.[0];if(!file)return;await processMedicineScanFile(file,false,'');}
 async function processMedicineScanFile(file,fromCamera=false,barcodeHint=''){
   if(!file||medicineScanBusy)return;medicineScanBusy=true;
