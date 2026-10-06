@@ -19,6 +19,8 @@ button{cursor:pointer;border:0}
 .header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
 .header h1{margin:0;font-size:25px}
 .header p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.back-btn{background:#172033;color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;text-decoration:none}.search-btn{background:#2563eb;color:#fff;padding:10px 15px;border-radius:10px;font-weight:800}.period-panel{background:var(--card);padding:14px;border-radius:14px;box-shadow:var(--shadow);margin-top:12px}.period-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.period-grid label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--muted);font-weight:700}.period-grid select,.period-grid input{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;color:var(--text)}.period-actions{display:flex;justify-content:flex-end;margin-top:10px}.edit{background:#dbeafe;color:#1d4ed8;padding:6px 9px;border-radius:8px;margin-right:5px}.delete{background:#fee2e2;color:#b91c1c;padding:6px 9px;border-radius:8px}.editing-badge{font-size:11px;color:#1d4ed8;font-weight:800;margin-top:7px}.compare-period{display:grid;grid-template-columns:1fr 1fr;gap:12px}.compare-period-box{padding:12px;border:1px solid var(--line);border-radius:14px;background:#fafbff}.compare-period-box h3{margin:0 0 8px;font-size:13px}.selector-labels{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;font-size:10px;color:var(--muted);font-weight:800}.compare-period-box .selectors{display:grid;grid-template-columns:1fr 1fr;gap:8px}.compare-period-box select{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}.empty-state{padding:16px;text-align:center;color:var(--muted)}
+@media(max-width:760px){.period-grid{grid-template-columns:1fr 1fr}.compare-period{grid-template-columns:1fr}.header-actions{width:100%}.header-actions .back-btn,.header-actions .search-btn{flex:1;text-align:center}.period-actions .search-btn{width:100%}}
 .period{background:var(--card);padding:12px;border-radius:14px;box-shadow:var(--shadow);display:flex;gap:8px;align-items:center}
 .period select{border:1px solid var(--line);border-radius:10px;padding:9px;background:#fff}
 .section{margin-top:18px}
@@ -50,12 +52,15 @@ button{cursor:pointer;border:0}
 .expense-table{background:var(--card);border-radius:16px;box-shadow:var(--shadow);overflow:auto}.expense-table table{width:100%;border-collapse:collapse;min-width:650px}.expense-table th,.expense-table td{padding:11px;border-bottom:1px solid var(--line);font-size:12px;text-align:left}.expense-table th{color:var(--muted);background:#fafafa}.delete{background:#fee2e2;color:#b91c1c;padding:6px 9px;border-radius:8px}
 .message{padding:12px;color:var(--muted);font-size:13px}.error{color:var(--red)}
 @media(max-width:760px){
- .page{padding:12px}.header{align-items:flex-start;flex-direction:column}.period{width:100%}.period select{flex:1}
- .grid4{grid-template-columns:1fr 1fr;gap:9px}.card{padding:13px}.metric .value{font-size:19px}
+ .page{padding:12px}.header{align-items:flex-start;flex-direction:column;gap:5px;margin-bottom:10px}.header h1{font-size:24px}.header p{font-size:12px}.period{width:100%}.period select{flex:1}.header-actions{margin-top:6px}.header-actions .back-btn{width:100%;min-height:44px}
+ .period-panel{padding:12px;border-radius:15px}.month-only-grid{grid-template-columns:1fr 1fr;gap:8px}.search-submit{min-height:44px}.grid4{grid-template-columns:1fr 1fr;gap:9px}.card{padding:13px}.metric .value{font-size:19px}
  .breakdown{grid-template-columns:1fr}.compare-controls{grid-template-columns:1fr 1fr}.compare-controls button{grid-column:1/-1}
  .net-compare{gap:8px}.net-box{padding:13px}.net-box .amount{font-size:21px}
  .chart{height:210px}.bar{width:18px}.expense-grid{grid-template-columns:1fr}
 }
+
+.search-heading{font-size:16px;font-weight:800;margin-bottom:10px}.month-only-grid{grid-template-columns:1fr 1fr}.search-submit{display:block;width:100%;margin-top:10px;background:#2563eb;color:#fff;font-weight:800;padding:11px 14px;border-radius:11px}.header-actions{width:100%;margin-top:10px}.header-actions .back-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px}.period-panel{padding:14px;margin-top:10px}.period-grid label{font-size:11px}.period-grid select{min-height:44px}.compare-period-box{padding:10px}.compare-period-box .selectors{grid-template-columns:1fr 1fr}.compare-period-box select{min-height:43px}
+
 </style>
 </head>
 <body>
@@ -65,12 +70,19 @@ button{cursor:pointer;border:0}
       <h1>🏥 Clinic Profit</h1>
       <p>Overall clinic financial outlook</p>
     </div>
-    <div class="period">
-      <span style="font-size:12px;color:var(--muted)">Period</span>
-      <select id="periodMonth"></select>
-      <select id="periodYear"></select>
+    <div class="header-actions">
+      <a href="doctor-dashboard.html" class="back-btn">← Back to Dashboard</a>
     </div>
   </div>
+
+  <section class="period-panel">
+    <div class="search-heading">🔎 Search Period</div>
+    <div class="period-grid month-only-grid">
+      <label>Month<select id="periodMonth"></select></label>
+      <label>Year<select id="periodYear"></select></label>
+    </div>
+    <button class="search-submit" onclick="applyPeriod()">🔎 Search</button>
+  </section>
 
   <div id="status" class="message">Loading clinic profit…</div>
 
@@ -86,11 +98,17 @@ button{cursor:pointer;border:0}
   <section class="section">
     <div class="section-title"><h2>📈 Month Comparison</h2></div>
     <div class="card compare-card">
-      <div class="compare-controls">
-        <select id="month1"></select>
-        <select id="month2"></select>
-        <button class="primary" onclick="compareMonths()">Compare</button>
+      <div class="compare-period">
+        <div class="compare-period-box">
+          <h3>Month 1</h3>
+          <div class="selector-labels"><span>Month</span><span>Year</span></div><div class="selectors"><select id="month1Month"></select><select id="month1Year"></select></div>
+        </div>
+        <div class="compare-period-box">
+          <h3>Month 2</h3>
+          <div class="selector-labels"><span>Month</span><span>Year</span></div><div class="selectors"><select id="month2Month"></select><select id="month2Year"></select></div>
+        </div>
       </div>
+      <div style="margin-top:12px"><button class="primary" onclick="compareMonths()">Compare Months</button></div>
       <div class="net-compare">
         <div class="net-box"><div class="month" id="month1Label">Month 1</div><div class="amount" id="month1Profit">₹0</div></div>
         <div class="net-box"><div class="month" id="month2Label">Month 2</div><div class="amount" id="month2Profit">₹0</div></div>
@@ -129,6 +147,7 @@ button{cursor:pointer;border:0}
 
   <section class="section">
     <div id="expenseForm" class="expense-form">
+      <div class="section-title"><div><h3 id="expenseFormTitle" style="margin:0;font-size:15px">Add Expense</h3><div id="editingBadge" class="editing-badge"></div></div></div>
       <div class="expense-grid">
         <input id="expenseDate" type="date">
         <select id="expenseCategory">
@@ -139,7 +158,7 @@ button{cursor:pointer;border:0}
         <input id="expenseAmount" type="number" min="0" step="0.01" placeholder="Amount ₹">
         <textarea id="expenseNotes" placeholder="Description / notes"></textarea>
       </div>
-      <div class="expense-actions"><button class="primary" onclick="saveExpense()">Save Expense</button><button onclick="toggleExpenseForm()" style="padding:10px;border-radius:10px;background:#f3f4f6">Cancel</button></div>
+      <div class="expense-actions"><button id="expenseSaveBtn" class="primary" onclick="saveExpense()">Save Expense</button><button onclick="cancelExpenseEdit()" style="padding:10px;border-radius:10px;background:#f3f4f6">Cancel</button></div>
     </div>
     <div class="section-title"><h2>📋 Expense History</h2></div>
     <div class="expense-table" id="expenseTable"></div>
@@ -160,60 +179,59 @@ const firstDay=(y,m)=>`${y}-${String(m+1).padStart(2,"0")}-01`;
 const lastDay=(y,m)=>new Date(y,m+1,0).toISOString().slice(0,10);
 const ymLabel=k=>{const [y,m]=k.split("-");return `${months[Number(m)-1]} ${y}`};
 
+const YEAR_START=2020;
+const YEAR_END=new Date().getFullYear()+15;
+let editingExpenseId=null;
+let activeRange={from:null,to:null};
+
+function yearOptions(){return Array.from({length:YEAR_END-YEAR_START+1},(_,i)=>YEAR_START+i).map(y=>`<option value="${y}">${y}</option>`).join("")}
+function monthOptions(){return months.map((m,i)=>`<option value="${i}">${m}</option>`).join("")}
 function fillSelectors(){
   const now=new Date(), y=now.getFullYear();
-  const years=[];for(let i=y-5;i<=y+1;i++)years.push(i);
-  const monthOpts=months.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
-  const yearOpts=years.map(v=>`<option value="${v}">${v}</option>`).join("");
-  periodMonth.innerHTML=monthOpts;periodYear.innerHTML=yearOpts;
-  month1.innerHTML=months.map((m,i)=>`<option value="${i}">${m} ${y}</option>`).join("")+
-    years.flatMap(yy=>months.map((m,i)=>`<option value="${i}|${yy}">${m} ${yy}</option>`)).join("");
-  month2.innerHTML=month1.innerHTML;
+  periodMonth.innerHTML=monthOptions();periodYear.innerHTML=yearOptions();
+  month1Month.innerHTML=monthOptions();month2Month.innerHTML=monthOptions();
+  month1Year.innerHTML=yearOptions();month2Year.innerHTML=yearOptions();
   periodMonth.value=now.getMonth();periodYear.value=y;
-  month1.value=`${now.getMonth()}|${y}`;
-  const prev=new Date(y,now.getMonth()-1,1);month2.value=`${prev.getMonth()}|${prev.getFullYear()}`;
+  month1Month.value=now.getMonth();month1Year.value=y;
+  const prev=new Date(y,now.getMonth()-1,1);month2Month.value=prev.getMonth();month2Year.value=prev.getFullYear();
 }
-function parseMonth(v){let [m,y]=v.split("|");if(y===undefined){y=new Date().getFullYear()}return {m:Number(m),y:Number(y)}}
+function selectedRange(){
+  const y=Number(periodYear.value),m=Number(periodMonth.value);
+  return {from:firstDay(y,m),to:lastDay(y,m),label:`${months[m]} ${y}`};
+}
+async function applyPeriod(){
+  const r=selectedRange();
+  if(!r.from||!r.to||r.from>r.to){alert("Please select a valid date range.");return;}
+  activeRange={from:r.from,to:r.to,label:r.label};
+  await loadCurrent();
+}
+function parseCompare(prefix){return {m:Number(document.getElementById(prefix+"Month").value),y:Number(document.getElementById(prefix+"Year").value)}}
 
-async function loadMonth(y,m){
-  const from=firstDay(y,m),to=lastDay(y,m);
+async function loadRange(from,to){
   const {data:bills,error:be}=await sb.from("billing").select("bill_date,consultation_fee,procedure_charges,medicine_charges").gte("bill_date",from).lte("bill_date",to);
   if(be) throw be;
   const consultation=(bills||[]).reduce((s,b)=>s+Number(b.consultation_fee||0),0);
   const procedure=(bills||[]).reduce((s,b)=>s+Number(b.procedure_charges||0),0);
-
-  // Medicine profit = net consultation-linked DISPENSED/RETURNED stock margin.
-  const {data:tx,error:te}=await sb.from("medicine_stock_transactions")
-    .select("transaction_type,quantity,quantity_base_units,units_per_pack,mrp_per_unit,purchase_price_per_unit,notes,transaction_date")
-    .gte("transaction_date",from).lte("transaction_date",to)
-    .in("transaction_type",["DISPENSED","RETURNED"]);
+  const {data:tx,error:te}=await sb.from("medicine_stock_transactions").select("transaction_type,quantity,quantity_base_units,units_per_pack,mrp_per_unit,purchase_price_per_unit,notes,transaction_date").gte("transaction_date",from).lte("transaction_date",to).in("transaction_type",["DISPENSED","RETURNED"]);
   if(te) throw te;
   let medicineProfit=0;
-  for(const x of (tx||[])){
-    const base=Number(x.quantity_base_units ?? (Number(x.quantity||0)*Number(x.units_per_pack||1)));
-    const packs=base/Number(x.units_per_pack||1);
-    const margin=packs*(Number(x.mrp_per_unit||0)-Number(x.purchase_price_per_unit||0));
-    // Only consultation-tagged stock is clinic dispensing profit; other stock returns are excluded.
-    if(String(x.notes||"").startsWith("GDC-CONSULTATION:")) medicineProfit += x.transaction_type==="RETURNED" ? -margin : margin;
-  }
-
+  for(const x of (tx||[])){const base=Number(x.quantity_base_units ?? Number(x.quantity||0)*Number(x.units_per_pack||1));const packs=base/Number(x.units_per_pack||1);const margin=packs*(Number(x.mrp_per_unit||0)-Number(x.purchase_price_per_unit||0));if(String(x.notes||"").startsWith("GDC-CONSULTATION:")) medicineProfit+=x.transaction_type==="RETURNED"?-margin:margin;}
   const {data:ex,error:ee}=await sb.from("clinic_expenses").select("*").gte("expense_date",from).lte("expense_date",to).order("expense_date",{ascending:false});
   if(ee) throw ee;
-  const expenses=(ex||[]).reduce((s,e)=>s+Number(e.amount||0),0);
-  const income=consultation+procedure+medicineProfit;
+  const expenses=(ex||[]).reduce((s,e)=>s+Number(e.amount||0),0);const income=consultation+procedure+medicineProfit;
   return {consultation,procedure,medicine:medicineProfit,expenses,income,net:income-expenses,expensesRows:ex||[]};
 }
+async function loadMonth(y,m){return loadRange(firstDay(y,m),lastDay(y,m));}
 
 async function loadCurrent(){
-  setStatus("Loading…");
+  setStatus("Loading clinic profit…");
   try{
-    const y=Number(periodYear.value),m=Number(periodMonth.value);
-    currentData=await loadMonth(y,m);expenseRows=currentData.expensesRows;
-    renderCurrent(y,m);renderExpenses();
-    setStatus(`${months[m]} ${y}`);
-  }catch(e){console.error(e);setStatus("Unable to load data. Check Supabase table/policies.",true)}
+    if(!activeRange.from) activeRange=selectedRange();
+    currentData=await loadRange(activeRange.from,activeRange.to);expenseRows=currentData.expensesRows;
+    renderCurrent();renderExpenses();setStatus(activeRange.label||`${activeRange.from} to ${activeRange.to}`);
+  }catch(e){console.error(e);setStatus(`Unable to load data: ${e.message||e}. Check Supabase configuration/policies.`,true);}
 }
-function renderCurrent(y,m){
+function renderCurrent(){
   netProfit.textContent=money(currentData.net);totalIncome.textContent=money(currentData.income);
   totalExpenses.textContent=money(currentData.expenses);medicineProfit.textContent=money(currentData.medicine);
   consultationIncome.textContent=money(currentData.consultation);procedureIncome.textContent=money(currentData.procedure);medicineIncome.textContent=money(currentData.medicine);
@@ -221,17 +239,8 @@ function renderCurrent(y,m){
   expenseSummary.innerHTML=Object.keys(cats).length?Object.entries(cats).map(([k,v])=>`<div class="row"><span class="name">${esc(k)}</span><span class="amt">${money(v)}</span></div>`).join(""):`<div class="message">No expenses entered for this period.</div>`;
 }
 async function compareMonths(){
-  const a=parseMonth(month1.value),b=parseMonth(month2.value);
-  try{
-    const [x,y]=await Promise.all([loadMonth(a.y,a.m),loadMonth(b.y,b.m)]);
-    month1Label.textContent=ymLabel(`${a.y}-${String(a.m+1).padStart(2,"0")}`);month2Label.textContent=ymLabel(`${b.y}-${String(b.m+1).padStart(2,"0")}`);
-    month1Profit.textContent=money(x.net);month2Profit.textContent=money(y.net);
-    const d=y.net-x.net, pct=x.net?d/Math.abs(x.net)*100:null;
-    delta.textContent=`${d>=0?"↑":"↓"} ${money(Math.abs(d))}${pct===null?"":` (${Math.abs(pct).toFixed(1)}%)`}`;
-    delta.className="delta "+(d>=0?"positive":"negative");
-    renderChart(a,x,b,y);
-  }catch(e){console.error(e);alert("Unable to compare these months. Check Supabase table/policies.")}
-}
+  const a=parseCompare("month1"),b=parseCompare("month2");
+  try{const [x,y]=await Promise.all([loadMonth(a.y,a.m),loadMonth(b.y,b.m)]);month1Label.textContent=ymLabel(`${a.y}-${String(a.m+1).padStart(2,"0")}`);month2Label.textContent=ymLabel(`${b.y}-${String(b.m+1).padStart(2,"0")}`);month1Profit.textContent=money(x.net);month2Profit.textContent=money(y.net);const d=y.net-x.net,pct=x.net?d/Math.abs(x.net)*100:null;delta.textContent=`${d>=0?"↑":"↓"} ${money(Math.abs(d))}${pct===null?"":` (${Math.abs(pct).toFixed(1)}%)`}`;delta.className="delta "+(d>=0?"positive":"negative");renderChart(a,x,b,y);}catch(e){console.error(e);alert("Unable to compare these months: "+(e.message||e));}}
 function renderChart(a,x,b,y){
   const max=Math.max(1,x.consultation,x.procedure,x.medicine,x.expenses,x.net,y.consultation,y.procedure,y.medicine,y.expenses,y.net);
   const series=[["Consultation","consultation","#2563eb"],["Procedure / Other","procedure","#ea580c"],["Medicine Profit","medicine","#7c3aed"],["Expenses","expenses","#dc2626"],["Net Clinic Profit","net","#16a34a"]];
@@ -253,27 +262,18 @@ function toggleComparison(){
   chartWrap.classList.toggle("open");
   expandBtn.textContent=chartWrap.classList.contains("open")?"▲ Hide detailed comparison":"▼ View detailed comparison";
 }
-function toggleExpenseForm(){expenseForm.classList.toggle("open");if(expenseForm.classList.contains("open"))expenseDate.value=new Date().toISOString().slice(0,10)}
-async function saveExpense(){
-  const amount=Number(expenseAmount.value);
-  if(!expenseDate.value||!amount||amount<0){alert("Enter expense date and amount.");return}
-  const {error}=await sb.from("clinic_expenses").insert({expense_date:expenseDate.value,category:expenseCategory.value,amount,notes:expenseNotes.value.trim()||null});
-  if(error){alert("Unable to save expense: "+error.message);return}
-  expenseAmount.value="";expenseNotes.value="";toggleExpenseForm();await loadCurrent();
-}
-async function deleteExpense(id){
-  if(!confirm("Delete this expense?"))return;
-  const {error}=await sb.from("clinic_expenses").delete().eq("id",id);
-  if(error){alert(error.message);return}await loadCurrent();
-}
-function renderExpenses(){
-  if(!expenseRows.length){expenseTable.innerHTML=`<div class="message">No expense entries for this period.</div>`;return}
-  expenseTable.innerHTML=`<table><thead><tr><th>Date</th><th>Category</th><th>Amount</th><th>Notes</th><th></th></tr></thead><tbody>${expenseRows.map(e=>`<tr><td>${e.expense_date}</td><td>${esc(e.category||"")}</td><td><b>${money(e.amount)}</b></td><td>${esc(e.notes||"")}</td><td><button class="delete" onclick="deleteExpense(${Number(e.id)})">Delete</button></td></tr>`).join("")}</tbody></table>`;
-}
+function toggleExpenseForm(){expenseForm.classList.toggle("open");if(expenseForm.classList.contains("open")&&!editingExpenseId){expenseDate.value=new Date().toISOString().slice(0,10);expenseCategory.value="Clinic Rent";expenseAmount.value="";expenseNotes.value="";}}
+function startEditExpense(id){const e=expenseRows.find(x=>Number(x.id)===Number(id));if(!e)return;editingExpenseId=Number(id);expenseForm.classList.add("open");expenseDate.value=e.expense_date||"";expenseCategory.value=e.category||"Other";expenseAmount.value=e.amount??"";expenseNotes.value=e.notes||"";document.getElementById("expenseFormTitle").textContent="✏️ Edit Expense";document.getElementById("expenseSaveBtn").textContent="Update Expense";document.getElementById("editingBadge").textContent="Editing selected expense";expenseForm.scrollIntoView({behavior:"smooth",block:"center"});}
+function cancelExpenseEdit(){editingExpenseId=null;document.getElementById("expenseFormTitle").textContent="Add Expense";document.getElementById("expenseSaveBtn").textContent="Save Expense";document.getElementById("editingBadge").textContent="";expenseAmount.value="";expenseNotes.value="";expenseForm.classList.remove("open");}
+async function saveExpense(){const amount=Number(expenseAmount.value);if(!expenseDate.value||!amount||amount<=0){alert("Enter expense date and a valid amount.");return;}const payload={expense_date:expenseDate.value,category:expenseCategory.value,amount,notes:expenseNotes.value.trim()||null};let error;if(editingExpenseId){({error}=await sb.from("clinic_expenses").update(payload).eq("id",editingExpenseId));}else{({error}=await sb.from("clinic_expenses").insert(payload));}if(error){alert((editingExpenseId?"Unable to update expense: ":"Unable to save expense: ")+error.message);return;}cancelExpenseEdit();await loadCurrent();}
+async function deleteExpense(id){if(!confirm("Delete this expense? This cannot be undone."))return;const {error}=await sb.from("clinic_expenses").delete().eq("id",id);if(error){alert("Unable to delete expense: "+error.message);return;}if(editingExpenseId===Number(id))cancelExpenseEdit();await loadCurrent();}
+function renderExpenses(){if(!expenseRows.length){expenseTable.innerHTML=`<div class="empty-state">No expense entries for this period.</div>`;return;}expenseTable.innerHTML=`<table><thead><tr><th>Date</th><th>Category</th><th>Amount</th><th>Notes</th><th>Actions</th></tr></thead><tbody>${expenseRows.map(e=>`<tr><td>${esc(e.expense_date)}</td><td>${esc(e.category||"")}</td><td><b>${money(e.amount)}</b></td><td>${esc(e.notes||"")}</td><td><button class="edit" onclick="startEditExpense(${Number(e.id)})">✏️ Edit</button><button class="delete" onclick="deleteExpense(${Number(e.id)})">🗑️ Delete</button></td></tr>`).join("")}</tbody></table>`;}
 function setStatus(s,error=false){status.textContent=s;status.className="message"+(error?" error":"")}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-periodMonth.addEventListener("change",loadCurrent);periodYear.addEventListener("change",loadCurrent);
-fillSelectors();loadCurrent();compareMonths();
+fillSelectors();
+activeRange=selectedRange();
+loadCurrent();
+compareMonths();
 </script>
 </body>
 </html>
