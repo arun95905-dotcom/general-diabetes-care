@@ -11,7 +11,7 @@
 
 .stock-entry-list{display:grid;gap:12px}
 .stock-entry-card{border:1px solid #dcebf0;border-radius:14px;background:#fff;padding:15px;transition:.15s}
-.stock-entry-card:hover{border-color:#79b8cc;box-shadow:0 5px 16px rgba(33,79,99,.08)}.scan-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.scan-field{background:#fff;border:1px solid #dcebf0;border-radius:10px;padding:10px}.scan-field label{display:block;font-size:11px;font-weight:800;color:#48606b;margin-bottom:5px}.scan-field input,.scan-field select{width:100%;padding:10px;border:1px solid #cbdde3;border-radius:8px;font:inherit}.scan-confidence{font-size:11px;font-weight:800;margin-top:5px}.confidence-high{color:#237454}.confidence-review{color:#9a6412}.confidence-low{color:#a33b3b}.scan-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.scan-choice{min-height:54px;font-size:15px}@media(max-width:600px){.scan-choice-grid{grid-template-columns:1fr}}.scan-source-note{padding:10px;border-radius:9px;background:#f5fafc;border:1px solid #dcebf0;font-size:12px;color:#536b75;margin-top:10px}.scan-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}@media(max-width:600px){.scan-field-grid{grid-template-columns:1fr}}
+.stock-entry-card:hover{border-color:#79b8cc;box-shadow:0 5px 16px rgba(33,79,99,.08)}.scan-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.scan-field{background:#fff;border:1px solid #dcebf0;border-radius:10px;padding:10px}.scan-field label{display:block;font-size:11px;font-weight:800;color:#48606b;margin-bottom:5px}.scan-field input,.scan-field select{width:100%;padding:10px;border:1px solid #cbdde3;border-radius:8px;font:inherit}.scan-confidence{font-size:11px;font-weight:800;margin-top:5px}.confidence-high{color:#237454}.confidence-review{color:#9a6412}.confidence-low{color:#a33b3b}.scan-source-note{padding:10px;border-radius:9px;background:#f5fafc;border:1px solid #dcebf0;font-size:12px;color:#536b75;margin-top:10px}.scan-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}@media(max-width:600px){.scan-field-grid{grid-template-columns:1fr}}
 .stock-entry-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .stock-entry-title{font-weight:800;color:#174b63;font-size:16px}
 .stock-entry-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
@@ -29,6 +29,29 @@
 @media(max-width:700px){.stock-entry-meta,.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.stock-entry-head{display:block}.stock-entry-status{margin-top:8px;display:inline-block}.stock-entry-meta,.detail-grid{grid-template-columns:1fr}}
 
+
+.stock-history-scroll{overflow-x:auto;overflow-y:visible;border:1px solid #dcebf0;border-radius:12px;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;background:#fff}
+.stock-history-table{width:100%;min-width:1250px;border-collapse:separate;border-spacing:0}
+.stock-history-table th,.stock-history-table td{padding:12px 11px;border-bottom:1px solid #e7eef1;text-align:left;font-size:13px;vertical-align:middle;white-space:nowrap}
+.stock-history-table th{background:#f3f8fa;color:#48606b;font-weight:800;position:sticky;top:0;z-index:3}
+.stock-history-table th:first-child,.stock-history-table td:first-child{position:sticky;left:0;z-index:4;background:#fff;box-shadow:2px 0 5px rgba(33,79,99,.08)}
+.stock-history-table th:first-child{background:#f3f8fa;z-index:5}
+.stock-history-medicine{font-size:15px;font-weight:800;color:#174b63;line-height:1.25;white-space:normal;min-width:150px;max-width:190px}
+.stock-history-sub{font-size:11px;color:#73838a;margin-top:3px;font-weight:600}
+.stock-history-source{font-weight:700}
+.stock-history-actions{display:flex;gap:6px;flex-wrap:nowrap}
+.stock-history-actions .btn{min-width:58px}
+.ocr-lines{display:grid;gap:7px;margin-top:10px;max-height:260px;overflow:auto;padding:2px}
+.ocr-line-btn{width:100%;text-align:left;border:1px solid #dcebf0;background:#fff;border-radius:9px;padding:10px 12px;cursor:pointer;font:inherit;color:#26343b}
+.ocr-line-btn:hover,.ocr-line-btn:focus{border-color:#6b5bd2;background:#f7f5ff;outline:none}
+.ocr-line-label{font-size:10px;font-weight:800;color:#6b5bd2;margin-bottom:3px;display:block}
+.scan-assign-text{padding:12px;border-radius:10px;background:#f5fafc;border:1px solid #dcebf0;margin-bottom:12px;font-weight:700;word-break:break-word}
+.scan-option-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.scan-option{border:1px solid #dcebf0;background:#fff;border-radius:10px;padding:11px;text-align:left;font-weight:700;cursor:pointer;color:#24566a}
+.scan-option:hover{background:#f1f8fa;border-color:#79b8cc}
+.scan-tool-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.scan-tool-row .btn{flex:1;min-width:145px}
+@media(max-width:600px){.scan-option-grid{grid-template-columns:1fr}.stock-history-table th,.stock-history-table td{padding:11px 9px}.stock-history-medicine{font-size:14px;min-width:155px}.stock-history-scroll{border-radius:10px}}
 </style>
 </head>
 <body>
@@ -76,14 +99,12 @@
 <div class="field"><label>Pharma Company Name</label><input id="pharmaCompanyName"></div>
 <div class="field"><label>Bill Number *</label><input id="billNumber" required></div>
 <div class="field"><label>Bill Photo</label><input id="billPhoto" type="file" accept="image/*"><div class="muted">Upload the original purchase bill. It remains linked to this bill and stock source.</div><div id="existingBillPhoto" class="muted"></div></div>
+<div class="field"><label>Actual Bill Amount (Including GST) *</label><input id="actualBillAmount" type="number" min="0.01" step="0.01" placeholder="Final invoice amount including GST" required><div class="muted">Enter the final amount printed on the purchase invoice. MRP and Purchase/Pack remain medicine-level values.</div></div>
 <div class="field"><label>Payment Status *</label><div class="radio-row"><label><input type="radio" name="paymentStatus" value="Paid" checked onchange="togglePaymentDate()"> Paid</label><label><input type="radio" name="paymentStatus" value="Pending" onchange="togglePaymentDate()"> Pending</label></div></div>
 <div id="paymentDateField" class="field"><label>Payment Date</label><input id="paymentDate" type="date"></div>
-<div class="field"><label>Actual Bill Amount (Including GST) ₹ *</label><input id="actualBillAmount" type="number" min="0" step="0.01" placeholder="Enter final invoice amount including GST" oninput="updateBillTotals()" required><div class="muted">Enter the final amount printed on the purchase invoice. This is separate from MRP and medicine-level Purchase / Unit/Pack.</div></div>
 <div class="field full"><label>Notes</label><textarea id="purchaseNotes"></textarea></div>
 </div></div>
-<div class="section"><div class="items-header"><h3>Medicines in This Bill</h3><button type="button" class="btn small" onclick="addBillItem()">+ Add Another Medicine</button></div><div id="billItems"></div><div class="summary-grid"><div class="summary"><span>Bill Items</span><b id="billItemCount">0</b></div><div class="summary"><span>Total Units</span><b id="billUnits">0</b></div><div class="summary"><span>Medicine Purchase Subtotal</span><b id="billTotal">₹0.00</b></div><div class="summary"><span>Actual Bill Amount (GST Inclusive)</span><b id="billActualAmountSummary">₹0.00</b></div></div>
-<div class="success-box">💰 <b>Actual Bill Amount</b> is the final invoice amount including GST/other invoice charges. Pending/paid bill tracking uses this amount. MRP and Purchase / Unit/Pack remain medicine-level values.</div>
-<div class="summary-grid"><div class="summary"><span>Potential Gross Profit</span><b id="billPotentialProfit">₹0.00</b></div><div class="summary"><span>Bill Amount Difference</span><b id="billAmountDifference">₹0.00</b></div></div></div>
+<div class="section"><div class="items-header"><h3>Medicines in This Bill</h3><button type="button" class="btn small" onclick="addBillItem()">+ Add Another Medicine</button></div><div id="billItems"></div><div class="summary-grid"><div class="summary"><span>Bill Items</span><b id="billItemCount">0</b></div><div class="summary"><span>Total Packs</span><b id="billUnits">0</b></div><div class="summary"><span>Medicine Purchase Subtotal</span><b id="billTotal">₹0.00</b></div><div class="summary"><span>Actual Bill Amount</span><b id="actualBillAmountSummary">₹0.00</b></div><div class="summary"><span>GST / Other Difference</span><b id="billExtraAmount">₹0.00</b></div><div class="summary"><span>Potential Gross Profit</span><b id="billPotentialProfit">₹0.00</b></div></div></div>
 <div id="purchaseDuplicateNotice" class="notice hidden"></div><div class="footer-actions"><button type="button" class="btn secondary" onclick="openView('mainView')">Cancel</button><button class="btn" type="submit">Save Purchase Bill &amp; Add Stock</button></div></form></div>
 
 <div id="stockEntryView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>📦 Stock Entry</h2></div>
@@ -116,9 +137,11 @@
 
 <div id="purchaseListView" class="view"><div class="topbar"><button class="btn secondary" onclick="openView('mainView')">← Medicine &amp; Stock</button><h2>🧾 Purchase Bills</h2><button class="btn" onclick="openPurchaseForm()">+ Add Purchase Bill</button></div><div class="summary-grid"><div class="summary"><span>Total Bills</span><b id="purchaseTotalCount">0</b></div><div class="summary"><span>Pending Bills</span><b id="purchasePendingCount">0</b></div><div class="summary"><span>Paid Bills</span><b id="purchasePaidCount">0</b></div><div class="summary"><span>Pending Amount</span><b id="purchasePendingAmount">₹0.00</b></div></div><div class="search-row"><input id="purchaseSearch" placeholder="Stockist / company / medicine / bill number"><select id="purchaseStatusFilter"><option value="">All</option><option>Paid</option><option>Pending</option></select><input id="purchaseFrom" type="date"><input id="purchaseTo" type="date"><button class="btn secondary" onclick="loadPurchaseBills()">Search</button></div><div id="purchaseBillsTable"></div></div>
 
-<div id="medicineScanModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 AI-Assisted Medicine Scanner</h2><button class="btn secondary" type="button" onclick="closeMedicineScan()">Close</button></div><p class="muted">Take a clear medicine/package/bill photo or select an existing image. The scanner combines barcode detection and OCR, then lets you review and correct every extracted value before it is entered.</p><div class="section"><div class="scan-choice-grid"><button id="takeMedicinePhotoBtn" class="btn scan-choice" type="button" onclick="openMedicineCameraInput()">📸 Take Photo</button><button id="uploadMedicinePhotoBtn" class="btn secondary scan-choice" type="button" onclick="openMedicineUploadInput()">🖼️ Upload Photo</button></div><input id="medicineScanTakeFile" class="hidden" type="file" accept="image/*" capture="environment" onchange="processMedicineScan(this)"><input id="medicineScanUploadFile" class="hidden" type="file" accept="image/*" onchange="processMedicineScan(this)"><div class="scan-source-note"><b>Take Photo</b> opens the rear camera. <b>Upload Photo</b> opens Gallery/Photos/Files and does not request the camera.</div><div id="medicineScanStatus" class="scan-progress">Choose Take Photo or Upload Photo.</div><img id="medicineScanPreview" class="scan-preview hidden" alt="Medicine scan preview"><div id="medicineScanResult" class="scan-result hidden"></div></div><div class="footer-actions"><button class="btn secondary" type="button" onclick="closeMedicineScan()">Cancel</button><button id="useMedicineScanBtn" class="btn success hidden" type="button" onclick="useMedicineScanResult()">✓ Use Reviewed Information</button></div></div></div>
+<div id="medicineScanModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Smart Medicine Scanner</h2><button class="btn secondary" type="button" onclick="closeMedicineScan()">Close</button></div><p class="muted">Take a new photo or upload an existing image. OCR reads the text, then you can tap any detected text and choose exactly where it should be filled.</p><div class="section"><div class="scan-tool-row"><button class="btn" type="button" onclick="openMedicineCameraInput()">📸 Take Photo</button><button class="btn secondary" type="button" onclick="openMedicineUploadInput()">🖼️ Upload Photo</button></div><input id="medicineTakePhotoInput" type="file" accept="image/*" capture="environment" class="hidden" onchange="processMedicineScan(this)"><input id="medicineUploadPhotoInput" type="file" accept="image/*" class="hidden" onchange="processMedicineScan(this)"><div class="actions" style="margin-bottom:10px"><button id="startMedicineCameraBtn" class="btn secondary" type="button" onclick="startMedicineCamera()">📹 Live Camera</button><button id="stopMedicineCameraBtn" class="btn secondary hidden" type="button" onclick="stopMedicineCamera()">⏹ Stop Camera</button></div><video id="medicineScanVideo" class="scan-preview hidden" playsinline muted autoplay></video><div id="medicineScanStatus" class="scan-progress">Choose Take Photo or Upload Photo.</div><img id="medicineScanPreview" class="scan-preview hidden" alt="Medicine scan preview"><div id="medicineScanResult" class="scan-result hidden"></div></div><div class="footer-actions"><button class="btn secondary" type="button" onclick="closeMedicineScan()">Cancel</button><button id="useMedicineScanBtn" class="btn success hidden" type="button" onclick="useMedicineScanResult()">✓ Use Reviewed Information</button></div></div></div>
 
-<div id="billDetailModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>🧾 Purchase Bill Details</h2><button class="btn secondary" onclick="closeModal('billDetailModal')">Close</button></div><div id="billDetailContent"></div></div></div>
+<div id="scanAssignModal" class="modal-backdrop"><div class="modal" style="max-width:560px"><div class="topbar"><h2>📌 Fill This Text Into…</h2><button class="btn secondary" type="button" onclick="closeModal('scanAssignModal')">Close</button></div><div id="scanAssignText" class="scan-assign-text"></div><div id="scanAssignOptions" class="scan-option-grid"></div></div></div>
+
+<div id="billDetailModal"<div id="billDetailModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>🧾 Purchase Bill Details</h2><button class="btn secondary" onclick="closeModal('billDetailModal')">Close</button></div><div id="billDetailContent"></div></div></div>
 <div id="photoModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>📷 Purchase Bill Photo</h2><button class="btn secondary" onclick="closeModal('photoModal')">Close</button></div><div id="photoContent"></div></div></div>
 <div id="medicineDetailModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2>💊 Medicine Details</h2><button class="btn secondary" onclick="closeModal('medicineDetailModal')">Close</button></div><div id="medicineDetailContent"></div></div></div>
 <div id="stockEntryDetailModal" class="modal-backdrop"><div class="modal"><div class="topbar"><h2 id="stockEntryDetailTitle">📦 Stock Entry Details</h2><button class="btn secondary" onclick="closeModal('stockEntryDetailModal')">Close</button></div><div id="stockEntryDetailContent"></div></div></div>
@@ -137,6 +160,9 @@ let medicines=[]; let selectedTransactionMedicine=null; let billItemCounter=0; l
 function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function currency(v){return '₹'+Number(v||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function fmtDate(v){if(!v)return '-';const [y,m,d]=String(v).slice(0,10).split('-');return d&&m&&y?`${d}-${m}-${y}`:String(v);}
+function monthInputFromDate(v){return v?String(v).slice(0,7):'';}
+function monthToDate(v){return v?`${v}-01`:'';}
+function monthLabel(v){if(!v)return '-';const s=String(v).slice(0,7);const [y,m]=s.split('-');if(!y||!m)return String(v);const d=new Date(Number(y),Number(m)-1,1);return d.toLocaleDateString('en-IN',{month:'short',year:'numeric'});}
 function todayIST(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
 function firstDayIST(){const d=todayIST();return d.slice(0,8)+'01';}
 function monthStart(date){const d=new Date(date+'T00:00:00');d.setDate(1);return d.toISOString().slice(0,10);}
@@ -148,7 +174,7 @@ function showModal(id){document.getElementById(id).classList.add('show');}
 function showError(msg){alert('Unable to complete this action.\n\n'+msg);}
 async function requireSession(){const {data,error}=await supabaseClient.auth.getSession();if(error||!data.session){window.location.href='doctor-login.html';return null;}return data.session;}
 
-async function init(){if(!(await requireSession()))return;setTodayDefaults();await refreshDashboard();}
+async function init(){if(!(await requireSession()))return;setTodayDefaults();await refreshDashboard();setTimeout(()=>warmMedicineOcr(),500);}
 function setTodayDefaults(){const t=todayIST();['purchaseDate','paymentDate','unbilledDate','dispenseDate','adjustDate','analyticsTo'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=t;});const from=document.getElementById('analyticsFrom');if(from&&!from.value)from.value=firstDayIST();}
 async function refreshDashboard(){await loadMedicines();document.getElementById('statMedicines').textContent=medicines.length;let stock=0,low=0;medicines.forEach(m=>{const q=Number(m.total_stock||0);stock+=q;if(q<=Number(m.minimum_stock_level||0))low++;});document.getElementById('statStock').textContent=stock.toLocaleString('en-IN');document.getElementById('statLow').textContent=low;const today=todayIST(),end=new Date(today+'T00:00:00');end.setDate(end.getDate()+90);const endDate=end.toISOString().slice(0,10);const {data}=await supabaseClient.from('medicine_batches').select('id').gt('quantity',0).lte('expiry_date',endDate).gte('expiry_date',today);document.getElementById('statExpiry').textContent=(data||[]).length;}
 async function loadMedicines(){const {data,error}=await supabaseClient.from('medicines').select('*').order('medicine_name');if(error){console.error(error);medicines=[];return;}const {data:batches}=await supabaseClient.from('medicine_batches').select('medicine_id,quantity');const totals={};(batches||[]).forEach(b=>totals[b.medicine_id]=(totals[b.medicine_id]||0)+Number(b.quantity||0));medicines=(data||[]).map(m=>({...m,total_stock:totals[m.id]||0}));}
@@ -211,28 +237,79 @@ async function saveMedicine(e){e.preventDefault();if(!(await requireSession()))r
 }
 alert(editingMedicineId?'Medicine updated successfully.':'Medicine added successfully.');openView('medicineListView');await loadMedicineList();await refreshDashboard();}
 
-function openPurchaseForm(id=null){editingPurchaseBillId=id;existingPurchasePhotoPath=null;existingPurchasePhotoUrl=null;document.getElementById('purchaseForm').reset();document.getElementById('billItems').innerHTML='';billItemCounter=0;document.getElementById('purchaseBillId').value=id||'';document.getElementById('purchaseDate').value=todayIST();document.getElementById('paymentDate').value=todayIST();document.getElementById('actualBillAmount').value='';document.getElementById('billActualAmountSummary').textContent=currency(0);document.getElementById('billAmountDifference').textContent=currency(0);document.getElementById('existingBillPhoto').innerHTML='';document.getElementById('purchaseDuplicateNotice').classList.add('hidden');if(!id)addBillItem();togglePaymentDate();openView('purchaseView');if(id)loadPurchaseBillForEdit(id);}
-async function loadPurchaseBillForEdit(id){const {data,error}=await supabaseClient.from('purchase_bills').select('*').eq('id',id).single();if(error){showError(error.message);return;}document.getElementById('purchaseDate').value=data.purchase_date;document.getElementById('stockistName').value=data.stockist_name;document.getElementById('pharmaCompanyName').value=data.pharma_company_name||'';document.getElementById('billNumber').value=data.bill_number;document.getElementById('purchaseNotes').value=data.notes||'';document.getElementById('actualBillAmount').value=Number(data.total_amount||0);existingPurchasePhotoPath=data.bill_photo_path;existingPurchasePhotoUrl=data.bill_photo_url;document.getElementById('existingBillPhoto').innerHTML=data.bill_photo_path?`Existing photo: <span class="photo-link" onclick="viewPurchasePhoto('${esc(data.bill_photo_path)}','${esc(data.bill_photo_url||'')}',true)">View bill</span>`:'';document.querySelector(`input[name="paymentStatus"][value="${data.payment_status}"]`).checked=true;document.getElementById('paymentDate').value=data.payment_date||'';togglePaymentDate();const {data:items}=await supabaseClient.from('purchase_bill_items').select('*, medicines(*)').eq('purchase_bill_id',id).order('id');document.getElementById('billItems').innerHTML='';(items||[]).forEach(x=>addBillItem(x));updateBillTotals();}
-function addBillItem(item=null){const id=++billItemCounter;const div=document.createElement('div');div.className='bill-item';div.dataset.itemId=id;div.dataset.medicineId=item?.medicine_id||'';div.dataset.oldItemId=item?.id||'';div.innerHTML=`<div class="item-grid"><div class="field wide autocomplete"><label>Medicine Name * <button type="button" class="btn small scan-btn" onclick="openMedicineScan(this,'bill')">📷 Scan</button></label><input class="bill-medicine" autocomplete="off" value="${esc(item?.medicines?`${item.medicines.medicine_name}${item.medicines.strength?' '+item.medicines.strength:''} ${item.medicines.dosage_form||''}`:'')}" oninput="searchBillMedicine(this)" required><div class="suggestions hidden"></div><input type="hidden" class="bill-medicine-id" value="${item?.medicine_id||''}"><div class="muted bill-unit">${item?.unit_name?'Unit/Pack: '+esc(item.unit_name):''}</div></div><div class="field"><label>Batch *</label><input class="bill-batch" value="${esc(item?.batch_number||'')}" required></div><div class="field"><label>Expiry *</label><input class="bill-expiry" type="date" value="${item?.expiry_date||''}" required></div><div class="field"><label>Quantity *</label><input class="bill-qty" type="number" min="0.01" step="0.01" value="${item?.quantity||''}" oninput="updateBillTotals()" required></div><div class="field"><label>MRP / Unit/Pack *</label><input class="bill-mrp" type="number" min="0" step="0.01" value="${item?.mrp_per_unit??''}" oninput="updateBillTotals()" required></div><div class="field"><label>Purchase / Unit/Pack *</label><input class="bill-price" type="number" min="0" step="0.01" value="${item?.purchase_price_per_unit??''}" oninput="updateBillTotals()" required></div><button type="button" class="btn danger small" onclick="this.closest('.bill-item').remove();updateBillTotals()">Remove</button></div>`;document.getElementById('billItems').appendChild(div);if(item)div.querySelector('.bill-unit').textContent='Unit/Pack: '+(item.unit_name||'');}
-function billItemsData(){return [...document.querySelectorAll('.bill-item')].map(div=>({div,medicine_id:Number(div.querySelector('.bill-medicine-id').value)||null,batch_number:div.querySelector('.bill-batch').value.trim(),expiry_date:div.querySelector('.bill-expiry').value,quantity:Number(div.querySelector('.bill-qty').value)||0,mrp_per_unit:Number(div.querySelector('.bill-mrp').value)||0,purchase_price_per_unit:Number(div.querySelector('.bill-price').value)||0,old_id:Number(div.dataset.oldItemId)||null}));}
-function updateBillTotals(){const items=billItemsData();let total=0,units=0,profit=0;items.forEach(i=>{total+=i.quantity*i.purchase_price_per_unit;units+=i.quantity;profit+=i.quantity*(i.mrp_per_unit-i.purchase_price_per_unit)});const actual=Number(document.getElementById('actualBillAmount')?.value)||0;document.getElementById('billItemCount').textContent=items.length;document.getElementById('billUnits').textContent=units;document.getElementById('billTotal').textContent=currency(total);document.getElementById('billPotentialProfit').textContent=currency(profit);if(document.getElementById('billActualAmountSummary'))document.getElementById('billActualAmountSummary').textContent=currency(actual);if(document.getElementById('billAmountDifference'))document.getElementById('billAmountDifference').textContent=currency(actual-total);}
+function openPurchaseForm(id=null){editingPurchaseBillId=id;existingPurchasePhotoPath=null;existingPurchasePhotoUrl=null;document.getElementById('purchaseForm').reset();document.getElementById('billItems').innerHTML='';billItemCounter=0;document.getElementById('purchaseBillId').value=id||'';document.getElementById('purchaseDate').value=todayIST();document.getElementById('paymentDate').value=todayIST();document.getElementById('existingBillPhoto').innerHTML='';document.getElementById('purchaseDuplicateNotice').classList.add('hidden');if(!id)addBillItem();togglePaymentDate();openView('purchaseView');if(id)loadPurchaseBillForEdit(id);}
+async function loadPurchaseBillForEdit(id){const {data,error}=await supabaseClient.from('purchase_bills').select('*').eq('id',id).single();if(error){showError(error.message);return;}document.getElementById('purchaseDate').value=data.purchase_date;document.getElementById('stockistName').value=data.stockist_name;document.getElementById('pharmaCompanyName').value=data.pharma_company_name||'';document.getElementById('billNumber').value=data.bill_number;document.getElementById('purchaseNotes').value=data.notes||'';existingPurchasePhotoPath=data.bill_photo_path;existingPurchasePhotoUrl=data.bill_photo_url;document.getElementById('existingBillPhoto').innerHTML=data.bill_photo_path?`Existing photo: <span class="photo-link" onclick="viewPurchasePhoto('${esc(data.bill_photo_path)}','${esc(data.bill_photo_url||'')}',true)">View bill</span>`:'';document.querySelector(`input[name="paymentStatus"][value="${data.payment_status}"]`).checked=true;document.getElementById('paymentDate').value=data.payment_date||'';togglePaymentDate();const {data:items}=await supabaseClient.from('purchase_bill_items').select('*, medicines(*)').eq('purchase_bill_id',id).order('id');document.getElementById('billItems').innerHTML='';(items||[]).forEach(x=>addBillItem(x));updateBillTotals();}
+function addBillItem(item=null){
+  const id=++billItemCounter;
+  const div=document.createElement('div');div.className='bill-item';div.dataset.oldItemId=item?.id||'';
+  const expiryMonth=monthInputFromDate(item?.expiry_date||'');
+  div.innerHTML=`<div class="item-grid">
+  <div class="field wide autocomplete"><label>Medicine Name * <button type="button" class="btn small scan-btn" onclick="openMedicineScan(this,'bill')">📷 Scan</button></label><input class="bill-medicine" autocomplete="off" value="${esc(item?.medicines?`${item.medicines.medicine_name}${item.medicines.strength?' '+item.medicines.strength:''}`:'')}" oninput="searchBillMedicine(this)" required><div class="suggestions hidden"></div><input type="hidden" class="bill-medicine-id" value="${item?.medicine_id||''}"><input type="hidden" class="bill-units-per-pack" value="${item?.units_per_pack||item?.medicines?.units_per_pack||1}"><input type="hidden" class="bill-base-unit" value="${item?.medicines?.base_unit||'Unit'}"><div class="muted bill-unit">${item?.medicines?`Pack: ${esc(item.medicines.pack_unit)} · 1 pack = ${item.medicines.units_per_pack} ${esc(item.medicines.base_unit)}`:''}</div></div>
+  <div class="field"><label>Batch *</label><input class="bill-batch" value="${esc(item?.batch_number||'')}" required></div>
+  <div class="field"><label>Expiry Month / Year *</label><input class="bill-expiry" type="month" value="${expiryMonth}" required></div>
+  <div class="field"><label>Quantity (Packs) *</label><input class="bill-qty" type="number" min="0.01" step="0.01" value="${item?.quantity||''}" oninput="updateBillTotals()" required></div>
+  <div class="field"><label>MRP / Pack *</label><input class="bill-mrp" type="number" min="0" step="0.01" value="${item?.mrp_per_unit??''}" oninput="updateBillTotals()" required></div>
+  <div class="field"><label>Purchase / Pack *</label><input class="bill-price" type="number" min="0" step="0.01" value="${item?.purchase_price_per_unit??''}" oninput="updateBillTotals()" required></div>
+  <button type="button" class="btn danger small" onclick="removeBillItem(this)">Remove</button></div>
+  <div class="muted bill-base-info">Base quantity: —</div>`;
+  document.getElementById('billItems').appendChild(div);
+  if(item?.medicine_id)selectBillMedicine(div,item.medicine_id,true);
+  updateBillTotals();
+}
+function billItemsData(){
+  return [...document.querySelectorAll('#billItems .bill-item')].map(div=>({
+    div,medicine_id:Number(div.querySelector('.bill-medicine-id').value)||null,
+    batch_number:div.querySelector('.bill-batch').value.trim(),
+    expiry_date:monthToDate(div.querySelector('.bill-expiry').value),
+    expiry_month:div.querySelector('.bill-expiry').value,
+    quantity:Number(div.querySelector('.bill-qty').value)||0,
+    mrp_per_unit:Number(div.querySelector('.bill-mrp').value)||0,
+    purchase_price_per_unit:Number(div.querySelector('.bill-price').value)||0,
+    units_per_pack:Number(div.querySelector('.bill-units-per-pack').value)||1,
+    base_unit:div.querySelector('.bill-base-unit').value||'Unit',
+    old_id:Number(div.dataset.oldItemId)||null
+  }));
+}
+
+function updateBillTotals(){
+  const items=billItemsData();let total=0,packs=0,profit=0;
+  items.forEach(i=>{packs+=i.quantity;total+=i.quantity*i.purchase_price_per_unit;profit+=i.quantity*(i.mrp_per_unit-i.purchase_price_per_unit);const el=i.div.querySelector('.bill-base-info');if(el)el.textContent=`Base quantity: ${(i.quantity*i.units_per_pack).toLocaleString('en-IN')} ${i.base_unit}`;});
+  document.getElementById('billItemCount').textContent=items.length;document.getElementById('billUnits').textContent=packs.toLocaleString('en-IN');document.getElementById('billTotal').textContent=currency(total);document.getElementById('billPotentialProfit').textContent=currency(profit);
+  const actual=Number(document.getElementById('actualBillAmount')?.value)||0;const a=document.getElementById('actualBillAmountSummary');if(a)a.textContent=currency(actual);const d=document.getElementById('billExtraAmount');if(d)d.textContent=currency(actual-total);
+}
+function updateBillTotals(){const items=billItemsData();let total=0,units=0,profit=0;items.forEach(i=>{total+=i.quantity*i.purchase_price_per_unit;units+=i.quantity;profit+=i.quantity*(i.mrp_per_unit-i.purchase_price_per_unit)});document.getElementById('billItemCount').textContent=items.length;document.getElementById('billUnits').textContent=units;document.getElementById('billTotal').textContent=currency(total);document.getElementById('billPotentialProfit').textContent=currency(profit);}
 async function searchBillMedicine(input){const term=input.value.trim();const box=input.parentElement.querySelector('.suggestions');if(term.length<2){box.classList.add('hidden');return;}const {data}=await supabaseClient.from('medicines').select('*').or(`medicine_name.ilike.%${term}%,generic_name.ilike.%${term}%,strength.ilike.%${term}%`).order('medicine_name').limit(10);box.innerHTML=(data||[]).map(m=>`<div class="suggestion" onclick="selectBillMedicine(this,${m.id})"><b>${esc(m.medicine_name)}</b> ${esc(m.strength||'')} ${esc(m.dosage_form)}<br><span class="muted">${esc(m.generic_name||'')} · Unit/Pack: ${esc(m.pack_unit)}</span></div>`).join('')+`<div class="suggestion" onclick="openNewMedicineFromBill(this)">➕ Add New Medicine</div>`;box.classList.remove('hidden');box._data=data||[];}
 function selectBillMedicine(el,id){const box=el.parentElement;const div=box.closest('.bill-item');const m=(box._data||[]).find(x=>x.id===id);if(!m)return;div.dataset.medicineId=id;div.querySelector('.bill-medicine-id').value=id;div.querySelector('.bill-medicine').value=`${m.medicine_name}${m.strength?' '+m.strength:''} ${m.dosage_form}`.trim();div.querySelector('.bill-unit').textContent='Unit/Pack: '+m.pack_unit;box.classList.add('hidden');}
 function openNewMedicineFromBill(el){const div=el.closest('.bill-item');const current=div.querySelector('.bill-medicine').value;window.pendingBillItemDiv=div;openMedicineCreate();document.getElementById('medicineName').value=current;}
 function togglePaymentDate(){const pending=document.querySelector('input[name="paymentStatus"]:checked')?.value==='Pending';document.getElementById('paymentDateField').classList.toggle('hidden',pending);if(pending)document.getElementById('paymentDate').value='';}
 
-async function savePurchaseBill(e){e.preventDefault();if(!(await requireSession()))return;const items=billItemsData();if(!items.length){alert('Add at least one medicine to the purchase bill.');return;}if(items.some(i=>!i.medicine_id)){alert('Select a stored medicine for every bill item, or use Add New Medicine.');return;}const stockist=document.getElementById('stockistName').value.trim(),billNo=document.getElementById('billNumber').value.trim();if(!stockist||!billNo)return;const {data:dupeRows}=await supabaseClient.from('purchase_bills').select('id,purchase_date,total_amount,payment_status,stockist_name,bill_number').neq('id',editingPurchaseBillId||0);const dupe=(dupeRows||[]).find(x=>x.stockist_name.trim().toLowerCase()===stockist.trim().toLowerCase()&&x.bill_number.trim().toLowerCase()===billNo.trim().toLowerCase());if(dupe){document.getElementById('purchaseDuplicateNotice').classList.remove('hidden');document.getElementById('purchaseDuplicateNotice').innerHTML=`⚠️ This Stockist + Bill Number already exists. <button type="button" class="btn small" onclick="openPurchaseForm(${dupe.id})">View Existing Bill</button>`;alert('Duplicate purchase bill detected. Stock was NOT added.');return;}const status=document.querySelector('input[name="paymentStatus"]:checked').value;const medicineSubtotal=items.reduce((s,i)=>s+i.quantity*i.purchase_price_per_unit,0);const actualBillAmount=Number(document.getElementById('actualBillAmount').value)||0;if(actualBillAmount<=0){alert('Enter the actual final purchase bill amount including GST.');document.getElementById('actualBillAmount').focus();return;}const billPayload={purchase_date:document.getElementById('purchaseDate').value,stockist_name:stockist,pharma_company_name:document.getElementById('pharmaCompanyName').value.trim()||null,bill_number:billNo,payment_status:status,payment_date:status==='Paid'?(document.getElementById('paymentDate').value||document.getElementById('purchaseDate').value):null,total_amount:actualBillAmount,notes:document.getElementById('purchaseNotes').value.trim()||null,updated_at:new Date().toISOString()};let billId=editingPurchaseBillId;let billRes;if(billId)billRes=await supabaseClient.from('purchase_bills').update(billPayload).eq('id',billId).select().single();else billRes=await supabaseClient.from('purchase_bills').insert(billPayload).select().single();if(billRes.error){showError(billRes.error.message);return;}billId=billRes.data.id;
-const photo=document.getElementById('billPhoto').files[0];if(photo){const ext=(photo.name.split('.').pop()||'jpg').toLowerCase();const path=`${billId}/${Date.now()}.${ext}`;const up=await supabaseClient.storage.from(PHOTO_BUCKET).upload(path,photo,{upsert:true,contentType:photo.type});if(up.error){showError('Bill saved but photo upload failed: '+up.error.message);return;}const signed=await supabaseClient.storage.from(PHOTO_BUCKET).createSignedUrl(path,3600);const photoUpdate={bill_photo_path:path,bill_photo_url:signed.data?.signedUrl||null};const u=await supabaseClient.from('purchase_bills').update(photoUpdate).eq('id',billId);if(u.error){showError('Bill saved but photo link failed: '+u.error.message);return;}existingPurchasePhotoPath=path;}
-if(editingPurchaseBillId){await reconcileEditedPurchaseBill(billId,items);}else{for(const item of items){const {data:batch,error:batchError}=await upsertBatch(item,billId);if(batchError){showError(batchError.message);return;}const tx=await supabaseClient.from('medicine_stock_transactions').insert({medicine_id:item.medicine_id,batch_id:batch.id,purchase_bill_id:billId,purchase_bill_item_id:null,transaction_type:'PURCHASE',quantity:item.quantity,direction:'IN',transaction_date:billPayload.purchase_date,mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,notes:'Purchase bill '+billNo});if(tx.error){showError(tx.error.message);return;}const bi=await supabaseClient.from('purchase_bill_items').insert({purchase_bill_id:billId,medicine_id:item.medicine_id,batch_number:item.batch_number,expiry_date:item.expiry_date,quantity:item.quantity,unit_name:(await getMedicineUnit(item.medicine_id)),mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,line_amount:item.quantity*item.purchase_price_per_unit}).select().single();if(bi.error){showError(bi.error.message);return;}await supabaseClient.from('medicine_stock_transactions').update({purchase_bill_item_id:bi.data.id}).eq('purchase_bill_id',billId).eq('medicine_id',item.medicine_id).eq('batch_id',batch.id).eq('transaction_type','PURCHASE').is('purchase_bill_item_id',null);}}
-alert(editingPurchaseBillId?'Purchase bill updated successfully.':'Purchase bill saved and stock added successfully.');openPurchaseBills();}
+async function savePurchaseBill(e){
+  e.preventDefault();if(!(await requireSession()))return;
+  const items=billItemsData();if(!items.length){alert('Add at least one medicine to the purchase bill.');return;}
+  if(items.some(i=>!i.medicine_id||!i.batch_number||!i.expiry_date||i.quantity<=0)){alert('Complete medicine, batch, expiry month/year and quantity for every item.');return;}
+  const stockist=document.getElementById('stockistName').value.trim(),billNo=document.getElementById('billNumber').value.trim();if(!stockist||!billNo)return;
+  const actualBillAmount=Number(document.getElementById('actualBillAmount').value)||0;if(actualBillAmount<=0){alert('Enter the Actual Bill Amount including GST from the invoice.');document.getElementById('actualBillAmount').focus();return;}
+  const medicineSubtotal=items.reduce((s,i)=>s+i.quantity*i.purchase_price_per_unit,0);
+  const {data:dupes,error:de}=await supabaseClient.from('purchase_bills').select('id,stockist_name,bill_number').neq('id',editingPurchaseBillId||0).ilike('stockist_name',stockist).ilike('bill_number',billNo).limit(5);if(de){showError(de.message);return;}if((dupes||[]).length){alert('This Stockist + Bill Number already exists. No new stock was added.');return;}
+  const status=document.querySelector('input[name="paymentStatus"]:checked')?.value||'Paid';const payload={purchase_date:document.getElementById('purchaseDate').value,stockist_name:stockist,pharma_company_name:document.getElementById('pharmaCompanyName').value.trim()||null,bill_number:billNo,payment_status:status,payment_date:status==='Paid'?(document.getElementById('paymentDate').value||null):null,total_amount:actualBillAmount,notes:document.getElementById('purchaseNotes').value.trim()||null,updated_at:new Date().toISOString()};
+  if(editingPurchaseBillId){const {error}=await supabaseClient.from('purchase_bills').update(payload).eq('id',editingPurchaseBillId);if(error){showError(error.message);return;}alert(`Purchase bill updated. Medicine subtotal: ${currency(medicineSubtotal)}. Actual invoice amount: ${currency(actualBillAmount)}.`);openPurchaseBills();return;}
+  const {data:bill,error:be}=await supabaseClient.from('purchase_bills').insert(payload).select().single();if(be){showError(be.message);return;}
+  const photo=document.getElementById('billPhoto').files[0];if(photo){const ext=(photo.name.split('.').pop()||'jpg').toLowerCase();const path=`${bill.id}/${Date.now()}.${ext}`;const up=await supabaseClient.storage.from(PHOTO_BUCKET).upload(path,photo,{upsert:false,contentType:photo.type});if(up.error){showError(up.error.message);return;}await supabaseClient.from('purchase_bills').update({bill_photo_path:path}).eq('id',bill.id);}
+  const messages=[];try{for(const item of items){const {data:bi,error:bie}=await supabaseClient.from('purchase_bill_items').insert({purchase_bill_id:bill.id,medicine_id:item.medicine_id,batch_number:item.batch_number,expiry_date:item.expiry_date,quantity:item.quantity,unit_name:await getMedicineUnit(item.medicine_id),mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,line_amount:item.quantity*item.purchase_price_per_unit,units_per_pack:item.units_per_pack,quantity_base_units:item.quantity*item.units_per_pack,linked_existing_stock_units:0}).select().single();if(bie)throw bie;messages.push(await reconcilePurchaseItem(bi,item));}}catch(err){showError('Bill was created but stock reconciliation stopped: '+err.message);return;}
+  alert(`Purchase bill saved.\n\nMedicine subtotal: ${currency(medicineSubtotal)}\nActual bill amount (including GST): ${currency(actualBillAmount)}\n\n${messages.join('\n')}`);openPurchaseBills();await refreshDashboard();
+}
 async function getMedicineUnit(id){const m=medicines.find(x=>x.id===id);if(m)return m.pack_unit;const {data}=await supabaseClient.from('medicines').select('pack_unit').eq('id',id).single();return data?.pack_unit||'Unit/Pack';}
 async function upsertBatch(item,billId){const {data:existing}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',item.medicine_id).eq('batch_number',item.batch_number).maybeSingle();if(existing){const q=await supabaseClient.from('medicine_batches').update({expiry_date:item.expiry_date,quantity:Number(existing.quantity)+item.quantity,unit_name:await getMedicineUnit(item.medicine_id),mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,last_purchase_bill_id:billId,updated_at:new Date().toISOString()}).eq('id',existing.id).select().single();return {data:q.data,error:q.error};}const q=await supabaseClient.from('medicine_batches').insert({medicine_id:item.medicine_id,batch_number:item.batch_number,expiry_date:item.expiry_date,quantity:item.quantity,unit_name:await getMedicineUnit(item.medicine_id),mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,last_purchase_bill_id:billId}).select().single();return {data:q.data,error:q.error};}
 async function reconcileEditedPurchaseBill(billId,newItems){const {data:oldItems}=await supabaseClient.from('purchase_bill_items').select('*').eq('purchase_bill_id',billId);for(const old of oldItems||[]){await supabaseClient.from('medicine_stock_transactions').delete().eq('purchase_bill_id',billId).eq('purchase_bill_item_id',old.id).eq('transaction_type','PURCHASE');const {data:b}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',old.medicine_id).eq('batch_number',old.batch_number).maybeSingle();if(b){const newQty=Math.max(0,Number(b.quantity)-Number(old.quantity));await supabaseClient.from('medicine_batches').update({quantity:newQty,updated_at:new Date().toISOString()}).eq('id',b.id);}}await supabaseClient.from('purchase_bill_items').delete().eq('purchase_bill_id',billId);for(const item of newItems){const {data:batch,error}=await upsertBatch(item,billId);if(error)continue;const {data:bi,error:bie}=await supabaseClient.from('purchase_bill_items').insert({purchase_bill_id:billId,medicine_id:item.medicine_id,batch_number:item.batch_number,expiry_date:item.expiry_date,quantity:item.quantity,unit_name:await getMedicineUnit(item.medicine_id),mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,line_amount:item.quantity*item.purchase_price_per_unit}).select().single();if(bie)continue;await supabaseClient.from('medicine_stock_transactions').insert({medicine_id:item.medicine_id,batch_id:batch.id,purchase_bill_id:billId,purchase_bill_item_id:bi.id,transaction_type:'PURCHASE',quantity:item.quantity,direction:'IN',transaction_date:document.getElementById('purchaseDate').value,mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,notes:'Purchase bill '+document.getElementById('billNumber').value.trim()});}}
 
 async function openPurchaseBills(){openView('purchaseListView');await loadPurchaseBills();}
-async function loadPurchaseBills(){const search=document.getElementById('purchaseSearch')?.value.trim()||'',status=document.getElementById('purchaseStatusFilter')?.value||'',from=document.getElementById('purchaseFrom')?.value||'',to=document.getElementById('purchaseTo')?.value||'';let q=supabaseClient.from('purchase_bills').select('*').order('purchase_date',{ascending:false}).order('id',{ascending:false});if(status)q=q.eq('payment_status',status);if(from)q=q.gte('purchase_date',from);if(to)q=q.lte('purchase_date',to);const {data,error}=await q;if(error){showError(error.message);return;}let bills=data||[];if(search){const s=search.toLowerCase();const ids=(await supabaseClient.from('purchase_bill_items').select('purchase_bill_id,medicine_id,medicines(medicine_name,generic_name,strength)')).data||[];const matchIds=new Set(ids.filter(x=>`${x.medicines?.medicine_name||''} ${x.medicines?.generic_name||''} ${x.medicines?.strength||''}`.toLowerCase().includes(s)).map(x=>x.purchase_bill_id));bills=bills.filter(b=>`${b.stockist_name} ${b.pharma_company_name||''} ${b.bill_number}`.toLowerCase().includes(s)||matchIds.has(b.id));}const pending=bills.filter(b=>b.payment_status==='Pending');const paid=bills.filter(b=>b.payment_status==='Paid');document.getElementById('purchaseTotalCount').textContent=bills.length;document.getElementById('purchasePendingCount').textContent=pending.length;document.getElementById('purchasePaidCount').textContent=paid.length;document.getElementById('purchasePendingAmount').textContent=currency(pending.reduce((s,b)=>s+Number(b.total_amount||0),0));document.getElementById('purchaseBillsTable').innerHTML=bills.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Stockist</th><th>Company</th><th>Bill No.</th><th>Bill Amount (GST Incl.)</th><th>Payment</th><th>Photo</th><th>Actions</th></tr></thead><tbody>${bills.map(b=>`<tr><td>${fmtDate(b.purchase_date)}</td><td>${esc(b.stockist_name)}</td><td>${esc(b.pharma_company_name||'-')}</td><td>${esc(b.bill_number)}</td><td>${currency(b.total_amount)}</td><td><span class="badge ${b.payment_status==='Paid'?'paid':'pending'}">${b.payment_status}${b.payment_date?' · '+fmtDate(b.payment_date):''}</span></td><td>${b.bill_photo_path?`<span class="photo-link" onclick="viewPurchasePhoto('${esc(b.bill_photo_path)}','${esc(b.bill_photo_url||'')}',true)">📷 View</span>`:'-'}</td><td><div class="actions"><button class="btn small" onclick="viewPurchaseBill(${b.id})">View</button><button class="btn secondary small" onclick="openPurchaseForm(${b.id})">Edit</button><button class="btn danger small" onclick="deletePurchaseBill(${b.id})">Delete</button></div></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No purchase bills found.</div>';}
+async function loadPurchaseBills(){const search=document.getElementById('purchaseSearch')?.value.trim()||'',status=document.getElementById('purchaseStatusFilter')?.value||'',from=document.getElementById('purchaseFrom')?.value||'',to=document.getElementById('purchaseTo')?.value||'';let q=supabaseClient.from('purchase_bills').select('*').order('purchase_date',{ascending:false}).order('id',{ascending:false});if(status)q=q.eq('payment_status',status);if(from)q=q.gte('purchase_date',from);if(to)q=q.lte('purchase_date',to);const {data,error}=await q;if(error){showError(error.message);return;}let bills=data||[];if(search){const s=search.toLowerCase();const ids=(await supabaseClient.from('purchase_bill_items').select('purchase_bill_id,medicine_id,medicines(medicine_name,generic_name,strength)')).data||[];const matchIds=new Set(ids.filter(x=>`${x.medicines?.medicine_name||''} ${x.medicines?.generic_name||''} ${x.medicines?.strength||''}`.toLowerCase().includes(s)).map(x=>x.purchase_bill_id));bills=bills.filter(b=>`${b.stockist_name} ${b.pharma_company_name||''} ${b.bill_number}`.toLowerCase().includes(s)||matchIds.has(b.id));}const pending=bills.filter(b=>b.payment_status==='Pending');const paid=bills.filter(b=>b.payment_status==='Paid');document.getElementById('purchaseTotalCount').textContent=bills.length;document.getElementById('purchasePendingCount').textContent=pending.length;document.getElementById('purchasePaidCount').textContent=paid.length;document.getElementById('purchasePendingAmount').textContent=currency(pending.reduce((s,b)=>s+Number(b.total_amount||0),0));document.getElementById('purchaseBillsTable').innerHTML=bills.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Stockist</th><th>Company</th><th>Bill No.</th><th>Amount</th><th>Payment</th><th>Photo</th><th>Actions</th></tr></thead><tbody>${bills.map(b=>`<tr><td>${fmtDate(b.purchase_date)}</td><td>${esc(b.stockist_name)}</td><td>${esc(b.pharma_company_name||'-')}</td><td>${esc(b.bill_number)}</td><td>${currency(b.total_amount)}</td><td><span class="badge ${b.payment_status==='Paid'?'paid':'pending'}">${b.payment_status}${b.payment_date?' · '+fmtDate(b.payment_date):''}</span></td><td>${b.bill_photo_path?`<span class="photo-link" onclick="viewPurchasePhoto('${esc(b.bill_photo_path)}','${esc(b.bill_photo_url||'')}',true)">📷 View</span>`:'-'}</td><td><div class="actions"><button class="btn small" onclick="viewPurchaseBill(${b.id})">View</button><button class="btn secondary small" onclick="openPurchaseForm(${b.id})">Edit</button><button class="btn danger small" onclick="deletePurchaseBill(${b.id})">Delete</button></div></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No purchase bills found.</div>';}
 
-async function viewPurchaseBill(id){const {data:b,error}=await supabaseClient.from('purchase_bills').select('*').eq('id',id).single();if(error){showError(error.message);return;}const {data:items}=await supabaseClient.from('purchase_bill_items').select('*,medicines(*)').eq('purchase_bill_id',id).order('id');document.getElementById('billDetailContent').innerHTML=`<div class="section"><div class="form-grid"><div><b>Purchase Date</b><br>${fmtDate(b.purchase_date)}</div><div><b>Stockist</b><br>${esc(b.stockist_name)}</div><div><b>Pharma Company</b><br>${esc(b.pharma_company_name||'-')}</div><div><b>Bill Number</b><br>${esc(b.bill_number)}</div><div><b>Payment</b><br><span class="badge ${b.payment_status==='Paid'?'paid':'pending'}">${b.payment_status}</span></div><div><b>Payment Date</b><br>${fmtDate(b.payment_date)}</div><div><b>Actual Bill Amount (GST Inclusive)</b><br>${currency(b.total_amount)}</div><div>${b.bill_photo_path?`<button class="btn small" onclick="viewPurchasePhoto('${esc(b.bill_photo_path)}','${esc(b.bill_photo_url||'')}',true)">📷 View Bill Photo</button>`:'No bill photo'}</div></div></div><div class="section"><h3>Medicines</h3><div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Batch</th><th>Expiry</th><th>Qty</th><th>MRP/Unit</th><th>Purchase/Unit</th><th>Profit</th></tr></thead><tbody>${(items||[]).map(i=>`<tr><td>${esc(i.medicines?.medicine_name||'')} ${esc(i.medicines?.strength||'')}</td><td>${esc(i.batch_number)}</td><td>${fmtDate(i.expiry_date)}</td><td>${i.quantity} ${esc(i.unit_name)}</td><td>${currency(i.mrp_per_unit)}</td><td>${currency(i.purchase_price_per_unit)}</td><td>${currency((Number(i.mrp_per_unit)-Number(i.purchase_price_per_unit))*Number(i.quantity))}</td></tr>`).join('')}</tbody></table></div></div><div class="footer-actions"><button class="btn secondary" onclick="openPurchaseForm(${id});closeModal('billDetailModal')">✏️ Edit</button><button class="btn danger" onclick="deletePurchaseBill(${id});closeModal('billDetailModal')">🗑 Delete</button></div>`;showModal('billDetailModal');}
+async function viewPurchaseBill(id){
+  const {data:b,error}=await supabaseClient.from('purchase_bills').select('*').eq('id',id).single();if(error){showError(error.message);return;}
+  const {data:items}=await supabaseClient.from('purchase_bill_items').select('*,medicines(*)').eq('purchase_bill_id',id).order('id');const subtotal=(items||[]).reduce((s,i)=>s+Number(i.quantity||0)*Number(i.purchase_price_per_unit||0),0),actual=Number(b.total_amount||0),diff=actual-subtotal;
+  document.getElementById('billDetailContent').innerHTML=`<div class="section"><div class="form-grid"><div><b>Purchase Date</b><br>${fmtDate(b.purchase_date)}</div><div><b>Stockist</b><br>${esc(b.stockist_name)}</div><div><b>Pharma Company</b><br>${esc(b.pharma_company_name||'-')}</div><div><b>Bill Number</b><br>${esc(b.bill_number)}</div><div><b>Payment</b><br><span class="badge ${b.payment_status==='Paid'?'paid':'pending'}">${b.payment_status}</span></div><div><b>Payment Date</b><br>${fmtDate(b.payment_date)}</div><div><b>Medicine Subtotal</b><br>${currency(subtotal)}</div><div><b>Actual Bill Amount (Including GST)</b><br><strong>${currency(actual)}</strong></div><div><b>GST / Other Difference</b><br>${currency(diff)}</div><div>${b.bill_photo_path?`<button class="btn small" onclick="viewPurchasePhoto('${esc(b.bill_photo_path)}','${esc(b.bill_photo_url||'')}',true)">📷 View Bill Photo</button>`:'No bill photo'}</div></div></div><div class="section"><h3>Medicines</h3><div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Batch</th><th>Expiry</th><th>Qty</th><th>MRP/Pack</th><th>Purchase/Pack</th><th>Profit</th></tr></thead><tbody>${(items||[]).map(i=>`<tr><td>${esc(i.medicines?.medicine_name||'')} ${esc(i.medicines?.strength||'')}</td><td>${esc(i.batch_number)}</td><td>${monthLabel(i.expiry_date)}</td><td>${i.quantity} ${esc(i.unit_name)}</td><td>${currency(i.mrp_per_unit)}</td><td>${currency(i.purchase_price_per_unit)}</td><td>${currency((Number(i.mrp_per_unit)-Number(i.purchase_price_per_unit))*Number(i.quantity))}</td></tr>`).join('')}</tbody></table></div></div><div class="footer-actions"><button class="btn secondary" onclick="closeModal('billDetailModal');openPurchaseForm(${id})">✏️ Edit</button><button class="btn danger" onclick="closeModal('billDetailModal');deletePurchaseBill(${id})">🗑 Delete</button></div>`;showModal('billDetailModal');
+}
 async function viewPurchasePhoto(path,url,privateBucket=false){let src=url;if(!src){const s=await supabaseClient.storage.from(PHOTO_BUCKET).createSignedUrl(path,3600);src=s.data?.signedUrl||'';}document.getElementById('photoContent').innerHTML=src?`<img src="${esc(src)}" alt="Purchase bill">`:`<div class="empty">Unable to open bill photo.</div>`;showModal('photoModal');}
 async function deletePurchaseBill(id){if(!confirm('Delete this purchase bill? The system will first check whether its purchased stock has already been dispensed.'))return;const {data:tx}=await supabaseClient.from('medicine_stock_transactions').select('id,medicine_id,batch_id,quantity').eq('purchase_bill_id',id).eq('transaction_type','DISPENSED');if(tx&&tx.length){alert('This purchase has already been involved in dispensing records. It cannot be safely deleted. Use an adjustment instead.');return;}const {data:items}=await supabaseClient.from('purchase_bill_items').select('*').eq('purchase_bill_id',id);for(const i of items||[]){const {data:b}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',i.medicine_id).eq('batch_number',i.batch_number).maybeSingle();if(b){const nq=Number(b.quantity)-Number(i.quantity);if(nq<0){alert('Cannot delete: current stock is lower than the quantity originally purchased.');return;}await supabaseClient.from('medicine_batches').update({quantity:nq,updated_at:new Date().toISOString()}).eq('id',b.id);}}const {data:b}=await supabaseClient.from('purchase_bills').select('bill_photo_path').eq('id',id).single();await supabaseClient.from('medicine_stock_transactions').delete().eq('purchase_bill_id',id);const del=await supabaseClient.from('purchase_bills').delete().eq('id',id);if(del.error){showError(del.error.message);return;}if(b?.bill_photo_path)await supabaseClient.storage.from(PHOTO_BUCKET).remove([b.bill_photo_path]);alert('Purchase bill deleted and associated remaining purchase stock removed.');await loadPurchaseBills();await refreshDashboard();}
 
@@ -257,15 +334,15 @@ async function editMedicine(id){
   openView('medicineFormView');
 }
 async function deleteMedicine(id){const {count}=await supabaseClient.from('medicine_batches').select('id',{count:'exact',head:true}).eq('medicine_id',id);if(Number(count||0)>0){alert('This medicine has stock/batches and cannot be deleted. Keep the medicine record and set stock to zero instead.');return;}if(!confirm('Delete this medicine?'))return;const r=await supabaseClient.from('medicines').delete().eq('id',id);if(r.error){showError(r.error.message);return;}await loadMedicineList();await refreshDashboard();}
-async function viewMedicineDetails(id){const m=medicines.find(x=>x.id===id);if(!m)return;const {data:batches}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',id).order('expiry_date');const {data:tx}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('medicine_id',id).order('transaction_date',{ascending:false}).limit(50);document.getElementById('medicineDetailContent').innerHTML=`<div class="section"><div class="form-grid"><div><b>Medicine</b><br>${esc(m.medicine_name)}</div><div><b>Generic</b><br>${esc(m.generic_name||'-')}</div><div><b>Strength</b><br>${esc(m.strength||'-')}</div><div><b>Dosage Form</b><br>${esc(m.dosage_form)}</div><div><b>Unit/Pack</b><br>${esc(m.pack_unit)}</div><div><b>Minimum Stock Level</b><br>${m.minimum_stock_level}</div></div></div><div class="section"><h3>Batch / Stock Details</h3><div class="table-wrap"><table class="table"><thead><tr><th>Batch</th><th>Expiry</th><th>Stock</th><th>MRP/Unit</th><th>Purchase/Unit</th><th>Source</th><th>Actions</th></tr></thead><tbody>${(batches||[]).map(b=>`<tr><td>${esc(b.batch_number)}</td><td>${fmtDate(b.expiry_date)}</td><td>${b.quantity} ${esc(b.unit_name)}</td><td>${currency(b.mrp_per_unit)}</td><td>${currency(b.purchase_price_per_unit)}</td><td>${b.last_purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${b.last_purchase_bill_id})">Bill #${b.last_purchase_bill_id}</span>`:'-'}</td><td><button class="btn secondary small" onclick="editBatch(${b.id})">Edit</button><button class="btn danger small" onclick="deleteBatch(${b.id},${id})">Delete</button></td></tr>`).join('')}</tbody></table></div></div><div class="section"><h3>Stock Source History</h3><div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Qty</th><th>Source</th></tr></thead><tbody>${(tx||[]).map(t=>`<tr><td>${fmtDate(t.transaction_date)}</td><td>${esc(t.transaction_type)}</td><td>${t.direction==='IN'?'+':'-'}${t.quantity}</td><td>${t.purchase_bill_id?`🧾 Bill #${t.purchase_bill_id}`:'Manual stock transaction'}</td></tr>`).join('')}</tbody></table></div></div><div class="footer-actions"><button class="btn secondary" onclick="closeModal('medicineDetailModal');editMedicine(${id})">✏️ Edit Medicine</button><button class="btn danger" onclick="closeModal('medicineDetailModal');deleteMedicine(${id})">🗑 Delete Medicine</button></div>`;showModal('medicineDetailModal');}
+async function viewMedicineDetails(id){const m=medicines.find(x=>x.id===id);if(!m)return;const {data:batches}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',id).order('expiry_date');const {data:tx}=await supabaseClient.from('medicine_stock_transactions').select('*').eq('medicine_id',id).order('transaction_date',{ascending:false}).limit(50);document.getElementById('medicineDetailContent').innerHTML=`<div class="section"><div class="form-grid"><div><b>Medicine</b><br>${esc(m.medicine_name)}</div><div><b>Generic</b><br>${esc(m.generic_name||'-')}</div><div><b>Strength</b><br>${esc(m.strength||'-')}</div><div><b>Dosage Form</b><br>${esc(m.dosage_form)}</div><div><b>Unit/Pack</b><br>${esc(m.pack_unit)}</div><div><b>Minimum Stock Level</b><br>${m.minimum_stock_level}</div></div></div><div class="section"><h3>Batch / Stock Details</h3><div class="table-wrap"><table class="table"><thead><tr><th>Batch</th><th>Expiry</th><th>Stock</th><th>MRP/Unit</th><th>Purchase/Unit</th><th>Source</th><th>Actions</th></tr></thead><tbody>${(batches||[]).map(b=>`<tr><td>${esc(b.batch_number)}</td><td>${monthLabel(b.expiry_date)}</td><td>${b.quantity} ${esc(b.unit_name)}</td><td>${currency(b.mrp_per_unit)}</td><td>${currency(b.purchase_price_per_unit)}</td><td>${b.last_purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${b.last_purchase_bill_id})">Bill #${b.last_purchase_bill_id}</span>`:'-'}</td><td><button class="btn secondary small" onclick="editBatch(${b.id})">Edit</button><button class="btn danger small" onclick="deleteBatch(${b.id},${id})">Delete</button></td></tr>`).join('')}</tbody></table></div></div><div class="section"><h3>Stock Source History</h3><div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Qty</th><th>Source</th></tr></thead><tbody>${(tx||[]).map(t=>`<tr><td>${fmtDate(t.transaction_date)}</td><td>${esc(t.transaction_type)}</td><td>${t.direction==='IN'?'+':'-'}${t.quantity}</td><td>${t.purchase_bill_id?`🧾 Bill #${t.purchase_bill_id}`:'Manual stock transaction'}</td></tr>`).join('')}</tbody></table></div></div><div class="footer-actions"><button class="btn secondary" onclick="closeModal('medicineDetailModal');editMedicine(${id})">✏️ Edit Medicine</button><button class="btn danger" onclick="closeModal('medicineDetailModal');deleteMedicine(${id})">🗑 Delete Medicine</button></div>`;showModal('medicineDetailModal');}
 async function editBatch(id){const {data:b}=await supabaseClient.from('medicine_batches').select('*').eq('id',id).single();if(!b)return;const qty=prompt('Quantity in stock',b.quantity);if(qty===null)return;const mrp=prompt('MRP per Unit/Pack',b.mrp_per_unit);if(mrp===null)return;const pp=prompt('Purchase Price per Unit/Pack',b.purchase_price_per_unit);if(pp===null)return;const r=await supabaseClient.from('medicine_batches').update({quantity:Number(qty),mrp_per_unit:Number(mrp),purchase_price_per_unit:Number(pp),updated_at:new Date().toISOString()}).eq('id',id);if(r.error){showError(r.error.message);return;}alert('Batch updated.');await refreshDashboard();}
 async function deleteBatch(id,medicineId){const {data:b}=await supabaseClient.from('medicine_batches').select('*').eq('id',id).single();if(!b)return;if(Number(b.quantity)>0){alert('Set the batch stock to zero through a proper stock transaction before deleting it.');return;}if(!confirm('Delete this empty batch?'))return;const r=await supabaseClient.from('medicine_batches').delete().eq('id',id);if(r.error){showError(r.error.message);return;}await viewMedicineDetails(medicineId);}
 
 async function loadLowStock(){await loadMedicines();const list=medicines.filter(m=>Number(m.total_stock)<=Number(m.minimum_stock_level));document.getElementById('lowStockTable').innerHTML=list.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Stock</th><th>Minimum Stock Level</th><th>Unit/Pack</th><th>Action</th></tr></thead><tbody>${list.map(m=>`<tr><td>${esc(m.medicine_name)} ${esc(m.strength||'')}</td><td class="low">${m.total_stock}</td><td>${m.minimum_stock_level}</td><td>${esc(m.pack_unit)}</td><td><button class="btn small" onclick="viewMedicineDetails(${m.id})">View</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No medicines are currently at or below the Minimum Stock Level.</div>';}
-async function loadExpiry(){const days=Number(document.getElementById('expiryDays').value),today=todayIST();let q=supabaseClient.from('medicine_batches').select('*,medicines(medicine_name,strength,dosage_form)').gt('quantity',0).order('expiry_date');if(days>0){const d=new Date(today+'T00:00:00');d.setDate(d.getDate()+days);q=q.lte('expiry_date',d.toISOString().slice(0,10)).gte('expiry_date',today);}const {data,error}=await q;if(error){showError(error.message);return;}document.getElementById('expiryTable').innerHTML=(data||[]).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Batch</th><th>Expiry</th><th>Stock</th><th>Action</th></tr></thead><tbody>${data.map(b=>`<tr><td>${esc(b.medicines?.medicine_name||'')} ${esc(b.medicines?.strength||'')}</td><td>${esc(b.batch_number)}</td><td>${fmtDate(b.expiry_date)}</td><td>${b.quantity} ${esc(b.unit_name)}</td><td><button class="btn small" onclick="viewMedicineDetails(${b.medicine_id})">View</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No expiring stock found for this period.</div>';}
+async function loadExpiry(){const days=Number(document.getElementById('expiryDays').value),today=todayIST();let q=supabaseClient.from('medicine_batches').select('*,medicines(medicine_name,strength,dosage_form)').gt('quantity',0).order('expiry_date');if(days>0){const d=new Date(today+'T00:00:00');d.setDate(d.getDate()+days);q=q.lte('expiry_date',d.toISOString().slice(0,10)).gte('expiry_date',today);}const {data,error}=await q;if(error){showError(error.message);return;}document.getElementById('expiryTable').innerHTML=(data||[]).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Batch</th><th>Expiry</th><th>Stock</th><th>Action</th></tr></thead><tbody>${data.map(b=>`<tr><td>${esc(b.medicines?.medicine_name||'')} ${esc(b.medicines?.strength||'')}</td><td>${esc(b.batch_number)}</td><td>${monthLabel(b.expiry_date)}</td><td>${b.quantity} ${esc(b.unit_name)}</td><td><button class="btn small" onclick="viewMedicineDetails(${b.medicine_id})">View</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No expiring stock found for this period.</div>';}
 
 async function searchTransactionMedicine(){const input=document.getElementById('transactionMedicineSearch'),box=document.getElementById('transactionMedicineSuggestions'),term=input.value.trim();document.getElementById('transactionMedicineId').value='';selectedTransactionMedicine=null;if(term.length<2){box.classList.add('hidden');return;}const {data}=await supabaseClient.from('medicines').select('*').or(`medicine_name.ilike.%${term}%,generic_name.ilike.%${term}%,strength.ilike.%${term}%`).limit(10);box.innerHTML=(data||[]).map(m=>`<div class="suggestion" onclick="selectTransactionMedicine(${m.id})"><b>${esc(m.medicine_name)}</b> ${esc(m.strength||'')} ${esc(m.dosage_form)}<br><span class="muted">Stock: ${medicines.find(x=>x.id===m.id)?.total_stock||0} ${esc(m.pack_unit)}</span></div>`).join('');box._data=data||[];box.classList.remove('hidden');}
-async function selectTransactionMedicine(id){const {data:m}=await supabaseClient.from('medicines').select('*').eq('id',id).single();selectedTransactionMedicine=m;document.getElementById('transactionMedicineId').value=id;document.getElementById('transactionMedicineSearch').value=`${m.medicine_name} ${m.strength||''} ${m.dosage_form}`.trim();document.getElementById('transactionMedicineSuggestions').classList.add('hidden');const {data:batches}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',id).gt('quantity',0).order('expiry_date');document.getElementById('transactionBatch').innerHTML=(batches||[]).map(b=>`<option value="${b.id}">${esc(b.batch_number)} · ${fmtDate(b.expiry_date)} · ${b.quantity} ${esc(b.unit_name)}</option>`).join('');}
+async function selectTransactionMedicine(id){const {data:m}=await supabaseClient.from('medicines').select('*').eq('id',id).single();selectedTransactionMedicine=m;document.getElementById('transactionMedicineId').value=id;document.getElementById('transactionMedicineSearch').value=`${m.medicine_name} ${m.strength||''} ${m.dosage_form}`.trim();document.getElementById('transactionMedicineSuggestions').classList.add('hidden');const {data:batches}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',id).gt('quantity',0).order('expiry_date');document.getElementById('transactionBatch').innerHTML=(batches||[]).map(b=>`<option value="${b.id}">${esc(b.batch_number)} · ${monthLabel(b.expiry_date)} · ${b.quantity} ${esc(b.unit_name)}</option>`).join('');}
 function prepareStockEntry(){document.getElementById('transactionDate').value=todayIST();document.getElementById('transactionType').value='DISPENSED';document.getElementById('transactionMedicineSearch').value='';document.getElementById('transactionMedicineId').value='';document.getElementById('transactionBatch').innerHTML='';document.getElementById('transactionQuantity').value='';document.getElementById('transactionNotes').value='';}
 function updateTransactionForm(){}
 async function saveStockTransaction(e){e.preventDefault();const medicineId=Number(document.getElementById('transactionMedicineId').value),batchId=Number(document.getElementById('transactionBatch').value),type=document.getElementById('transactionType').value,qty=Number(document.getElementById('transactionQuantity').value);if(!medicineId||!batchId||qty<=0){alert('Select medicine, batch and quantity.');return;}const {data:b,error}=await supabaseClient.from('medicine_batches').select('*').eq('id',batchId).single();if(error){showError(error.message);return;}const outbound=type!=='ADJUSTMENT';if(outbound&&Number(b.quantity)<qty){alert(`Insufficient stock. Available: ${b.quantity} ${b.unit_name}`);return;}let newQty=Number(b.quantity);if(type==='ADJUSTMENT'){const mode=confirm('For ADJUSTMENT, press OK to ADD the quantity to stock. Press Cancel to REMOVE the quantity from stock.');if(mode)newQty+=qty;else{if(newQty<qty){alert('Cannot reduce below zero.');return;}newQty-=qty;}}else if(type==='RETURNED'){newQty-=qty;}else newQty-=qty;const r=await supabaseClient.from('medicine_batches').update({quantity:newQty,updated_at:new Date().toISOString()}).eq('id',batchId);if(r.error){showError(r.error.message);return;}const direction=(type==='ADJUSTMENT'?newQty>=Number(b.quantity)?'IN':'OUT':'OUT');const tx=await supabaseClient.from('medicine_stock_transactions').insert({medicine_id:medicineId,batch_id:batchId,transaction_type:type,quantity:qty,direction,transaction_date:document.getElementById('transactionDate').value,mrp_per_unit:b.mrp_per_unit,purchase_price_per_unit:b.purchase_price_per_unit,notes:document.getElementById('transactionNotes').value.trim()||null});if(tx.error){await supabaseClient.from('medicine_batches').update({quantity:Number(b.quantity)}).eq('id',batchId);showError(tx.error.message);return;}alert('Stock transaction saved.');prepareStockEntry();await refreshDashboard();}
@@ -422,10 +499,11 @@ async function saveMedicine(e){
 function addBillItem(item=null){
   const id=++billItemCounter;
   const div=document.createElement('div');div.className='bill-item';div.dataset.oldItemId=item?.id||'';
+  const expiryMonth=monthInputFromDate(item?.expiry_date||'');
   div.innerHTML=`<div class="item-grid">
   <div class="field wide autocomplete"><label>Medicine Name * <button type="button" class="btn small scan-btn" onclick="openMedicineScan(this,'bill')">📷 Scan</button></label><input class="bill-medicine" autocomplete="off" value="${esc(item?.medicines?`${item.medicines.medicine_name}${item.medicines.strength?' '+item.medicines.strength:''}`:'')}" oninput="searchBillMedicine(this)" required><div class="suggestions hidden"></div><input type="hidden" class="bill-medicine-id" value="${item?.medicine_id||''}"><input type="hidden" class="bill-units-per-pack" value="${item?.units_per_pack||item?.medicines?.units_per_pack||1}"><input type="hidden" class="bill-base-unit" value="${item?.medicines?.base_unit||'Unit'}"><div class="muted bill-unit">${item?.medicines?`Pack: ${esc(item.medicines.pack_unit)} · 1 pack = ${item.medicines.units_per_pack} ${esc(item.medicines.base_unit)}`:''}</div></div>
   <div class="field"><label>Batch *</label><input class="bill-batch" value="${esc(item?.batch_number||'')}" required></div>
-  <div class="field"><label>Expiry *</label><input class="bill-expiry" type="date" value="${item?.expiry_date||''}" required></div>
+  <div class="field"><label>Expiry Month / Year *</label><input class="bill-expiry" type="month" value="${expiryMonth}" required></div>
   <div class="field"><label>Quantity (Packs) *</label><input class="bill-qty" type="number" min="0.01" step="0.01" value="${item?.quantity||''}" oninput="updateBillTotals()" required></div>
   <div class="field"><label>MRP / Pack *</label><input class="bill-mrp" type="number" min="0" step="0.01" value="${item?.mrp_per_unit??''}" oninput="updateBillTotals()" required></div>
   <div class="field"><label>Purchase / Pack *</label><input class="bill-price" type="number" min="0" step="0.01" value="${item?.purchase_price_per_unit??''}" oninput="updateBillTotals()" required></div>
@@ -435,7 +513,6 @@ function addBillItem(item=null){
   if(item?.medicine_id)selectBillMedicine(div,item.medicine_id,true);
   updateBillTotals();
 }
-
 function removeBillItem(btn){const rows=document.querySelectorAll('#billItems .bill-item');if(rows.length<=1){alert('At least one medicine item is required.');return;}btn.closest('.bill-item').remove();updateBillTotals();}
 
 function selectBillMedicine(el,id,silent=false){
@@ -465,10 +542,10 @@ function startNewMedicine(type,el){pendingMedicineContext={type,element:el.close
 
 function billItemsData(){
   return [...document.querySelectorAll('#billItems .bill-item')].map(div=>({
-    div,
-    medicine_id:Number(div.querySelector('.bill-medicine-id').value)||null,
+    div,medicine_id:Number(div.querySelector('.bill-medicine-id').value)||null,
     batch_number:div.querySelector('.bill-batch').value.trim(),
-    expiry_date:div.querySelector('.bill-expiry').value,
+    expiry_date:monthToDate(div.querySelector('.bill-expiry').value),
+    expiry_month:div.querySelector('.bill-expiry').value,
     quantity:Number(div.querySelector('.bill-qty').value)||0,
     mrp_per_unit:Number(div.querySelector('.bill-mrp').value)||0,
     purchase_price_per_unit:Number(div.querySelector('.bill-price').value)||0,
@@ -481,6 +558,12 @@ function billItemsData(){
 function updateBillTotals(){
   const items=billItemsData();let total=0,packs=0,profit=0;
   items.forEach(i=>{packs+=i.quantity;total+=i.quantity*i.purchase_price_per_unit;profit+=i.quantity*(i.mrp_per_unit-i.purchase_price_per_unit);const el=i.div.querySelector('.bill-base-info');if(el)el.textContent=`Base quantity: ${(i.quantity*i.units_per_pack).toLocaleString('en-IN')} ${i.base_unit}`;});
+  document.getElementById('billItemCount').textContent=items.length;document.getElementById('billUnits').textContent=packs.toLocaleString('en-IN');document.getElementById('billTotal').textContent=currency(total);document.getElementById('billPotentialProfit').textContent=currency(profit);
+  const actual=Number(document.getElementById('actualBillAmount')?.value)||0;const a=document.getElementById('actualBillAmountSummary');if(a)a.textContent=currency(actual);const d=document.getElementById('billExtraAmount');if(d)d.textContent=currency(actual-total);
+}
+function updateBillTotals(){
+  const items=billItemsData();let total=0,packs=0,profit=0;
+  items.forEach(i=>{packs+=i.quantity;total+=i.quantity*i.purchase_price_per_unit;profit+=i.quantity*(i.mrp_per_unit-i.purchase_price_per_unit);const el=i.div.querySelector('.bill-base-info');if(el)el.textContent=`Base quantity: ${(i.quantity*i.units_per_pack).toLocaleString('en-IN')} ${i.base_unit}`;});
   document.getElementById('billItemCount').textContent=items.length;
   document.getElementById('billUnits').textContent=packs.toLocaleString('en-IN');
   document.getElementById('billTotal').textContent=currency(total);
@@ -490,28 +573,18 @@ function updateBillTotals(){
 async function savePurchaseBill(e){
   e.preventDefault();if(!(await requireSession()))return;
   const items=billItemsData();if(!items.length){alert('Add at least one medicine to the purchase bill.');return;}
-  if(items.some(i=>!i.medicine_id||!i.batch_number||!i.expiry_date||i.quantity<=0)){alert('Complete medicine, batch, expiry and quantity for every item.');return;}
-  const stockist=document.getElementById('stockistName').value.trim(),billNo=document.getElementById('billNumber').value.trim();
-  if(!stockist||!billNo)return;
-  const {data:dupes,error:de}=await supabaseClient.from('purchase_bills').select('id,stockist_name,bill_number').neq('id',editingPurchaseBillId||0).ilike('stockist_name',stockist).ilike('bill_number',billNo).limit(5);
-  if(de){showError(de.message);return;}if((dupes||[]).length){alert('This Stockist + Bill Number already exists. No new stock was added.');return;}
-  const status=document.querySelector('input[name="paymentStatus"]:checked')?.value||'Paid';
-  const total=items.reduce((s,i)=>s+i.quantity*i.purchase_price_per_unit,0);
-  const payload={purchase_date:document.getElementById('purchaseDate').value,stockist_name:stockist,pharma_company_name:document.getElementById('pharmaCompanyName').value.trim()||null,bill_number:billNo,payment_status:status,payment_date:status==='Paid'?(document.getElementById('paymentDate').value||null):null,total_amount:actualBillAmount,notes:document.getElementById('purchaseNotes').value.trim()||null,updated_at:new Date().toISOString()};
-  if(editingPurchaseBillId){const {error}=await supabaseClient.from('purchase_bills').update(payload).eq('id',editingPurchaseBillId);if(error){showError(error.message);return;}alert('Purchase bill details updated. Existing stock was preserved. Use Stock Adjustment for stock corrections.');openPurchaseBills();return;}
+  if(items.some(i=>!i.medicine_id||!i.batch_number||!i.expiry_date||i.quantity<=0)){alert('Complete medicine, batch, expiry month/year and quantity for every item.');return;}
+  const stockist=document.getElementById('stockistName').value.trim(),billNo=document.getElementById('billNumber').value.trim();if(!stockist||!billNo)return;
+  const actualBillAmount=Number(document.getElementById('actualBillAmount').value)||0;if(actualBillAmount<=0){alert('Enter the Actual Bill Amount including GST from the invoice.');document.getElementById('actualBillAmount').focus();return;}
+  const medicineSubtotal=items.reduce((s,i)=>s+i.quantity*i.purchase_price_per_unit,0);
+  const {data:dupes,error:de}=await supabaseClient.from('purchase_bills').select('id,stockist_name,bill_number').neq('id',editingPurchaseBillId||0).ilike('stockist_name',stockist).ilike('bill_number',billNo).limit(5);if(de){showError(de.message);return;}if((dupes||[]).length){alert('This Stockist + Bill Number already exists. No new stock was added.');return;}
+  const status=document.querySelector('input[name="paymentStatus"]:checked')?.value||'Paid';const payload={purchase_date:document.getElementById('purchaseDate').value,stockist_name:stockist,pharma_company_name:document.getElementById('pharmaCompanyName').value.trim()||null,bill_number:billNo,payment_status:status,payment_date:status==='Paid'?(document.getElementById('paymentDate').value||null):null,total_amount:actualBillAmount,notes:document.getElementById('purchaseNotes').value.trim()||null,updated_at:new Date().toISOString()};
+  if(editingPurchaseBillId){const {error}=await supabaseClient.from('purchase_bills').update(payload).eq('id',editingPurchaseBillId);if(error){showError(error.message);return;}alert(`Purchase bill updated. Medicine subtotal: ${currency(medicineSubtotal)}. Actual invoice amount: ${currency(actualBillAmount)}.`);openPurchaseBills();return;}
   const {data:bill,error:be}=await supabaseClient.from('purchase_bills').insert(payload).select().single();if(be){showError(be.message);return;}
   const photo=document.getElementById('billPhoto').files[0];if(photo){const ext=(photo.name.split('.').pop()||'jpg').toLowerCase();const path=`${bill.id}/${Date.now()}.${ext}`;const up=await supabaseClient.storage.from(PHOTO_BUCKET).upload(path,photo,{upsert:false,contentType:photo.type});if(up.error){showError(up.error.message);return;}await supabaseClient.from('purchase_bills').update({bill_photo_path:path}).eq('id',bill.id);}
-  const messages=[];
-  try{
-    for(const item of items){
-      const {data:bi,error:bie}=await supabaseClient.from('purchase_bill_items').insert({purchase_bill_id:bill.id,medicine_id:item.medicine_id,batch_number:item.batch_number,expiry_date:item.expiry_date,quantity:item.quantity,unit_name:await getMedicineUnit(item.medicine_id),mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,line_amount:item.quantity*item.purchase_price_per_unit,units_per_pack:item.units_per_pack,quantity_base_units:item.quantity*item.units_per_pack,linked_existing_stock_units:0}).select().single();
-      if(bie)throw bie;
-      const result=await reconcilePurchaseItem(bi,item);messages.push(result);
-    }
-  }catch(err){showError('Bill was created but stock reconciliation stopped: '+err.message);return;}
-  alert('Purchase bill saved.\n\n'+messages.join('\n'));openPurchaseBills();await refreshDashboard();
+  const messages=[];try{for(const item of items){const {data:bi,error:bie}=await supabaseClient.from('purchase_bill_items').insert({purchase_bill_id:bill.id,medicine_id:item.medicine_id,batch_number:item.batch_number,expiry_date:item.expiry_date,quantity:item.quantity,unit_name:await getMedicineUnit(item.medicine_id),mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,line_amount:item.quantity*item.purchase_price_per_unit,units_per_pack:item.units_per_pack,quantity_base_units:item.quantity*item.units_per_pack,linked_existing_stock_units:0}).select().single();if(bie)throw bie;messages.push(await reconcilePurchaseItem(bi,item));}}catch(err){showError('Bill was created but stock reconciliation stopped: '+err.message);return;}
+  alert(`Purchase bill saved.\n\nMedicine subtotal: ${currency(medicineSubtotal)}\nActual bill amount (including GST): ${currency(actualBillAmount)}\n\n${messages.join('\n')}`);openPurchaseBills();await refreshDashboard();
 }
-
 async function getMedicineUnit(id){const m=medicines.find(x=>x.id===Number(id));if(m)return m.pack_unit||'Unit/Pack';const {data,error}=await supabaseClient.from('medicines').select('pack_unit').eq('id',id).single();if(error)throw error;return data.pack_unit||'Unit/Pack';}
 async function getMedicine(id){const m=medicines.find(x=>x.id===Number(id));if(m)return m;const {data,error}=await supabaseClient.from('medicines').select('*').eq('id',id).single();if(error)throw error;return data;}
 
@@ -579,304 +652,45 @@ let medicineScanTarget=null;
 let medicineScanData=null;
 let medicineCameraControls=null;
 let medicineScanBusy=false;
+let medicineSelectedScanText='';
+let medicineOcrWorker=null;
+let medicineOcrWorkerPromise=null;
 
 function openMedicineScan(button,targetType='unbilled'){
-  const row=button?.closest?.('.bill-item')||null;
-  medicineScanTarget={type:targetType,row};
-  medicineScanData=null;
-  stopMedicineCamera();
-  const takeFile=document.getElementById('medicineScanTakeFile');const uploadFile=document.getElementById('medicineScanUploadFile');if(takeFile)takeFile.value='';if(uploadFile)uploadFile.value='';
-  document.getElementById('medicineScanPreview').classList.add('hidden');
-  document.getElementById('medicineScanResult').classList.add('hidden');
-  document.getElementById('useMedicineScanBtn').classList.add('hidden');
-  document.getElementById('medicineScanStatus').textContent='Choose Take Photo or Upload Photo. Verify every extracted value before saving.';
-  showModal('medicineScanModal');
+  const row=button?.closest?.('.bill-item')||null;medicineScanTarget={type:targetType,row};medicineScanData=null;medicineSelectedScanText='';stopMedicineCamera();
+  ['medicineTakePhotoInput','medicineUploadPhotoInput'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('medicineScanPreview').classList.add('hidden');document.getElementById('medicineScanResult').classList.add('hidden');document.getElementById('useMedicineScanBtn').classList.add('hidden');document.getElementById('medicineScanVideo').classList.add('hidden');document.getElementById('medicineScanStatus').textContent='Choose Take Photo or Upload Photo. You can then tap detected text to assign it to a field.';document.getElementById('startMedicineCameraBtn').classList.remove('hidden');document.getElementById('stopMedicineCameraBtn').classList.add('hidden');showModal('medicineScanModal');
 }
-function closeMedicineScan(){stopMedicineCamera();medicineScanTarget=null;medicineScanData=null;closeModal('medicineScanModal');}
+function openMedicineCameraInput(){document.getElementById('medicineTakePhotoInput')?.click();}
+function openMedicineUploadInput(){document.getElementById('medicineUploadPhotoInput')?.click();}
+function closeMedicineScan(){stopMedicineCamera();medicineScanTarget=null;medicineScanData=null;medicineSelectedScanText='';closeModal('medicineScanModal');closeModal('scanAssignModal');}
 function stopMedicineCamera(){try{medicineCameraControls?.stop?.();}catch(e){}medicineCameraControls=null;const video=document.getElementById('medicineScanVideo');if(video){video.pause?.();video.srcObject=null;video.classList.add('hidden');}document.getElementById('startMedicineCameraBtn')?.classList.remove('hidden');document.getElementById('stopMedicineCameraBtn')?.classList.add('hidden');}
-
 async function startMedicineCamera(){
-  if(!window.ZXingBrowser?.BrowserMultiFormatReader){alert('Camera scanner library could not be loaded. Please use Take / Upload Medicine Photo.');return;}
-  if(medicineScanBusy)return;
-  const video=document.getElementById('medicineScanVideo'),status=document.getElementById('medicineScanStatus');
-  video.classList.remove('hidden');document.getElementById('startMedicineCameraBtn').classList.add('hidden');document.getElementById('stopMedicineCameraBtn').classList.remove('hidden');status.textContent='Starting rear camera…';
-  try{
-    const reader=new ZXingBrowser.BrowserMultiFormatReader();
-    medicineCameraControls=await reader.decodeFromConstraints({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}},video,async(result,error,controls)=>{
-      if(!result||medicineScanBusy)return;
-      medicineScanBusy=true;
-      status.textContent='Barcode/DataMatrix found. Capturing image and reading printed details…';
-      try{const blob=await captureMedicineVideoFrame(video);await processMedicineScanFile(blob,true,result.getText?.()||result.text||'');}catch(e){console.error(e);status.textContent='Barcode found, but the image could not be captured. Please take a photo instead.';}finally{medicineScanBusy=false;stopMedicineCamera();}
-    });
-    status.textContent='Camera active. Point the rear camera at the barcode/DataMatrix. You can also take a photo below.';
-  }catch(e){console.error(e);stopMedicineCamera();status.textContent='Camera could not start. Check camera permission or use Take / Upload Medicine Photo.';}
+  if(!window.ZXingBrowser?.BrowserMultiFormatReader){alert('Live camera scanner library could not be loaded. Use Take Photo instead.');return;}if(medicineScanBusy)return;const video=document.getElementById('medicineScanVideo'),status=document.getElementById('medicineScanStatus');video.classList.remove('hidden');document.getElementById('startMedicineCameraBtn').classList.add('hidden');document.getElementById('stopMedicineCameraBtn').classList.remove('hidden');status.textContent='Starting rear camera…';
+  try{const reader=new ZXingBrowser.BrowserMultiFormatReader();medicineCameraControls=await reader.decodeFromConstraints({video:{facingMode:{ideal:'environment'},width:{ideal:1600},height:{ideal:1200}}},video,async(result)=>{if(!result||medicineScanBusy)return;medicineScanBusy=true;status.textContent='Code detected. Capturing image…';try{const blob=await captureMedicineVideoFrame(video);await processMedicineScanFile(blob,true,result.getText?.()||result.text||'');}catch(e){console.error(e);status.textContent='Could not capture the frame. Please use Take Photo.';}finally{medicineScanBusy=false;stopMedicineCamera();}});status.textContent='Camera active. Point at the medicine/bill. For text-only scanning use Take Photo.';}catch(e){console.error(e);stopMedicineCamera();status.textContent='Camera could not start. Use Take Photo instead.';}
 }
-function captureMedicineVideoFrame(video){return new Promise((resolve,reject)=>{if(!video.videoWidth||!video.videoHeight)return reject(new Error('Camera frame is not ready.'));const c=document.createElement('canvas');c.width=video.videoWidth;c.height=video.videoHeight;c.getContext('2d').drawImage(video,0,0,c.width,c.height);c.toBlob(b=>b?resolve(b):reject(new Error('Unable to capture camera frame.')),'image/jpeg',0.92);});}
-
+function captureMedicineVideoFrame(video){return new Promise((resolve,reject)=>{if(!video.videoWidth||!video.videoHeight)return reject(new Error('Camera frame is not ready.'));const c=document.createElement('canvas'),max=2200,scale=Math.min(1,max/Math.max(video.videoWidth,video.videoHeight));c.width=Math.round(video.videoWidth*scale);c.height=Math.round(video.videoHeight*scale);c.getContext('2d').drawImage(video,0,0,c.width,c.height);c.toBlob(b=>b?resolve(b):reject(new Error('Unable to capture camera frame.')),'image/jpeg',0.94);});}
 function normalizeScanText(v){return String(v||'').replace(/\s+/g,' ').trim();}
 function normalizeMedicineText(v){return normalizeScanText(v).toLowerCase().replace(/[^a-z0-9]+/g,' ');}
 function levenshtein(a,b){a=String(a||'');b=String(b||'');const d=Array.from({length:a.length+1},(_,i)=>{const r=new Array(b.length+1);r[0]=i;return r;});for(let j=1;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length];}
-function monthYearFromText(text){
-  const t=String(text||'').toUpperCase().replace(/\r/g,'\n');
-  const months={JAN:1,FEB:2,MAR:3,APR:4,MAY:5,JUN:6,JUL:7,AUG:8,SEP:9,OCT:10,NOV:11,DEC:12};
-  const make=(m,y)=>`${y.length===2?2000+Number(y):Number(y)}-${String(months[m]).padStart(2,'0')}`;
-  let m=t.match(/(?:EXP(?:IRY|Y)?|EXP)\s*[:.\-]?\s*(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)[A-Z.]*\s*[.\/-]?\s*(20\d{2}|\d{2})/i);if(m)return make(m[1].toUpperCase(),m[2]);
-  m=t.match(/(?:EXP(?:IRY|Y)?|EXP)\s*[:.\-]?\s*(0?[1-9]|1[0-2])[\/-](20\d{2}|\d{2})/i);if(m)return `${m[2].length===2?2000+Number(m[2]):Number(m[2])}-${String(Number(m[1])).padStart(2,'0')}`;
-  m=t.match(/\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)[A-Z.]*\s*[.\/-]?\s*(20\d{2}|\d{2})\b/i);if(m)return make(m[1].toUpperCase(),m[2]);
-  m=t.match(/\b(0?[1-9]|1[0-2])[\/-](20\d{2}|\d{2})\b/);if(m)return `${m[2].length===2?2000+Number(m[2]):Number(m[2])}-${String(Number(m[1])).padStart(2,'0')}`;
-  m=t.match(/\b(20\d{2})[\/-](0?[1-9]|1[0-2])\b/);if(m)return `${m[1]}-${String(Number(m[2])).padStart(2,'0')}`;
-  return '';
-}
-function extractScanFields(text){
-  const raw=String(text||'').replace(/\r/g,'\n');
-  const flat=raw.replace(/\n+/g,'\n');
-
-  let batch='',m=flat.match(/(?:B\.?\s*No\.?|Batch(?:\s*No\.?|\s*Number)?)[\s:.-]*([A-Z0-9][A-Z0-9\/-]{2,})/i);
-  if(m)batch=m[1].trim();
-
-  let mrp='';
-  m=flat.match(/(?:M\.?R\.?P\.?|MRP|MAX\.?\s*RETAIL\s*PRICE)[^0-9]{0,25}(?:Rs\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);
-  if(m)mrp=m[1];
-
-  let purchasePrice='';
-  m=flat.match(/(?:P(?:URCHASE)?\.?\s*(?:PRICE|RATE)|P\.?\s*RATE|PTR|COST)[^0-9]{0,25}(?:Rs\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);
-  if(m)purchasePrice=m[1];
-
-  let quantity='';
-  m=flat.match(/(?:QTY|QUANTITY)[^0-9]{0,15}([0-9]+(?:\.[0-9]+)?)/i);
-  if(m)quantity=m[1];
-
-  const expiry=monthYearFromText(flat);
-
-  let company='';
-  const lines=flat.split(/\n/).map(x=>normalizeScanText(x)).filter(Boolean);
-  const companyIndex=lines.findIndex(x=>/(marketed|manufactured|mfg\.?\s*by)/i.test(x));
-  if(companyIndex>=0){
-    const same=lines[companyIndex].replace(/^.*?(?:marketed|manufactured|mfg\.?\s*by)[^:]*[:\-]?\s*/i,'').trim();
-    company=same.length>3?same:(lines[companyIndex+1]||'');
-  }
-  if(!company){
-    const hit=lines.find(x=>/\b(?:SAN\s*LABS|MICRO\s*LABS|ARISTO|SUN\s*PHARMA|CIPLA|TORRENT|ABBOTT|MANKIND|ALBERT\s*DAVID|EAST\s*INDIA\s*PHARMACEUTICAL)\b/i.test(x));
-    if(hit)company=hit;
-  }
-
-  let stockist='';
-  const stockistIndex=lines.findIndex(x=>/(stockist|distributor|wholesaler|supplied\s*by)/i.test(x));
-  if(stockistIndex>=0){
-    stockist=lines[stockistIndex].replace(/^.*?(?:stockist|distributor|wholesaler|supplied\s*by)[^:]*[:\-]?\s*/i,'').trim();
-    if(stockist.length<3)stockist=lines[stockistIndex+1]||'';
-  }
-
-  return {batch,expiry,mrp,purchasePrice,quantity,company,stockist,raw:flat};
-}
-
-async function decodeBarcodeWithZXing(file){
-  try{if(!window.ZXingBrowser?.BrowserMultiFormatReader)return '';const reader=new ZXingBrowser.BrowserMultiFormatReader();const url=URL.createObjectURL(file);const img=new Image();img.src=url;await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;});const r=await reader.decodeFromImageElement(img);URL.revokeObjectURL(url);return r?.getText?.()||'';}catch(e){return '';}
-}
-async function detectBarcode(file){
-  const z=await decodeBarcodeWithZXing(file);if(z)return z;
-  try{if(!('BarcodeDetector' in window))return '';const supported=await BarcodeDetector.getSupportedFormats();const formats=supported.filter(x=>['data_matrix','qr_code','code_128','ean_13','ean_8','upc_a','upc_e','code_39','code_93','codabar','itf'].includes(x));if(!formats.length)return '';const detector=new BarcodeDetector({formats});const bitmap=await createImageBitmap(file);const codes=await detector.detect(bitmap);bitmap.close?.();return codes?.[0]?.rawValue||'';}catch(e){return '';}
-}
-function imageToCanvas(file,angle=0,cropCenter=false){return new Promise((resolve,reject)=>{const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{try{const max=1800,scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));const w=Math.max(1,Math.round(img.naturalWidth*scale)),h=Math.max(1,Math.round(img.naturalHeight*scale));const c=document.createElement('canvas'),ctx=c.getContext('2d');if(angle%180!==0){c.width=h;c.height=w;}else{c.width=w;c.height=h;}ctx.save();ctx.translate(c.width/2,c.height/2);ctx.rotate(angle*Math.PI/180);ctx.drawImage(img,-w/2,-h/2,w,h);ctx.restore();URL.revokeObjectURL(url);resolve(c);}catch(e){URL.revokeObjectURL(url);reject(e);}};img.onerror=reject;img.src=url;});}
-async function ocrMedicineImage(file,status){
-  if(!window.Tesseract)throw new Error('OCR library not loaded');
-  const canvases=[];for(const a of [0,90,-90])canvases.push(await imageToCanvas(file,a));
-  const results=[];for(let i=0;i<canvases.length;i++){status.textContent=`Enhanced OCR: orientation ${i+1}/3…`;try{const r=await Tesseract.recognize(canvases[i],'eng',{logger:m=>{if(m.status==='recognizing text')status.textContent=`Enhanced OCR ${i+1}/3… ${Math.round((m.progress||0)*100)}%`;},tessedit_pageseg_mode:'6'});if(r.data?.text)results.push(r.data.text);}catch(e){console.warn('OCR orientation failed',e);}}
-  return results.join('\n');
-}
-function findBestMedicine(ocrText){
-  const norm=normalizeMedicineText(ocrText);let best=null,bestScore=0;
-  for(const med of medicines){const candidates=[med.medicine_name,`${med.medicine_name} ${med.strength||''}`,med.generic_name||''].filter(Boolean);let score=0;for(const c of candidates){const n=normalizeMedicineText(c);if(n&&norm.includes(n))score+=Math.min(10,n.length/2);const toks=n.split(' ').filter(x=>x.length>2);for(const tok of toks){if(norm.includes(tok))score+=2;const words=norm.split(' ');if(words.some(w=>w.length>=Math.max(4,tok.length-2)&&levenshtein(w,tok)<=Math.max(1,Math.floor(tok.length/5))))score+=1;}}if(score>bestScore){bestScore=score;best=med;}}
-  return bestScore>=3?best:null;
-}
+function monthYearFromText(text){const t=String(text||'').toUpperCase().replace(/\r/g,'\n'),months={JAN:1,FEB:2,MAR:3,APR:4,MAY:5,JUN:6,JUL:7,AUG:8,SEP:9,OCT:10,NOV:11,DEC:12},make=(m,y)=>`${y.length===2?2000+Number(y):Number(y)}-${String(months[m]).padStart(2,'0')}`;let m=t.match(/(?:EXP(?:IRY|Y)?|EXP)\s*[:.\-]?\s*(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)[A-Z.]*\s*[.\/-]?\s*(20\d{2}|\d{2})/i);if(m)return make(m[1].toUpperCase(),m[2]);m=t.match(/(?:EXP(?:IRY|Y)?|EXP)\s*[:.\-]?\s*(0?[1-9]|1[0-2])[\/-](20\d{2}|\d{2})/i);if(m)return `${m[2].length===2?2000+Number(m[2]):Number(m[2])}-${String(Number(m[1])).padStart(2,'0')}`;m=t.match(/\b(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)[A-Z.]*\s*[.\/-]?\s*(20\d{2}|\d{2})\b/i);if(m)return make(m[1].toUpperCase(),m[2]);m=t.match(/\b(0?[1-9]|1[0-2])[\/-](20\d{2}|\d{2})\b/);if(m)return `${m[2].length===2?2000+Number(m[2]):Number(m[2])}-${String(Number(m[1])).padStart(2,'0')}`;return '';}
+function extractScanFields(text){const raw=String(text||'').replace(/\r/g,'\n'),flat=raw.replace(/\n+/g,'\n');let batch='',m=flat.match(/(?:B\.?\s*No\.?|Batch(?:\s*No\.?|\s*Number)?)[\s:.-]*([A-Z0-9][A-Z0-9\/-]{2,})/i);if(m)batch=m[1].trim();let mrp='';m=flat.match(/(?:M\.?R\.?P\.?|MRP|MAX\.?\s*RETAIL\s*PRICE)[^0-9]{0,35}(?:Rs\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);if(m)mrp=m[1];let purchasePrice='';m=flat.match(/(?:P(?:URCHASE)?\.?\s*(?:PRICE|RATE)|P\.?\s*RATE|PTR|COST)[^0-9]{0,35}(?:Rs\.?|INR|₹)?\s*([0-9]+(?:\.[0-9]{1,2})?)/i);if(m)purchasePrice=m[1];let quantity='';m=flat.match(/(?:QTY|QUANTITY)[^0-9]{0,15}([0-9]+(?:\.[0-9]+)?)/i);if(m)quantity=m[1];const expiry=monthYearFromText(flat),lines=flat.split(/\n/).map(x=>normalizeScanText(x)).filter(Boolean);let company='';const companyIndex=lines.findIndex(x=>/(marketed|manufactured|mfg\.?\s*by|manufactured\s*by)/i.test(x));if(companyIndex>=0){const same=lines[companyIndex].replace(/^.*?(?:marketed|manufactured|mfg\.?\s*by|manufactured\s*by)[^:]*[:\-]?\s*/i,'').trim();company=same.length>3?same:(lines[companyIndex+1]||'');}if(!company){const hit=lines.find(x=>/\b(?:SAN\s*LABS|MICRO\s*LABS|ARISTO|SUN\s*PHARMA|CIPLA|TORRENT|ABBOTT|MANKIND|ALBERT\s*DAVID|EAST\s*INDIA\s*PHARMACEUTICAL)\b/i.test(x));if(hit)company=hit;}let stockist='';const stockistIndex=lines.findIndex(x=>/(stockist|distributor|wholesaler|supplied\s*by)/i.test(x));if(stockistIndex>=0){stockist=lines[stockistIndex].replace(/^.*?(?:stockist|distributor|wholesaler|supplied\s*by)[^:]*[:\-]?\s*/i,'').trim();if(stockist.length<3)stockist=lines[stockistIndex+1]||'';}return {batch,expiry,mrp,purchasePrice,quantity,company,stockist,raw:flat};}
+async function decodeBarcodeWithZXing(file){try{if(!window.ZXingBrowser?.BrowserMultiFormatReader)return '';const reader=new ZXingBrowser.BrowserMultiFormatReader(),url=URL.createObjectURL(file),img=new Image();img.src=url;await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;});const r=await reader.decodeFromImageElement(img);URL.revokeObjectURL(url);return r?.getText?.()||'';}catch(e){return '';}}
+async function detectBarcode(file){const z=await decodeBarcodeWithZXing(file);if(z)return z;try{if(!('BarcodeDetector' in window))return '';const supported=await BarcodeDetector.getSupportedFormats(),formats=supported.filter(x=>['data_matrix','qr_code','code_128','ean_13','ean_8','upc_a','upc_e','code_39','code_93','codabar','itf'].includes(x));if(!formats.length)return '';const detector=new BarcodeDetector({formats}),bitmap=await createImageBitmap(file),codes=await detector.detect(bitmap);bitmap.close?.();return codes?.[0]?.rawValue||'';}catch(e){return '';}}
+function imageToCanvas(file,angle=0){return new Promise((resolve,reject)=>{const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{try{const max=2200,scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.max(1,Math.round(img.naturalWidth*scale)),h=Math.max(1,Math.round(img.naturalHeight*scale)),c=document.createElement('canvas'),ctx=c.getContext('2d');if(angle%180!==0){c.width=h;c.height=w;}else{c.width=w;c.height=h;}ctx.save();ctx.translate(c.width/2,c.height/2);ctx.rotate(angle*Math.PI/180);ctx.drawImage(img,-w/2,-h/2,w,h);ctx.restore();URL.revokeObjectURL(url);resolve(c);}catch(e){URL.revokeObjectURL(url);reject(e);}};img.onerror=reject;img.src=url;});}
+async function getMedicineOcrWorker(status){if(medicineOcrWorker)return medicineOcrWorker;if(medicineOcrWorkerPromise)return medicineOcrWorkerPromise;if(!window.Tesseract)throw new Error('OCR library not loaded');medicineOcrWorkerPromise=Tesseract.createWorker('eng',1,{logger:m=>{if(status&&m.status==='recognizing text')status.textContent=`Reading text… ${Math.round((m.progress||0)*100)}%`;}}).then(async worker=>{medicineOcrWorker=worker;await worker.setParameters({tessedit_pageseg_mode:'11',preserve_interword_spaces:'1'});return worker;}).finally(()=>{medicineOcrWorkerPromise=null;});return medicineOcrWorkerPromise;}
+async function warmMedicineOcr(){try{await getMedicineOcrWorker(null);}catch(e){console.warn('OCR warm-up failed',e);}}
+async function ocrMedicineImage(file,status){const worker=await getMedicineOcrWorker(status),canvas=await imageToCanvas(file,0);status.textContent='Reading printed text…';let r=await worker.recognize(canvas,{rotateAuto:true},{text:true}),text=r.data?.text||'';if(text.trim().length<18){for(const angle of [90,-90]){status.textContent='Trying rotated text…';const c=await imageToCanvas(file,angle),rr=await worker.recognize(c,{},{text:true});if((rr.data?.text||'').trim().length>text.trim().length)text=rr.data.text||text;if(text.trim().length>=18)break;}}return text;}
+function findBestMedicine(ocrText){const norm=normalizeMedicineText(ocrText);let best=null,bestScore=0;for(const med of medicines){const candidates=[med.medicine_name,`${med.medicine_name} ${med.strength||''}`,med.generic_name||''].filter(Boolean);let score=0;for(const c of candidates){const n=normalizeMedicineText(c);if(n&&norm.includes(n))score+=Math.min(10,n.length/2);const toks=n.split(' ').filter(x=>x.length>2);for(const tok of toks){if(norm.includes(tok))score+=2;const words=norm.split(' ');if(words.some(w=>w.length>=Math.max(4,tok.length-2)&&levenshtein(w,tok)<=Math.max(1,Math.floor(tok.length/5))))score+=1;}}if(score>bestScore){bestScore=score;best=med;}}return bestScore>=3?best:null;}
 async function processMedicineScan(input){const file=input.files?.[0];if(!file)return;await processMedicineScanFile(file,false,'');}
-function openMedicineCameraInput(){const el=document.getElementById('medicineScanTakeFile');if(el){el.value='';el.click();}}
-function openMedicineUploadInput(){const el=document.getElementById('medicineScanUploadFile');if(el){el.value='';el.click();}}
-async function processMedicineScanFile(file,fromCamera=false,barcodeHint=''){
-  if(!file||medicineScanBusy)return;
-  medicineScanBusy=true;
-  const status=document.getElementById('medicineScanStatus');
-  const preview=document.getElementById('medicineScanPreview');
-  const result=document.getElementById('medicineScanResult');
-  const useBtn=document.getElementById('useMedicineScanBtn');
-  try{
-    const url=URL.createObjectURL(file);
-    preview.src=url;
-    preview.classList.remove('hidden');
-    result.classList.add('hidden');
-    useBtn.classList.add('hidden');
-    status.textContent=fromCamera?'Camera image captured. Reading printed details…':'Reading barcode / DataMatrix…';
-
-    const barcode=barcodeHint||await detectBarcode(file);
-    status.textContent=barcode?'Barcode/DataMatrix detected. Reading printed details…':'No readable barcode found. Running enhanced OCR…';
-
-    let ocrText='';
-    try{
-      ocrText=await ocrMedicineImage(file,status);
-    }catch(e){
-      console.error(e);
-      status.textContent='OCR could not complete. You can still enter the values manually.';
-    }
-
-    const fields=extractScanFields(ocrText);
-    await loadMedicines();
-    const best=findBestMedicine(ocrText);
-    const guessedName=best?.medicine_name||guessMedicineNameFromOcr(ocrText);
-    const guessedStrength=best?.strength||guessStrengthFromOcr(ocrText);
-    const guessedGeneric=best?.generic_name||'';
-
-    medicineScanData={
-      barcode,
-      ocrText,
-      fields,
-      medicine:best,
-      guessedName,
-      guessedStrength,
-      guessedGeneric
-    };
-
-    renderMedicineScanReview();
-    result.classList.remove('hidden');
-    useBtn.classList.remove('hidden');
-    status.textContent=barcode?'Scan + OCR complete. Review every field before using.':'OCR complete. Review every field before using.';
-  }finally{
-    medicineScanBusy=false;
-  }
-}
-
-function scanConfidence(value,kind='normal'){
-  if(value===undefined||value===null||String(value).trim()==='')return '<div class="scan-confidence confidence-low">🔴 Not detected — enter manually</div>';
-  if(kind==='matched')return '<div class="scan-confidence confidence-high">🟢 Matched to your medicine list</div>';
-  return '<div class="scan-confidence confidence-review">🟡 Review before saving</div>';
-}
-
-function scanInput(label,id,value,type='text',extra=''){
-  return `<div class="scan-field"><label>${esc(label)}</label><input id="${id}" type="${type}" value="${esc(value??'')}" ${extra}>${scanConfidence(value)}</div>`;
-}
-
-function renderMedicineScanReview(){
-  const result=document.getElementById('medicineScanResult');
-  const d=medicineScanData||{},f=d.fields||{},t=medicineScanTarget||{};
-  const expiryValue=f.expiry||'';
-  const target=t.type||'unbilled';
-
-  let html=`<h3 style="margin-top:0;color:#20586f">🤖 Review Extracted Information</h3>
-  <div class="scan-source-note"><b>Important:</b> AI/OCR may misread medicine names, batch numbers, prices or dates. Every field below is editable. Verify it against the original photo before saving.</div>
-  <div class="scan-field-grid">`;
-
-  if(target==='master'){
-    html+=scanInput('Medicine Name','scanMedicineName',d.guessedName||'','text','required');
-    html+=scanInput('Generic Name','scanGenericName',d.guessedGeneric||'');
-    html+=scanInput('Strength','scanStrength',d.guessedStrength||'');
-    html+=`<div class="scan-field"><label>Dosage Form</label><select id="scanDosageForm"><option value="">Select</option>${['Tablet','Capsule','Syrup','Roll-on','Spray','Drops','Sachet','Mouth Dissolving Strip','Gel / Ointment','Cream','Lotion','Powder','Inhaler','Injection','Other'].map(x=>`<option ${d.medicine?.dosage_form===x?'selected':''}>${esc(x)}</option>`).join('')}</select>${scanConfidence(d.medicine?.dosage_form,'matched')}</div>`;
-    html+=scanInput('Unit / Pack','scanPackUnit',d.medicine?.pack_unit||'');
-    html+=scanInput('Base Unit','scanBaseUnit',d.medicine?.base_unit||'');
-    html+=scanInput('Units per Pack','scanUnitsPerPack',d.medicine?.units_per_pack||'','number','min="0.01" step="0.01"');
-    html+=scanInput('Pharma Company','scanCompany',f.company||'');
-  }else{
-    html+=scanInput('Medicine Name','scanMedicineName',d.guessedName||'','text','required');
-    html+=scanInput('Batch Number','scanBatch',f.batch||'');
-    html+=scanInput('Expiry','scanExpiry',expiryValue,'month');
-    html+=scanInput('MRP / Pack','scanMrp',f.mrp||'','number','min="0" step="0.01"');
-    html+=scanInput('Purchase Price / Pack','scanPurchasePrice',f.purchasePrice||'','number','min="0" step="0.01"');
-    html+=scanInput('Quantity (Packs)','scanQuantity',f.quantity||'','number','min="0.01" step="0.01"');
-    html+=scanInput('Pharma Company','scanCompany',f.company||'');
-    html+=scanInput('Stockist','scanStockist',f.stockist||'');
-    html+=scanInput('Barcode / Code','scanBarcode',d.barcode||'');
-  }
-
-  html+=`</div>
-  <div class="scan-actions">
-    <button type="button" class="btn secondary" onclick="renderMedicineScanReview()">↻ Refresh Review</button>
-  </div>
-  <details style="margin-top:12px"><summary>View raw OCR text</summary><pre style="white-space:pre-wrap;font-size:12px">${esc(d.ocrText||'No readable text')}</pre></details>`;
-  result.innerHTML=html;
-}
-
-function guessMedicineNameFromOcr(text){
-  const lines=String(text||'').split(/\n/).map(x=>normalizeScanText(x)).filter(x=>x.length>=3);
-  const bad=/^(batch|b\.?\s*no|m\.?r\.?p|mrp|expiry|exp|manufactured|marketed|mfg|composition|each|tablet|capsule|syrup|store|price|quantity|qty|ip|usp|bp|mg|ml|g)$/i;
-  const candidate=lines.find(x=>/[A-Za-z]{3,}/.test(x)&&!bad.test(x)&&x.length<=80);
-  return candidate||'';
-}
-
-function guessStrengthFromOcr(text){
-  const m=String(text||'').match(/\b\d+(?:\.\d+)?\s*(?:mg|mcg|g|kg|ml|mL|IU|%)(?:\s*\/\s*\w+)?\b/i);
-  return m?m[0]:'';
-}
-
-function useMedicineScanResult(){
-  if(!medicineScanTarget||!medicineScanData){alert('No scan result is available.');return;}
-  const d=medicineScanData;
-  const f=d.fields||{};
-  const t=medicineScanTarget;
-
-  const val=id=>(document.getElementById(id)?.value||'').trim();
-
-  if(t.type==='master'){
-    document.getElementById('medicineName').value=val('scanMedicineName');
-    document.getElementById('genericName').value=val('scanGenericName');
-    document.getElementById('strength').value=val('scanStrength');
-    document.getElementById('dosageForm').value=val('scanDosageForm');
-    document.getElementById('packUnit').value=val('scanPackUnit');
-    document.getElementById('baseUnit').value=val('scanBaseUnit');
-    document.getElementById('unitsPerPack').value=val('scanUnitsPerPack');
-    updatePackFields(false);
-    if(val('scanCompany'))document.getElementById('medicineNotes').value=`Manufacturer/Company detected: ${val('scanCompany')}`;
-    closeMedicineScan();
-    alert('Reviewed scan information has been entered. Verify the medicine fields once more before saving.');
-    return;
-  }
-
-  const div=t.row;
-  if(!div){alert('No purchase/stock row is selected.');return;}
-
-  const medicineName=val('scanMedicineName');
-  const matched=d.medicine;
-  if(matched){
-    if(t.type==='bill')selectBillMedicine(div,matched.id,true);
-    else selectUnbilledMedicine(div,matched.id,true);
-  }else if(medicineName){
-    const input=div.querySelector(t.type==='bill'?'.bill-medicine':'.unbilled-medicine');
-    if(input)input.value=medicineName;
-  }
-
-  if(val('scanBatch')){
-    const el=div.querySelector(t.type==='bill'?'.bill-batch':'.unbilled-batch');
-    if(el)el.value=val('scanBatch');
-  }
-  if(val('scanExpiry')){
-    const el=div.querySelector(t.type==='bill'?'.bill-expiry':'.unbilled-expiry');
-    if(el)el.value=val('scanExpiry');
-  }
-  if(val('scanMrp')){
-    const el=div.querySelector(t.type==='bill'?'.bill-mrp':'.unbilled-mrp');
-    if(el)el.value=val('scanMrp');
-  }
-  if(val('scanPurchasePrice')){
-    const el=div.querySelector(t.type==='bill'?'.bill-price':'.unbilled-price');
-    if(el)el.value=val('scanPurchasePrice');
-  }
-  if(val('scanQuantity')){
-    const el=div.querySelector(t.type==='bill'?'.bill-qty':'.unbilled-qty');
-    if(el)el.value=val('scanQuantity');
-  }
-
-  const company=val('scanCompany');
-  const stockist=val('scanStockist');
-  if(company){
-    const companyInput=document.getElementById(t.type==='bill'?'pharmaCompanyName':'unbilledCompany');
-    if(companyInput)companyInput.value=company;
-  }
-  if(stockist){
-    const stockistInput=document.getElementById(t.type==='bill'?'stockistName':'unbilledStockist');
-    if(stockistInput)stockistInput.value=stockist;
-  }
-
-  if(t.type==='bill')updateBillTotals();else updateUnbilledTotals(div);
-  closeMedicineScan();
-  alert('Reviewed scan information has been entered. Verify it against the original image before saving.');
-}
+async function processMedicineScanFile(file,fromCamera=false,barcodeHint=''){if(!file||medicineScanBusy)return;medicineScanBusy=true;const status=document.getElementById('medicineScanStatus'),preview=document.getElementById('medicineScanPreview'),result=document.getElementById('medicineScanResult'),useBtn=document.getElementById('useMedicineScanBtn');try{const url=URL.createObjectURL(file);preview.src=url;preview.classList.remove('hidden');result.classList.add('hidden');useBtn.classList.add('hidden');status.textContent=fromCamera?'Photo captured. Reading text…':'Preparing image…';const barcode=barcodeHint||await detectBarcode(file);let ocrText='';try{ocrText=await ocrMedicineImage(file,status);}catch(e){console.error(e);status.textContent='OCR failed. You can still enter fields manually.';}const fields=extractScanFields(ocrText);await loadMedicines();const best=findBestMedicine(ocrText),guessedName=best?.medicine_name||guessMedicineNameFromOcr(ocrText),guessedStrength=best?.strength||guessStrengthFromOcr(ocrText);medicineScanData={barcode,ocrText,fields,medicine:best,guessedName,guessedStrength,guessedGeneric:best?.generic_name||'',scanLines:ocrText.split(/\n+/).map(x=>normalizeScanText(x)).filter(x=>x.length>=1)};renderMedicineScanReview();result.classList.remove('hidden');useBtn.classList.remove('hidden');status.textContent='Text detected. Tap a text line to choose where it should be filled.';}finally{medicineScanBusy=false;}}
+function scanConfidence(value,kind='normal'){if(value===undefined||value===null||String(value).trim()==='')return '<div class="scan-confidence confidence-low">🔴 Not detected — enter manually</div>';if(kind==='matched')return '<div class="scan-confidence confidence-high">🟢 Matched to your medicine list</div>';return '<div class="scan-confidence confidence-review">🟡 Review before saving</div>';}
+function scanInput(label,id,value,type='text',extra=''){return `<div class="scan-field"><label>${esc(label)}</label><input id="${id}" type="${type}" value="${esc(value??'')}" ${extra}>${scanConfidence(value)}</div>`;}
+function renderMedicineScanReview(){const result=document.getElementById('medicineScanResult'),d=medicineScanData||{},f=d.fields||{},target=medicineScanTarget?.type||'unbilled';let html=`<h3 style="margin-top:0;color:#20586f">🤖 Review + Assign Extracted Text</h3><div class="scan-source-note"><b>How to use:</b> tap any detected text below → choose the field where it belongs. You can still edit every field manually.</div><div class="scan-field-grid">`;if(target==='master'){html+=scanInput('Medicine Name','scanMedicineName',d.guessedName||'','text','required');html+=scanInput('Generic Name','scanGenericName',d.guessedGeneric||'');html+=scanInput('Strength','scanStrength',d.guessedStrength||'');html+=`<div class="scan-field"><label>Dosage Form</label><select id="scanDosageForm"><option value="">Select</option>${['Tablet','Capsule','Syrup','Roll-on','Spray','Drops','Sachet','Mouth Dissolving Strip','Gel / Ointment','Cream','Lotion','Powder','Inhaler','Injection','Other'].map(x=>`<option ${d.medicine?.dosage_form===x?'selected':''}>${esc(x)}</option>`).join('')}</select>${scanConfidence(d.medicine?.dosage_form,'matched')}</div>`;html+=scanInput('Unit / Pack','scanPackUnit',d.medicine?.pack_unit||'');html+=scanInput('Base Unit','scanBaseUnit',d.medicine?.base_unit||'');html+=scanInput('Units per Pack','scanUnitsPerPack',d.medicine?.units_per_pack||'','number','min="0.01" step="0.01"');html+=scanInput('Pharma Company','scanCompany',f.company||'');}else{html+=scanInput('Medicine Name','scanMedicineName',d.guessedName||'','text','required');html+=scanInput('Batch Number','scanBatch',f.batch||'');html+=scanInput('Expiry Month / Year','scanExpiry',f.expiry||'','month');html+=scanInput('MRP / Pack','scanMrp',f.mrp||'','number','min="0" step="0.01"');html+=scanInput('Purchase Price / Pack','scanPurchasePrice',f.purchasePrice||'','number','min="0" step="0.01"');html+=scanInput('Quantity (Packs)','scanQuantity',f.quantity||'','number','min="0.01" step="0.01"');html+=scanInput('Pharma Company','scanCompany',f.company||'');html+=scanInput('Stockist','scanStockist',f.stockist||'');html+=scanInput('Barcode / Code','scanBarcode',d.barcode||'');}html+=`</div><div class="section" style="margin-top:14px"><h3>📝 Detected Text — Tap Any Line to Assign</h3><div class="ocr-lines">${(d.scanLines||[]).map((line,i)=>`<button type="button" class="ocr-line-btn" onclick="openScanFieldPicker(${JSON.stringify(line)})"><span class="ocr-line-label">TEXT ${i+1}</span>${esc(line)}</button>`).join('')||'<div class="empty">No readable text detected. Retake a sharper photo.</div>'}</div></div><details style="margin-top:12px"><summary>View raw OCR text</summary><pre style="white-space:pre-wrap;font-size:12px">${esc(d.ocrText||'No readable text')}</pre></details>`;result.innerHTML=html;}
+function openScanFieldPicker(text){medicineSelectedScanText=String(text||'').trim();if(!medicineSelectedScanText)return;const target=medicineScanTarget?.type||'unbilled';const options=target==='master'?[['scanMedicineName','Medicine Name'],['scanGenericName','Generic Name'],['scanStrength','Strength'],['scanDosageForm','Dosage Form'],['scanPackUnit','Unit / Pack'],['scanBaseUnit','Base Unit'],['scanUnitsPerPack','Units per Pack'],['scanCompany','Pharma Company']]:[['scanMedicineName','Medicine Name'],['scanBatch','Batch Number'],['scanExpiry','Expiry Month / Year'],['scanMrp','MRP / Pack'],['scanPurchasePrice','Purchase Price / Pack'],['scanQuantity','Quantity (Packs)'],['scanCompany','Pharma Company'],['scanStockist','Stockist'],['scanBarcode','Barcode / Code']];document.getElementById('scanAssignText').textContent=medicineSelectedScanText;document.getElementById('scanAssignOptions').innerHTML=options.map(([id,label])=>`<button type="button" class="scan-option" onclick="assignScanText('${id}')">${esc(label)}</button>`).join('');showModal('scanAssignModal');}
+function assignScanText(fieldId){const input=document.getElementById(fieldId);if(!input){closeModal('scanAssignModal');return;}let value=medicineSelectedScanText;if(fieldId==='scanExpiry'){const parsed=monthYearFromText(value);if(parsed)value=parsed;}if(fieldId==='scanMrp'||fieldId==='scanPurchasePrice'){const m=value.match(/[0-9]+(?:\.[0-9]{1,2})?/);if(m)value=m[0];}if(fieldId==='scanQuantity'){const m=value.match(/[0-9]+(?:\.[0-9]+)?/);if(m)value=m[0];}input.value=value;closeModal('scanAssignModal');}
+function guessMedicineNameFromOcr(text){const lines=String(text||'').split(/\n/).map(x=>normalizeScanText(x)).filter(x=>x.length>=3),bad=/^(batch|b\.?\s*no|m\.?r\.?p|mrp|expiry|exp|manufactured|marketed|mfg|composition|each|tablet|capsule|syrup|store|price|quantity|qty|ip|usp|bp|mg|ml|g)$/i,candidate=lines.find(x=>/[A-Za-z]{3,}/.test(x)&&!bad.test(x)&&x.length<=80);return candidate||'';}
+function guessStrengthFromOcr(text){const m=String(text||'').match(/\d+(?:\.\d+)?\s*(?:mg|mcg|g|kg|ml|mL|IU|%)(?:\s*\/\s*\w+)?/i);return m?m[0]:'';}
+function useMedicineScanResult(){if(!medicineScanTarget||!medicineScanData){alert('No scan result is available.');return;}const d=medicineScanData,t=medicineScanTarget,val=id=>(document.getElementById(id)?.value||'').trim();if(t.type==='master'){document.getElementById('medicineName').value=val('scanMedicineName');document.getElementById('genericName').value=val('scanGenericName');document.getElementById('strength').value=val('scanStrength');document.getElementById('dosageForm').value=val('scanDosageForm');document.getElementById('packUnit').value=val('scanPackUnit');document.getElementById('baseUnit').value=val('scanBaseUnit');document.getElementById('unitsPerPack').value=val('scanUnitsPerPack');if(val('scanCompany'))document.getElementById('medicineNotes').value=`Manufacturer/Company detected: ${val('scanCompany')}`;closeMedicineScan();alert('Reviewed scan information entered. Verify before saving.');return;}const div=t.row;if(!div){alert('No purchase/stock row is selected.');return;}const medicineName=val('scanMedicineName'),matched=d.medicine;if(matched){if(t.type==='bill')selectBillMedicine(div,matched.id,true);else selectUnbilledMedicine(div,matched.id,true);}else if(medicineName){const input=div.querySelector(t.type==='bill'?'.bill-medicine':'.unbilled-medicine');if(input)input.value=medicineName;}const set=(selector,id)=>{const v=val(id);if(v){const el=div.querySelector(selector);if(el)el.value=v;}};set(t.type==='bill'?'.bill-batch':'.unbilled-batch','scanBatch');set(t.type==='bill'?'.bill-expiry':'.unbilled-expiry','scanExpiry');set(t.type==='bill'?'.bill-mrp':'.unbilled-mrp','scanMrp');set(t.type==='bill'?'.bill-price':'.unbilled-price','scanPurchasePrice');set(t.type==='bill'?'.bill-qty':'.unbilled-qty','scanQuantity');const company=val('scanCompany'),stockist=val('scanStockist');if(company){const companyInput=document.getElementById(t.type==='bill'?'pharmaCompanyName':'unbilledCompany');if(companyInput)companyInput.value=company;}if(stockist){const stockistInput=document.getElementById(t.type==='bill'?'stockistName':'unbilledStockist');if(stockistInput)stockistInput.value=stockist;}if(t.type==='bill')updateBillTotals();else updateUnbilledTotals(div);closeMedicineScan();alert('Reviewed scan information entered. Verify it against the original image before saving.');}
 
 async function saveUnbilledStock(e){e.preventDefault();if(!(await requireSession()))return;try{const rows=[...document.querySelectorAll('#unbilledItems .bill-item')];if(!rows.length)return;const {data:entry,error:ee}=await supabaseClient.from('medicine_stock_entries').insert({entry_date:document.getElementById('unbilledDate').value,stockist_name:document.getElementById('unbilledStockist').value.trim()||null,pharma_company_name:document.getElementById('unbilledCompany').value.trim()||null,reference_number:document.getElementById('unbilledReference').value.trim()||null,status:'UNBILLED'}).select().single();if(ee)throw ee;for(const row of rows){const medicineId=Number(row.querySelector('.unbilled-medicine-id').value),batch=row.querySelector('.unbilled-batch').value.trim(),expiryMonth=row.querySelector('.unbilled-expiry').value,expiry=expiryMonth?expiryMonth+'-01':'',qty=Number(row.querySelector('.unbilled-qty').value)||0,units=Number(row.querySelector('.unbilled-units-per-pack').value)||1;if(!medicineId||!batch||!expiry||qty<=0)throw new Error('Complete medicine, batch, expiry and quantity for every item.');const mrp=Number(row.querySelector('.unbilled-mrp').value)||0,price=Number(row.querySelector('.unbilled-price').value)||0,baseQty=qty*units;const {data:item,error:ie}=await supabaseClient.from('medicine_stock_entry_items').insert({stock_entry_id:entry.id,medicine_id:medicineId,batch_number:batch,expiry_date:expiry,unit_name:await getMedicineUnit(medicineId),units_per_pack:units,quantity_packs:qty,quantity_base_units:baseQty,mrp_per_unit:mrp,purchase_price_per_unit:price,linked_quantity_base_units:0}).select().single();if(ie)throw ie;await addUnbilledStockToBatch(entry,item,medicineId,batch,expiry,qty,baseQty,mrp,price);}alert('Unbilled stock saved successfully.');openView('mainView');await refreshDashboard();}catch(err){showError(err.message);}}
 async function addUnbilledStockToBatch(entry,item,medicineId,batchNumber,expiry,qtyPacks,baseQty,mrp,price){const m=await getMedicine(medicineId);const units=Number(m.units_per_pack)||1;const {data:existing,error:ee}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',medicineId).eq('batch_number',batchNumber).maybeSingle();if(ee)throw ee;let batch;if(existing){const newBase=Number(existing.quantity_base_units??Number(existing.quantity)*units)+baseQty;const {data:u,error}=await supabaseClient.from('medicine_batches').update({quantity:newBase/units,quantity_base_units:newBase,expiry_date:expiry,unit_name:m.pack_unit,units_per_pack:units,mrp_per_unit:mrp,purchase_price_per_unit:price,updated_at:new Date().toISOString()}).eq('id',existing.id).select().single();if(error)throw error;batch=u;}else{const {data:n,error}=await supabaseClient.from('medicine_batches').insert({medicine_id:medicineId,batch_number:batchNumber,expiry_date:expiry,quantity:qtyPacks,quantity_base_units:baseQty,unit_name:m.pack_unit,units_per_pack:units,mrp_per_unit:mrp,purchase_price_per_unit:price,last_purchase_bill_id:null}).select().single();if(error)throw error;batch=n;}const {error:te}=await supabaseClient.from('medicine_stock_transactions').insert({medicine_id:medicineId,batch_id:batch.id,stock_entry_id:entry.id,stock_entry_item_id:item.id,transaction_type:'PURCHASE',quantity:qtyPacks,quantity_base_units:baseQty,units_per_pack:units,direction:'IN',transaction_date:entry.entry_date,mrp_per_unit:mrp,purchase_price_per_unit:price,notes:'Unbilled purchase stock'});if(te)throw te;}
@@ -885,7 +699,7 @@ function resetDispenseFormV2(){document.getElementById('dispenseMedicineSearch')
 function resetAdjustFormV2(){document.getElementById('adjustMedicineSearch').value='';document.getElementById('adjustMedicineId').value='';document.getElementById('adjustBatch').innerHTML='<option value="">Select medicine first</option>';document.getElementById('adjustQuantity').value='';document.getElementById('adjustDate').value=todayIST();document.getElementById('adjustNotes').value='';}
 
 async function searchTransactionMedicine(mode){const input=document.getElementById(mode==='dispense'?'dispenseMedicineSearch':'adjustMedicineSearch');const box=document.getElementById(mode==='dispense'?'dispenseMedicineSuggestions':'adjustMedicineSuggestions');const term=input.value.trim();if(term.length<2){box.classList.add('hidden');return;}const {data,error}=await supabaseClient.from('medicines').select('*').or(`medicine_name.ilike.%${term}%,generic_name.ilike.%${term}%,strength.ilike.%${term}%`).order('medicine_name').limit(10);if(error)return;box.innerHTML=(data||[]).map(m=>`<div class="suggestion" onclick="selectTransactionMedicineV2('${mode}',${m.id})"><b>${esc(m.medicine_name)} ${esc(m.strength||'')}</b><br><span class="muted">Stock: ${Number(m.total_stock||0).toLocaleString('en-IN')} ${esc(m.base_unit||'units')}</span></div>`).join('');box.classList.remove('hidden');}
-async function selectTransactionMedicineV2(mode,id){const {data:m,error}=await supabaseClient.from('medicines').select('*').eq('id',id).single();if(error)throw error;const searchId=mode==='dispense'?'dispenseMedicineSearch':'adjustMedicineSearch',hiddenId=mode==='dispense'?'dispenseMedicineId':'adjustMedicineId',boxId=mode==='dispense'?'dispenseMedicineSuggestions':'adjustMedicineSuggestions',selectId=mode==='dispense'?'dispenseBatch':'adjustBatch';document.getElementById(searchId).value=`${m.medicine_name}${m.strength?' '+m.strength:''}`.trim();document.getElementById(hiddenId).value=m.id;document.getElementById(boxId).classList.add('hidden');if(mode==='dispense')selectedTransactionMedicine=m;const {data:batches,error:be}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',id).gt('quantity_base_units',0).order('expiry_date');if(be)throw be;document.getElementById(selectId).innerHTML=(batches||[]).map(b=>`<option value="${b.id}">${esc(b.batch_number)} · Exp ${fmtDate(b.expiry_date)} · ${Number(b.quantity_base_units||0).toLocaleString('en-IN')} ${esc(m.base_unit||'units')}</option>`).join('')||'<option value="">No stock</option>';if(mode==='dispense')updateDispenseHelp();}
+async function selectTransactionMedicineV2(mode,id){const {data:m,error}=await supabaseClient.from('medicines').select('*').eq('id',id).single();if(error)throw error;const searchId=mode==='dispense'?'dispenseMedicineSearch':'adjustMedicineSearch',hiddenId=mode==='dispense'?'dispenseMedicineId':'adjustMedicineId',boxId=mode==='dispense'?'dispenseMedicineSuggestions':'adjustMedicineSuggestions',selectId=mode==='dispense'?'dispenseBatch':'adjustBatch';document.getElementById(searchId).value=`${m.medicine_name}${m.strength?' '+m.strength:''}`.trim();document.getElementById(hiddenId).value=m.id;document.getElementById(boxId).classList.add('hidden');if(mode==='dispense')selectedTransactionMedicine=m;const {data:batches,error:be}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',id).gt('quantity_base_units',0).order('expiry_date');if(be)throw be;document.getElementById(selectId).innerHTML=(batches||[]).map(b=>`<option value="${b.id}">${esc(b.batch_number)} · Exp ${monthLabel(b.expiry_date)} · ${Number(b.quantity_base_units||0).toLocaleString('en-IN')} ${esc(m.base_unit||'units')}</option>`).join('')||'<option value="">No stock</option>';if(mode==='dispense')updateDispenseHelp();}
 async function updateDispenseHelp(){const id=Number(document.getElementById('dispenseBatch').value);if(!id)return;const {data:b}=await supabaseClient.from('medicine_batches').select('*').eq('id',id).single();if(!b)return;const m=selectedTransactionMedicine||medicines.find(x=>x.id===b.medicine_id);if(m)document.getElementById('dispenseQuantityHelp').textContent=`Available: ${Number(b.quantity_base_units||0).toLocaleString('en-IN')} ${m.base_unit||'units'} · ${Number(b.quantity_base_units||0)/Number(m.units_per_pack||1)} ${m.pack_unit||'packs'}`;}
 
 async function saveDispense(e){e.preventDefault();if(!(await requireSession()))return;try{const medicineId=Number(document.getElementById('dispenseMedicineId').value),batchId=Number(document.getElementById('dispenseBatch').value),qty=Number(document.getElementById('dispenseQuantity').value)||0;if(!medicineId||!batchId||qty<=0)throw new Error('Select medicine, batch and quantity.');const {data:b,error:be}=await supabaseClient.from('medicine_batches').select('*').eq('id',batchId).single();if(be)throw be;if(qty>Number(b.quantity_base_units||0))throw new Error(`Insufficient stock. Available: ${b.quantity_base_units} base units.`);const m=await getMedicine(medicineId),units=Number(b.units_per_pack||m.units_per_pack||1),newBase=Number(b.quantity_base_units)-qty;const {error:ue}=await supabaseClient.from('medicine_batches').update({quantity:newBase/units,quantity_base_units:newBase,updated_at:new Date().toISOString()}).eq('id',batchId);if(ue)throw ue;const {error:te}=await supabaseClient.from('medicine_stock_transactions').insert({medicine_id:medicineId,batch_id:batchId,transaction_type:'DISPENSED',quantity:qty/units,quantity_base_units:qty,units_per_pack:units,direction:'OUT',transaction_date:document.getElementById('dispenseDate').value,mrp_per_unit:b.mrp_per_unit,purchase_price_per_unit:b.purchase_price_per_unit,notes:[document.getElementById('dispenseReference').value.trim(),document.getElementById('dispenseNotes').value.trim()].filter(Boolean).join(' · ')||null});if(te){await supabaseClient.from('medicine_batches').update({quantity:b.quantity,quantity_base_units:b.quantity_base_units}).eq('id',batchId);throw te;}alert('Medicine dispensing recorded successfully.');resetDispenseFormV2();openView('mainView');await refreshDashboard();}catch(err){showError(err.message);}}
@@ -905,7 +719,7 @@ function packTextV2(m,base){
   return `${packs.toLocaleString('en-IN')} ${pack} + ${rem.toLocaleString('en-IN')} ${unit} (${n.toLocaleString('en-IN')} ${unit})`;
 }
 
-async function loadExpiry(){const days=Number(document.getElementById('expiryDays').value),today=todayIST();let q=supabaseClient.from('medicine_batches').select('*,medicines(medicine_name,strength,pack_unit,base_unit,units_per_pack)').gt('quantity_base_units',0).order('expiry_date');if(days>0){q=q.gte('expiry_date',today).lte('expiry_date',addDaysV2(today,days));}const {data,error}=await q;if(error){showError(error.message);return;}document.getElementById('expiryTable').innerHTML=(data||[]).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Batch</th><th>Expiry</th><th>Remaining Stock</th><th>Source</th></tr></thead><tbody>${data.map(b=>`<tr><td>${esc(b.medicines?.medicine_name||'')} ${esc(b.medicines?.strength||'')}</td><td>${esc(b.batch_number)}</td><td>${fmtDate(b.expiry_date)}</td><td>${esc(packTextV2(b.medicines||{},Number(b.quantity_base_units||0)))}</td><td>${b.last_purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${b.last_purchase_bill_id})">Bill</span>`:'📦 Stock Entry'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No expiring stock found for this period.</div>';}
+async function loadExpiry(){const days=Number(document.getElementById('expiryDays').value),today=todayIST();let q=supabaseClient.from('medicine_batches').select('*,medicines(medicine_name,strength,pack_unit,base_unit,units_per_pack)').gt('quantity_base_units',0).order('expiry_date');if(days>0){q=q.gte('expiry_date',today).lte('expiry_date',addDaysV2(today,days));}const {data,error}=await q;if(error){showError(error.message);return;}document.getElementById('expiryTable').innerHTML=(data||[]).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Batch</th><th>Expiry</th><th>Remaining Stock</th><th>Source</th></tr></thead><tbody>${data.map(b=>`<tr><td>${esc(b.medicines?.medicine_name||'')} ${esc(b.medicines?.strength||'')}</td><td>${esc(b.batch_number)}</td><td>${monthLabel(b.expiry_date)}</td><td>${esc(packTextV2(b.medicines||{},Number(b.quantity_base_units||0)))}</td><td>${b.last_purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${b.last_purchase_bill_id})">Bill</span>`:'📦 Stock Entry'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No expiring stock found for this period.</div>';}
 function addDaysV2(date,days){const d=new Date(date+'T00:00:00');d.setDate(d.getDate()+days);return d.toISOString().slice(0,10);}
 
 
@@ -924,72 +738,14 @@ function stockEntrySearchText(entry,items,bills){
 }
 
 async function loadStockEntryHistory(){
-  const search=(document.getElementById('stockEntryHistorySearch')?.value||'').trim().toLowerCase();
-  const statusFilter=document.getElementById('stockEntryBillingFilter')?.value||'';
-  const from=document.getElementById('stockEntryFrom')?.value||'';
-  const to=document.getElementById('stockEntryTo')?.value||'';
-
-  let q=supabaseClient.from('medicine_stock_entries').select('*').order('entry_date',{ascending:false}).order('id',{ascending:false}).limit(500);
-  if(from)q=q.gte('entry_date',from);
-  if(to)q=q.lte('entry_date',to);
-  const {data:entries,error}=await q;
-  if(error){showError(error.message);return;}
-  const list=entries||[];
-  if(!list.length){
-    document.getElementById('stockEntryHistoryTable').innerHTML='<div class="empty">No stock entries found.</div>';
-    return;
-  }
-
-  const ids=list.map(x=>x.id);
-  const {data:items,error:ie}=await supabaseClient.from('medicine_stock_entry_items').select('*,medicines(medicine_name,generic_name,strength,pack_unit,base_unit,units_per_pack)').in('stock_entry_id',ids).order('id');
-  if(ie){showError(ie.message);return;}
-  const allItems=items||[];
-  const itemIds=allItems.map(x=>x.id);
-  let billItems=[];
-  if(itemIds.length){
-    const {data:bi,error:be}=await supabaseClient.from('purchase_bill_items').select('id,purchase_bill_id,stock_entry_item_id,linked_existing_stock_units,quantity,quantity_base_units,purchase_bills(id,bill_number,stockist_name,purchase_date,payment_status)').in('stock_entry_item_id',itemIds);
-    if(be){showError(be.message);return;}
-    billItems=bi||[];
-  }
-
-  const rows=[];
-  for(const entry of list){
-    const its=allItems.filter(i=>Number(i.stock_entry_id)===Number(entry.id));
-    const bis=billItems.filter(b=>its.some(i=>Number(i.id)===Number(b.stock_entry_item_id)));
-    let totalBase=0,linkedBase=0;
-    its.forEach(i=>{totalBase+=Number(i.quantity_base_units||0);linkedBase+=Number(i.linked_quantity_base_units||0);});
-    const derivedStatus=linkedBase>=totalBase&&totalBase>0?'LINKED':linkedBase>0?'PARTIALLY_LINKED':'UNBILLED';
-    const status=entry.status||derivedStatus;
-    if(statusFilter && status!==statusFilter)continue;
-    if(search && !stockEntrySearchText(entry,its,bis).includes(search))continue;
-    rows.push({entry,items:its,bills:bis,totalBase,linkedBase,status});
-  }
-
-  const html=rows.length?`<div class="stock-entry-list">${rows.map(r=>{
-    const st=stockEntryStatusInfo(r.status);
-    const itemNames=r.items.slice(0,3).map(i=>`${esc(i.medicines?.medicine_name||'Medicine')}${i.medicines?.strength?' '+esc(i.medicines.strength):''}`).join(', ');
-    const more=r.items.length>3?` + ${r.items.length-3} more`:'';
-    const units=r.items.reduce((n,i)=>n+Number(i.quantity_base_units||0),0);
-    const linked=r.linkedBase;
-    const unlinked=Math.max(0,r.totalBase-linked);
-    const billRefs=[...new Map(r.bills.map(b=>[b.purchase_bill_id,b])).values()].map(b=>b.purchase_bills?.bill_number).filter(Boolean);
-    const canEdit=r.status==='UNBILLED';
-    return `<div class="stock-entry-card">
-      <div class="stock-entry-head"><div><div class="stock-entry-title">Stock Entry #SE-${String(r.entry.id).padStart(5,'0')}</div><div class="muted">${fmtDate(r.entry.entry_date)} · ${itemNames||'No medicine items'}${more}</div></div><span class="badge stock-entry-status ${st.cls}">${st.label}</span></div>
-      <div class="stock-entry-meta">
-        <div><b>Total Entered</b>${esc(formatBaseUnitsForItems(r.items,units))}</div>
-        <div><b>Billed / Linked</b>${esc(formatBaseUnitsForItems(r.items,linked))}</div>
-        <div><b>Unbilled Remaining</b>${esc(formatBaseUnitsForItems(r.items,unlinked))}</div>
-        <div><b>Source</b>${billRefs.length?`🧾 ${esc(billRefs.join(', '))}`:'📦 Unbilled Purchase'}</div>
-      </div>
-      <div class="muted" style="margin-top:10px">${esc(r.entry.stockist_name||'No stockist')} ${r.entry.pharma_company_name?'· '+esc(r.entry.pharma_company_name):''}${r.entry.reference_number?' · Ref: '+esc(r.entry.reference_number):''}</div>
-      <div class="stock-entry-actions">
-        <button type="button" class="btn small" onclick="viewStockEntry(${r.entry.id})">👁 View</button>
-        ${canEdit?`<button type="button" class="btn secondary small" onclick="editStockEntry(${r.entry.id})">✏️ Edit</button><button type="button" class="btn danger small" onclick="deleteStockEntry(${r.entry.id})">🗑 Delete</button>`:'<span class="muted">🔒 Linked stock entry — edit through linked purchase bill/adjustment</span>'}
-      </div>
-    </div>`;
-  }).join('')}</div>`:'<div class="empty">No stock entries match the selected filters.</div>';
-  document.getElementById('stockEntryHistoryTable').innerHTML=html;
+  const search=(document.getElementById('stockEntryHistorySearch')?.value||'').trim().toLowerCase(),statusFilter=document.getElementById('stockEntryBillingFilter')?.value||'',from=document.getElementById('stockEntryFrom')?.value||'',to=document.getElementById('stockEntryTo')?.value||'';
+  let q=supabaseClient.from('medicine_stock_entries').select('*').order('entry_date',{ascending:false}).order('id',{ascending:false}).limit(500);if(from)q=q.gte('entry_date',from);if(to)q=q.lte('entry_date',to);const {data:entries,error}=await q;if(error){showError(error.message);return;}const list=entries||[];if(!list.length){document.getElementById('stockEntryHistoryTable').innerHTML='<div class="empty">No stock entries found.</div>';return;}
+  const ids=list.map(x=>x.id);const {data:items,error:ie}=await supabaseClient.from('medicine_stock_entry_items').select('*,medicines(medicine_name,generic_name,strength,dosage_form,pack_unit,base_unit,units_per_pack)').in('stock_entry_id',ids).order('id');if(ie){showError(ie.message);return;}const allItems=items||[],itemIds=allItems.map(x=>x.id);
+  let billItems=[];if(itemIds.length){const {data:bi,error:be}=await supabaseClient.from('purchase_bill_items').select('id,purchase_bill_id,stock_entry_item_id,linked_existing_stock_units,quantity,quantity_base_units,purchase_bills(id,bill_number,stockist_name,pharma_company_name,purchase_date,payment_status)').in('stock_entry_item_id',itemIds);if(be){showError(be.message);return;}billItems=bi||[];}
+  let purchaseTx=[];if(itemIds.length){const {data:tx,error:te}=await supabaseClient.from('medicine_stock_transactions').select('id,stock_entry_item_id,batch_id,quantity_base_units,quantity,units_per_pack,purchase_bill_id').eq('transaction_type','PURCHASE').in('stock_entry_item_id',itemIds);if(te){showError(te.message);return;}purchaseTx=tx||[];}
+  const batchIds=[...new Set(purchaseTx.map(x=>x.batch_id).filter(Boolean))];let batches=[];if(batchIds.length){const {data:bs,error:be}=await supabaseClient.from('medicine_batches').select('*').in('id',batchIds);if(be){showError(be.message);return;}batches=bs||[];}
+  const rows=[];for(const entry of list){for(const item of allItems.filter(i=>Number(i.stock_entry_id)===Number(entry.id))){const links=billItems.filter(b=>Number(b.stock_entry_item_id)===Number(item.id)),linkedBase=Number(item.linked_quantity_base_units||0),totalBase=Number(item.quantity_base_units||0),status=linkedBase>=totalBase&&totalBase>0?'LINKED':linkedBase>0?'PARTIALLY_LINKED':'UNBILLED';if(statusFilter&&status!==statusFilter)continue;const tx=purchaseTx.find(x=>Number(x.stock_entry_item_id)===Number(item.id)),batch=tx?batches.find(b=>Number(b.id)===Number(tx.batch_id)):null,bill=links[0]?.purchase_bills||null,searchText=`${entry.id} ${entry.entry_date||''} ${item.medicines?.medicine_name||''} ${item.medicines?.strength||''} ${item.batch_number||''} ${entry.stockist_name||''} ${entry.pharma_company_name||''} ${entry.reference_number||''} ${links.map(x=>x.purchase_bills?.bill_number||'').join(' ')}`.toLowerCase();if(search&&!searchText.includes(search))continue;rows.push({entry,item,links,tx,batch,bill,status,totalBase,linkedBase});}}
+  const html=rows.length?`<div class="stock-history-scroll"><table class="stock-history-table"><thead><tr><th>Medicine</th><th>Purchase Date</th><th>Purchased</th><th>Present Stock</th><th>Source</th><th>Stockist</th><th>Pharma Company</th><th>Actions</th></tr></thead><tbody>${rows.map(r=>{const m=r.item.medicines||{},present=Number(r.batch?.quantity_base_units??Number(r.batch?.quantity||0)*Number(r.item.units_per_pack||m.units_per_pack||1)),source=r.status==='UNBILLED'?'📦 Unbilled':r.status==='PARTIALLY_LINKED'?`🧾 ${esc(r.bill?.bill_number||'Partially Billed')}`:`🧾 ${esc(r.bill?.bill_number||'Purchase Bill')}`;return `<tr><td><div class="stock-history-medicine">${esc(m.medicine_name||'Medicine')}</div><div class="stock-history-sub">${esc(m.strength||'')}</div></td><td>${fmtDate(r.entry.entry_date)}</td><td><b>${esc(packTextV2(m,r.totalBase))}</b></td><td><b>${esc(packTextV2(m,present))}</b><div class="stock-history-sub">Current batch stock</div></td><td class="stock-history-source">${source}</td><td>${esc(r.entry.stockist_name||r.bill?.stockist_name||'-')}</td><td>${esc(r.entry.pharma_company_name||r.bill?.pharma_company_name||'-')}</td><td><div class="stock-history-actions"><button type="button" class="btn small" onclick="viewStockEntry(${r.entry.id})">👁 View</button><button type="button" class="btn secondary small" onclick="editStockEntry(${r.entry.id})">✏️ Edit</button><button type="button" class="btn danger small" onclick="deleteStockEntry(${r.entry.id})">🗑 Delete</button></div></td></tr>`;}).join('')}</tbody></table></div>`:'<div class="empty">No stock entries match the selected filters.</div>';document.getElementById('stockEntryHistoryTable').innerHTML=html;
 }
 
 function formatBaseUnitsForItems(items,base){
@@ -1041,11 +797,11 @@ async function viewStockEntry(id,openEdit=false){
         return `<div class="stock-entry-edit-item"><div class="detail-grid">
           <div class="detail-box"><b>Medicine</b>${esc(i.medicines?.medicine_name||'-')} ${esc(i.medicines?.strength||'')}</div>
           <div class="detail-box"><b>Batch</b>${esc(i.batch_number||'-')}</div>
-          <div class="detail-box"><b>Expiry</b>${fmtDate(i.expiry_date)}</div>
+          <div class="detail-box"><b>Expiry</b>${monthLabel(i.expiry_date)}</div>
           <div class="detail-box"><b>Unit / Pack</b>${esc(i.unit_name||i.medicines?.pack_unit||'-')} · ${Number(i.units_per_pack||i.medicines?.units_per_pack||1)} ${esc(i.medicines?.base_unit||'base units')} / pack</div>
-          <div class="detail-box"><b>Quantity Entered</b>${Number(i.quantity_packs||0).toLocaleString('en-IN')} packs · ${Number(base).toLocaleString('en-IN')} ${esc(i.medicines?.base_unit||'base units')}</div>
-          <div class="detail-box"><b>Billed / Linked</b>${Number(linkedQty).toLocaleString('en-IN')} ${esc(i.medicines?.base_unit||'base units')}</div>
-          <div class="detail-box"><b>Unbilled</b>${Number(remain).toLocaleString('en-IN')} ${esc(i.medicines?.base_unit||'base units')}</div>
+          <div class="detail-box"><b>Quantity Entered</b>${esc(packTextV2(i.medicines||{},base))}</div>
+          <div class="detail-box"><b>Billed / Linked</b>${esc(packTextV2(i.medicines||{},linkedQty))}</div>
+          <div class="detail-box"><b>Unbilled</b>${esc(packTextV2(i.medicines||{},remain))}</div>
           <div class="detail-box"><b>Purchase Value</b>${currency(Number(i.quantity_packs||0)*Number(i.purchase_price_per_unit||0))}</div>
           <div class="detail-box"><b>MRP / Pack</b>${currency(i.mrp_per_unit)}</div>
           <div class="detail-box"><b>Purchase / Pack</b>${currency(i.purchase_price_per_unit)}</div>
@@ -1081,7 +837,7 @@ async function editStockEntry(id){
             <input type="hidden" name="itemId" value="${i.id}">
             <div class="form-grid" style="margin-top:10px">
               <div class="field"><label>Quantity (Packs) *</label><input name="qty" type="number" min="0.01" step="0.01" value="${Number(i.quantity_packs||0)}" required></div>
-              <div class="field"><label>Expiry *</label><input name="expiry" type="date" value="${esc(i.expiry_date||'')}" required></div>
+              <div class="field"><label>Expiry *</label><input name="expiry" type="month" value="${monthInputFromDate(i.expiry_date)}" required></div>
               <div class="field"><label>MRP / Pack</label><input name="mrp" type="number" min="0" step="0.01" value="${Number(i.mrp_per_unit||0)}"></div>
               <div class="field"><label>Purchase Price / Pack</label><input name="price" type="number" min="0" step="0.01" value="${Number(i.purchase_price_per_unit||0)}"></div>
             </div>
@@ -1117,7 +873,7 @@ async function saveStockEntryEdit(e,id){
       const original=items.find(x=>Number(x.id)===itemId);
       if(!original)continue;
       const qtyPacks=Number(row.querySelector('input[name="qty"]').value)||0;
-      const expiry=row.querySelector('input[name="expiry"]').value;
+      const expiry=monthToDate(row.querySelector('input[name="expiry"]').value);
       const mrp=Number(row.querySelector('input[name="mrp"]').value)||0;
       const price=Number(row.querySelector('input[name="price"]').value)||0;
       const units=Number(original.units_per_pack||original.medicines?.units_per_pack||1);
@@ -1234,7 +990,7 @@ async function loadAnalytics(){
 }
 
 /* Base-unit display for medicine detail/list */
-function packTextV2(m,base){const u=Number(m?.units_per_pack)||1;const n=Number(base)||0;const pack=m?.pack_unit||'pack';const unit=m?.base_unit||'base units';if(u===1)return `${n.toLocaleString('en-IN')} ${unit}`;const packs=Math.floor(n/u),rem=Math.round((n-packs*u)*100)/100;if(rem===0)return `${packs.toLocaleString('en-IN')} ${pack} (${n.toLocaleString('en-IN')} ${unit})`;return `${packs.toLocaleString('en-IN')} ${pack} + ${rem.toLocaleString('en-IN')} ${unit} (${n.toLocaleString('en-IN')} ${unit})`;}
+function packTextV2(m,base){const u=Number(m?.units_per_pack)||1;const n=Number(base)||0;const pack=m?.pack_unit||'pack';const unit=m?.base_unit||'base units';if(u===1)return `${n.toLocaleString('en-IN')} ${unit}`;const packs=Math.floor(n/u),rem=Math.round((n-packs*u)*100)/100;return `${packs.toLocaleString('en-IN')} ${pack} + ${rem.toLocaleString('en-IN')} ${unit}`;}
 
 
 function setTodayDefaults(){
@@ -1250,6 +1006,7 @@ function openPurchaseForm(id=null){
   document.getElementById('purchaseBillId').value=id||'';
   document.getElementById('purchaseDate').value=todayIST();
   document.getElementById('paymentDate').value=todayIST();
+  document.getElementById('actualBillAmount').value='';
   document.getElementById('existingBillPhoto').innerHTML='';
   document.getElementById('purchaseDuplicateNotice').classList.add('hidden');
   billItemCounter=0;
@@ -1273,6 +1030,7 @@ async function loadPurchaseBillForEditV2(id){
   document.getElementById('purchaseNotes').value=data.notes||'';
   const r=document.querySelector(`input[name="paymentStatus"][value="${data.payment_status}"]`);if(r)r.checked=true;
   document.getElementById('paymentDate').value=data.payment_date||'';
+  document.getElementById('actualBillAmount').value=Number(data.total_amount||0)||'';
   document.getElementById('existingBillPhoto').innerHTML=data.bill_photo_path?`<span class="photo-link" onclick="viewPurchasePhoto('${esc(data.bill_photo_path)}','',true)">📷 View existing bill photo</span>`:'No bill photo uploaded.';
   togglePaymentDate();
   const {data:items,error:ie}=await supabaseClient.from('purchase_bill_items').select('*,medicines(*)').eq('purchase_bill_id',id).order('id');
@@ -1293,7 +1051,7 @@ async function viewMedicineDetails(id){
   await loadMedicines();const m=medicines.find(x=>x.id===id);if(!m)return;
   const {data:batches,error:be}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',id).order('expiry_date');if(be){showError(be.message);return;}
   const {data:tx,error:te}=await supabaseClient.from('medicine_stock_transactions').select('*,purchase_bills(bill_number),medicine_stock_entries(reference_number)').eq('medicine_id',id).order('transaction_date',{ascending:false}).limit(100);if(te){showError(te.message);return;}
-  document.getElementById('medicineDetailContent').innerHTML=`<div class="section"><div class="form-grid"><div><b>Medicine</b><br>${esc(m.medicine_name)}</div><div><b>Generic</b><br>${esc(m.generic_name||'-')}</div><div><b>Strength</b><br>${esc(m.strength||'-')}</div><div><b>Dosage Form</b><br>${esc(m.dosage_form)}</div><div><b>Unit / Pack</b><br>${esc(m.pack_unit)}</div><div><b>Base Unit</b><br>${esc(m.base_unit||'Unit')}</div><div><b>Units per Pack</b><br>${Number(m.units_per_pack||1)}</div><div><b>Minimum Stock</b><br>${Number(m.minimum_stock_level||0)} ${esc(m.pack_unit)}</div></div></div><div class="section"><h3>📦 Batch / Stock Details</h3>${(batches||[]).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Batch</th><th>Expiry</th><th>Stock</th><th>MRP / Pack</th><th>Purchase / Pack</th><th>Source</th></tr></thead><tbody>${batches.map(b=>`<tr><td>${esc(b.batch_number)}</td><td>${fmtDate(b.expiry_date)}</td><td>${esc(packTextV2(m,Number(b.quantity_base_units??Number(b.quantity||0)*Number(m.units_per_pack||1))))}</td><td>${currency(b.mrp_per_unit)}</td><td>${currency(b.purchase_price_per_unit)}</td><td>${b.last_purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${b.last_purchase_bill_id})">Bill</span>`:'📦 Stock Entry'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No batches.</div>'}</div><div class="section"><h3>📋 Recent Stock History</h3>${(tx||[]).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Quantity</th><th>Source</th></tr></thead><tbody>${tx.map(t=>`<tr><td>${fmtDate(t.transaction_date)}</td><td>${esc(t.transaction_type)}</td><td>${t.direction==='IN'?'+':'-'}${Number(t.quantity_base_units??t.quantity).toLocaleString('en-IN')} ${esc(m.base_unit||'units')}</td><td>${t.purchase_bill_id?`🧾 ${esc(t.purchase_bills?.bill_number||'Bill')}`:t.stock_entry_id?'📦 Unbilled Purchase':'Manual'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No stock history.</div>'}</div><div class="footer-actions"><button class="btn" onclick="closeModal('medicineDetailModal');editMedicine(${id})">✏️ Edit Medicine</button></div>`;
+  document.getElementById('medicineDetailContent').innerHTML=`<div class="section"><div class="form-grid"><div><b>Medicine</b><br>${esc(m.medicine_name)}</div><div><b>Generic</b><br>${esc(m.generic_name||'-')}</div><div><b>Strength</b><br>${esc(m.strength||'-')}</div><div><b>Dosage Form</b><br>${esc(m.dosage_form)}</div><div><b>Unit / Pack</b><br>${esc(m.pack_unit)}</div><div><b>Base Unit</b><br>${esc(m.base_unit||'Unit')}</div><div><b>Units per Pack</b><br>${Number(m.units_per_pack||1)}</div><div><b>Minimum Stock</b><br>${Number(m.minimum_stock_level||0)} ${esc(m.pack_unit)}</div></div></div><div class="section"><h3>📦 Batch / Stock Details</h3>${(batches||[]).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Batch</th><th>Expiry</th><th>Stock</th><th>MRP / Pack</th><th>Purchase / Pack</th><th>Source</th></tr></thead><tbody>${batches.map(b=>`<tr><td>${esc(b.batch_number)}</td><td>${monthLabel(b.expiry_date)}</td><td>${esc(packTextV2(m,Number(b.quantity_base_units??Number(b.quantity||0)*Number(m.units_per_pack||1))))}</td><td>${currency(b.mrp_per_unit)}</td><td>${currency(b.purchase_price_per_unit)}</td><td>${b.last_purchase_bill_id?`🧾 <span class="photo-link" onclick="viewPurchaseBill(${b.last_purchase_bill_id})">Bill</span>`:'📦 Stock Entry'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No batches.</div>'}</div><div class="section"><h3>📋 Recent Stock History</h3>${(tx||[]).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Quantity</th><th>Source</th></tr></thead><tbody>${tx.map(t=>`<tr><td>${fmtDate(t.transaction_date)}</td><td>${esc(t.transaction_type)}</td><td>${t.direction==='IN'?'+':'-'}${Number(t.quantity_base_units??t.quantity).toLocaleString('en-IN')} ${esc(m.base_unit||'units')}</td><td>${t.purchase_bill_id?`🧾 ${esc(t.purchase_bills?.bill_number||'Bill')}`:t.stock_entry_id?'📦 Unbilled Purchase':'Manual'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No stock history.</div>'}</div><div class="footer-actions"><button class="btn" onclick="closeModal('medicineDetailModal');editMedicine(${id})">✏️ Edit Medicine</button></div>`;
   showModal('medicineDetailModal');
 }
 
