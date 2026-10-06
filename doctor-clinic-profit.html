@@ -42,20 +42,104 @@ button{cursor:pointer;border:0}
 .net-box .month{font-size:12px;color:var(--muted)}.net-box .amount{font-size:25px;font-weight:900;color:var(--green);margin-top:5px}
 .delta{text-align:center;margin:12px 0 0;font-weight:800}.positive{color:var(--green)}.negative{color:var(--red)}
 .chart-wrap{margin-top:14px;display:none}.chart-wrap.open{display:block}
-.comparison-panel{border:1px solid var(--line);border-radius:16px;background:#fafbff;padding:14px}
-.comparison-head{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;text-align:center;font-weight:800;font-size:12px;color:var(--muted)}
-.metric-compare{padding:10px 0;border-top:1px solid var(--line)}
-.metric-compare:first-of-type{border-top:0}
-.metric-name{text-align:center;font-size:12px;font-weight:800;margin-bottom:8px}
-.metric-values{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.metric-side{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px}
-.metric-side .metric-period{font-size:10px;color:var(--muted);margin-bottom:5px}
-.metric-side .metric-amount{font-size:16px;font-weight:900}
-.mini-track{height:9px;background:#edf0f5;border-radius:999px;overflow:hidden;margin-top:7px}
-.mini-fill{height:100%;border-radius:999px;min-width:2px}
-.net-highlight{margin-top:12px;padding:14px;border-radius:15px;background:#ecfdf3;border:2px solid #86efac;text-align:center}
-.net-highlight .title{font-size:12px;color:#166534;font-weight:900}.net-highlight .amounts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.net-highlight .amount{font-size:22px;font-weight:900;color:#15803d}
-.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:11px;color:var(--muted)}.legend span{display:flex;align-items:center;gap:5px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.comparison-panel{
+  border:1px solid #e5e7eb;
+  border-radius:20px;
+  background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
+  padding:16px;
+  box-shadow:0 10px 30px rgba(15,23,42,.06);
+}
+.bar-chart-head{
+  display:grid;
+  grid-template-columns:minmax(145px,1fr) 1fr 1fr;
+  gap:12px;
+  align-items:end;
+  margin-bottom:8px;
+  padding:0 6px;
+}
+.bar-chart-head .head-title{
+  font-size:11px;
+  color:var(--muted);
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.bar-month-head{
+  text-align:center;
+  font-size:12px;
+  font-weight:900;
+  color:#172033;
+  background:#f1f5f9;
+  border-radius:10px;
+  padding:8px 5px;
+}
+.modern-bar-row{
+  display:grid;
+  grid-template-columns:minmax(145px,1fr) 1fr 1fr;
+  gap:12px;
+  align-items:center;
+  padding:13px 6px;
+  border-top:1px solid #e9edf3;
+}
+.modern-bar-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:800;
+  color:#172033;
+}
+.metric-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  flex:0 0 9px;
+}
+.modern-bar-cell{min-width:0}
+.modern-bar-value{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:900;
+  color:#334155;
+  margin-bottom:6px;
+}
+.modern-track{
+  height:13px;
+  background:#e9eef5;
+  border-radius:999px;
+  overflow:hidden;
+  box-shadow:inset 0 1px 2px rgba(15,23,42,.05);
+}
+.modern-fill{
+  height:100%;
+  min-width:3px;
+  border-radius:999px;
+  transition:width .45s ease;
+}
+.net-highlight{
+  margin-top:14px;
+  padding:15px;
+  border-radius:17px;
+  background:linear-gradient(135deg,#ecfdf3,#f0fdf4);
+  border:2px solid #86efac;
+  text-align:center;
+}
+.net-highlight .title{font-size:12px;color:#166534;font-weight:900}
+.net-highlight .amounts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:9px}
+.net-highlight .amount{font-size:23px;font-weight:900;color:#15803d}
+.net-highlight .metric-period{font-size:10px;color:#166534;font-weight:700}
+.chart-note{
+  margin-top:10px;
+  text-align:center;
+  color:var(--muted);
+  font-size:10px;
+}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:11px;font-size:11px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:5px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 .breakdown{display:grid;grid-template-columns:1fr 1fr;gap:12px}.list-card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:15px}.row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row .name{font-size:13px}.row .amt{font-weight:750}.income-list .amt{color:var(--blue)}.expense-list .amt{color:var(--red)}
 .add-btn{background:#111827;color:#fff;padding:9px 13px;border-radius:10px;font-weight:700}
 .expense-form{display:none;background:var(--card);padding:15px;border-radius:16px;box-shadow:var(--shadow);margin-bottom:12px}.expense-form.open{display:block}.expense-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.expense-form textarea{min-height:70px;resize:vertical}.expense-actions{margin-top:10px;display:flex;gap:8px}
@@ -66,7 +150,15 @@ button{cursor:pointer;border:0}
  .period-panel{padding:12px;border-radius:15px}.month-only-grid{grid-template-columns:1fr 1fr;gap:8px}.search-submit{min-height:44px}.grid4{grid-template-columns:1fr 1fr;gap:9px}.card{padding:13px}.metric .value{font-size:19px}
  .breakdown{grid-template-columns:1fr}.compare-controls{grid-template-columns:1fr 1fr}.compare-controls button{grid-column:1/-1}
  .net-compare{gap:8px}.net-box{padding:13px}.net-box .amount{font-size:21px}
- .comparison-head{grid-template-columns:1fr 1fr 1fr;font-size:10px}.metric-side .metric-amount{font-size:14px}.net-highlight .amount{font-size:19px}.expense-grid{grid-template-columns:1fr}
+ .bar-chart-head,.modern-bar-row{grid-template-columns:92px 1fr 1fr;gap:8px}
+ .bar-chart-head .head-title{font-size:9px}
+ .bar-month-head{font-size:10px;padding:7px 3px}
+ .modern-bar-row{padding:11px 3px}
+ .modern-bar-label{font-size:10px;gap:5px}
+ .modern-bar-value{font-size:10px}
+ .modern-track{height:11px}
+ .net-highlight .amount{font-size:19px}
+ .expense-grid{grid-template-columns:1fr}
 }
 
 .search-heading{font-size:16px;font-weight:800;margin-bottom:10px}.month-only-grid{grid-template-columns:1fr 1fr}.search-submit{display:block;width:100%;margin-top:10px;background:#2563eb;color:#fff;font-weight:800;padding:11px 14px;border-radius:11px}.header-actions{width:100%;margin-top:10px}.header-actions .back-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px}.period-panel{padding:14px;margin-top:10px}.period-grid label{font-size:11px}.period-grid select{min-height:44px}.compare-period-box{padding:10px}.compare-period-box .selectors{grid-template-columns:1fr 1fr}.compare-period-box select{min-height:43px}
@@ -196,7 +288,12 @@ let expenseRows=[];
 const money=n=>"₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:0});
 const monthKey=(y,m)=>`${y}-${String(m+1).padStart(2,"0")}`;
 const firstDay=(y,m)=>`${y}-${String(m+1).padStart(2,"0")}-01`;
-const lastDay=(y,m)=>new Date(y,m+1,0).toISOString().slice(0,10);
+const lastDay=(y,m)=>
+  `${y}-${String(m+1).padStart(2,"0")}-${String(new Date(y,m+1,0).getDate()).padStart(2,"0")}`;
+const localDateString=()=>{
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+};
 const ymLabel=k=>{const [y,m]=k.split("-");return `${months[Number(m)-1]} ${y}`};
 
 const YEAR_START=2020;
@@ -331,40 +428,71 @@ function renderChart(a,x,b,y){
     ["Medicine Profit","medicine","#7c3aed"],
     ["Expenses","expenses","#dc2626"]
   ];
-  const max=Math.max(1,...metrics.map(([,k])=>Math.max(Math.abs(Number(x[k]||0)),Math.abs(Number(y[k]||0)))));
+
+  const max=Math.max(
+    1,
+    ...metrics.map(([,k])=>Math.max(
+      Math.abs(Number(x[k]||0)),
+      Math.abs(Number(y[k]||0))
+    ))
+  );
+
   const aLabel=`${months[a.m].slice(0,3)} ${a.y}`;
   const bLabel=`${months[b.m].slice(0,3)} ${b.y}`;
+
   const escLabel=v=>esc(v);
+
+  const makeBar=(value,color)=>{
+    const n=Number(value||0);
+    const width=Math.min(100,Math.abs(n)/max*100);
+    return `
+      <div class="modern-bar-cell">
+        <div class="modern-bar-value">
+          <span>${money(n)}</span>
+        </div>
+        <div class="modern-track" aria-label="${money(n)}">
+          <div class="modern-fill"
+               style="width:${n===0?0:Math.max(3,width)}%;background:${color}">
+          </div>
+        </div>
+      </div>`;
+  };
+
   comparisonChart.innerHTML=`
     <div class="comparison-panel">
-      <div class="comparison-head">
-        <div>Metric</div><div>${escLabel(aLabel)}</div><div>${escLabel(bLabel)}</div>
+      <div class="bar-chart-head">
+        <div class="head-title">Metric</div>
+        <div class="bar-month-head">${escLabel(aLabel)}</div>
+        <div class="bar-month-head">${escLabel(bLabel)}</div>
       </div>
-      ${metrics.map(([label,k,c])=>{
-        const av=Number(x[k]||0), bv=Number(y[k]||0);
-        const aw=Math.min(100,Math.abs(av)/max*100), bw=Math.min(100,Math.abs(bv)/max*100);
-        return `<div class="metric-compare">
-          <div class="metric-name">${label}</div>
-          <div class="metric-values">
-            <div class="metric-side">
-              <div class="metric-period">${escLabel(aLabel)}</div>
-              <div class="metric-amount">${money(av)}</div>
-              <div class="mini-track"><div class="mini-fill" style="width:${aw}%;background:${c}"></div></div>
-            </div>
-            <div class="metric-side">
-              <div class="metric-period">${escLabel(bLabel)}</div>
-              <div class="metric-amount">${money(bv)}</div>
-              <div class="mini-track"><div class="mini-fill" style="width:${bw}%;background:${c}"></div></div>
-            </div>
+
+      ${metrics.map(([label,k,c])=>`
+        <div class="modern-bar-row">
+          <div class="modern-bar-label">
+            <span class="metric-dot" style="background:${c}"></span>
+            <span>${escLabel(label)}</span>
           </div>
-        </div>`;
-      }).join("")}
+          ${makeBar(x[k],c)}
+          ${makeBar(y[k],c)}
+        </div>
+      `).join("")}
+
       <div class="net-highlight">
         <div class="title">🟢 NET CLINIC PROFIT</div>
         <div class="amounts">
-          <div><div class="metric-period">${escLabel(aLabel)}</div><div class="amount">${money(x.net)}</div></div>
-          <div><div class="metric-period">${escLabel(bLabel)}</div><div class="amount">${money(y.net)}</div></div>
+          <div>
+            <div class="metric-period">${escLabel(aLabel)}</div>
+            <div class="amount">${money(x.net)}</div>
+          </div>
+          <div>
+            <div class="metric-period">${escLabel(bLabel)}</div>
+            <div class="amount">${money(y.net)}</div>
+          </div>
         </div>
+      </div>
+
+      <div class="chart-note">
+        Bar length shows the relative value between the two selected months.
       </div>
     </div>`;
 
@@ -380,7 +508,7 @@ function toggleComparison(){
   chartWrap.classList.toggle("open");
   expandBtn.textContent=chartWrap.classList.contains("open")?"▲ Hide detailed comparison":"▼ View detailed comparison";
 }
-function toggleExpenseForm(){expenseForm.classList.toggle("open");if(expenseForm.classList.contains("open")&&!editingExpenseId){expenseDate.value=new Date().toISOString().slice(0,10);expenseCategory.value="Clinic Rent";expenseAmount.value="";expenseNotes.value="";}}
+function toggleExpenseForm(){expenseForm.classList.toggle("open");if(expenseForm.classList.contains("open")&&!editingExpenseId){expenseDate.value=localDateString();expenseCategory.value="Clinic Rent";expenseAmount.value="";expenseNotes.value="";}}
 function startEditExpense(id){const e=expenseRows.find(x=>Number(x.id)===Number(id));if(!e)return;editingExpenseId=Number(id);expenseForm.classList.add("open");expenseDate.value=e.expense_date||"";expenseCategory.value=e.category||"Other";expenseAmount.value=e.amount??"";expenseNotes.value=e.notes||"";document.getElementById("expenseFormTitle").textContent="✏️ Edit Expense";document.getElementById("expenseSaveBtn").textContent="Update Expense";document.getElementById("editingBadge").textContent="Editing selected expense";expenseForm.scrollIntoView({behavior:"smooth",block:"center"});}
 function cancelExpenseEdit(){editingExpenseId=null;document.getElementById("expenseFormTitle").textContent="Add Expense";document.getElementById("expenseSaveBtn").textContent="Save Expense";document.getElementById("editingBadge").textContent="";expenseAmount.value="";expenseNotes.value="";expenseForm.classList.remove("open");}
 async function saveExpense(){const amount=Number(expenseAmount.value);if(!expenseDate.value||!amount||amount<=0){alert("Enter expense date and a valid amount.");return;}const payload={expense_date:expenseDate.value,category:expenseCategory.value,amount,notes:expenseNotes.value.trim()||null};let error;if(editingExpenseId){({error}=await sb.from("clinic_expenses").update(payload).eq("id",editingExpenseId));}else{({error}=await sb.from("clinic_expenses").insert(payload));}if(error){alert((editingExpenseId?"Unable to update expense: ":"Unable to save expense: ")+error.message);return;}cancelExpenseEdit();await loadCurrent();}
