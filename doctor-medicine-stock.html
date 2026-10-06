@@ -1249,21 +1249,58 @@ async function loadAnalytics(){
     supabaseClient.from('medicine_stock_transactions').select('*,medicines(medicine_name,strength,pack_unit,base_unit,units_per_pack)').in('transaction_type',['DISPENSED','RETURNED']).gte('transaction_date',from).lte('transaction_date',to)
   ]);if(p.error){showError(p.error.message);return;}if(d.error){showError(d.error.message);return;}
   const purchases=p.data||[];
+  const allMoves=d.data||[];
   /*
-     Analytics must use NET dispensing. Consultation returns are recorded as
-     RETURNED transactions with the GDC-CONSULTATION marker. They cancel the
-     corresponding dispensing for medicine/profit analysis, while the original
-     stock transactions remain untouched for audit history. Supplier returns
-     and other non-consultation RETURNED movements are deliberately ignored.
+     Medicine analysis uses NET consultation dispensing.
+     - Every DISPENSED movement is a sale/dispensing movement.
+     - Only RETURNED movements carrying the GDC-CONSULTATION marker are
+       consultation stock returns and can cancel dispensing.
+     - Supplier/manual returns are ignored for sales/profit analysis.
+     - A return can never subtract more units than the corresponding
+       consultation dispensing present in the selected reporting period.
+     Stock history itself is never deleted or modified here.
   */
-  const disp=(d.data||[]).filter(x=>x.transaction_type==='DISPENSED' || (x.transaction_type==='RETURNED' && String(x.notes||'').includes('GDC-CONSULTATION')));
+  const dispenses=allMoves.filter(x=>x.transaction_type==='DISPENSED');
+  const consultationReturns=allMoves.filter(x=>x.transaction_type==='RETURNED' && String(x.notes||'').includes('GDC-CONSULTATION'));
+  const dispensedByMedicine={};
+  dispenses.forEach(x=>{
+    const k=x.medicine_id;
+    const u=Number(x.units_per_pack||x.medicines?.units_per_pack||1);
+    const base=Number(x.quantity_base_units??Number(x.quantity||0)*u);
+    if(!dispensedByMedicine[k])dispensedByMedicine[k]=[];
+    dispensedByMedicine[k].push({x,remaining:Math.max(0,base)});
+  });
+  const returnBaseByMedicine={};
+  consultationReturns.forEach(x=>{
+    const k=x.medicine_id;
+    const u=Number(x.units_per_pack||x.medicines?.units_per_pack||1);
+    const base=Number(x.quantity_base_units??Number(x.quantity||0)*u);
+    returnBaseByMedicine[k]=(returnBaseByMedicine[k]||0)+Math.max(0,base);
+  });
+  const netMoves=[];
+  Object.entries(dispensedByMedicine).forEach(([k,rows])=>{
+    let returnRemaining=returnBaseByMedicine[k]||0;
+    rows.forEach(row=>{
+      const x=row.x,u=Number(x.units_per_pack||x.medicines?.units_per_pack||1),base=row.remaining;
+      const returned=Math.min(base,returnRemaining);returnRemaining-=returned;
+      const netBase=base-returned;
+      if(netBase<=0)return;
+      netMoves.push({x,base:netBase});
+    });
+  });
   const purchaseAmount=purchases.reduce((s,x)=>s+Number(x.line_amount||0),0);
   const purchasePacks=purchases.reduce((s,x)=>s+Number(x.quantity||0),0);
   const purchaseBase=purchases.reduce((s,x)=>s+Number(x.quantity_base_units??Number(x.quantity||0)*Number(x.units_per_pack||x.medicines?.units_per_pack||1)),0);
-  const dispBase=disp.reduce((s,x)=>{const u=Number(x.units_per_pack||x.medicines?.units_per_pack||1),base=Number(x.quantity_base_units??Number(x.quantity||0)*u);return s+(x.transaction_type==='RETURNED'?-base:base);},0);
+  const dispBase=netMoves.reduce((s,m)=>s+m.base,0);
   let mrp=0,cost=0;const by={};
-  disp.forEach(x=>{const u=Number(x.units_per_pack||x.medicines?.units_per_pack||1),base=Number(x.quantity_base_units??Number(x.quantity||0)*u),packs=base/u,sign=x.transaction_type==='RETURNED'?-1:1;mrp+=sign*packs*Number(x.mrp_per_unit||0);cost+=sign*packs*Number(x.purchase_price_per_unit||0);const k=x.medicine_id;if(!by[k])by[k]={name:`${x.medicines?.medicine_name||''} ${x.medicines?.strength||''}`.trim(),base:x.medicines?.base_unit||'units',units:0,mrp:0,cost:0};by[k].units+=sign*base;by[k].mrp+=sign*packs*Number(x.mrp_per_unit||0);by[k].cost+=sign*packs*Number(x.purchase_price_per_unit||0);});
-  document.getElementById('analyticsContent').innerHTML=`<div class="summary-grid"><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('purchaseSection')"><span>Purchase Items</span><b>${purchases.length}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('purchaseSection')"><span>Purchased Packs</span><b>${purchasePacks.toLocaleString('en-IN')}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('purchaseSection')"><span>Purchase Amount</span><b>${currency(purchaseAmount)}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('profitSection')"><span>Gross Profit</span><b>${currency(mrp-cost)}</b></button></div><div class="summary-grid"><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('purchaseSection')"><span>Purchased Base Units</span><b>${purchaseBase.toLocaleString('en-IN')}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('profitSection')"><span>Net Dispensed Base Units</span><b>${Math.max(0,dispBase).toLocaleString('en-IN')}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('profitSection')"><span>Dispensed MRP Value</span><b>${currency(mrp)}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('profitSection')"><span>Purchase Cost of Dispensed Stock</span><b>${currency(cost)}</b></button></div><div id="purchaseSection" class="section section-clickable" onclick="analyticsDrilldown('purchaseSection')"><h3>🛒 Purchased Medicines</h3>${purchases.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Bill</th><th>Medicine</th><th>Qty</th><th>Amount</th></tr></thead><tbody>${purchases.map(x=>`<tr><td>${fmtDate(x.purchase_bills.purchase_date)}</td><td>${esc(x.purchase_bills.bill_number)}</td><td>${esc(x.medicines?.medicine_name||'')} ${esc(x.medicines?.strength||'')}</td><td>${Number(x.quantity)} ${esc(x.medicines?.pack_unit||'packs')}</td><td>${currency(x.line_amount)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No purchases in this period.</div>'}</div><div id="profitSection" class="section section-clickable" onclick="analyticsDrilldown('profitSection')"><h3>💰 Medicine Gross Profit</h3>${Object.values(by).filter(x=>x.units>0).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Net Dispensed</th><th>MRP Value</th><th>Purchase Cost</th><th>Gross Profit</th></tr></thead><tbody>${Object.values(by).filter(x=>x.units>0).sort((a,b)=>(b.mrp-b.cost)-(a.mrp-a.cost)).map(x=>`<tr><td>${esc(x.name)}</td><td>${Number(x.units).toLocaleString('en-IN')} ${esc(x.base)}</td><td>${currency(x.mrp)}</td><td>${currency(x.cost)}</td><td><b>${currency(x.mrp-x.cost)}</b></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No dispensing transactions in this period.</div>'}</div>`;
+  netMoves.forEach(({x,base})=>{
+    const u=Number(x.units_per_pack||x.medicines?.units_per_pack||1),packs=base/u;
+    mrp+=packs*Number(x.mrp_per_unit||0);cost+=packs*Number(x.purchase_price_per_unit||0);
+    const k=x.medicine_id;if(!by[k])by[k]={name:`${x.medicines?.medicine_name||''} ${x.medicines?.strength||''}`.trim(),base:x.medicines?.base_unit||'units',units:0,mrp:0,cost:0};
+    by[k].units+=base;by[k].mrp+=packs*Number(x.mrp_per_unit||0);by[k].cost+=packs*Number(x.purchase_price_per_unit||0);
+  });
+  const grossProfit=mrp-cost;
+  document.getElementById('analyticsContent').innerHTML=`<div class="summary-grid"><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('purchaseSection')"><span>Purchase Items</span><b>${purchases.length}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('purchaseSection')"><span>Purchased Packs</span><b>${purchasePacks.toLocaleString('en-IN')}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('purchaseSection')"><span>Purchase Amount</span><b>${currency(purchaseAmount)}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('profitSection')"><span>Gross Profit</span><b>${currency(grossProfit)}</b></button></div><div class="summary-grid"><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('purchaseSection')"><span>Purchased Base Units</span><b>${purchaseBase.toLocaleString('en-IN')}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('profitSection')"><span>Net Dispensed Base Units</span><b>${dispBase.toLocaleString('en-IN')}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('profitSection')"><span>Dispensed MRP Value</span><b>${currency(mrp)}</b></button><button type="button" class="summary analysis-clickable" onclick="analyticsDrilldown('profitSection')"><span>Purchase Cost of Dispensed Stock</span><b>${currency(cost)}</b></button></div><div id="purchaseSection" class="section section-clickable" onclick="analyticsDrilldown('purchaseSection')"><h3>🛒 Purchased Medicines</h3>${purchases.length?`<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Bill</th><th>Medicine</th><th>Qty</th><th>Amount</th></tr></thead><tbody>${purchases.map(x=>`<tr><td>${fmtDate(x.purchase_bills.purchase_date)}</td><td>${esc(x.purchase_bills.bill_number)}</td><td>${esc(x.medicines?.medicine_name||'')} ${esc(x.medicines?.strength||'')}</td><td>${Number(x.quantity)} ${esc(x.medicines?.pack_unit||'packs')}</td><td>${currency(x.line_amount)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No purchases in this period.</div>'}</div><div id="profitSection" class="section section-clickable" onclick="analyticsDrilldown('profitSection')"><h3>💰 Medicine Gross Profit</h3>${Object.values(by).filter(x=>x.units>0).length?`<div class="table-wrap"><table class="table"><thead><tr><th>Medicine</th><th>Net Dispensed</th><th>MRP Value</th><th>Purchase Cost</th><th>Gross Profit</th></tr></thead><tbody>${Object.values(by).filter(x=>x.units>0).sort((a,b)=>(b.mrp-b.cost)-(a.mrp-a.cost)).map(x=>`<tr><td>${esc(x.name)}</td><td>${Number(x.units).toLocaleString('en-IN')} ${esc(x.base)}</td><td>${currency(x.mrp)}</td><td>${currency(x.cost)}</td><td><b>${currency(x.mrp-x.cost)}</b></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No net dispensing transactions in this period.</div>'}</div>`;
 }
 function analyticsDrilldown(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
 
