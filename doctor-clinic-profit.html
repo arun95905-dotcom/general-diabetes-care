@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinic Profit</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#6b7280;--line:#e7eaf0;
+  --green:#16a34a;--blue:#2563eb;--red:#dc2626;--purple:#7c3aed;--orange:#ea580c;
+  --shadow:0 8px 24px rgba(30,41,59,.08);--radius:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.page{max-width:1100px;margin:auto;padding:18px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.header h1{margin:0;font-size:25px}
+.header p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.period{background:var(--card);padding:12px;border-radius:14px;box-shadow:var(--shadow);display:flex;gap:8px;align-items:center}
+.period select{border:1px solid var(--line);border-radius:10px;padding:9px;background:#fff}
+.section{margin-top:18px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.section-title h2{font-size:17px;margin:0}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:17px;position:relative;overflow:hidden}
+.metric .icon{font-size:22px}.metric .label{font-size:12px;color:var(--muted);margin-top:9px}.metric .value{font-size:23px;font-weight:800;margin-top:5px}
+.metric.profit{border:2px solid rgba(22,163,74,.25)}.metric.profit .value{color:var(--green)}
+.metric.income .value{color:var(--blue)}.metric.expense .value{color:var(--red)}.metric.medicine .value{color:var(--purple)}
+.change{font-size:11px;color:var(--muted);margin-top:5px}
+.compare-card{padding:16px}
+.compare-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-bottom:14px}
+.compare-controls select,.compare-controls button,.expense-form input,.expense-form select,.expense-form textarea{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}
+.primary{background:#2563eb;color:#fff;font-weight:700;padding:10px 15px;border-radius:10px}
+.expand-btn{width:100%;background:#f1f5ff;color:#2563eb;padding:11px;border-radius:11px;font-weight:700}
+.net-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.net-box{padding:16px;border-radius:16px;background:#ecfdf3;border:1px solid #bbf7d0;text-align:center}
+.net-box .month{font-size:12px;color:var(--muted)}.net-box .amount{font-size:25px;font-weight:900;color:var(--green);margin-top:5px}
+.delta{text-align:center;margin:12px 0 0;font-weight:800}.positive{color:var(--green)}.negative{color:var(--red)}
+.chart-wrap{margin-top:14px;display:none}.chart-wrap.open{display:block}
+.chart{display:flex;align-items:flex-end;justify-content:space-around;height:220px;padding:18px 12px 28px;border:1px solid var(--line);border-radius:15px;background:#fafbff;gap:16px}
+.month-chart{display:flex;align-items:flex-end;gap:16px;height:100%;flex:1;justify-content:center}
+.bar-group{display:flex;align-items:flex-end;gap:6px;height:100%}.bar{width:24px;border-radius:7px 7px 2px 2px;min-height:4px}.bar-label{font-size:10px;text-align:center;color:var(--muted);margin-top:5px}.bar-col{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:11px;color:var(--muted)}.legend span{display:flex;align-items:center;gap:5px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:12px}.list-card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:15px}.row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row .name{font-size:13px}.row .amt{font-weight:750}.income-list .amt{color:var(--blue)}.expense-list .amt{color:var(--red)}
+.add-btn{background:#111827;color:#fff;padding:9px 13px;border-radius:10px;font-weight:700}
+.expense-form{display:none;background:var(--card);padding:15px;border-radius:16px;box-shadow:var(--shadow);margin-bottom:12px}.expense-form.open{display:block}.expense-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.expense-form textarea{min-height:70px;resize:vertical}.expense-actions{margin-top:10px;display:flex;gap:8px}
+.expense-table{background:var(--card);border-radius:16px;box-shadow:var(--shadow);overflow:auto}.expense-table table{width:100%;border-collapse:collapse;min-width:650px}.expense-table th,.expense-table td{padding:11px;border-bottom:1px solid var(--line);font-size:12px;text-align:left}.expense-table th{color:var(--muted);background:#fafafa}.delete{background:#fee2e2;color:#b91c1c;padding:6px 9px;border-radius:8px}
+.message{padding:12px;color:var(--muted);font-size:13px}.error{color:var(--red)}
+@media(max-width:760px){
+ .page{padding:12px}.header{align-items:flex-start;flex-direction:column}.period{width:100%}.period select{flex:1}
+ .grid4{grid-template-columns:1fr 1fr;gap:9px}.card{padding:13px}.metric .value{font-size:19px}
+ .breakdown{grid-template-columns:1fr}.compare-controls{grid-template-columns:1fr 1fr}.compare-controls button{grid-column:1/-1}
+ .net-compare{gap:8px}.net-box{padding:13px}.net-box .amount{font-size:21px}
+ .chart{height:210px}.bar{width:18px}.expense-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>🏥 Clinic Profit</h1>
+      <p>Overall clinic financial outlook</p>
+    </div>
+    <div class="period">
+      <span style="font-size:12px;color:var(--muted)">Period</span>
+      <select id="periodMonth"></select>
+      <select id="periodYear"></select>
+    </div>
+  </div>
+
+  <div id="status" class="message">Loading clinic profit…</div>
+
+  <section class="section">
+    <div class="grid4">
+      <div class="card metric profit"><div class="icon">🟢</div><div class="label">NET CLINIC PROFIT</div><div id="netProfit" class="value">₹0</div><div id="profitChange" class="change">—</div></div>
+      <div class="card metric income"><div class="icon">🔵</div><div class="label">TOTAL INCOME</div><div id="totalIncome" class="value">₹0</div><div class="change">Consultation + Procedure + Medicine Profit</div></div>
+      <div class="card metric expense"><div class="icon">🔴</div><div class="label">TOTAL EXPENSES</div><div id="totalExpenses" class="value">₹0</div><div class="change">Clinic operating expenses</div></div>
+      <div class="card metric medicine"><div class="icon">🟣</div><div class="label">MEDICINE PROFIT</div><div id="medicineProfit" class="value">₹0</div><div class="change">Net dispensing profit</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><h2>📈 Month Comparison</h2></div>
+    <div class="card compare-card">
+      <div class="compare-controls">
+        <select id="month1"></select>
+        <select id="month2"></select>
+        <button class="primary" onclick="compareMonths()">Compare</button>
+      </div>
+      <div class="net-compare">
+        <div class="net-box"><div class="month" id="month1Label">Month 1</div><div class="amount" id="month1Profit">₹0</div></div>
+        <div class="net-box"><div class="month" id="month2Label">Month 2</div><div class="amount" id="month2Profit">₹0</div></div>
+      </div>
+      <div id="delta" class="delta">—</div>
+      <div style="margin-top:12px"><button id="expandBtn" class="expand-btn" onclick="toggleComparison()">▼ View detailed comparison</button></div>
+      <div id="chartWrap" class="chart-wrap">
+        <div class="chart" id="comparisonChart"></div>
+        <div class="legend">
+          <span><i class="dot" style="background:#2563eb"></i>Consultation</span>
+          <span><i class="dot" style="background:#ea580c"></i>Procedure / Other</span>
+          <span><i class="dot" style="background:#7c3aed"></i>Medicine Profit</span>
+          <span><i class="dot" style="background:#dc2626"></i>Expenses</span>
+          <span><i class="dot" style="background:#16a34a"></i>Net Clinic Profit</span>
+        </div>
+        <div id="detailRows" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><h2>💰 Income & 🔴 Expenses</h2></div>
+    <div class="breakdown">
+      <div class="list-card income-list">
+        <h3 style="margin:0 0 5px;font-size:15px">💰 Income</h3>
+        <div class="row"><span class="name">Consultation</span><span id="consultationIncome" class="amt">₹0</span></div>
+        <div class="row"><span class="name">Procedure / Other</span><span id="procedureIncome" class="amt">₹0</span></div>
+        <div class="row"><span class="name">Medicine Profit</span><span id="medicineIncome" class="amt">₹0</span></div>
+      </div>
+      <div class="list-card expense-list">
+        <div class="section-title"><h3 style="margin:0;font-size:15px">🔴 Expenses</h3><button class="add-btn" onclick="toggleExpenseForm()">＋ Add Expense</button></div>
+        <div id="expenseSummary"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div id="expenseForm" class="expense-form">
+      <div class="expense-grid">
+        <input id="expenseDate" type="date">
+        <select id="expenseCategory">
+          <option>Clinic Rent</option><option>Electricity</option><option>Staff Salary</option>
+          <option>Internet / Phone</option><option>Clinic Supplies</option><option>Maintenance</option>
+          <option>Marketing / Advertising</option><option>Other</option>
+        </select>
+        <input id="expenseAmount" type="number" min="0" step="0.01" placeholder="Amount ₹">
+        <textarea id="expenseNotes" placeholder="Description / notes"></textarea>
+      </div>
+      <div class="expense-actions"><button class="primary" onclick="saveExpense()">Save Expense</button><button onclick="toggleExpenseForm()" style="padding:10px;border-radius:10px;background:#f3f4f6">Cancel</button></div>
+    </div>
+    <div class="section-title"><h2>📋 Expense History</h2></div>
+    <div class="expense-table" id="expenseTable"></div>
+  </section>
+</div>
+
+<script>
+const SUPABASE_URL="https://twdmvdqqckcpwoccvtkj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JBrvUyI";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+let currentData={income:0,consultation:0,procedure:0,medicine:0,expenses:0,net:0};
+let expenseRows=[];
+
+const money=n=>"₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:0});
+const monthKey=(y,m)=>`${y}-${String(m+1).padStart(2,"0")}`;
+const firstDay=(y,m)=>`${y}-${String(m+1).padStart(2,"0")}-01`;
+const lastDay=(y,m)=>new Date(y,m+1,0).toISOString().slice(0,10);
+const ymLabel=k=>{const [y,m]=k.split("-");return `${months[Number(m)-1]} ${y}`};
+
+function fillSelectors(){
+  const now=new Date(), y=now.getFullYear();
+  const years=[];for(let i=y-5;i<=y+1;i++)years.push(i);
+  const monthOpts=months.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
+  const yearOpts=years.map(v=>`<option value="${v}">${v}</option>`).join("");
+  periodMonth.innerHTML=monthOpts;periodYear.innerHTML=yearOpts;
+  month1.innerHTML=months.map((m,i)=>`<option value="${i}">${m} ${y}</option>`).join("")+
+    years.flatMap(yy=>months.map((m,i)=>`<option value="${i}|${yy}">${m} ${yy}</option>`)).join("");
+  month2.innerHTML=month1.innerHTML;
+  periodMonth.value=now.getMonth();periodYear.value=y;
+  month1.value=`${now.getMonth()}|${y}`;
+  const prev=new Date(y,now.getMonth()-1,1);month2.value=`${prev.getMonth()}|${prev.getFullYear()}`;
+}
+function parseMonth(v){let [m,y]=v.split("|");if(y===undefined){y=new Date().getFullYear()}return {m:Number(m),y:Number(y)}}
+
+async function loadMonth(y,m){
+  const from=firstDay(y,m),to=lastDay(y,m);
+  const {data:bills,error:be}=await sb.from("billing").select("bill_date,consultation_fee,procedure_charges,medicine_charges").gte("bill_date",from).lte("bill_date",to);
+  if(be) throw be;
+  const consultation=(bills||[]).reduce((s,b)=>s+Number(b.consultation_fee||0),0);
+  const procedure=(bills||[]).reduce((s,b)=>s+Number(b.procedure_charges||0),0);
+
+  // Medicine profit = net consultation-linked DISPENSED/RETURNED stock margin.
+  const {data:tx,error:te}=await sb.from("medicine_stock_transactions")
+    .select("transaction_type,quantity,quantity_base_units,units_per_pack,mrp_per_unit,purchase_price_per_unit,notes,transaction_date")
+    .gte("transaction_date",from).lte("transaction_date",to)
+    .in("transaction_type",["DISPENSED","RETURNED"]);
+  if(te) throw te;
+  let medicineProfit=0;
+  for(const x of (tx||[])){
+    const base=Number(x.quantity_base_units ?? (Number(x.quantity||0)*Number(x.units_per_pack||1)));
+    const packs=base/Number(x.units_per_pack||1);
+    const margin=packs*(Number(x.mrp_per_unit||0)-Number(x.purchase_price_per_unit||0));
+    // Only consultation-tagged stock is clinic dispensing profit; other stock returns are excluded.
+    if(String(x.notes||"").startsWith("GDC-CONSULTATION:")) medicineProfit += x.transaction_type==="RETURNED" ? -margin : margin;
+  }
+
+  const {data:ex,error:ee}=await sb.from("clinic_expenses").select("*").gte("expense_date",from).lte("expense_date",to).order("expense_date",{ascending:false});
+  if(ee) throw ee;
+  const expenses=(ex||[]).reduce((s,e)=>s+Number(e.amount||0),0);
+  const income=consultation+procedure+medicineProfit;
+  return {consultation,procedure,medicine:medicineProfit,expenses,income,net:income-expenses,expensesRows:ex||[]};
+}
+
+async function loadCurrent(){
+  setStatus("Loading…");
+  try{
+    const y=Number(periodYear.value),m=Number(periodMonth.value);
+    currentData=await loadMonth(y,m);expenseRows=currentData.expensesRows;
+    renderCurrent(y,m);renderExpenses();
+    setStatus(`${months[m]} ${y}`);
+  }catch(e){console.error(e);setStatus("Unable to load data. Check Supabase table/policies.",true)}
+}
+function renderCurrent(y,m){
+  netProfit.textContent=money(currentData.net);totalIncome.textContent=money(currentData.income);
+  totalExpenses.textContent=money(currentData.expenses);medicineProfit.textContent=money(currentData.medicine);
+  consultationIncome.textContent=money(currentData.consultation);procedureIncome.textContent=money(currentData.procedure);medicineIncome.textContent=money(currentData.medicine);
+  const cats={};expenseRows.forEach(e=>cats[e.category]=(cats[e.category]||0)+Number(e.amount||0));
+  expenseSummary.innerHTML=Object.keys(cats).length?Object.entries(cats).map(([k,v])=>`<div class="row"><span class="name">${esc(k)}</span><span class="amt">${money(v)}</span></div>`).join(""):`<div class="message">No expenses entered for this period.</div>`;
+}
+async function compareMonths(){
+  const a=parseMonth(month1.value),b=parseMonth(month2.value);
+  try{
+    const [x,y]=await Promise.all([loadMonth(a.y,a.m),loadMonth(b.y,b.m)]);
+    month1Label.textContent=ymLabel(`${a.y}-${String(a.m+1).padStart(2,"0")}`);month2Label.textContent=ymLabel(`${b.y}-${String(b.m+1).padStart(2,"0")}`);
+    month1Profit.textContent=money(x.net);month2Profit.textContent=money(y.net);
+    const d=y.net-x.net, pct=x.net?d/Math.abs(x.net)*100:null;
+    delta.textContent=`${d>=0?"↑":"↓"} ${money(Math.abs(d))}${pct===null?"":` (${Math.abs(pct).toFixed(1)}%)`}`;
+    delta.className="delta "+(d>=0?"positive":"negative");
+    renderChart(a,x,b,y);
+  }catch(e){console.error(e);alert("Unable to compare these months. Check Supabase table/policies.")}
+}
+function renderChart(a,x,b,y){
+  const max=Math.max(1,x.consultation,x.procedure,x.medicine,x.expenses,x.net,y.consultation,y.procedure,y.medicine,y.expenses,y.net);
+  const series=[["Consultation","consultation","#2563eb"],["Procedure / Other","procedure","#ea580c"],["Medicine Profit","medicine","#7c3aed"],["Expenses","expenses","#dc2626"],["Net Clinic Profit","net","#16a34a"]];
+  const mk=(d)=>series.map(([label,k,c])=>`<div class="bar-col" title="${label}: ${money(d[k])}"><div class="bar" style="height:${Math.max(3,d[k]/max*150)}px;background:${c};${k==="net"?"box-shadow:0 0 0 3px rgba(22,163,74,.16)":""}"></div><div class="bar-label">${label==="Procedure / Other"?"Procedure":label.replace("Net Clinic Profit","Net Profit")}</div></div>`).join("");
+  comparisonChart.innerHTML=`<div class="month-chart"><div><b>${months[a.m].slice(0,3)} ${a.y}</b>${mk(x)}</div><div><b>${months[b.m].slice(0,3)} ${b.y}</b>${mk(y)}</div></div>`;
+  detailRows.innerHTML=`
+    <div class="list-card">
+      <div class="row"><span class="name">🔵 Consultation</span><span class="amt">${money(x.consultation)} → ${money(y.consultation)}</span></div>
+      <div class="row"><span class="name">🟠 Procedure / Other</span><span class="amt">${money(x.procedure)} → ${money(y.procedure)}</span></div>
+      <div class="row"><span class="name">🟣 Medicine Profit</span><span class="amt">${money(x.medicine)} → ${money(y.medicine)}</span></div>
+      <div class="row"><span class="name">🔴 Expenses</span><span class="amt">${money(x.expenses)} → ${money(y.expenses)}</span></div>
+      <div style="margin-top:12px;padding:15px;border-radius:15px;background:#ecfdf3;border:2px solid #86efac;text-align:center">
+        <div style="font-size:12px;color:#166534;font-weight:800">🟢 NET CLINIC PROFIT</div>
+        <div style="font-size:25px;font-weight:900;color:#15803d;margin-top:4px">${money(x.net)} → ${money(y.net)}</div>
+      </div>
+    </div>`;
+}
+function toggleComparison(){
+  chartWrap.classList.toggle("open");
+  expandBtn.textContent=chartWrap.classList.contains("open")?"▲ Hide detailed comparison":"▼ View detailed comparison";
+}
+function toggleExpenseForm(){expenseForm.classList.toggle("open");if(expenseForm.classList.contains("open"))expenseDate.value=new Date().toISOString().slice(0,10)}
+async function saveExpense(){
+  const amount=Number(expenseAmount.value);
+  if(!expenseDate.value||!amount||amount<0){alert("Enter expense date and amount.");return}
+  const {error}=await sb.from("clinic_expenses").insert({expense_date:expenseDate.value,category:expenseCategory.value,amount,notes:expenseNotes.value.trim()||null});
+  if(error){alert("Unable to save expense: "+error.message);return}
+  expenseAmount.value="";expenseNotes.value="";toggleExpenseForm();await loadCurrent();
+}
+async function deleteExpense(id){
+  if(!confirm("Delete this expense?"))return;
+  const {error}=await sb.from("clinic_expenses").delete().eq("id",id);
+  if(error){alert(error.message);return}await loadCurrent();
+}
+function renderExpenses(){
+  if(!expenseRows.length){expenseTable.innerHTML=`<div class="message">No expense entries for this period.</div>`;return}
+  expenseTable.innerHTML=`<table><thead><tr><th>Date</th><th>Category</th><th>Amount</th><th>Notes</th><th></th></tr></thead><tbody>${expenseRows.map(e=>`<tr><td>${e.expense_date}</td><td>${esc(e.category||"")}</td><td><b>${money(e.amount)}</b></td><td>${esc(e.notes||"")}</td><td><button class="delete" onclick="deleteExpense(${Number(e.id)})">Delete</button></td></tr>`).join("")}</tbody></table>`;
+}
+function setStatus(s,error=false){status.textContent=s;status.className="message"+(error?" error":"")}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+periodMonth.addEventListener("change",loadCurrent);periodYear.addEventListener("change",loadCurrent);
+fillSelectors();loadCurrent();compareMonths();
+</script>
+</body>
+</html>
