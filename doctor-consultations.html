@@ -4784,57 +4784,96 @@ async function returnConsultationMedicineDelta(
 
 
 async function rollbackConsultationStockChanges(
-  changeList
+  changeList,
+  consultationId,
+  patientId,
+  transactionDate
 ) {
+
+  const changes =
+    Array.isArray(changeList)
+      ? changeList
+      : [];
+
+  const effectiveTransactionDate =
+    transactionDate ||
+    getTodayString();
+
+  const rollbackErrors = [];
 
   for (
     let index =
-      changeList.length - 1;
+      changes.length - 1;
     index >= 0;
     index--
   ) {
 
     const change =
-      changeList[index];
+      changes[index];
+
+    const inverseDelta =
+      -Number(
+        change.delta_base_units ||
+        0
+      );
 
     if (
-      change.transactionId
+      !change.medicine_id ||
+      Math.abs(inverseDelta) <
+      0.000001
     ) {
-
-      await supabaseClient
-        .from(
-          "medicine_stock_transactions"
-        )
-        .delete()
-        .eq(
-          "id",
-          change.transactionId
-        );
-
+      continue;
     }
 
-    await supabaseClient
-      .from(
-        "medicine_batches"
-      )
-      .update({
-        quantity:
-          change.oldBase /
-          change.units,
-        quantity_base_units:
-          change.oldBase,
-        updated_at:
-          new Date().toISOString()
-      })
-      .eq(
-        "id",
-        change.batchId
+    const {
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "adjust_consultation_medicine_stock",
+          {
+            p_consultation_id:
+              Number(
+                consultationId
+              ),
+
+            p_patient_id:
+              Number(
+                patientId
+              ),
+
+            p_medicine_id:
+              Number(
+                change.medicine_id
+              ),
+
+            p_delta_base_units:
+              inverseDelta,
+
+            p_transaction_date:
+              effectiveTransactionDate
+          }
+        );
+
+    if (error) {
+      rollbackErrors.push(
+        "Medicine " +
+        change.medicine_id +
+        ": " +
+        error.message
       );
+    }
 
   }
 
-}
+  if (rollbackErrors.length) {
+    throw new Error(
+      "Stock rollback failed:\n\n" +
+      rollbackErrors.join("\n")
+    );
+  }
 
+}
 
 async function syncConsultationMedicineStock(
   consultationId,
@@ -4847,7 +4886,6 @@ async function syncConsultationMedicineStock(
     await getConsultationMedicineTransactions(
       consultationId
     );
-
 
   const oldNet =
     consultationTransactionNetByMedicine(
@@ -4865,6 +4903,10 @@ async function syncConsultationMedicineStock(
             medicine.medicine_id
           );
 
+        if (!id) {
+          return;
+        }
+
         newTotals[id] =
           (
             newTotals[id] ||
@@ -4876,7 +4918,6 @@ async function syncConsultationMedicineStock(
 
       }
     );
-
 
   const allMedicineIds =
     Array.from(
@@ -4890,22 +4931,28 @@ async function syncConsultationMedicineStock(
       ])
     );
 
-
   const medicineCache = {};
 
   (medicines || [])
     .forEach(
       function(medicine) {
-        medicineCache[
+        const id =
           Number(
             medicine.medicine_id
-          )
-        ] =
-          medicine;
+          );
+
+        if (id) {
+          medicineCache[id] =
+            medicine;
+        }
       }
     );
 
-
+  /*
+     Medicines removed during an edit are not present in the new
+     prescription, so load their master records only for useful
+     error messages. Stock itself is handled entirely by the RPC.
+  */
   for (
     const medicineId of allMedicineIds
   ) {
@@ -4951,20 +4998,16 @@ async function syncConsultationMedicineStock(
 
   }
 
-
   const changeList = [];
-
+  const effectiveTransactionDate =
+    transactionDate ||
+    getTodayString();
 
   try {
 
     for (
       const medicineId of allMedicineIds
     ) {
-
-      const medicine =
-        medicineCache[
-          medicineId
-        ];
 
       const oldQuantity =
         Number(
@@ -4986,7 +5029,6 @@ async function syncConsultationMedicineStock(
         newQuantity -
         oldQuantity;
 
-
       if (
         Math.abs(delta) <
         0.000001
@@ -4994,34 +5036,58 @@ async function syncConsultationMedicineStock(
         continue;
       }
 
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .rpc(
+            "adjust_consultation_medicine_stock",
+            {
+              p_consultation_id:
+                Number(
+                  consultationId
+                ),
 
-      if (delta > 0) {
+              p_patient_id:
+                Number(
+                  patientId
+                ),
 
-        await dispenseConsultationMedicineDelta(
-          medicine,
-          delta,
-          consultationId,
-          patientId,
-          transactionDate,
-          changeList
+              p_medicine_id:
+                Number(
+                  medicineId
+                ),
+
+              p_delta_base_units:
+                delta,
+
+              p_transaction_date:
+                effectiveTransactionDate
+            }
+          );
+
+      if (error) {
+        throw new Error(
+          "Stock update failed for " +
+          consultationMedicineDisplayName(
+            medicineCache[medicineId]
+          ) +
+          ": " +
+          error.message
         );
-
-      } else {
-
-        await returnConsultationMedicineDelta(
-          medicine,
-          Math.abs(delta),
-          transactions,
-          consultationId,
-          patientId,
-          transactionDate,
-          changeList
-        );
-
       }
 
-    }
+      changeList.push({
+        medicine_id:
+          Number(medicineId),
+        delta_base_units:
+          delta,
+        rpc_result:
+          data
+      });
 
+    }
 
     return {
       transactions,
@@ -5030,8 +5096,17 @@ async function syncConsultationMedicineStock(
 
   } catch (error) {
 
+    /*
+       Each RPC call is an atomic database transaction. If a later
+       medicine fails, compensate the already-completed RPC calls
+       in reverse order so the consultation save does not leave
+       partially adjusted stock.
+    */
     await rollbackConsultationStockChanges(
-      changeList
+      changeList,
+      consultationId,
+      patientId,
+      effectiveTransactionDate
     );
 
     throw error;
@@ -5039,7 +5114,6 @@ async function syncConsultationMedicineStock(
   }
 
 }
-
 
 function setConsultationNavigationSource(
   source
@@ -9014,7 +9088,10 @@ async function deleteConsultation(
 
       await rollbackConsultationStockChanges(
         consultationStockReturn.changeList ||
-        []
+        [],
+        consultationId,
+        consultationPatientId,
+        getTodayString()
       );
 
       throw consultationDeleteError;
@@ -11553,7 +11630,10 @@ async function saveEditedConsultation(
 
     await rollbackConsultationStockChanges(
       stockResult.changeList ||
-      []
+      [],
+      consultationId,
+      patientId,
+      consultationDate
     );
 
     alert(
