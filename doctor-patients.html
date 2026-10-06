@@ -644,6 +644,65 @@ textarea {
   line-height: 1.5;
 }
 
+
+.consultation-medicine-prescription-fields {
+  margin-top: 2px;
+}
+
+.consultation-medicine-prescription-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 9px;
+}
+
+.consultation-medicine-prescription-box label,
+.consultation-medicine-instruction-box label,
+.consultation-medicine-days-box label {
+  display: block;
+  margin-bottom: 5px;
+  color: #174b63;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.consultation-medicine-prescription-box input,
+.consultation-medicine-instruction-box input,
+.consultation-medicine-days-box input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.consultation-medicine-dosage-summary {
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.consultation-medicine-instruction-days {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.consultation-medicine-instruction-box input[list] {
+  min-width: 0;
+}
+
+@media(max-width:850px) {
+  .consultation-medicine-prescription-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media(max-width:430px) {
+  .consultation-medicine-prescription-grid,
+  .consultation-medicine-instruction-days {
+    grid-template-columns: 1fr;
+  }
+}
+
 .consultation-medicine-actions {
   display: flex;
   justify-content: flex-end;
@@ -5057,6 +5116,12 @@ function createEmptyConsultationMedicineRow() {
     pack_unit: "",
     base_unit: "",
     units_per_pack: 1,
+    dosage_morning: "",
+    dosage_afternoon: "",
+    dosage_night: "",
+    dosage: "0-0-0",
+    instructions: "",
+    days: "",
     dosage_instructions: "",
     pack_quantity: 0,
     individual_quantity: 0,
@@ -5065,6 +5130,167 @@ function createEmptyConsultationMedicineRow() {
 
   };
 
+}
+
+
+function consultationMedicineDosageText(row) {
+
+  if (!row) {
+    return "0-0-0";
+  }
+
+  const morning =
+    String(row.dosage_morning ?? "").trim() || "0";
+
+  const afternoon =
+    String(row.dosage_afternoon ?? "").trim() || "0";
+
+  const night =
+    String(row.dosage_night ?? "").trim() || "0";
+
+  return (
+    morning + "-" +
+    afternoon + "-" +
+    night
+  );
+
+}
+
+
+function consultationMedicineInstructionText(row) {
+
+  if (!row) {
+    return "";
+  }
+
+  return String(
+    row.instructions || ""
+  ).trim();
+
+}
+
+
+function consultationMedicineDaysText(row) {
+
+  if (!row) {
+    return "";
+  }
+
+  const days =
+    String(row.days ?? "").trim();
+
+  return days;
+
+}
+
+
+function consultationMedicinePrescriptionSummary(row) {
+
+  const parts = [];
+
+  const dosage =
+    consultationMedicineDosageText(row);
+
+  const instructions =
+    consultationMedicineInstructionText(row);
+
+  const days =
+    consultationMedicineDaysText(row);
+
+  if (dosage) {
+    parts.push(dosage);
+  }
+
+  if (instructions) {
+    parts.push(instructions);
+  }
+
+  if (days) {
+    parts.push(days + " days");
+  }
+
+  if (parts.length) {
+    return parts.join(" — ");
+  }
+
+  return String(
+    row && row.dosage_instructions ||
+    ""
+  ).trim();
+
+}
+
+
+function updateConsultationMedicineDosageSummary(mode, index) {
+
+  const prefix =
+    mode === "edit"
+      ? "editConsultMedicine"
+      : "consultMedicine";
+
+  const row =
+    (consultationMedicineState[mode] || [])[index];
+
+  if (!row) {
+    return;
+  }
+
+  const morning = document.getElementById(
+    prefix + "Morning-" + index
+  );
+  const afternoon = document.getElementById(
+    prefix + "Afternoon-" + index
+  );
+  const night = document.getElementById(
+    prefix + "Night-" + index
+  );
+  const summary = document.getElementById(
+    prefix + "DosageSummary-" + index
+  );
+
+  row.dosage_morning =
+    morning ? morning.value.trim() : row.dosage_morning || "";
+  row.dosage_afternoon =
+    afternoon ? afternoon.value.trim() : row.dosage_afternoon || "";
+  row.dosage_night =
+    night ? night.value.trim() : row.dosage_night || "";
+  row.dosage = consultationMedicineDosageText(row);
+
+  if (summary) {
+    summary.textContent =
+      "Prescription: " + consultationMedicineDosageText(row);
+  }
+
+}
+
+
+function consultationMedicineInstructionsListId(mode, index) {
+  return (
+    (mode === "edit"
+      ? "editConsultMedicine"
+      : "consultMedicine") +
+    "InstructionList-" +
+    index
+  );
+}
+
+
+function consultationMedicineInstructionOptionsHTML() {
+
+  return `
+    <option value="Before food"></option>
+    <option value="After food"></option>
+    <option value="30 mins before food"></option>
+    <option value="20 mins before food"></option>
+    <option value="15 mins before food"></option>
+    <option value="At bedtime"></option>
+    <option value="With food"></option>
+    <option value="Empty stomach"></option>
+    <option value="After breakfast"></option>
+    <option value="After lunch"></option>
+    <option value="After dinner"></option>
+    <option value="As directed"></option>
+  `;
 }
 
 
@@ -5505,19 +5731,113 @@ function consultationMedicineRowHTML(
         </div>
 
 
-        <div class="form-group">
+        <div class="form-group consultation-medicine-prescription-fields">
 
           <label>
             Dosage / Instructions / Days
           </label>
 
-          <textarea
-            id="${prefix}Instructions-${index}"
-            rows="3"
-            placeholder="Example: 1-0-1, 20 mins before food, 5 days">${escapeHTML(
-              row.dosage_instructions ||
-              ""
-            )}</textarea>
+          <div class="consultation-medicine-prescription-grid">
+
+            <div class="consultation-medicine-prescription-box">
+              <label>Morning</label>
+              <input
+                id="${prefix}Morning-${index}"
+                type="text"
+                oninput="updateConsultationMedicineDosageSummary(
+                  '${mode}',
+                  ${index}
+                )"
+                inputmode="decimal"
+                autocomplete="off"
+                placeholder="0"
+                value="${escapeHTML(
+                  row.dosage_morning ||
+                  ""
+                )}">
+            </div>
+
+            <div class="consultation-medicine-prescription-box">
+              <label>Afternoon</label>
+              <input
+                id="${prefix}Afternoon-${index}"
+                type="text"
+                oninput="updateConsultationMedicineDosageSummary(
+                  '${mode}',
+                  ${index}
+                )"
+                inputmode="decimal"
+                autocomplete="off"
+                placeholder="0"
+                value="${escapeHTML(
+                  row.dosage_afternoon ||
+                  ""
+                )}">
+            </div>
+
+            <div class="consultation-medicine-prescription-box">
+              <label>Night</label>
+              <input
+                id="${prefix}Night-${index}"
+                type="text"
+                oninput="updateConsultationMedicineDosageSummary(
+                  '${mode}',
+                  ${index}
+                )"
+                inputmode="decimal"
+                autocomplete="off"
+                placeholder="0"
+                value="${escapeHTML(
+                  row.dosage_night ||
+                  ""
+                )}">
+            </div>
+
+          </div>
+
+          <div
+            id="${prefix}DosageSummary-${index}"
+            class="consultation-medicine-dosage-summary">
+            Prescription: ${escapeHTML(
+              consultationMedicineDosageText(row)
+            )}
+          </div>
+
+          <div class="consultation-medicine-instruction-days">
+
+            <div class="consultation-medicine-instruction-box">
+              <label>Instructions</label>
+              <input
+                id="${prefix}Instructions-${index}"
+                type="text"
+                list="${consultationMedicineInstructionsListId(mode, index)}"
+                autocomplete="off"
+                placeholder="Select or type instruction"
+                value="${escapeHTML(
+                  row.instructions ||
+                  ""
+                )}">
+              <datalist id="${consultationMedicineInstructionsListId(mode, index)}">
+                ${consultationMedicineInstructionOptionsHTML()}
+              </datalist>
+            </div>
+
+            <div class="consultation-medicine-days-box">
+              <label>Days</label>
+              <input
+                id="${prefix}Days-${index}"
+                type="number"
+                min="1"
+                step="1"
+                inputmode="numeric"
+                placeholder="Days"
+                value="${escapeHTML(
+                  row.days ||
+                  ""
+                )}">
+            </div>
+
+          </div>
 
         </div>
 
@@ -5649,10 +5969,38 @@ function captureConsultationMedicineStateFromDOM(
           index
         );
 
+      const morningElement =
+        document.getElementById(
+          prefix +
+          "Morning-" +
+          index
+        );
+
+      const afternoonElement =
+        document.getElementById(
+          prefix +
+          "Afternoon-" +
+          index
+        );
+
+      const nightElement =
+        document.getElementById(
+          prefix +
+          "Night-" +
+          index
+        );
+
       const instructionElement =
         document.getElementById(
           prefix +
           "Instructions-" +
+          index
+        );
+
+      const daysElement =
+        document.getElementById(
+          prefix +
+          "Days-" +
           index
         );
 
@@ -5678,10 +6026,36 @@ function captureConsultationMedicineStateFromDOM(
         );
 
 
-      if (instructionElement) {
-        row.dosage_instructions =
-          instructionElement.value;
+      if (morningElement) {
+        row.dosage_morning =
+          morningElement.value.trim();
       }
+
+      if (afternoonElement) {
+        row.dosage_afternoon =
+          afternoonElement.value.trim();
+      }
+
+      if (nightElement) {
+        row.dosage_night =
+          nightElement.value.trim();
+      }
+
+      row.dosage =
+        consultationMedicineDosageText(row);
+
+      if (instructionElement) {
+        row.instructions =
+          instructionElement.value.trim();
+      }
+
+      if (daysElement) {
+        row.days =
+          daysElement.value.trim();
+      }
+
+      row.dosage_instructions =
+        consultationMedicinePrescriptionSummary(row);
 
 
       if (packElement) {
@@ -6287,6 +6661,11 @@ function getConsultationMedicineRowsFromDOM(
       Boolean(
         row.medicine_id ||
         typedName ||
+        row.dosage_morning ||
+        row.dosage_afternoon ||
+        row.dosage_night ||
+        row.instructions ||
+        row.days ||
         row.dosage_instructions ||
         Number(row.pack_quantity) > 0 ||
         Number(row.individual_quantity) > 0 ||
@@ -6400,11 +6779,41 @@ function getConsultationMedicineRowsFromDOM(
         ) ||
         1,
 
-      dosage_instructions:
+      dosage_morning:
         String(
-          row.dosage_instructions ||
+          row.dosage_morning ||
           ""
         ).trim(),
+
+      dosage_afternoon:
+        String(
+          row.dosage_afternoon ||
+          ""
+        ).trim(),
+
+      dosage_night:
+        String(
+          row.dosage_night ||
+          ""
+        ).trim(),
+
+      dosage:
+        consultationMedicineDosageText(row),
+
+      instructions:
+        String(
+          row.instructions ||
+          ""
+        ).trim(),
+
+      days:
+        String(
+          row.days ||
+          ""
+        ).trim(),
+
+      dosage_instructions:
+        consultationMedicinePrescriptionSummary(row),
 
       pack_quantity:
         usesPackAndIndividual
@@ -6539,6 +6948,36 @@ function parseConsultationPrescriptionValue(
                       item.units_per_pack
                     ) ||
                     1,
+                  dosage_morning:
+                    String(
+                      item.dosage_morning ||
+                      ""
+                    ),
+                  dosage_afternoon:
+                    String(
+                      item.dosage_afternoon ||
+                      ""
+                    ),
+                  dosage_night:
+                    String(
+                      item.dosage_night ||
+                      ""
+                    ),
+                  dosage:
+                    String(
+                      item.dosage ||
+                      ""
+                    ),
+                  instructions:
+                    String(
+                      item.instructions ||
+                      ""
+                    ),
+                  days:
+                    String(
+                      item.days ||
+                      ""
+                    ),
                   quantity_base_units:
                     Number(
                       item.quantity_base_units
@@ -6620,11 +7059,30 @@ function renderConsultationMedicinesDisplay(
                     </div>
 
                     <div class="consultation-medicine-display-meta">
-                      ${escapeHTML(
-                        item.dosage_instructions ||
-                        "No dosage / instruction entered"
+                      <strong>Dosage:</strong> ${escapeHTML(
+                        consultationMedicineDosageText(item)
                       )}
                     </div>
+
+                    ${
+                      consultationMedicineInstructionText(item)
+                        ? `<div class="consultation-medicine-display-meta">
+                            <strong>Instructions:</strong> ${escapeHTML(
+                              consultationMedicineInstructionText(item)
+                            )}
+                          </div>`
+                        : ""
+                    }
+
+                    ${
+                      consultationMedicineDaysText(item)
+                        ? `<div class="consultation-medicine-display-meta">
+                            <strong>Days:</strong> ${escapeHTML(
+                              consultationMedicineDaysText(item)
+                            )}
+                          </div>`
+                        : ""
+                    }
 
                     <div class="consultation-medicine-display-quantity">
                       Quantity: ${escapeHTML(
