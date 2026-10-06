@@ -35,7 +35,7 @@ button{cursor:pointer;border:0}
 .compare-card{padding:16px}
 .compare-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-bottom:14px}
 .compare-controls select,.compare-controls button,.expense-form input,.expense-form select,.expense-form textarea{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}
-.primary{background:#2563eb;color:#fff;font-weight:700;padding:10px 15px;border-radius:10px}
+.primary{background:#2563eb;color:#fff;font-weight:700;padding:10px 15px;border-radius:10px}.primary:disabled{opacity:.65;cursor:wait}
 .expand-btn{width:100%;background:#f1f5ff;color:#2563eb;padding:11px;border-radius:11px;font-weight:700}
 .net-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .net-box{padding:16px;border-radius:16px;background:#ecfdf3;border:1px solid #bbf7d0;text-align:center}
@@ -60,6 +60,17 @@ button{cursor:pointer;border:0}
 }
 
 .search-heading{font-size:16px;font-weight:800;margin-bottom:10px}.month-only-grid{grid-template-columns:1fr 1fr}.search-submit{display:block;width:100%;margin-top:10px;background:#2563eb;color:#fff;font-weight:800;padding:11px 14px;border-radius:11px}.header-actions{width:100%;margin-top:10px}.header-actions .back-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px}.period-panel{padding:14px;margin-top:10px}.period-grid label{font-size:11px}.period-grid select{min-height:44px}.compare-period-box{padding:10px}.compare-period-box .selectors{grid-template-columns:1fr 1fr}.compare-period-box select{min-height:43px}
+
+
+/* FINAL MOBILE REFINEMENTS */
+.back-btn{background:#e8f1f7;color:#245b78;border:1px solid #c9dce7;padding:6px 10px;border-radius:9px;font-weight:800;font-size:13px;min-height:0!important}
+.back-btn:hover{background:#dcecf4}
+@media(max-width:760px){
+  .header-actions{width:auto;margin-top:8px}
+  .header-actions .back-btn{width:auto;min-height:0!important;padding:7px 12px;font-size:13px;flex:none}
+  .header{gap:7px}
+  .status-message{min-height:0}
+}
 
 </style>
 </head>
@@ -167,7 +178,7 @@ button{cursor:pointer;border:0}
 
 <script>
 const SUPABASE_URL="https://twdmvdqqckcpwoccvtkj.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JBrvUyI";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
 let currentData={income:0,consultation:0,procedure:0,medicine:0,expenses:0,net:0};
@@ -208,18 +219,55 @@ async function applyPeriod(){
 function parseCompare(prefix){return {m:Number(document.getElementById(prefix+"Month").value),y:Number(document.getElementById(prefix+"Year").value)}}
 
 async function loadRange(from,to){
-  const {data:bills,error:be}=await sb.from("billing").select("bill_date,consultation_fee,procedure_charges,medicine_charges").gte("bill_date",from).lte("bill_date",to);
-  if(be) throw be;
-  const consultation=(bills||[]).reduce((s,b)=>s+Number(b.consultation_fee||0),0);
-  const procedure=(bills||[]).reduce((s,b)=>s+Number(b.procedure_charges||0),0);
-  const {data:tx,error:te}=await sb.from("medicine_stock_transactions").select("transaction_type,quantity,quantity_base_units,units_per_pack,mrp_per_unit,purchase_price_per_unit,notes,transaction_date").gte("transaction_date",from).lte("transaction_date",to).in("transaction_type",["DISPENSED","RETURNED"]);
-  if(te) throw te;
-  let medicineProfit=0;
-  for(const x of (tx||[])){const base=Number(x.quantity_base_units ?? Number(x.quantity||0)*Number(x.units_per_pack||1));const packs=base/Number(x.units_per_pack||1);const margin=packs*(Number(x.mrp_per_unit||0)-Number(x.purchase_price_per_unit||0));if(String(x.notes||"").startsWith("GDC-CONSULTATION:")) medicineProfit+=x.transaction_type==="RETURNED"?-margin:margin;}
-  const {data:ex,error:ee}=await sb.from("clinic_expenses").select("*").gte("expense_date",from).lte("expense_date",to).order("expense_date",{ascending:false});
-  if(ee) throw ee;
-  const expenses=(ex||[]).reduce((s,e)=>s+Number(e.amount||0),0);const income=consultation+procedure+medicineProfit;
-  return {consultation,procedure,medicine:medicineProfit,expenses,income,net:income-expenses,expensesRows:ex||[]};
+  // Load each financial source independently so one unavailable table
+  // does not hide the other available information.
+  let consultation=0, procedure=0, medicineProfit=0, expenses=0, expensesRows=[];
+  const sourceErrors=[];
+
+  const billingResult=await sb.from("billing")
+    .select("bill_date,consultation_fee,procedure_charges,medicine_charges")
+    .gte("bill_date",from).lte("bill_date",to);
+  if(billingResult.error){
+    console.error("Billing load error:",billingResult.error);
+    sourceErrors.push("billing: "+billingResult.error.message);
+  }else{
+    const bills=billingResult.data||[];
+    consultation=bills.reduce((sum,b)=>sum+Number(b.consultation_fee||0),0);
+    procedure=bills.reduce((sum,b)=>sum+Number(b.procedure_charges||0),0);
+  }
+
+  const txResult=await sb.from("medicine_stock_transactions")
+    .select("transaction_type,quantity,quantity_base_units,units_per_pack,mrp_per_unit,purchase_price_per_unit,notes,transaction_date")
+    .gte("transaction_date",from).lte("transaction_date",to)
+    .in("transaction_type",["DISPENSED","RETURNED"]);
+  if(txResult.error){
+    console.error("Medicine transaction load error:",txResult.error);
+    sourceErrors.push("medicine stock: "+txResult.error.message);
+  }else{
+    for(const x of (txResult.data||[])){
+      const units=Number(x.units_per_pack||1)||1;
+      const base=Number(x.quantity_base_units ?? Number(x.quantity||0)*units);
+      const packs=base/units;
+      const margin=packs*(Number(x.mrp_per_unit||0)-Number(x.purchase_price_per_unit||0));
+      if(String(x.notes||"").startsWith("GDC-CONSULTATION:")){
+        medicineProfit += x.transaction_type==="RETURNED" ? -margin : margin;
+      }
+    }
+  }
+
+  const expenseResult=await sb.from("clinic_expenses")
+    .select("*").gte("expense_date",from).lte("expense_date",to)
+    .order("expense_date",{ascending:false});
+  if(expenseResult.error){
+    console.error("Expense load error:",expenseResult.error);
+    sourceErrors.push("clinic expenses: "+expenseResult.error.message);
+  }else{
+    expensesRows=expenseResult.data||[];
+    expenses=expensesRows.reduce((sum,e)=>sum+Number(e.amount||0),0);
+  }
+
+  const income=consultation+procedure+medicineProfit;
+  return {consultation,procedure,medicine:medicineProfit,expenses,income,net:income-expenses,expensesRows,sourceErrors};
 }
 async function loadMonth(y,m){return loadRange(firstDay(y,m),lastDay(y,m));}
 
@@ -227,9 +275,17 @@ async function loadCurrent(){
   setStatus("Loading clinic profit…");
   try{
     if(!activeRange.from) activeRange=selectedRange();
-    currentData=await loadRange(activeRange.from,activeRange.to);expenseRows=currentData.expensesRows;
-    renderCurrent();renderExpenses();setStatus(activeRange.label||`${activeRange.from} to ${activeRange.to}`);
-  }catch(e){console.error(e);setStatus(`Unable to load data: ${e.message||e}. Check Supabase configuration/policies.`,true);}
+    currentData=await loadRange(activeRange.from,activeRange.to);
+    expenseRows=currentData.expensesRows||[];
+    renderCurrent();
+    renderExpenses();
+    const errors=currentData.sourceErrors||[];
+    setStatus(errors.length ? `${activeRange.label} • Some data sources unavailable` : activeRange.label);
+    if(errors.length) console.warn("Clinic Profit partial data:",errors);
+  }catch(e){
+    console.error(e);
+    setStatus(`Unable to load clinic profit: ${e.message||e}`,true);
+  }
 }
 function renderCurrent(){
   netProfit.textContent=money(currentData.net);totalIncome.textContent=money(currentData.income);
@@ -240,7 +296,27 @@ function renderCurrent(){
 }
 async function compareMonths(){
   const a=parseCompare("month1"),b=parseCompare("month2");
-  try{const [x,y]=await Promise.all([loadMonth(a.y,a.m),loadMonth(b.y,b.m)]);month1Label.textContent=ymLabel(`${a.y}-${String(a.m+1).padStart(2,"0")}`);month2Label.textContent=ymLabel(`${b.y}-${String(b.m+1).padStart(2,"0")}`);month1Profit.textContent=money(x.net);month2Profit.textContent=money(y.net);const d=y.net-x.net,pct=x.net?d/Math.abs(x.net)*100:null;delta.textContent=`${d>=0?"↑":"↓"} ${money(Math.abs(d))}${pct===null?"":` (${Math.abs(pct).toFixed(1)}%)`}`;delta.className="delta "+(d>=0?"positive":"negative");renderChart(a,x,b,y);}catch(e){console.error(e);alert("Unable to compare these months: "+(e.message||e));}}
+  const compareButton=document.querySelector('button[onclick="compareMonths()"]');
+  if(compareButton){compareButton.disabled=true;compareButton.textContent="Loading…";}
+  try{
+    const [x,y]=await Promise.all([loadMonth(a.y,a.m),loadMonth(b.y,b.m)]);
+    month1Label.textContent=ymLabel(`${a.y}-${String(a.m+1).padStart(2,"0")}`);
+    month2Label.textContent=ymLabel(`${b.y}-${String(b.m+1).padStart(2,"0")}`);
+    month1Profit.textContent=money(x.net);
+    month2Profit.textContent=money(y.net);
+    const d=y.net-x.net,pct=x.net?d/Math.abs(x.net)*100:null;
+    delta.textContent=`${d>=0?"↑":"↓"} ${money(Math.abs(d))}${pct===null?"":` (${Math.abs(pct).toFixed(1)}%)`}`;
+    delta.className="delta "+(d>=0?"positive":"negative");
+    renderChart(a,x,b,y);
+    const partial=[...(x.sourceErrors||[]),...(y.sourceErrors||[])];
+    if(partial.length) setStatus("Comparison loaded with available information");
+  }catch(e){
+    console.error(e);
+    setStatus(`Unable to compare months: ${e.message||e}`,true);
+  }finally{
+    if(compareButton){compareButton.disabled=false;compareButton.textContent="Compare Months";}
+  }
+}
 function renderChart(a,x,b,y){
   const max=Math.max(1,x.consultation,x.procedure,x.medicine,x.expenses,x.net,y.consultation,y.procedure,y.medicine,y.expenses,y.net);
   const series=[["Consultation","consultation","#2563eb"],["Procedure / Other","procedure","#ea580c"],["Medicine Profit","medicine","#7c3aed"],["Expenses","expenses","#dc2626"],["Net Clinic Profit","net","#16a34a"]];
@@ -273,7 +349,6 @@ function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",
 fillSelectors();
 activeRange=selectedRange();
 loadCurrent();
-compareMonths();
 </script>
 </body>
 </html>
