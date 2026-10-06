@@ -667,6 +667,7 @@ textarea {
 
 .consultation-medicine-prescription-box input,
 .consultation-medicine-instruction-box input,
+.consultation-medicine-instruction-box select,
 .consultation-medicine-days-box input {
   width: 100%;
   box-sizing: border-box;
@@ -5275,22 +5276,117 @@ function consultationMedicineInstructionsListId(mode, index) {
 }
 
 
+const CONSULTATION_MEDICINE_INSTRUCTION_OPTIONS = [
+  "Before food",
+  "After food",
+  "30 mins before food",
+  "20 mins before food",
+  "15 mins before food",
+  "At bedtime",
+  "With food",
+  "Empty stomach",
+  "After breakfast",
+  "After lunch",
+  "After dinner",
+  "As directed"
+];
+
+
+function consultationMedicineInstructionIsPreset(value) {
+  return CONSULTATION_MEDICINE_INSTRUCTION_OPTIONS.includes(
+    String(value || "").trim()
+  );
+}
+
+
 function consultationMedicineInstructionOptionsHTML() {
 
+  return CONSULTATION_MEDICINE_INSTRUCTION_OPTIONS
+    .map(function(option) {
+      return `<option value="${escapeHTML(option)}">${escapeHTML(option)}</option>`;
+    })
+    .join("");
+}
+
+
+function consultationMedicineInstructionSelectHTML(
+  mode,
+  index,
+  value
+) {
+
+  const instruction =
+    String(value || "").trim();
+
+  const isPreset =
+    consultationMedicineInstructionIsPreset(instruction);
+
+  const customValue =
+    isPreset ? "" : instruction;
+
   return `
-    <option value="Before food"></option>
-    <option value="After food"></option>
-    <option value="30 mins before food"></option>
-    <option value="20 mins before food"></option>
-    <option value="15 mins before food"></option>
-    <option value="At bedtime"></option>
-    <option value="With food"></option>
-    <option value="Empty stomach"></option>
-    <option value="After breakfast"></option>
-    <option value="After lunch"></option>
-    <option value="After dinner"></option>
-    <option value="As directed"></option>
+    <select
+      id="${mode === "edit" ? "editConsultMedicine" : "consultMedicine"}InstructionSelect-${index}"
+      onchange="updateConsultationMedicineInstruction('${mode}', ${index})">
+      <option value="">Select instruction</option>
+      ${CONSULTATION_MEDICINE_INSTRUCTION_OPTIONS.map(function(option) {
+        return `<option value="${escapeHTML(option)}" ${instruction === option ? "selected" : ""}>${escapeHTML(option)}</option>`;
+      }).join("")}
+      <option value="__CUSTOM__" ${!isPreset && instruction ? "selected" : ""}>Custom</option>
+    </select>
+
+    <input
+      id="${mode === "edit" ? "editConsultMedicine" : "consultMedicine"}InstructionCustom-${index}"
+      type="text"
+      autocomplete="off"
+      placeholder="Enter custom instruction"
+      value="${escapeHTML(customValue)}"
+      style="${!isPreset && instruction ? "display:block;" : "display:none;"} margin-top:7px;">
   `;
+}
+
+
+function updateConsultationMedicineInstruction(mode, index) {
+
+  const prefix =
+    mode === "edit"
+      ? "editConsultMedicine"
+      : "consultMedicine";
+
+  const select =
+    document.getElementById(
+      prefix + "InstructionSelect-" + index
+    );
+
+  const custom =
+    document.getElementById(
+      prefix + "InstructionCustom-" + index
+    );
+
+  if (!select || !custom) {
+    return;
+  }
+
+  if (select.value === "__CUSTOM__") {
+    custom.style.display = "block";
+    custom.focus();
+  } else {
+    custom.style.display = "none";
+    custom.value = "";
+  }
+
+  const row =
+    (consultationMedicineState[mode] || [])[index];
+
+  if (row) {
+    row.instructions =
+      select.value === "__CUSTOM__"
+        ? custom.value.trim()
+        : select.value.trim();
+
+    row.dosage_instructions =
+      consultationMedicinePrescriptionSummary(row);
+  }
 }
 
 
@@ -5807,19 +5903,11 @@ function consultationMedicineRowHTML(
 
             <div class="consultation-medicine-instruction-box">
               <label>Instructions</label>
-              <input
-                id="${prefix}Instructions-${index}"
-                type="text"
-                list="${consultationMedicineInstructionsListId(mode, index)}"
-                autocomplete="off"
-                placeholder="Select or type instruction"
-                value="${escapeHTML(
-                  row.instructions ||
-                  ""
-                )}">
-              <datalist id="${consultationMedicineInstructionsListId(mode, index)}">
-                ${consultationMedicineInstructionOptionsHTML()}
-              </datalist>
+              ${consultationMedicineInstructionSelectHTML(
+                mode,
+                index,
+                row.instructions || ""
+              )}
             </div>
 
             <div class="consultation-medicine-days-box">
@@ -5898,7 +5986,7 @@ function consultationMedicinesSectionHTML(
       </h3>
 
       <div class="consultation-medicines-note">
-        Type a medicine name and select it from the Medicine &amp; Stock master. Dosage / instructions / days can be entered as free text. Quantity is entered according to the medicine form and is automatically converted to stock base units.
+        Type a medicine name and select it from the Medicine &amp; Stock master. Dosage, instructions and days can be entered using the structured prescription fields. Quantity is entered according to the medicine form and is automatically converted to stock base units.
       </div>
 
       <div id="${mode === "edit" ? "editConsultMedicineRows" : "consultMedicineRows"}">
@@ -5990,10 +6078,17 @@ function captureConsultationMedicineStateFromDOM(
           index
         );
 
-      const instructionElement =
+      const instructionSelectElement =
         document.getElementById(
           prefix +
-          "Instructions-" +
+          "InstructionSelect-" +
+          index
+        );
+
+      const instructionCustomElement =
+        document.getElementById(
+          prefix +
+          "InstructionCustom-" +
           index
         );
 
@@ -6044,9 +6139,11 @@ function captureConsultationMedicineStateFromDOM(
       row.dosage =
         consultationMedicineDosageText(row);
 
-      if (instructionElement) {
+      if (instructionSelectElement) {
         row.instructions =
-          instructionElement.value.trim();
+          instructionSelectElement.value === "__CUSTOM__"
+            ? (instructionCustomElement ? instructionCustomElement.value.trim() : "")
+            : instructionSelectElement.value.trim();
       }
 
       if (daysElement) {
