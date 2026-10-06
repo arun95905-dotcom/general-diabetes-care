@@ -42,19 +42,9 @@ button{cursor:pointer;border:0}
 .net-box .month{font-size:12px;color:var(--muted)}.net-box .amount{font-size:25px;font-weight:900;color:var(--green);margin-top:5px}
 .delta{text-align:center;margin:12px 0 0;font-weight:800}.positive{color:var(--green)}.negative{color:var(--red)}
 .chart-wrap{margin-top:14px;display:none}.chart-wrap.open{display:block}
-.comparison-panel{border:1px solid var(--line);border-radius:16px;background:#fafbff;padding:14px}
-.comparison-head{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;text-align:center;font-weight:800;font-size:12px;color:var(--muted)}
-.metric-compare{padding:10px 0;border-top:1px solid var(--line)}
-.metric-compare:first-of-type{border-top:0}
-.metric-name{text-align:center;font-size:12px;font-weight:800;margin-bottom:8px}
-.metric-values{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.metric-side{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px}
-.metric-side .metric-period{font-size:10px;color:var(--muted);margin-bottom:5px}
-.metric-side .metric-amount{font-size:16px;font-weight:900}
-.mini-track{height:9px;background:#edf0f5;border-radius:999px;overflow:hidden;margin-top:7px}
-.mini-fill{height:100%;border-radius:999px;min-width:2px}
-.net-highlight{margin-top:12px;padding:14px;border-radius:15px;background:#ecfdf3;border:2px solid #86efac;text-align:center}
-.net-highlight .title{font-size:12px;color:#166534;font-weight:900}.net-highlight .amounts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.net-highlight .amount{font-size:22px;font-weight:900;color:#15803d}
+.chart{display:flex;align-items:flex-end;justify-content:space-around;height:220px;padding:18px 12px 28px;border:1px solid var(--line);border-radius:15px;background:#fafbff;gap:16px}
+.month-chart{display:flex;align-items:flex-end;gap:16px;height:100%;flex:1;justify-content:center}
+.bar-group{display:flex;align-items:flex-end;gap:6px;height:100%}.bar{width:24px;border-radius:7px 7px 2px 2px;min-height:4px}.bar-label{font-size:10px;text-align:center;color:var(--muted);margin-top:5px}.bar-col{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
 .legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:11px;color:var(--muted)}.legend span{display:flex;align-items:center;gap:5px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 .breakdown{display:grid;grid-template-columns:1fr 1fr;gap:12px}.list-card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:15px}.row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row .name{font-size:13px}.row .amt{font-weight:750}.income-list .amt{color:var(--blue)}.expense-list .amt{color:var(--red)}
 .add-btn{background:#111827;color:#fff;padding:9px 13px;border-radius:10px;font-weight:700}
@@ -66,7 +56,7 @@ button{cursor:pointer;border:0}
  .period-panel{padding:12px;border-radius:15px}.month-only-grid{grid-template-columns:1fr 1fr;gap:8px}.search-submit{min-height:44px}.grid4{grid-template-columns:1fr 1fr;gap:9px}.card{padding:13px}.metric .value{font-size:19px}
  .breakdown{grid-template-columns:1fr}.compare-controls{grid-template-columns:1fr 1fr}.compare-controls button{grid-column:1/-1}
  .net-compare{gap:8px}.net-box{padding:13px}.net-box .amount{font-size:21px}
- .comparison-head{grid-template-columns:1fr 1fr 1fr;font-size:10px}.metric-side .metric-amount{font-size:14px}.net-highlight .amount{font-size:19px}.expense-grid{grid-template-columns:1fr}
+ .chart{height:210px}.bar{width:18px}.expense-grid{grid-template-columns:1fr}
 }
 
 .search-heading{font-size:16px;font-weight:800;margin-bottom:10px}.month-only-grid{grid-template-columns:1fr 1fr}.search-submit{display:block;width:100%;margin-top:10px;background:#2563eb;color:#fff;font-weight:800;padding:11px 14px;border-radius:11px}.header-actions{width:100%;margin-top:10px}.header-actions .back-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px}.period-panel{padding:14px;margin-top:10px}.period-grid label{font-size:11px}.period-grid select{min-height:44px}.compare-period-box{padding:10px}.compare-period-box .selectors{grid-template-columns:1fr 1fr}.compare-period-box select{min-height:43px}
@@ -105,6 +95,7 @@ button{cursor:pointer;border:0}
     <button class="search-submit" onclick="applyPeriod()">🔎 Search</button>
   </section>
 
+  <div id="status" class="message">Loading clinic profit…</div>
 
   <section class="section">
     <div class="grid4">
@@ -196,7 +187,7 @@ let expenseRows=[];
 const money=n=>"₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:0});
 const monthKey=(y,m)=>`${y}-${String(m+1).padStart(2,"0")}`;
 const firstDay=(y,m)=>`${y}-${String(m+1).padStart(2,"0")}-01`;
-const lastDay=(y,m)=>new Date(y,m+1,0).toISOString().slice(0,10);
+const lastDay=(y,m)=>`${y}-${String(m+1).padStart(2,"0")}-${String(new Date(y,m+1,0).getDate()).padStart(2,"0")}`;
 const ymLabel=k=>{const [y,m]=k.split("-");return `${months[Number(m)-1]} ${y}`};
 
 const YEAR_START=2020;
@@ -281,6 +272,7 @@ async function loadRange(from,to){
 async function loadMonth(y,m){return loadRange(firstDay(y,m),lastDay(y,m));}
 
 async function loadCurrent(){
+  setStatus("Loading clinic profit…");
   try{
     if(!activeRange.from) activeRange=selectedRange();
     currentData=await loadRange(activeRange.from,activeRange.to);
@@ -288,6 +280,7 @@ async function loadCurrent(){
     renderCurrent();
     renderExpenses();
     const errors=currentData.sourceErrors||[];
+    setStatus(errors.length ? `${activeRange.label} • Some data sources unavailable` : activeRange.label);
     if(errors.length) console.warn("Clinic Profit partial data:",errors);
   }catch(e){
     console.error(e);
@@ -325,55 +318,20 @@ async function compareMonths(){
   }
 }
 function renderChart(a,x,b,y){
-  const metrics=[
-    ["Consultation","consultation","#2563eb"],
-    ["Procedure / Other","procedure","#ea580c"],
-    ["Medicine Profit","medicine","#7c3aed"],
-    ["Expenses","expenses","#dc2626"]
-  ];
-  const max=Math.max(1,...metrics.map(([,k])=>Math.max(Math.abs(Number(x[k]||0)),Math.abs(Number(y[k]||0)))));
-  const aLabel=`${months[a.m].slice(0,3)} ${a.y}`;
-  const bLabel=`${months[b.m].slice(0,3)} ${b.y}`;
-  const escLabel=v=>esc(v);
-  comparisonChart.innerHTML=`
-    <div class="comparison-panel">
-      <div class="comparison-head">
-        <div>Metric</div><div>${escLabel(aLabel)}</div><div>${escLabel(bLabel)}</div>
-      </div>
-      ${metrics.map(([label,k,c])=>{
-        const av=Number(x[k]||0), bv=Number(y[k]||0);
-        const aw=Math.min(100,Math.abs(av)/max*100), bw=Math.min(100,Math.abs(bv)/max*100);
-        return `<div class="metric-compare">
-          <div class="metric-name">${label}</div>
-          <div class="metric-values">
-            <div class="metric-side">
-              <div class="metric-period">${escLabel(aLabel)}</div>
-              <div class="metric-amount">${money(av)}</div>
-              <div class="mini-track"><div class="mini-fill" style="width:${aw}%;background:${c}"></div></div>
-            </div>
-            <div class="metric-side">
-              <div class="metric-period">${escLabel(bLabel)}</div>
-              <div class="metric-amount">${money(bv)}</div>
-              <div class="mini-track"><div class="mini-fill" style="width:${bw}%;background:${c}"></div></div>
-            </div>
-          </div>
-        </div>`;
-      }).join("")}
-      <div class="net-highlight">
-        <div class="title">🟢 NET CLINIC PROFIT</div>
-        <div class="amounts">
-          <div><div class="metric-period">${escLabel(aLabel)}</div><div class="amount">${money(x.net)}</div></div>
-          <div><div class="metric-period">${escLabel(bLabel)}</div><div class="amount">${money(y.net)}</div></div>
-        </div>
-      </div>
-    </div>`;
-
+  const max=Math.max(1,x.consultation,x.procedure,x.medicine,x.expenses,x.net,y.consultation,y.procedure,y.medicine,y.expenses,y.net);
+  const series=[["Consultation","consultation","#2563eb"],["Procedure / Other","procedure","#ea580c"],["Medicine Profit","medicine","#7c3aed"],["Expenses","expenses","#dc2626"],["Net Clinic Profit","net","#16a34a"]];
+  const mk=(d)=>series.map(([label,k,c])=>`<div class="bar-col" title="${label}: ${money(d[k])}"><div class="bar" style="height:${Math.max(3,d[k]/max*150)}px;background:${c};${k==="net"?"box-shadow:0 0 0 3px rgba(22,163,74,.16)":""}"></div><div class="bar-label">${label==="Procedure / Other"?"Procedure":label.replace("Net Clinic Profit","Net Profit")}</div></div>`).join("");
+  comparisonChart.innerHTML=`<div class="month-chart"><div><b>${months[a.m].slice(0,3)} ${a.y}</b>${mk(x)}</div><div><b>${months[b.m].slice(0,3)} ${b.y}</b>${mk(y)}</div></div>`;
   detailRows.innerHTML=`
     <div class="list-card">
       <div class="row"><span class="name">🔵 Consultation</span><span class="amt">${money(x.consultation)} → ${money(y.consultation)}</span></div>
       <div class="row"><span class="name">🟠 Procedure / Other</span><span class="amt">${money(x.procedure)} → ${money(y.procedure)}</span></div>
       <div class="row"><span class="name">🟣 Medicine Profit</span><span class="amt">${money(x.medicine)} → ${money(y.medicine)}</span></div>
       <div class="row"><span class="name">🔴 Expenses</span><span class="amt">${money(x.expenses)} → ${money(y.expenses)}</span></div>
+      <div style="margin-top:12px;padding:15px;border-radius:15px;background:#ecfdf3;border:2px solid #86efac;text-align:center">
+        <div style="font-size:12px;color:#166534;font-weight:800">🟢 NET CLINIC PROFIT</div>
+        <div style="font-size:25px;font-weight:900;color:#15803d;margin-top:4px">${money(x.net)} → ${money(y.net)}</div>
+      </div>
     </div>`;
 }
 function toggleComparison(){
@@ -386,11 +344,7 @@ function cancelExpenseEdit(){editingExpenseId=null;document.getElementById("expe
 async function saveExpense(){const amount=Number(expenseAmount.value);if(!expenseDate.value||!amount||amount<=0){alert("Enter expense date and a valid amount.");return;}const payload={expense_date:expenseDate.value,category:expenseCategory.value,amount,notes:expenseNotes.value.trim()||null};let error;if(editingExpenseId){({error}=await sb.from("clinic_expenses").update(payload).eq("id",editingExpenseId));}else{({error}=await sb.from("clinic_expenses").insert(payload));}if(error){alert((editingExpenseId?"Unable to update expense: ":"Unable to save expense: ")+error.message);return;}cancelExpenseEdit();await loadCurrent();}
 async function deleteExpense(id){if(!confirm("Delete this expense? This cannot be undone."))return;const {error}=await sb.from("clinic_expenses").delete().eq("id",id);if(error){alert("Unable to delete expense: "+error.message);return;}if(editingExpenseId===Number(id))cancelExpenseEdit();await loadCurrent();}
 function renderExpenses(){if(!expenseRows.length){expenseTable.innerHTML=`<div class="empty-state">No expense entries for this period.</div>`;return;}expenseTable.innerHTML=`<table><thead><tr><th>Date</th><th>Category</th><th>Amount</th><th>Notes</th><th>Actions</th></tr></thead><tbody>${expenseRows.map(e=>`<tr><td>${esc(e.expense_date)}</td><td>${esc(e.category||"")}</td><td><b>${money(e.amount)}</b></td><td>${esc(e.notes||"")}</td><td><button class="edit" onclick="startEditExpense(${Number(e.id)})">✏️ Edit</button><button class="delete" onclick="deleteExpense(${Number(e.id)})">🗑️ Delete</button></td></tr>`).join("")}</tbody></table>`;}
-function setStatus(s,error=false){
-  // Status text intentionally hidden for a cleaner dashboard.
-  // Errors are logged to the console; financial cards still render available data.
-  if(error) console.error(s);
-}
+function setStatus(s,error=false){status.textContent=s;status.className="message"+(error?" error":"")}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 fillSelectors();
 activeRange=selectedRange();
