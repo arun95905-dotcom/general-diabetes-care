@@ -2302,6 +2302,151 @@ function consultationMedicineQuantityText(
 }
 
 
+function formatMedicineBaseQuantity(
+  medicine,
+  baseUnits
+) {
+
+  const value =
+    Math.round(
+      (Number(baseUnits) || 0) * 100
+    ) / 100;
+
+  const units =
+    Number(
+      medicine && medicine.units_per_pack
+    ) || 1;
+
+  const packUnit =
+    String(
+      medicine && medicine.pack_unit ||
+      "packs"
+    );
+
+  const baseUnit =
+    String(
+      medicine && medicine.base_unit ||
+      "units"
+    );
+
+  if (units <= 1) {
+    return (
+      value.toLocaleString("en-IN") +
+      " " +
+      baseUnit
+    );
+  }
+
+  const packs =
+    Math.floor(value / units);
+
+  const remainder =
+    Math.round(
+      (value - packs * units) * 100
+    ) / 100;
+
+  if (remainder === 0) {
+    return (
+      packs.toLocaleString("en-IN") +
+      " " +
+      packUnit
+    );
+  }
+
+  if (packs === 0) {
+    return (
+      remainder.toLocaleString("en-IN") +
+      " " +
+      baseUnit
+    );
+  }
+
+  return (
+    packs.toLocaleString("en-IN") +
+    " " +
+    packUnit +
+    " + " +
+    remainder.toLocaleString("en-IN") +
+    " " +
+    baseUnit
+  );
+
+}
+
+
+function formatMedicineStockError(
+  medicine,
+  deltaBaseUnits,
+  errorMessage
+) {
+
+  const message =
+    String(errorMessage || "");
+
+  if (
+    Number(deltaBaseUnits) > 0 &&
+    message.toLowerCase().includes(
+      "insufficient available non-expired stock"
+    )
+  ) {
+
+    const match =
+      message.match(
+        /Short by\s+([0-9]+(?:\.[0-9]+)?)/i
+      );
+
+    const shortageBaseUnits =
+      match
+        ? Number(match[1])
+        : null;
+
+    const name =
+      consultationMedicineDisplayName(
+        medicine
+      );
+
+    let text =
+      "Insufficient stock for " +
+      name +
+      ".";
+
+    text +=
+      "\n\nRequired: " +
+      formatMedicineBaseQuantity(
+        medicine,
+        deltaBaseUnits
+      );
+
+    if (
+      shortageBaseUnits !== null
+    ) {
+      text +=
+        "\nShortage: " +
+        formatMedicineBaseQuantity(
+          medicine,
+          shortageBaseUnits
+        );
+    }
+
+    text +=
+      "\n\nPlease reduce the prescribed quantity or add sufficient stock.";
+
+    return text;
+
+  }
+
+  return (
+    "Stock update failed for " +
+    consultationMedicineDisplayName(
+      medicine
+    ) +
+    ": " +
+    message
+  );
+
+}
+
+
 function consultationMedicineStockDisplay(
   row
 ) {
@@ -5069,12 +5214,11 @@ async function syncConsultationMedicineStock(
 
       if (error) {
         throw new Error(
-          "Stock update failed for " +
-          consultationMedicineDisplayName(
-            medicineCache[medicineId]
-          ) +
-          ": " +
-          error.message
+          formatMedicineStockError(
+            medicineCache[medicineId],
+            delta,
+            error.message
+          )
         );
       }
 
