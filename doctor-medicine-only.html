@@ -336,12 +336,14 @@ async function loadPatientDispenses(){
   const date=dispensingDate||document.getElementById("dispensingDate")?.value||todayIST();
 
   // Load the complete Medicine-Only audit chain for this patient/date.
-  // The visible list contains only the currently active DISPENSED rows.
+  // The original DISPENSED transaction is kept immutable. Every edit adds
+  // only the quantity difference as DISPENSED or RETURNED, and delete adds
+  // one full RETURNED transaction for the current effective quantity.
   const {data,error}=await sb.from("medicine_stock_transactions")
     .select("*,medicines(id,medicine_name,strength,dosage_form,pack_unit,base_unit,units_per_pack),medicine_batches(batch_number,quantity,quantity_base_units,units_per_pack)")
     .eq("transaction_date",date)
     .like("notes",`${medicineOnlyNotePrefix()}%`)
-    .order("id",{ascending:false});
+    .order("id",{ascending:true});
 
   if(error){
     setStatus(document.getElementById("pageStatus"),error.message,"error");
@@ -349,30 +351,50 @@ async function loadPatientDispenses(){
   }
 
   const rows=data||[];
-  const referencedIds=new Set();
+  const correctionRefRegex=/(?:EDIT\s+(?:REVERSAL|REPLACEMENT|ADJUSTMENT)\s+OF\s+TX|DELETE\s+REVERSAL\s+OF\s+TX|DELETE\s+TX|CORRECTED\s+FROM\s+TX|CORRECTED_FROM_TX|REVERSE\s+TX|REVERSE_TX|REPLACEMENT\s+OF\s+TX|REPLACEMENT\s+OF\s+ID|REVERSAL\s+OF\s+TX)[: ]+(\d+)/i;
 
-  // Any correction/reversal that references a DISPENSED transaction makes
-  // that transaction historical/superseded. It must never remain in the
-  // current patient dispensing list.
+  // Group every audit transaction under its original dispensing transaction.
+  // This supports both the new delta-only edit records and the older
+  // reversal/replacement records already created by earlier versions.
+  const groups=new Map();
+
   rows.forEach(t=>{
     const note=String(t.notes||"");
-    const patterns=[
-      /(?:EDIT REVERSAL OF TX|EDIT REPLACEMENT OF TX|DELETE REVERSAL OF TX|DELETE TX|CORRECTED FROM TX|CORRECTED_FROM_TX|REVERSE TX|REVERSE_TX|REPLACEMENT OF TX|REPLACEMENT OF ID|REVERSAL OF TX)[: ]+(\d+)/gi
-    ];
-    patterns.forEach(re=>{
-      let match;
-      while((match=re.exec(note))!==null){
-        const id=Number(match[1]);
-        if(id)referencedIds.add(id);
-      }
-    });
+    const match=note.match(correctionRefRegex);
+    const rootId=match?Number(match[1]):Number(t.id);
+    if(!rootId)return;
+    if(!groups.has(rootId))groups.set(rootId,[]);
+    groups.get(rootId).push(t);
   });
 
-  patientDispenses=rows.filter(t=>
-    String(t.transaction_type||"").toUpperCase()==="DISPENSED" &&
-    !referencedIds.has(Number(t.id))
-  );
+  const active=[];
+  for(const [rootId,chain] of groups.entries()){
+    const root=chain.find(x=>Number(x.id)===Number(rootId));
+    if(!root || String(root.transaction_type||"").toUpperCase()!=="DISPENSED")continue;
 
+    let effectiveBase=0;
+    chain.forEach(t=>{
+      const units=Number(t.units_per_pack||t.medicines?.units_per_pack||1)||1;
+      const base=Number(t.quantity_base_units ?? (Number(t.quantity||0)*units))||0;
+      if(String(t.transaction_type||"").toUpperCase()==="DISPENSED")effectiveBase+=base;
+      else if(String(t.transaction_type||"").toUpperCase()==="RETURNED")effectiveBase-=base;
+    });
+
+    effectiveBase=Math.round(effectiveBase*1000000)/1000000;
+    if(effectiveBase<=0)continue;
+
+    // Clone the original transaction but expose the effective quantity.
+    // The original row remains untouched for audit purposes.
+    active.push({
+      ...root,
+      quantity_base_units:effectiveBase,
+      quantity:effectiveBase/(Number(root.units_per_pack||root.medicines?.units_per_pack||1)||1),
+      _effectiveBase:effectiveBase
+    });
+  }
+
+  active.sort((a,b)=>Number(b.id)-Number(a.id));
+  patientDispenses=active;
   renderPatientDispenses();
 }
 
@@ -388,6 +410,17 @@ function getEditRequestedBase(t){
     ? Number(document.getElementById(`editBase-${t.id}`)?.value)||0
     : 0;
   return packs*units+individual;
+}
+
+
+function displayQuantity(base,m,units){
+  const n=Number(base)||0;
+  const u=Number(units)||1;
+  if(u<=1)return `${n} ${m?.base_unit||"units"}`;
+  const packs=Math.floor(n/u);
+  const rem=Math.round((n-packs*u)*100)/100;
+  if(rem===0)return `${packs} ${m?.pack_unit||"packs"}`;
+  return `${packs} ${m?.pack_unit||"packs"} + ${rem} ${m?.base_unit||"units"}`;
 }
 
 async function saveDispenseEdit(id){
@@ -412,7 +445,10 @@ async function saveDispenseEdit(id){
 
   const batchId=Number(t.batch_id);
   const {data:batch,error:be}=await sb.from("medicine_batches").select("*").eq("id",batchId).single();
-  if(be||!batch){setStatus(status,be?.message||"Unable to load stock batch.","error");return;}
+  if(be||!batch){
+    setStatus(status,be?.message||"Unable to load stock batch.","error");
+    return;
+  }
 
   const currentBase=Number(batch.quantity_base_units??Number(batch.quantity||0)*units)||0;
   if(delta>0 && delta>currentBase){
@@ -420,56 +456,74 @@ async function saveDispenseEdit(id){
     return;
   }
 
+  // CRITICAL:
+  // Edit 2 strips -> 1 strip = return ONLY 1 strip.
+  // Edit 2 strips -> 3 strips = dispense ONLY 1 strip.
+  // Never return the old full quantity during an edit.
   const finalStock=currentBase-delta;
-  const newAmount=(newBase/units)*Number(t.mrp_per_unit||0);
-  const oldAmount=parseMedicineOnlyNote(t.notes).amount || ((Number(t.quantity)||0)*Number(t.mrp_per_unit||0));
+  const changeBase=Math.abs(delta);
+  const changeType=delta<0 ? "RETURNED" : "DISPENSED";
+  const direction=delta<0 ? "IN" : "OUT";
+  const changeAmount=(changeBase/units)*Number(t.mrp_per_unit||0);
   const txDate=dispensingDate||document.getElementById("dispensingDate")?.value||todayIST();
   const name=`${m.medicine_name||""}${m.strength?" "+m.strength:""}`.trim();
 
-  const reversalNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${Number(t.medicine_id)} | EDIT REVERSAL OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${name} | Batch:${batch.batch_number||""} | Quantity:${oldBase} ${m.base_unit||"units"} | Amount:${oldAmount.toFixed(2)}`;
-  const replacementNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${Number(t.medicine_id)} | EDIT REPLACEMENT OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${name} | Batch:${batch.batch_number||""} | Quantity:${newBase} ${m.base_unit||"units"} | Amount:${newAmount.toFixed(2)}`;
+  const adjustmentNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${Number(t.medicine_id)} | EDIT ADJUSTMENT OF TX:${t.id} | ${changeType} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${name} | Batch:${batch.batch_number||""} | Quantity:${changeBase} ${m.base_unit||"units"} | Amount:${changeAmount.toFixed(2)}`;
 
   const editBtn=document.querySelector(`#dispenseEdit-${id} .btn-primary`);
   if(editBtn)editBtn.disabled=true;
-  setStatus(status,"Updating stock and audit trail...");
+  setStatus(status,"Updating stock by the quantity difference...");
 
   try{
-    // IMPORTANT: change stock only by the quantity difference.
-    // Do NOT add the whole old dispensing back and then subtract the new
-    // dispensing. That was the source of the previous double-return bug.
     const {data:updated,error:ue}=await sb.from("medicine_batches")
-      .update({quantity:finalStock/units,quantity_base_units:finalStock,updated_at:new Date().toISOString()})
+      .update({
+        quantity:finalStock/units,
+        quantity_base_units:finalStock,
+        updated_at:new Date().toISOString()
+      })
       .eq("id",batchId)
       .eq("quantity_base_units",currentBase)
       .select().single();
-    if(ue||!updated)throw ue||new Error("Stock changed while editing. Please refresh and try again.");
 
-    const {error:re}=await sb.from("medicine_stock_transactions").insert({
-      medicine_id:Number(t.medicine_id),batch_id:batchId,transaction_type:"RETURNED",
-      quantity:oldBase/units,quantity_base_units:oldBase,units_per_pack:units,
-      direction:"IN",transaction_date:txDate,
-      mrp_per_unit:t.mrp_per_unit,purchase_price_per_unit:t.purchase_price_per_unit,
-      notes:reversalNote
-    });
-    if(re)throw re;
+    if(ue||!updated){
+      throw ue||new Error("Stock changed while editing. Please refresh and try again.");
+    }
 
-    const {error:de}=await sb.from("medicine_stock_transactions").insert({
-      medicine_id:Number(t.medicine_id),batch_id:batchId,transaction_type:"DISPENSED",
-      quantity:newBase/units,quantity_base_units:newBase,units_per_pack:units,
-      direction:"OUT",transaction_date:txDate,
-      mrp_per_unit:t.mrp_per_unit,purchase_price_per_unit:t.purchase_price_per_unit,
-      notes:replacementNote
+    const {error:te}=await sb.from("medicine_stock_transactions").insert({
+      medicine_id:Number(t.medicine_id),
+      batch_id:batchId,
+      transaction_type:changeType,
+      quantity:changeBase/units,
+      quantity_base_units:changeBase,
+      units_per_pack:units,
+      direction,
+      transaction_date:txDate,
+      mrp_per_unit:t.mrp_per_unit,
+      purchase_price_per_unit:t.purchase_price_per_unit,
+      notes:adjustmentNote
     });
-    if(de)throw de;
+
+    if(te){
+      await sb.from("medicine_batches")
+        .update({
+          quantity:currentBase/units,
+          quantity_base_units:currentBase,
+          updated_at:new Date().toISOString()
+        })
+        .eq("id",batchId)
+        .eq("quantity_base_units",finalStock);
+      throw te;
+    }
 
     await loadPatientDispenses();
-    setStatus(document.getElementById(`editStatus-${id}`),"Dispensing updated successfully. Stock and audit history updated.","success");
+    setStatus(
+      document.getElementById(`editStatus-${id}`),
+      delta<0
+        ? `Dispensing reduced by ${displayQuantity(changeBase,m,units)}. Only the returned quantity was added back to stock.`
+        : `Dispensing increased by ${displayQuantity(changeBase,m,units)}. Only the additional quantity was deducted from stock.`,
+      "success"
+    );
   }catch(err){
-    // Restore the exact stock value if an audit insert failed.
-    await sb.from("medicine_batches")
-      .update({quantity:currentBase/units,quantity_base_units:currentBase,updated_at:new Date().toISOString()})
-      .eq("id",batchId)
-      .eq("quantity_base_units",finalStock);
     setStatus(status,err.message||"Unable to update dispensing.","error");
     if(editBtn)editBtn.disabled=false;
   }
@@ -478,47 +532,74 @@ async function saveDispenseEdit(id){
 async function deletePatientDispense(id){
   const t=patientDispenses.find(x=>Number(x.id)===Number(id));
   if(!t)return;
+
   const m=t.medicines||{};
   const units=Number(t.units_per_pack||m.units_per_pack||1)||1;
   const oldBase=Number(t.quantity_base_units??Number(t.quantity||0)*units)||0;
   const name=`${m.medicine_name||""}${m.strength?" "+m.strength:""}`.trim();
 
-  if(!confirm(`Delete this medicine dispensing?\n\n${name}\nBatch: ${t.medicine_batches?.batch_number||"-"}\nQuantity: ${oldBase/units} ${m.pack_unit||"pack"}\n\nThe stock will be returned once and the audit trail will be preserved.`))return;
+  if(!confirm(`Delete this medicine dispensing?\n\n${name}\nBatch: ${t.medicine_batches?.batch_number||"-"}\nQuantity: ${displayQuantity(oldBase,m,units)}\n\nThe entire currently dispensed quantity will be returned to stock once and the audit trail will be preserved.`))return;
 
   const batchId=Number(t.batch_id);
   const {data:batch,error:be}=await sb.from("medicine_batches").select("*").eq("id",batchId).single();
-  if(be||!batch){setStatus(document.getElementById("pageStatus"),be?.message||"Unable to load stock batch.","error");return;}
+  if(be||!batch){
+    setStatus(document.getElementById("pageStatus"),be?.message||"Unable to load stock batch.","error");
+    return;
+  }
 
   const currentBase=Number(batch.quantity_base_units??Number(batch.quantity||0)*units)||0;
   const restoredBase=currentBase+oldBase;
-  const parsed=parseMedicineOnlyNote(t.notes);
   const txDate=dispensingDate||document.getElementById("dispensingDate")?.value||todayIST();
-  const note=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${Number(t.medicine_id)} | DELETE REVERSAL OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${name} | Batch:${batch.batch_number||parsed.batch||""} | Quantity:${oldBase} ${m.base_unit||"units"} | Amount:${(parsed.amount||0).toFixed(2)}`;
+  const amount=(oldBase/units)*Number(t.mrp_per_unit||0);
+  const note=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${Number(t.medicine_id)} | DELETE REVERSAL OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${name} | Batch:${batch.batch_number||""} | Quantity:${oldBase} ${m.base_unit||"units"} | Amount:${amount.toFixed(2)}`;
 
   try{
     const {data:updated,error:ue}=await sb.from("medicine_batches")
-      .update({quantity:restoredBase/units,quantity_base_units:restoredBase,updated_at:new Date().toISOString()})
+      .update({
+        quantity:restoredBase/units,
+        quantity_base_units:restoredBase,
+        updated_at:new Date().toISOString()
+      })
       .eq("id",batchId)
       .eq("quantity_base_units",currentBase)
       .select().single();
-    if(ue||!updated)throw ue||new Error("Stock changed while deleting. Please refresh and try again.");
+
+    if(ue||!updated){
+      throw ue||new Error("Stock changed while deleting. Please refresh and try again.");
+    }
 
     const {error:re}=await sb.from("medicine_stock_transactions").insert({
-      medicine_id:Number(t.medicine_id),batch_id:batchId,transaction_type:"RETURNED",
-      quantity:oldBase/units,quantity_base_units:oldBase,units_per_pack:units,
-      direction:"IN",transaction_date:txDate,
-      mrp_per_unit:t.mrp_per_unit,purchase_price_per_unit:t.purchase_price_per_unit,
+      medicine_id:Number(t.medicine_id),
+      batch_id:batchId,
+      transaction_type:"RETURNED",
+      quantity:oldBase/units,
+      quantity_base_units:oldBase,
+      units_per_pack:units,
+      direction:"IN",
+      transaction_date:txDate,
+      mrp_per_unit:t.mrp_per_unit,
+      purchase_price_per_unit:t.purchase_price_per_unit,
       notes:note
     });
+
     if(re){
       await sb.from("medicine_batches")
-        .update({quantity:currentBase/units,quantity_base_units:currentBase,updated_at:new Date().toISOString()})
-        .eq("id",batchId).eq("quantity_base_units",restoredBase);
+        .update({
+          quantity:currentBase/units,
+          quantity_base_units:currentBase,
+          updated_at:new Date().toISOString()
+        })
+        .eq("id",batchId)
+        .eq("quantity_base_units",restoredBase);
       throw re;
     }
 
     await loadPatientDispenses();
-    setStatus(document.getElementById("pageStatus"),"Medicine dispensing deleted. Stock restored once and audit history updated.","success");
+    setStatus(
+      document.getElementById("pageStatus"),
+      `Medicine dispensing deleted. ${displayQuantity(oldBase,m,units)} returned to stock.`,
+      "success"
+    );
   }catch(err){
     setStatus(document.getElementById("pageStatus"),err.message||"Unable to delete dispensing.","error");
   }
