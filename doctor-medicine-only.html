@@ -51,6 +51,10 @@ button,input,select,textarea{font-family:inherit}
       <button type="button" class="btn btn-light" id="backButton">← Back to Patient</button>
     </div>
     <div id="patientArea"><div class="spinner">Loading patient...</div></div>
+    <div style="margin-top:12px">
+      <label style="display:block;margin-bottom:6px;color:#475569;font-size:13px;font-weight:750">Medicine Dispensing Date</label>
+      <input id="dispensingDate" type="date" style="width:100%;height:47px;padding:0 13px;background:#fff;border:1px solid #cbd5e1;border-radius:10px;font-size:15px;outline:none">
+    </div>
   </div>
 
   <div class="card">
@@ -64,7 +68,10 @@ button,input,select,textarea{font-family:inherit}
   </div>
 
   <div class="card" id="batchSection" style="display:none">
-    <h2 id="selectedMedicineTitle" style="margin:0">Available Stock</h2>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <h2 id="selectedMedicineTitle" style="margin:0">Available Stock</h2>
+      <button type="button" class="btn btn-light" id="closeMedicineButton" aria-label="Close selected medicine" style="min-height:38px;padding:7px 11px;font-size:20px;line-height:1">×</button>
+    </div>
     <div class="muted" style="margin-top:5px">Select the exact stock/batch to dispense. Different batches and MRPs are shown separately.</div>
     <div id="batchList" class="batch-list"></div>
 
@@ -108,6 +115,7 @@ const patientId=Number(params.get("patient_id"));
 const returnTo=params.get("return_to")||"doctor-patients.html";
 let patient=null, selectedMedicine=null, selectedBatch=null;
 let patientDispenses=[];
+let dispensingDate="";
 
 function esc(v){return String(v??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));}
 function money(v){return "₹"+Number(v||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -144,6 +152,26 @@ function goBack(){
 }
 
 document.getElementById("backButton").addEventListener("click",goBack);
+
+function refreshDispensingDate(){
+  dispensingDate=document.getElementById("dispensingDate")?.value||todayIST();
+  loadPatientDispenses();
+}
+
+document.getElementById("dispensingDate").value=todayIST();
+dispensingDate=todayIST();
+document.getElementById("dispensingDate").addEventListener("change",refreshDispensingDate);
+
+document.getElementById("closeMedicineButton").addEventListener("click",()=>{
+  selectedMedicine=null;
+  selectedBatch=null;
+  document.getElementById("medicineSearch").value="";
+  document.getElementById("medicineSuggestions").style.display="none";
+  document.getElementById("batchSection").style.display="none";
+  document.getElementById("quantityPanel").classList.remove("show");
+  clearStatus(document.getElementById("medicineStatus"));
+  clearStatus(document.getElementById("dispenseStatus"));
+});
 
 async function searchMedicines(){
   const term=document.getElementById("medicineSearch").value.trim();
@@ -305,11 +333,12 @@ function renderPatientDispenses(){
 
 async function loadPatientDispenses(){
   if(!patient?.id)return;
+  const date=dispensingDate||document.getElementById("dispensingDate")?.value||todayIST();
   const {data,error}=await sb.from("medicine_stock_transactions")
-    .select("*,medicines(medicine_name,strength,dosage_form,pack_unit,base_unit,units_per_pack),medicine_batches(batch_number,quantity,quantity_base_units,units_per_pack)")
+    .select("*,medicines(id,medicine_name,strength,dosage_form,pack_unit,base_unit,units_per_pack),medicine_batches(batch_number,quantity,quantity_base_units,units_per_pack)")
     .eq("transaction_type","DISPENSED")
+    .eq("transaction_date",date)
     .like("notes",`${medicineOnlyNotePrefix()}%`)
-    .order("transaction_date",{ascending:false})
     .order("id",{ascending:false});
   if(error){
     setStatus(document.getElementById("pageStatus"),error.message,"error");
@@ -370,7 +399,7 @@ async function saveDispenseEdit(id){
 
   const newAmount=(newBase/units)*Number(t.mrp_per_unit||0);
   const oldAmount=parseMedicineOnlyNote(t.notes).amount || ((Number(t.quantity)||0)*Number(t.mrp_per_unit||0));
-  const correctedNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${m.id} | EDIT REVERSAL OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${m.medicine_name}${m.strength?" "+m.strength:""} | Batch:${batch.batch_number||""} | Quantity:${oldBase} ${m.base_unit||"units"} | Amount:${oldAmount.toFixed(2)}`;
+  const correctedNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${Number(t.medicine_id)} | EDIT REVERSAL OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${m.medicine_name}${m.strength?" "+m.strength:""} | Batch:${batch.batch_number||""} | Quantity:${oldBase} ${m.base_unit||"units"} | Amount:${oldAmount.toFixed(2)}`;
 
   const editBtn=document.querySelector(`#dispenseEdit-${id} .btn-primary`);
   if(editBtn)editBtn.disabled=true;
@@ -388,7 +417,7 @@ async function saveDispenseEdit(id){
     stockChanged=true;
 
     const {error:re}=await sb.from("medicine_stock_transactions").insert({
-      medicine_id:m.id,batch_id:batchId,transaction_type:"RETURNED",
+      medicine_id:Number(t.medicine_id),batch_id:batchId,transaction_type:"RETURNED",
       quantity:oldBase/units,quantity_base_units:oldBase,units_per_pack:units,
       direction:"IN",transaction_date:todayIST(),
       mrp_per_unit:t.mrp_per_unit,purchase_price_per_unit:t.purchase_price_per_unit,
@@ -397,9 +426,9 @@ async function saveDispenseEdit(id){
     if(re)throw re;
 
     const finalBase=returnedBase-newBase;
-    const finalNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${m.id} | EDIT REPLACEMENT OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${m.medicine_name}${m.strength?" "+m.strength:""} | Batch:${batch.batch_number||""} | Quantity:${newBase} ${m.base_unit||"units"} | Amount:${newAmount.toFixed(2)}`;
+    const finalNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${Number(t.medicine_id)} | EDIT REPLACEMENT OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${m.medicine_name}${m.strength?" "+m.strength:""} | Batch:${batch.batch_number||""} | Quantity:${newBase} ${m.base_unit||"units"} | Amount:${newAmount.toFixed(2)}`;
     const {error:de}=await sb.from("medicine_stock_transactions").insert({
-      medicine_id:m.id,batch_id:batchId,transaction_type:"DISPENSED",
+      medicine_id:Number(t.medicine_id),batch_id:batchId,transaction_type:"DISPENSED",
       quantity:newBase/units,quantity_base_units:newBase,units_per_pack:units,
       direction:"OUT",transaction_date:todayIST(),
       mrp_per_unit:t.mrp_per_unit,purchase_price_per_unit:t.purchase_price_per_unit,
@@ -446,7 +475,7 @@ async function deletePatientDispense(id){
   const currentBase=Number(batch.quantity_base_units??Number(batch.quantity||0)*units)||0;
   const restoredBase=currentBase+oldBase;
   const parsed=parseMedicineOnlyNote(t.notes);
-  const note=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${m.id} | DELETE REVERSAL OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${m.medicine_name}${m.strength?" "+m.strength:""} | Batch:${batch.batch_number||parsed.batch||""} | Quantity:${oldBase} ${m.base_unit||"units"} | Amount:${(parsed.amount||0).toFixed(2)}`;
+  const note=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${Number(t.medicine_id)} | DELETE REVERSAL OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${m.medicine_name}${m.strength?" "+m.strength:""} | Batch:${batch.batch_number||parsed.batch||""} | Quantity:${oldBase} ${m.base_unit||"units"} | Amount:${(parsed.amount||0).toFixed(2)}`;
 
   try{
     const {data:up,error:ue}=await sb.from("medicine_batches")
@@ -457,7 +486,7 @@ async function deletePatientDispense(id){
     if(ue||!up)throw ue||new Error("Stock changed while deleting. Please refresh and try again.");
 
     const {error:re}=await sb.from("medicine_stock_transactions").insert({
-      medicine_id:m.id,batch_id:batchId,transaction_type:"RETURNED",
+      medicine_id:Number(t.medicine_id),batch_id:batchId,transaction_type:"RETURNED",
       quantity:oldBase/units,quantity_base_units:oldBase,units_per_pack:units,
       direction:"IN",transaction_date:todayIST(),
       mrp_per_unit:t.mrp_per_unit,purchase_price_per_unit:t.purchase_price_per_unit,
@@ -488,9 +517,9 @@ document.getElementById("dispenseButton").addEventListener("click",async()=>{
   try{
     const {data:updated,error:ue}=await sb.from("medicine_batches").update({quantity:newBase/units,quantity_base_units:newBase,updated_at:new Date().toISOString()}).eq("id",selectedBatch.id).eq("quantity_base_units",oldBase).select().single();
     if(ue||!updated)throw ue||new Error("Stock changed while dispensing. Please refresh and try again.");
-    const {error:te}=await sb.from("medicine_stock_transactions").insert({medicine_id:selectedMedicine.id,batch_id:selectedBatch.id,transaction_type:"DISPENSED",quantity:requestedBase/units,quantity_base_units:requestedBase,units_per_pack:units,direction:"OUT",transaction_date:todayIST(),mrp_per_unit:selectedBatch.mrp_per_unit,purchase_price_per_unit:selectedBatch.purchase_price_per_unit,notes:txNote});
+    const {error:te}=await sb.from("medicine_stock_transactions").insert({medicine_id:selectedMedicine.id,batch_id:selectedBatch.id,transaction_type:"DISPENSED",quantity:requestedBase/units,quantity_base_units:requestedBase,units_per_pack:units,direction:"OUT",transaction_date:(dispensingDate||document.getElementById("dispensingDate")?.value||todayIST()),mrp_per_unit:selectedBatch.mrp_per_unit,purchase_price_per_unit:selectedBatch.purchase_price_per_unit,notes:txNote});
     if(te){await sb.from("medicine_batches").update({quantity:selectedBatch.quantity,quantity_base_units:oldBase,updated_at:new Date().toISOString()}).eq("id",selectedBatch.id).eq("quantity_base_units",newBase);throw te;}
-    setStatus(document.getElementById("dispenseStatus"),`Medicine dispensed successfully. Amount ${money(amount)}. Stock history updated.`,"success");
+    setStatus(document.getElementById("dispenseStatus"),`Medicine dispensed successfully for ${dispensingDate||todayIST()}. Amount ${money(amount)}. Stock history updated.`,"success");
     await loadPatientDispenses();
     document.getElementById("dispenseButton").disabled=false;
     document.getElementById("medicineSearch").value="";
@@ -504,6 +533,9 @@ document.getElementById("dispenseButton").addEventListener("click",async()=>{
 
 (async function init(){
   if(!(await requireSession()))return;
+  const dateInput=document.getElementById("dispensingDate");
+  if(dateInput && !dateInput.value) dateInput.value=todayIST();
+  dispensingDate=dateInput?.value||todayIST();
   await loadPatient();
 })();
 </script>
