@@ -7,16 +7,21 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f4f7fb;color:#0f172a;font-family:Arial,Helvetica,sans-serif}
-.page{max-width:920px;margin:0 auto;padding:16px 12px 40px}
-.header{margin-bottom:14px}.brand{font-size:14px;font-weight:800;letter-spacing:1.5px;color:#2563eb}.header h1{margin:7px 0 4px;font-size:30px}.sub{margin:0;color:#64748b}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 5px 20px rgba(15,23,42,.05)}
-.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center}.topbar h2{margin:0;font-size:21px}.btn{border:0;border-radius:11px;min-height:44px;padding:10px 15px;font-size:15px;font-weight:800;cursor:pointer}.btn:disabled{opacity:.55;cursor:not-allowed}.btn-light{background:#eef2f7;color:#1e293b;border:1px solid #dbe3ed}.btn-primary{background:#2563eb;color:#fff}.btn-success{background:#16a34a;color:#fff}.btn-danger{background:#dc2626;color:#fff}.search-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:12px}.search-row input,.qty-box input{width:100%;height:48px;border:2px solid #dbe3ef;border-radius:12px;padding:10px 12px;font-size:16px;outline:none}.search-row input:focus,.qty-box input:focus{border-color:#2563eb}
-.suggestions{margin-top:8px;border:1px solid #dbe3ef;border-radius:12px;overflow:hidden;background:#fff}.suggestion{padding:12px 13px;border-bottom:1px solid #eef2f7;cursor:pointer}.suggestion:last-child{border-bottom:0}.suggestion:hover{background:#f8fafc}.muted{color:#64748b;font-size:13px;line-height:1.45}.patient-box{margin-top:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:13px}.patient-name{font-size:19px;font-weight:800}.patient-meta{color:#475569;margin-top:4px}
-.status{margin-top:10px;padding:11px 12px;border-radius:11px;background:#f8fafc;color:#475569;display:none}.status.show{display:block}.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}.success{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
-.batch-list{display:grid;gap:10px;margin-top:12px}.batch-card{border:1px solid #dbe3ef;border-radius:14px;padding:13px;background:#fff;cursor:pointer}.batch-card.selected{border:2px solid #2563eb;background:#eff6ff}.batch-top{display:flex;justify-content:space-between;gap:8px}.batch-name{font-weight:800}.badge{font-size:12px;font-weight:800;padding:5px 8px;border-radius:999px;background:#e0f2fe;color:#0369a1;white-space:nowrap}.batch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}.batch-stat{background:#f8fafc;border-radius:10px;padding:8px}.batch-stat span{display:block;color:#64748b;font-size:11px}.batch-stat b{display:block;margin-top:2px;font-size:14px}.selected-mark{color:#2563eb;font-weight:800;margin-top:8px}
-.quantity-panel{display:none;margin-top:12px;padding:14px;border:1px solid #dbe3ef;border-radius:14px;background:#f8fafc}.quantity-panel.show{display:block}.quantity-title{font-weight:800;font-size:17px}.unit-info{margin-top:5px;color:#475569}.qty-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.qty-box label{display:block;font-weight:800;margin-bottom:6px}.total-box{margin-top:12px;padding:12px;border-radius:12px;background:#fff;border:1px solid #dbe3ef}.total-line{display:flex;justify-content:space-between;gap:10px;margin:5px 0}.amount{font-size:23px;font-weight:900;color:#166534}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.empty{text-align:center;padding:18px;color:#64748b}.small-note{font-size:12px;color:#64748b;margin-top:8px}.spinner{padding:15px;text-align:center;color:#64748b}
-@media(max-width:650px){.page{padding:11px 8px 32px}.header h1{font-size:25px}.topbar{align-items:flex-start}.topbar h2{font-size:19px}.search-row{grid-template-columns:1fr}.batch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.qty-grid{grid-template-columns:1fr}.actions .btn{width:100%}.batch-top{flex-direction:column}.btn{width:auto}}
+body{margin:0;background:#f5f7fb;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+button,input,select,textarea{font-family:inherit}
+.page{width:100%;max-width:1000px;margin:0 auto;padding:16px 10px 45px}
+.header{margin-bottom:18px}.brand{margin:0;color:#2563eb;font-size:12px;font-weight:850;letter-spacing:1.3px}.header h1{margin:4px 0;font-size:28px;line-height:1.2}.sub{margin:0;color:#697386;font-size:14px}
+.card{margin-bottom:14px;padding:18px;background:#fff;border:1px solid #e4e9f0;border-radius:18px;box-shadow:0 5px 20px rgba(20,31,56,.06)}
+.card h2{margin:0;font-size:20px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.topbar h2{margin:0}
+.btn{min-height:42px;padding:10px 14px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:11px;cursor:pointer;text-decoration:none;font-size:14px;font-weight:750;white-space:nowrap}.btn:disabled{opacity:.55;cursor:not-allowed}.btn-light{background:#f1f5f9;color:#172033;border:1px solid #dce3ec}.btn-primary{background:#2563eb;color:#fff}.btn-success{background:#15803d;color:#fff}.btn-danger{background:#dc3545;color:#fff}
+.search-row{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:8px;margin-top:12px}.search-row input,.qty-box input{width:100%;height:47px;padding:0 13px;background:#fff;border:1px solid #cbd5e1;border-radius:10px;font-size:15px;outline:none}.search-row input:focus,.qty-box input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.suggestions{margin-top:8px;border:1px solid #dbe3ef;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 10px 24px rgba(15,23,42,.08)}.suggestion{padding:10px 11px;border-bottom:1px solid #eef2f7;cursor:pointer;line-height:1.45}.suggestion:last-child{border-bottom:0}.suggestion:hover{background:#f0f9ff}.muted{color:#64748b;font-size:12px;line-height:1.5}
+.patient-box{margin-top:0;margin-bottom:0;padding:17px;background:linear-gradient(135deg,#eef6ff,#fff);border:1px solid #d8e7fa;border-radius:16px}.patient-name{font-size:21px;font-weight:850}.patient-meta{margin-top:5px;color:#5d697c;font-size:13px;line-height:1.7}
+.status{margin-top:10px;padding:11px 12px;border-radius:11px;background:#f8fafc;color:#475569;display:none;font-size:13px;line-height:1.45}.status.show{display:block}.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}.success{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.batch-list{display:grid;gap:10px;margin-top:12px}.batch-card{border:1px solid #dbe7ef;border-radius:13px;padding:13px;background:#fff;cursor:pointer}.batch-card.selected{border:2px solid #2563eb;background:#eff6ff}.batch-top{display:flex;justify-content:space-between;gap:8px}.batch-name{font-weight:850}.badge{font-size:11px;font-weight:800;padding:5px 8px;border-radius:999px;background:#e0f2fe;color:#0369a1;white-space:nowrap}.batch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}.batch-stat{background:#f8fafc;border-radius:10px;padding:8px}.batch-stat span{display:block;color:#64748b;font-size:10px}.batch-stat b{display:block;margin-top:2px;font-size:13px}.selected-mark{color:#2563eb;font-weight:800;margin-top:8px}
+.quantity-panel{display:none;margin-top:12px;padding:15px;background:linear-gradient(135deg,#f5fbff,#fff);border:1px solid #cfe5f2;border-radius:14px}.quantity-panel.show{display:block}.quantity-title{font-weight:850;font-size:17px}.unit-info{margin-top:5px;color:#475569;font-size:12px}.qty-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.qty-box label{display:block;margin-bottom:6px;color:#475569;font-size:13px;font-weight:750}.total-box{margin-top:12px;padding:12px;border-radius:12px;background:#fff;border:1px solid #dbe3ef}.total-line{display:flex;justify-content:space-between;gap:10px;margin:5px 0;font-size:13px}.amount{font-size:21px;font-weight:900;color:#166534}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.empty{text-align:center;padding:15px;color:#64748b;font-size:13px}.small-note{font-size:11px;color:#64748b;margin-top:8px}.spinner{padding:15px;text-align:center;color:#64748b;font-size:13px}
+@media(max-width:650px){.page{padding:16px 10px 36px}.header h1{font-size:28px}.card{padding:16px}.topbar{align-items:center}.topbar h2{font-size:20px}.search-row{grid-template-columns:minmax(0,1fr) 110px}.search-row .btn{width:110px}.batch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.qty-grid{grid-template-columns:1fr}.actions .btn{width:auto}.batch-top{align-items:flex-start}.btn{font-size:14px}.patient-name{font-size:20px}}
+@media(max-width:430px){.topbar{align-items:flex-start}.topbar .btn{flex:0 0 auto}.search-row{grid-template-columns:minmax(0,1fr) 100px}.search-row .btn{width:100px}.batch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -72,7 +77,7 @@ body{margin:0;background:#f4f7fb;color:#0f172a;font-family:Arial,Helvetica,sans-
 
 <script>
 const SUPABASE_URL="https://twdmvdqqckcpwoccvtkj.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JBrvUyI";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JbBrvUyI";
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 
 const params=new URLSearchParams(window.location.search);
@@ -98,7 +103,12 @@ async function requireSession(){const {data}=await sb.auth.getSession();if(!data
 async function loadPatient(){
   if(!patientId){setStatus(document.getElementById("pageStatus"),"Patient ID is missing.","error");return;}
   const {data,error}=await sb.from("patients").select("*").eq("id",patientId).single();
-  if(error||!data){setStatus(document.getElementById("pageStatus"),error?.message||"Unable to load patient.","error");return;}
+  if(error||!data){
+    const message=error?.message||"Unable to load patient.";
+    document.getElementById("patientArea").innerHTML=`<div class="status show error">${esc(message)}</div>`;
+    setStatus(document.getElementById("pageStatus"),message,"error");
+    return;
+  }
   patient=data;
   document.getElementById("patientArea").innerHTML=`<div class="patient-box"><div class="patient-name">👤 ${esc(data.patient_name||"-")}</div><div class="patient-meta">🆔 Patient ID: ${esc(data.id)} &nbsp; • &nbsp; 📞 ${esc(data.patient_phone||"-")}</div></div>`;
 }
