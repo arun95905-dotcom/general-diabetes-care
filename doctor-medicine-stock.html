@@ -306,14 +306,58 @@ input[type="text"],input[type="search"]{
 .medicine-movement-toggle[aria-expanded="true"] .movement-chevron{transform:rotate(180deg)}
 .medicine-movement-content{padding:0 12px 12px}
 @media(max-width:600px){
-  .medicine-detail-modal{width:calc(100vw - 12px);max-height:94vh;border-radius:14px}
-  .medicine-detail-topbar{padding:11px 12px;border-radius:14px 14px 0 0}
-  .medicine-detail-topbar h2{font-size:18px}
-  .medicine-detail-close{min-height:40px;padding:8px 10px;font-size:13px}
-  #medicineDetailContent{padding:10px 10px 14px}
-  #medicineDetailContent .section{margin-bottom:10px}
-  .medicine-movement-toggle{padding:13px 12px;font-size:15px}
-  .medicine-movement-content{padding:0 8px 8px}
+  /* Mobile medicine details: compact dialog, about half the screen,
+     with the details scrolling inside the dialog. */
+  .modal-backdrop{
+    padding:0;
+    align-items:center;
+    justify-content:center;
+  }
+  .medicine-detail-modal{
+    width:calc(100vw - 24px);
+    max-width:none;
+    height:auto;
+    max-height:56vh;
+    min-height:0;
+    margin:auto;
+    border-radius:16px;
+    box-shadow:0 14px 40px rgba(0,0,0,.28);
+  }
+  .medicine-detail-topbar{
+    flex:0 0 auto;
+    position:sticky;
+    top:0;
+    padding:10px 12px;
+    min-height:52px;
+    border-radius:16px 16px 0 0;
+  }
+  .medicine-detail-topbar h2{font-size:17px;line-height:1.2}
+  .medicine-detail-close{
+    min-height:38px;
+    padding:7px 10px;
+    font-size:12px;
+    border-radius:10px;
+  }
+  #medicineDetailContent{
+    flex:1 1 auto;
+    min-height:0;
+    max-height:none;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:9px 9px 12px;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+  }
+  #medicineDetailContent .section{margin-bottom:8px;padding:10px;border-radius:12px}
+  #medicineDetailContent .section h3{font-size:15px;margin-bottom:8px}
+  #medicineDetailContent .form-grid{grid-template-columns:1fr 1fr;gap:8px}
+  #medicineDetailContent .table th,#medicineDetailContent .table td{padding:8px;font-size:11px}
+  #medicineDetailContent .table{min-width:650px}
+  .medicine-detail-gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .medicine-movement-toggle{padding:11px 10px;font-size:14px}
+  .medicine-movement-content{padding:0 6px 6px}
+  .medicine-detail-modal .footer-actions{margin-top:8px}
+  .medicine-detail-modal .footer-actions .btn{width:100%;min-height:42px}
 }
 </style>
 </head>
