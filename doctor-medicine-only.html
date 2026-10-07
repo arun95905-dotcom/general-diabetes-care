@@ -19,7 +19,20 @@ button,input,select,textarea{font-family:inherit}
 .patient-box{margin-top:0;margin-bottom:0;padding:17px;background:linear-gradient(135deg,#eef6ff,#fff);border:1px solid #d8e7fa;border-radius:16px}.patient-name{font-size:21px;font-weight:850}.patient-meta{margin-top:5px;color:#5d697c;font-size:13px;line-height:1.7}
 .status{margin-top:10px;padding:11px 12px;border-radius:11px;background:#f8fafc;color:#475569;display:none;font-size:13px;line-height:1.45}.status.show{display:block}.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}.success{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
 .batch-list{display:grid;gap:10px;margin-top:12px}.batch-card{border:1px solid #dbe7ef;border-radius:13px;padding:13px;background:#fff;cursor:pointer}.batch-card.selected{border:2px solid #2563eb;background:#eff6ff}.batch-top{display:flex;justify-content:space-between;gap:8px}.batch-name{font-weight:850}.badge{font-size:11px;font-weight:800;padding:5px 8px;border-radius:999px;background:#e0f2fe;color:#0369a1;white-space:nowrap}.batch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}.batch-stat{background:#f8fafc;border-radius:10px;padding:8px}.batch-stat span{display:block;color:#64748b;font-size:10px}.batch-stat b{display:block;margin-top:2px;font-size:13px}.selected-mark{color:#2563eb;font-weight:800;margin-top:8px}
-.quantity-panel{display:none;margin-top:12px;padding:15px;background:linear-gradient(135deg,#f5fbff,#fff);border:1px solid #cfe5f2;border-radius:14px}.quantity-panel.show{display:block}.quantity-title{font-weight:850;font-size:17px}.unit-info{margin-top:5px;color:#475569;font-size:12px}.qty-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.qty-box label{display:block;margin-bottom:6px;color:#475569;font-size:13px;font-weight:750}.total-box{margin-top:12px;padding:12px;border-radius:12px;background:#fff;border:1px solid #dbe3ef}.total-line{display:flex;justify-content:space-between;gap:10px;margin:5px 0;font-size:13px}.amount{font-size:21px;font-weight:900;color:#166534}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.empty{text-align:center;padding:15px;color:#64748b;font-size:13px}.small-note{font-size:11px;color:#64748b;margin-top:8px}.spinner{padding:15px;text-align:center;color:#64748b;font-size:13px}
+.quantity-panel{display:none;margin-top:12px;padding:15px;background:linear-gradient(135deg,#f5fbff,#fff);border:1px solid #cfe5f2;border-radius:14px}.quantity-panel.show{display:block}.quantity-title{font-weight:850;font-size:17px}.unit-info{margin-top:5px;color:#475569;font-size:12px}.qty-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.qty-box label{display:block;margin-bottom:6px;color:#475569;font-size:13px;font-weight:750}.total-box{margin-top:12px;padding:12px;border-radius:12px;background:#fff;border:1px solid #dbe3ef}.total-line{display:flex;justify-content:space-between;gap:10px;margin:5px 0;font-size:13px}.amount{font-size:21px;font-weight:900;color:#166534}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.empty{text-align:center;padding:15px;color:#64748b;font-size:13px}
+.dispensed-item{border:1px solid #dbe7ef;border-radius:13px;padding:13px;background:#fff;margin-bottom:10px}
+.dispensed-item:last-child{margin-bottom:0}
+.dispensed-item-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.dispensed-item-name{font-weight:850;color:#172033}
+.dispensed-item-meta{margin-top:5px;color:#64748b;font-size:12px;line-height:1.55}
+.dispensed-item-amount{font-weight:900;color:#166534;white-space:nowrap}
+.dispensed-item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.dispensed-edit-panel{display:none;margin-top:10px;padding:11px;background:#f8fafc;border:1px solid #dbe3ef;border-radius:11px}
+.dispensed-edit-panel.show{display:block}
+.dispensed-edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dispensed-edit-grid label{display:block;margin-bottom:5px;color:#475569;font-size:12px;font-weight:750}
+.dispensed-edit-grid input{width:100%;height:42px;padding:0 11px;border:1px solid #cbd5e1;border-radius:10px;font-size:14px;background:#fff}
+.small-note{font-size:11px;color:#64748b;margin-top:8px}.spinner{padding:15px;text-align:center;color:#64748b;font-size:13px}
 @media(max-width:650px){.page{padding:16px 10px 36px}.header h1{font-size:28px}.card{padding:16px}.topbar{align-items:center}.topbar h2{font-size:20px}.search-row{grid-template-columns:minmax(0,1fr) 110px}.search-row .btn{width:110px}.batch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.qty-grid{grid-template-columns:1fr}.actions .btn{width:auto}.batch-top{align-items:flex-start}.btn{font-size:14px}.patient-name{font-size:20px}}
 @media(max-width:430px){.topbar{align-items:flex-start}.topbar .btn{flex:0 0 auto}.search-row{grid-template-columns:minmax(0,1fr) 100px}.search-row .btn{width:100px}.batch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
@@ -72,6 +85,16 @@ button,input,select,textarea{font-family:inherit}
     </div>
   </div>
 
+  <div class="card" id="dispensedHistorySection" style="display:none">
+    <div class="topbar">
+      <h2>💊 Dispensed Medicines</h2>
+    </div>
+    <div class="muted" style="margin-top:-6px;margin-bottom:10px">
+      Medicines already dispensed to this patient. You can edit the quantity or delete the dispensing.
+    </div>
+    <div id="dispensedHistoryList"></div>
+  </div>
+
   <div id="pageStatus" class="status"></div>
 </div>
 
@@ -84,6 +107,7 @@ const params=new URLSearchParams(window.location.search);
 const patientId=Number(params.get("patient_id"));
 const returnTo=params.get("return_to")||"doctor-patients.html";
 let patient=null, selectedMedicine=null, selectedBatch=null;
+let patientDispenses=[];
 
 function esc(v){return String(v??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));}
 function money(v){return "₹"+Number(v||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -111,6 +135,7 @@ async function loadPatient(){
   }
   patient=data;
   document.getElementById("patientArea").innerHTML=`<div class="patient-box"><div class="patient-name">👤 ${esc(data.patient_name||"-")}</div><div class="patient-meta">🆔 Patient ID: ${esc(data.id)} &nbsp; • &nbsp; 📞 ${esc(data.patient_phone||"-")}</div></div>`;
+  await loadPatientDispenses();
 }
 
 function goBack(){
@@ -193,6 +218,263 @@ function updateAmount(){
   clearStatus(document.getElementById("dispenseStatus"));
 }
 
+
+function medicineOnlyNotePrefix(){
+  return `GDC-MEDICINE-ONLY:PATIENT:${patient?.id}:`;
+}
+
+function parseMedicineOnlyNote(note){
+  const s=String(note||"");
+  const medicineMatch=s.match(/MEDICINE:(\d+)/);
+  const patientMatch=s.match(/PATIENT:(\d+)/);
+  const batchMatch=s.match(/\| Batch:([^|]*)/);
+  const qtyMatch=s.match(/\| Quantity:([0-9.]+)\s+([^\s|]+)/);
+  const amountMatch=s.match(/\| Amount:([0-9.]+)/);
+  return {
+    medicineId:medicineMatch?Number(medicineMatch[1]):null,
+    patientId:patientMatch?Number(patientMatch[1]):null,
+    batch:batchMatch?batchMatch[1].trim():"",
+    quantityBase:qtyMatch?Number(qtyMatch[1]):0,
+    quantityUnit:qtyMatch?qtyMatch[2]:"",
+    amount:amountMatch?Number(amountMatch[1]):0
+  };
+}
+
+function renderPatientDispenses(){
+  const section=document.getElementById("dispensedHistorySection");
+  const list=document.getElementById("dispensedHistoryList");
+  if(!patientDispenses.length){
+    section.style.display="none";
+    list.innerHTML="";
+    return;
+  }
+  section.style.display="block";
+  list.innerHTML=patientDispenses.map(t=>{
+    const m=t.medicines||{};
+    const parsed=parseMedicineOnlyNote(t.notes);
+    const units=Number(t.units_per_pack||m.units_per_pack||1)||1;
+    const base=Number(t.quantity_base_units??Number(t.quantity||0)*units)||0;
+    const packs=base/units;
+    const qtyText=Number.isInteger(packs)
+      ? `${packs} ${m.pack_unit||t.unit_name||"pack"}${base%units?` + ${Math.round(base%units)} ${m.base_unit||"units"}`:""}`
+      : `${base} ${m.base_unit||"units"}`;
+    const amount=parsed.amount || ((Number(t.quantity)||0)*Number(t.mrp_per_unit||0));
+    return `
+      <div class="dispensed-item" data-tx-id="${Number(t.id)}">
+        <div class="dispensed-item-top">
+          <div>
+            <div class="dispensed-item-name">💊 ${esc(m.medicine_name||"Medicine")} ${esc(m.strength||"")}</div>
+            <div class="dispensed-item-meta">
+              📅 ${esc(t.transaction_date||"-")}
+              &nbsp; • &nbsp; Batch: ${esc(t.batch_id ? (t.medicine_batches?.batch_number||parsed.batch||"-") : (parsed.batch||"-"))}
+              <br>
+              Quantity: <b>${esc(qtyText)}</b>
+              &nbsp; • &nbsp; MRP: ${money(t.mrp_per_unit)}
+            </div>
+          </div>
+          <div class="dispensed-item-amount">${money(amount)}</div>
+        </div>
+
+        <div class="dispensed-item-actions">
+          <button type="button" class="btn btn-light" onclick="toggleDispenseEdit(${Number(t.id)})">✏️ Edit</button>
+          <button type="button" class="btn btn-danger" onclick="deletePatientDispense(${Number(t.id)})">🗑 Delete</button>
+        </div>
+
+        <div id="dispenseEdit-${Number(t.id)}" class="dispensed-edit-panel">
+          <div class="muted" style="margin-bottom:8px">
+            Batch: <b>${esc(t.medicine_batches?.batch_number||parsed.batch||"-")}</b>
+            &nbsp; • &nbsp; Available stock: ${esc(displayStock(m,t.medicine_batches||{quantity_base_units:0,units_per_pack:units}))}
+          </div>
+          <div class="dispensed-edit-grid">
+            ${
+              isTabletOrCapsule(m)
+              ? `<div><label>${esc(m.pack_unit||"Pack")}</label><input id="editPack-${Number(t.id)}" type="number" min="0" step="1" value="${Math.floor(base/units)}"></div>
+                 <div><label>${esc(m.base_unit||"Unit")}</label><input id="editBase-${Number(t.id)}" type="number" min="0" step="1" value="${Math.round(base%units)}"></div>`
+              : `<div><label>Quantity (${esc(m.pack_unit||"Pack")})</label><input id="editPack-${Number(t.id)}" type="number" min="0" step="1" value="${base/units}"></div>`
+            }
+          </div>
+          <div class="dispensed-item-actions">
+            <button type="button" class="btn btn-primary" onclick="saveDispenseEdit(${Number(t.id)})">Save Changes</button>
+            <button type="button" class="btn btn-light" onclick="toggleDispenseEdit(${Number(t.id)})">Cancel</button>
+          </div>
+          <div id="editStatus-${Number(t.id)}" class="status"></div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+async function loadPatientDispenses(){
+  if(!patient?.id)return;
+  const {data,error}=await sb.from("medicine_stock_transactions")
+    .select("*,medicines(medicine_name,strength,dosage_form,pack_unit,base_unit,units_per_pack),medicine_batches(batch_number,quantity,quantity_base_units,units_per_pack)")
+    .eq("transaction_type","DISPENSED")
+    .like("notes",`${medicineOnlyNotePrefix()}%`)
+    .order("transaction_date",{ascending:false})
+    .order("id",{ascending:false});
+  if(error){
+    setStatus(document.getElementById("pageStatus"),error.message,"error");
+    return;
+  }
+  const rows=data||[];
+
+  // Keep the original audit rows in the database, but hide superseded
+  // dispensing rows from the patient's current list.
+  const supersededIds=new Set();
+  rows.forEach(t=>{
+    const note=String(t.notes||"");
+    const match=note.match(/(?:EDIT REVERSAL OF TX|DELETE REVERSAL OF TX):(\d+)/);
+    if(match) supersededIds.add(Number(match[1]));
+  });
+
+  patientDispenses=rows.filter(t=>!supersededIds.has(Number(t.id)));
+  renderPatientDispenses();
+}
+
+function toggleDispenseEdit(id){
+  document.getElementById(`dispenseEdit-${id}`)?.classList.toggle("show");
+}
+
+function getEditRequestedBase(t){
+  const m=t.medicines||{};
+  const units=Number(t.units_per_pack||m.units_per_pack||1)||1;
+  const packs=Number(document.getElementById(`editPack-${t.id}`)?.value)||0;
+  const individual=isTabletOrCapsule(m)
+    ? Number(document.getElementById(`editBase-${t.id}`)?.value)||0
+    : 0;
+  return packs*units+individual;
+}
+
+async function saveDispenseEdit(id){
+  const t=patientDispenses.find(x=>Number(x.id)===Number(id));
+  if(!t)return;
+  const status=document.getElementById(`editStatus-${id}`);
+  const m=t.medicines||{};
+  const units=Number(t.units_per_pack||m.units_per_pack||1)||1;
+  const oldBase=Number(t.quantity_base_units??Number(t.quantity||0)*units)||0;
+  const newBase=getEditRequestedBase(t);
+
+  if(newBase<=0){
+    setStatus(status,"Quantity must be greater than zero.","error");return;
+  }
+
+  const batchId=Number(t.batch_id);
+  const {data:batch,error:be}=await sb.from("medicine_batches").select("*").eq("id",batchId).single();
+  if(be||!batch){setStatus(status,be?.message||"Unable to load stock batch.","error");return;}
+
+  const currentBase=Number(batch.quantity_base_units??Number(batch.quantity||0)*units)||0;
+  const availableAfterReturn=currentBase+oldBase;
+  if(newBase>availableAfterReturn){
+    setStatus(status,`Insufficient stock. Maximum available after reversing the old dispensing: ${displayStock(m,{...batch,quantity_base_units:availableAfterReturn,units_per_pack:units})}.`,"error");
+    return;
+  }
+
+  const newAmount=(newBase/units)*Number(t.mrp_per_unit||0);
+  const oldAmount=parseMedicineOnlyNote(t.notes).amount || ((Number(t.quantity)||0)*Number(t.mrp_per_unit||0));
+  const correctedNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${m.id} | EDIT REVERSAL OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${m.medicine_name}${m.strength?" "+m.strength:""} | Batch:${batch.batch_number||""} | Quantity:${oldBase} ${m.base_unit||"units"} | Amount:${oldAmount.toFixed(2)}`;
+
+  const editBtn=document.querySelector(`#dispenseEdit-${id} .btn-primary`);
+  if(editBtn)editBtn.disabled=true;
+  setStatus(status,"Updating stock and audit trail...");
+
+  let stockChanged=false;
+  try{
+    const returnedBase=currentBase+oldBase;
+    const {data:up,error:ue}=await sb.from("medicine_batches")
+      .update({quantity:returnedBase/units,quantity_base_units:returnedBase,updated_at:new Date().toISOString()})
+      .eq("id",batchId)
+      .eq("quantity_base_units",currentBase)
+      .select().single();
+    if(ue||!up)throw ue||new Error("Stock changed while editing. Please refresh and try again.");
+    stockChanged=true;
+
+    const {error:re}=await sb.from("medicine_stock_transactions").insert({
+      medicine_id:m.id,batch_id:batchId,transaction_type:"RETURNED",
+      quantity:oldBase/units,quantity_base_units:oldBase,units_per_pack:units,
+      direction:"IN",transaction_date:todayIST(),
+      mrp_per_unit:t.mrp_per_unit,purchase_price_per_unit:t.purchase_price_per_unit,
+      notes:correctedNote
+    });
+    if(re)throw re;
+
+    const finalBase=returnedBase-newBase;
+    const finalNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${m.id} | EDIT REPLACEMENT OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${m.medicine_name}${m.strength?" "+m.strength:""} | Batch:${batch.batch_number||""} | Quantity:${newBase} ${m.base_unit||"units"} | Amount:${newAmount.toFixed(2)}`;
+    const {error:de}=await sb.from("medicine_stock_transactions").insert({
+      medicine_id:m.id,batch_id:batchId,transaction_type:"DISPENSED",
+      quantity:newBase/units,quantity_base_units:newBase,units_per_pack:units,
+      direction:"OUT",transaction_date:todayIST(),
+      mrp_per_unit:t.mrp_per_unit,purchase_price_per_unit:t.purchase_price_per_unit,
+      notes:finalNote
+    });
+    if(de)throw de;
+
+    const {data:finalBatch,error:fe}=await sb.from("medicine_batches")
+      .update({quantity:finalBase/units,quantity_base_units:finalBase,updated_at:new Date().toISOString()})
+      .eq("id",batchId)
+      .eq("quantity_base_units",returnedBase)
+      .select().single();
+    if(fe||!finalBatch)throw fe||new Error("Unable to finalize stock update.");
+
+    // Mark the original transaction as corrected only through a separate audit note;
+    // do not rewrite/delete the original movement.
+    setStatus(status,"Dispensing updated successfully. Stock and audit history updated.","success");
+    await loadPatientDispenses();
+  }catch(err){
+    if(stockChanged){
+      // Best-effort rollback of the temporary returned stock if a later audit insert failed.
+      await sb.from("medicine_batches")
+        .update({quantity:currentBase/units,quantity_base_units:currentBase,updated_at:new Date().toISOString()})
+        .eq("id",batchId)
+        .eq("quantity_base_units",currentBase+oldBase);
+    }
+    setStatus(status,err.message||"Unable to update dispensing.","error");
+    if(editBtn)editBtn.disabled=false;
+  }
+}
+
+async function deletePatientDispense(id){
+  const t=patientDispenses.find(x=>Number(x.id)===Number(id));
+  if(!t)return;
+  if(!confirm("Delete this medicine dispensing? The quantity will be returned to the same batch and the audit trail will be preserved."))return;
+
+  const m=t.medicines||{};
+  const units=Number(t.units_per_pack||m.units_per_pack||1)||1;
+  const oldBase=Number(t.quantity_base_units??Number(t.quantity||0)*units)||0;
+  const batchId=Number(t.batch_id);
+  const {data:batch,error:be}=await sb.from("medicine_batches").select("*").eq("id",batchId).single();
+  if(be||!batch){alert(be?.message||"Unable to load stock batch.");return;}
+
+  const currentBase=Number(batch.quantity_base_units??Number(batch.quantity||0)*units)||0;
+  const restoredBase=currentBase+oldBase;
+  const parsed=parseMedicineOnlyNote(t.notes);
+  const note=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${m.id} | DELETE REVERSAL OF TX:${t.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${m.medicine_name}${m.strength?" "+m.strength:""} | Batch:${batch.batch_number||parsed.batch||""} | Quantity:${oldBase} ${m.base_unit||"units"} | Amount:${(parsed.amount||0).toFixed(2)}`;
+
+  try{
+    const {data:up,error:ue}=await sb.from("medicine_batches")
+      .update({quantity:restoredBase/units,quantity_base_units:restoredBase,updated_at:new Date().toISOString()})
+      .eq("id",batchId)
+      .eq("quantity_base_units",currentBase)
+      .select().single();
+    if(ue||!up)throw ue||new Error("Stock changed while deleting. Please refresh and try again.");
+
+    const {error:re}=await sb.from("medicine_stock_transactions").insert({
+      medicine_id:m.id,batch_id:batchId,transaction_type:"RETURNED",
+      quantity:oldBase/units,quantity_base_units:oldBase,units_per_pack:units,
+      direction:"IN",transaction_date:todayIST(),
+      mrp_per_unit:t.mrp_per_unit,purchase_price_per_unit:t.purchase_price_per_unit,
+      notes:note
+    });
+    if(re){
+      await sb.from("medicine_batches").update({quantity:currentBase/units,quantity_base_units:currentBase,updated_at:new Date().toISOString()}).eq("id",batchId).eq("quantity_base_units",restoredBase);
+      throw re;
+    }
+
+    await loadPatientDispenses();
+    setStatus(document.getElementById("pageStatus"),"Medicine dispensing deleted. Stock restored and audit history updated.","success");
+  }catch(err){
+    setStatus(document.getElementById("pageStatus"),err.message||"Unable to delete dispensing.","error");
+  }
+}
+
 document.getElementById("dispenseButton").addEventListener("click",async()=>{
   if(!(await requireSession()))return;
   if(!patient||!selectedMedicine||!selectedBatch){setStatus(document.getElementById("dispenseStatus"),"Select a patient, medicine and stock batch first.","error");return;}
@@ -209,8 +491,14 @@ document.getElementById("dispenseButton").addEventListener("click",async()=>{
     const {error:te}=await sb.from("medicine_stock_transactions").insert({medicine_id:selectedMedicine.id,batch_id:selectedBatch.id,transaction_type:"DISPENSED",quantity:requestedBase/units,quantity_base_units:requestedBase,units_per_pack:units,direction:"OUT",transaction_date:todayIST(),mrp_per_unit:selectedBatch.mrp_per_unit,purchase_price_per_unit:selectedBatch.purchase_price_per_unit,notes:txNote});
     if(te){await sb.from("medicine_batches").update({quantity:selectedBatch.quantity,quantity_base_units:oldBase,updated_at:new Date().toISOString()}).eq("id",selectedBatch.id).eq("quantity_base_units",newBase);throw te;}
     setStatus(document.getElementById("dispenseStatus"),`Medicine dispensed successfully. Amount ${money(amount)}. Stock history updated.`,"success");
-    document.getElementById("dispenseButton").disabled=true;
-    await selectMedicine(selectedMedicine.id);
+    await loadPatientDispenses();
+    document.getElementById("dispenseButton").disabled=false;
+    document.getElementById("medicineSearch").value="";
+    document.getElementById("medicineSuggestions").style.display="none";
+    document.getElementById("batchSection").style.display="none";
+    document.getElementById("quantityPanel").classList.remove("show");
+    selectedMedicine=null;
+    selectedBatch=null;
   }catch(err){setStatus(document.getElementById("dispenseStatus"),err.message||"Unable to dispense medicine.","error");btn.disabled=false;}
 });
 
