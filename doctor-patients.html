@@ -4023,6 +4023,20 @@ function renderPatientResultCard(
         <button
           type="button"
           class="portal-button primary-button small-button"
+          onclick="openMedicineOnly(
+            ${Number(
+              patient.id
+            )}
+          )">
+
+          💊 Medicine Only
+
+        </button>
+
+
+        <button
+          type="button"
+          class="portal-button primary-button small-button"
           onclick="openPatientHistory(
             ${Number(
               patient.id
@@ -4038,6 +4052,44 @@ function renderPatientResultCard(
     </div>
 
   `;
+
+}
+
+
+/* =========================================================
+   MEDICINE ONLY
+   ========================================================= */
+
+function openMedicineOnly(
+  patientId
+) {
+
+  capturePatientListReturnContext();
+
+
+  let medicineOnlyURL =
+    "doctor-medicine-only.html" +
+    "?patient_id=" +
+    encodeURIComponent(
+      patientId
+    );
+
+
+  if (
+    patientPageReturnURL
+  ) {
+
+    medicineOnlyURL +=
+      "&return_to=" +
+      encodeURIComponent(
+        patientPageReturnURL
+      );
+
+  }
+
+
+  window.location.href =
+    medicineOnlyURL;
 
 }
 
