@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Medicine Only | General & Diabetes Care</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;color:#0f172a;font-family:Arial,Helvetica,sans-serif}
+.page{max-width:920px;margin:0 auto;padding:16px 12px 40px}
+.header{margin-bottom:14px}.brand{font-size:14px;font-weight:800;letter-spacing:1.5px;color:#2563eb}.header h1{margin:7px 0 4px;font-size:30px}.sub{margin:0;color:#64748b}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 5px 20px rgba(15,23,42,.05)}
+.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center}.topbar h2{margin:0;font-size:21px}.btn{border:0;border-radius:11px;min-height:44px;padding:10px 15px;font-size:15px;font-weight:800;cursor:pointer}.btn:disabled{opacity:.55;cursor:not-allowed}.btn-light{background:#eef2f7;color:#1e293b;border:1px solid #dbe3ed}.btn-primary{background:#2563eb;color:#fff}.btn-success{background:#16a34a;color:#fff}.btn-danger{background:#dc2626;color:#fff}.search-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:12px}.search-row input,.qty-box input{width:100%;height:48px;border:2px solid #dbe3ef;border-radius:12px;padding:10px 12px;font-size:16px;outline:none}.search-row input:focus,.qty-box input:focus{border-color:#2563eb}
+.suggestions{margin-top:8px;border:1px solid #dbe3ef;border-radius:12px;overflow:hidden;background:#fff}.suggestion{padding:12px 13px;border-bottom:1px solid #eef2f7;cursor:pointer}.suggestion:last-child{border-bottom:0}.suggestion:hover{background:#f8fafc}.muted{color:#64748b;font-size:13px;line-height:1.45}.patient-box{margin-top:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:13px}.patient-name{font-size:19px;font-weight:800}.patient-meta{color:#475569;margin-top:4px}
+.status{margin-top:10px;padding:11px 12px;border-radius:11px;background:#f8fafc;color:#475569;display:none}.status.show{display:block}.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}.success{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.batch-list{display:grid;gap:10px;margin-top:12px}.batch-card{border:1px solid #dbe3ef;border-radius:14px;padding:13px;background:#fff;cursor:pointer}.batch-card.selected{border:2px solid #2563eb;background:#eff6ff}.batch-top{display:flex;justify-content:space-between;gap:8px}.batch-name{font-weight:800}.badge{font-size:12px;font-weight:800;padding:5px 8px;border-radius:999px;background:#e0f2fe;color:#0369a1;white-space:nowrap}.batch-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}.batch-stat{background:#f8fafc;border-radius:10px;padding:8px}.batch-stat span{display:block;color:#64748b;font-size:11px}.batch-stat b{display:block;margin-top:2px;font-size:14px}.selected-mark{color:#2563eb;font-weight:800;margin-top:8px}
+.quantity-panel{display:none;margin-top:12px;padding:14px;border:1px solid #dbe3ef;border-radius:14px;background:#f8fafc}.quantity-panel.show{display:block}.quantity-title{font-weight:800;font-size:17px}.unit-info{margin-top:5px;color:#475569}.qty-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.qty-box label{display:block;font-weight:800;margin-bottom:6px}.total-box{margin-top:12px;padding:12px;border-radius:12px;background:#fff;border:1px solid #dbe3ef}.total-line{display:flex;justify-content:space-between;gap:10px;margin:5px 0}.amount{font-size:23px;font-weight:900;color:#166534}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.empty{text-align:center;padding:18px;color:#64748b}.small-note{font-size:12px;color:#64748b;margin-top:8px}.spinner{padding:15px;text-align:center;color:#64748b}
+@media(max-width:650px){.page{padding:11px 8px 32px}.header h1{font-size:25px}.topbar{align-items:flex-start}.topbar h2{font-size:19px}.search-row{grid-template-columns:1fr}.batch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.qty-grid{grid-template-columns:1fr}.actions .btn{width:100%}.batch-top{flex-direction:column}.btn{width:auto}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="brand">GENERAL &amp; DIABETES CARE</div>
+    <h1>💊 Medicine Only</h1>
+    <p class="sub">Dispense medicine without creating a consultation</p>
+  </div>
+
+  <div class="card">
+    <div class="topbar">
+      <h2>👤 Patient</h2>
+      <button type="button" class="btn btn-light" id="backButton">← Back to Patient</button>
+    </div>
+    <div id="patientArea"><div class="spinner">Loading patient...</div></div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0">🔎 Search Medicine</h2>
+    <div class="search-row">
+      <input id="medicineSearch" type="search" placeholder="Search medicine name, generic name or strength" autocomplete="off">
+      <button type="button" class="btn btn-primary" id="searchMedicineButton">Search</button>
+    </div>
+    <div id="medicineSuggestions" class="suggestions" style="display:none"></div>
+    <div id="medicineStatus" class="status"></div>
+  </div>
+
+  <div class="card" id="batchSection" style="display:none">
+    <h2 id="selectedMedicineTitle" style="margin:0">Available Stock</h2>
+    <div class="muted" style="margin-top:5px">Select the exact stock/batch to dispense. Different batches and MRPs are shown separately.</div>
+    <div id="batchList" class="batch-list"></div>
+
+    <div id="quantityPanel" class="quantity-panel">
+      <div class="quantity-title">Quantity</div>
+      <div id="unitInfo" class="unit-info"></div>
+      <div id="quantityFields" class="qty-grid"></div>
+      <div id="quantityAvailability" class="small-note"></div>
+      <div class="total-box">
+        <div class="total-line"><span>Total quantity</span><b id="totalQuantity">—</b></div>
+        <div class="total-line"><span>MRP</span><b id="mrpDisplay">₹0.00</b></div>
+        <div class="total-line"><span>Amount</span><b id="amountDisplay" class="amount">₹0.00</b></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-success" id="dispenseButton">💊 Dispense Medicine</button>
+      </div>
+      <div id="dispenseStatus" class="status"></div>
+    </div>
+  </div>
+
+  <div id="pageStatus" class="status"></div>
+</div>
+
+<script>
+const SUPABASE_URL="https://twdmvdqqckcpwoccvtkj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qDvT0t7pC5l5kbKl9QirMg_JBrvUyI";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+
+const params=new URLSearchParams(window.location.search);
+const patientId=Number(params.get("patient_id"));
+const returnTo=params.get("return_to")||"doctor-patients.html";
+let patient=null, selectedMedicine=null, selectedBatch=null;
+
+function esc(v){return String(v??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[c]));}
+function money(v){return "₹"+Number(v||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function todayIST(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function monthLabel(v){if(!v)return "-";const d=new Date(v+"T00:00:00");return d.toLocaleDateString("en-IN",{month:"short",year:"numeric"});}
+function isTabletOrCapsule(m){const f=String(m?.dosage_form||"").toLowerCase();return /tablet|capsule|caplet|lozenge/.test(f);}
+function unitCount(m,b){return Number(b?.units_per_pack||m?.units_per_pack||1)||1;}
+function packUnit(m,b){return b?.unit_name||m?.pack_unit||"Pack";}
+function baseUnit(m){return m?.base_unit||"Unit";}
+function baseStock(b){return Number(b?.quantity_base_units ?? (Number(b?.quantity||0)*unitCount(selectedMedicine||{},b)))||0;}
+function displayStock(m,b){const units=unitCount(m,b),base=Number(b?.quantity_base_units ?? Number(b?.quantity||0)*units),packs=Math.floor(base/units),rem=Math.round((base-packs*units)*100)/100;return units>1?`${packs} ${m.pack_unit||b.unit_name||"packs"}${rem?` + ${rem} ${m.base_unit||"units"}`:""}`:`${base} ${m.base_unit||"units"}`;}
+function setStatus(el,msg,type=""){el.textContent=msg;el.className="status show"+(type?" "+type:"");}
+function clearStatus(el){el.textContent="";el.className="status";}
+
+async function requireSession(){const {data}=await sb.auth.getSession();if(!data?.session){alert("Please log in again.");return false;}return true;}
+
+async function loadPatient(){
+  if(!patientId){setStatus(document.getElementById("pageStatus"),"Patient ID is missing.","error");return;}
+  const {data,error}=await sb.from("patients").select("*").eq("id",patientId).single();
+  if(error||!data){setStatus(document.getElementById("pageStatus"),error?.message||"Unable to load patient.","error");return;}
+  patient=data;
+  document.getElementById("patientArea").innerHTML=`<div class="patient-box"><div class="patient-name">👤 ${esc(data.patient_name||"-")}</div><div class="patient-meta">🆔 Patient ID: ${esc(data.id)} &nbsp; • &nbsp; 📞 ${esc(data.patient_phone||"-")}</div></div>`;
+}
+
+function goBack(){
+  if(returnTo){window.location.href=returnTo;return;}
+  history.back();
+}
+
+document.getElementById("backButton").addEventListener("click",goBack);
+
+async function searchMedicines(){
+  const term=document.getElementById("medicineSearch").value.trim();
+  const box=document.getElementById("medicineSuggestions");
+  if(term.length<2){box.style.display="none";return;}
+  const {data,error}=await sb.from("medicines").select("*").or(`medicine_name.ilike.%${term}%,generic_name.ilike.%${term}%,strength.ilike.%${term}%`).order("medicine_name").limit(15);
+  if(error){setStatus(document.getElementById("medicineStatus"),error.message,"error");return;}
+  box.innerHTML=(data||[]).map(m=>`<div class="suggestion" data-id="${Number(m.id)}"><b>${esc(m.medicine_name)} ${esc(m.strength||"")}</b><br><span class="muted">${esc(m.dosage_form||"")} · ${esc(m.pack_unit||"Pack")} · 1 ${esc(m.pack_unit||"pack")} = ${Number(m.units_per_pack||1)} ${esc(m.base_unit||"Unit")}</span></div>`).join("")||`<div class="empty">No medicines found.</div>`;
+  box.style.display="block";
+  box.querySelectorAll(".suggestion[data-id]").forEach(el=>el.addEventListener("click",()=>selectMedicine(Number(el.dataset.id))));
+}
+
+document.getElementById("searchMedicineButton").addEventListener("click",searchMedicines);
+document.getElementById("medicineSearch").addEventListener("input",()=>{clearStatus(document.getElementById("medicineStatus"));searchMedicines();});
+document.getElementById("medicineSearch").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchMedicines();}});
+
+async function selectMedicine(id){
+  const {data:m,error}=await sb.from("medicines").select("*").eq("id",id).single();
+  if(error||!m){setStatus(document.getElementById("medicineStatus"),error?.message||"Unable to load medicine.","error");return;}
+  selectedMedicine=m;selectedBatch=null;
+  document.getElementById("medicineSuggestions").style.display="none";
+  document.getElementById("medicineSearch").value=`${m.medicine_name}${m.strength?" "+m.strength:""}`.trim();
+  document.getElementById("selectedMedicineTitle").textContent=`${m.medicine_name}${m.strength?" "+m.strength:""}`.trim();
+  document.getElementById("quantityPanel").classList.remove("show");
+  const {data:batches,error:be}=await sb.from("medicine_batches").select("*").eq("medicine_id",id).gt("quantity_base_units",0).order("expiry_date",{ascending:true});
+  if(be){setStatus(document.getElementById("medicineStatus"),be.message,"error");return;}
+  document.getElementById("batchSection").style.display="block";
+  const list=document.getElementById("batchList");
+  if(!batches?.length){list.innerHTML=`<div class="empty">No available stock for this medicine.</div>`;return;}
+  list.innerHTML=batches.map(b=>`<div class="batch-card" data-batch-id="${Number(b.id)}">
+    <div class="batch-top"><div class="batch-name">Batch: ${esc(b.batch_number||"-")}</div><div class="badge">MRP ${money(b.mrp_per_unit)}</div></div>
+    <div class="batch-grid">
+      <div class="batch-stat"><span>Expiry</span><b>${esc(monthLabel(b.expiry_date))}</b></div>
+      <div class="batch-stat"><span>Pack</span><b>1 ${esc(packUnit(m,b))} = ${unitCount(m,b)} ${esc(baseUnit(m))}</b></div>
+      <div class="batch-stat"><span>Available</span><b>${esc(displayStock(m,b))}</b></div>
+      <div class="batch-stat"><span>Purchase</span><b>${money(b.purchase_price_per_unit)}</b></div>
+    </div>
+  </div>`).join("");
+  list.querySelectorAll(".batch-card").forEach(el=>el.addEventListener("click",()=>selectBatch(batches.find(x=>Number(x.id)===Number(el.dataset.batchId)))));
+}
+
+function selectBatch(b){
+  if(!b)return;
+  selectedBatch=b;
+  document.querySelectorAll(".batch-card").forEach(x=>x.classList.toggle("selected",Number(x.dataset.batchId)===Number(b.id)));
+  const m=selectedMedicine,units=unitCount(m,b),tabletMode=isTabletOrCapsule(m);
+  document.getElementById("unitInfo").innerHTML=`<b>1 ${esc(packUnit(m,b))} = ${units} ${esc(baseUnit(m))}</b> &nbsp; · &nbsp; <b>MRP ${money(b.mrp_per_unit)} / ${esc(packUnit(m,b))}</b>`;
+  const fields=document.getElementById("quantityFields");
+  if(tabletMode){
+    fields.innerHTML=`<div class="qty-box"><label>${esc(packUnit(m,b))}</label><input id="packQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div><div class="qty-box"><label>${esc(baseUnit(m))}</label><input id="baseQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`;
+  }else{
+    fields.innerHTML=`<div class="qty-box"><label>Quantity (${esc(packUnit(m,b))})</label><input id="packQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`;
+  }
+  fields.querySelectorAll("input").forEach(x=>x.addEventListener("input",updateAmount));
+  document.getElementById("quantityPanel").classList.add("show");
+  updateAmount();
+}
+
+function getRequestedBase(){
+  if(!selectedMedicine||!selectedBatch)return 0;
+  const packs=Number(document.getElementById("packQty")?.value)||0;
+  if(isTabletOrCapsule(selectedMedicine)) return packs*unitCount(selectedMedicine,selectedBatch)+(Number(document.getElementById("baseQty")?.value)||0);
+  return packs*unitCount(selectedMedicine,selectedBatch);
+}
+function updateAmount(){
+  if(!selectedMedicine||!selectedBatch)return;
+  const units=unitCount(selectedMedicine,selectedBatch),base=getRequestedBase(),available=baseStock(selectedBatch),packs=base/units;
+  document.getElementById("totalQuantity").textContent=base?`${Number.isInteger(packs)?packs:packs.toFixed(2)} ${packUnit(selectedMedicine,selectedBatch)}${isTabletOrCapsule(selectedMedicine)&&base%units?` + ${Math.round(base%units)} ${baseUnit(selectedMedicine)}`:""}`:`0 ${baseUnit(selectedMedicine)}`;
+  document.getElementById("mrpDisplay").textContent=money(selectedBatch.mrp_per_unit);
+  document.getElementById("amountDisplay").textContent=money(packs*Number(selectedBatch.mrp_per_unit||0));
+  document.getElementById("quantityAvailability").textContent=`Available: ${displayStock(selectedMedicine,selectedBatch)}`;
+  clearStatus(document.getElementById("dispenseStatus"));
+}
+
+document.getElementById("dispenseButton").addEventListener("click",async()=>{
+  if(!(await requireSession()))return;
+  if(!patient||!selectedMedicine||!selectedBatch){setStatus(document.getElementById("dispenseStatus"),"Select a patient, medicine and stock batch first.","error");return;}
+  const requestedBase=getRequestedBase(),available=baseStock(selectedBatch),units=unitCount(selectedMedicine,selectedBatch);
+  if(requestedBase<=0){setStatus(document.getElementById("dispenseStatus"),"Enter a quantity.","error");return;}
+  if(requestedBase>available){setStatus(document.getElementById("dispenseStatus"),`Insufficient stock. Available: ${displayStock(selectedMedicine,selectedBatch)}.`,"error");return;}
+  const amount=(requestedBase/units)*Number(selectedBatch.mrp_per_unit||0);
+  const oldBase=available,newBase=oldBase-requestedBase;
+  const txNote=`GDC-MEDICINE-ONLY:PATIENT:${patient.id}:MEDICINE:${selectedMedicine.id} | Patient ID:${patient.id} | Patient:${patient.patient_name||""} | ${selectedMedicine.medicine_name}${selectedMedicine.strength?" "+selectedMedicine.strength:""} | Batch:${selectedBatch.batch_number||""} | Quantity:${requestedBase} ${selectedMedicine.base_unit||"units"} | Amount:${amount.toFixed(2)}`;
+  const btn=document.getElementById("dispenseButton");btn.disabled=true;setStatus(document.getElementById("dispenseStatus"),"Recording dispensing...");
+  try{
+    const {data:updated,error:ue}=await sb.from("medicine_batches").update({quantity:newBase/units,quantity_base_units:newBase,updated_at:new Date().toISOString()}).eq("id",selectedBatch.id).eq("quantity_base_units",oldBase).select().single();
+    if(ue||!updated)throw ue||new Error("Stock changed while dispensing. Please refresh and try again.");
+    const {error:te}=await sb.from("medicine_stock_transactions").insert({medicine_id:selectedMedicine.id,batch_id:selectedBatch.id,transaction_type:"DISPENSED",quantity:requestedBase/units,quantity_base_units:requestedBase,units_per_pack:units,direction:"OUT",transaction_date:todayIST(),mrp_per_unit:selectedBatch.mrp_per_unit,purchase_price_per_unit:selectedBatch.purchase_price_per_unit,notes:txNote});
+    if(te){await sb.from("medicine_batches").update({quantity:selectedBatch.quantity,quantity_base_units:oldBase,updated_at:new Date().toISOString()}).eq("id",selectedBatch.id).eq("quantity_base_units",newBase);throw te;}
+    setStatus(document.getElementById("dispenseStatus"),`Medicine dispensed successfully. Amount ${money(amount)}. Stock history updated.`,"success");
+    document.getElementById("dispenseButton").disabled=true;
+    await selectMedicine(selectedMedicine.id);
+  }catch(err){setStatus(document.getElementById("dispenseStatus"),err.message||"Unable to dispense medicine.","error");btn.disabled=false;}
+});
+
+(async function init(){
+  if(!(await requireSession()))return;
+  await loadPatient();
+})();
+</script>
+</body>
+</html>
