@@ -6489,6 +6489,18 @@ function consultationMedicineSummaryCardHTML(
       0
     );
 
+  const dosage =
+    String(
+      row.dosage ||
+      ""
+    ).trim();
+
+  const instructions =
+    consultationMedicineInstructionText(row);
+
+  const days =
+    consultationMedicineDaysText(row);
+
   return `
 
     <div
@@ -6531,6 +6543,15 @@ function consultationMedicineSummaryCardHTML(
 
       <div class="consultation-medicine-added-details">
 
+        <div>
+          <strong>Quantity:</strong>
+          ${escapeHTML(
+            consultationMedicineQuantityDisplay(
+              row
+            )
+          )}
+        </div>
+
         ${
           batch
             ? `
@@ -6538,6 +6559,7 @@ function consultationMedicineSummaryCardHTML(
                 <strong>Batch:</strong>
                 ${escapeHTML(
                   batch.batch_number ||
+                  row.batch_number ||
                   "-"
                 )}
                 ${
@@ -6548,33 +6570,21 @@ function consultationMedicineSummaryCardHTML(
                           batch.expiry_date
                         )
                       )
-                    : ""
+                    : row.expiry_date
+                      ? " · Exp " +
+                        escapeHTML(
+                          formatDate(
+                            row.expiry_date
+                          )
+                        )
+                      : ""
                 }
               </div>
             `
-            : ""
+            : row.batch_number
+              ? `<div><strong>Batch:</strong> ${escapeHTML(row.batch_number)}${row.expiry_date ? " · Exp " + escapeHTML(formatDate(row.expiry_date)) : ""}</div>`
+              : ""
         }
-
-        <div>
-          <strong>Quantity:</strong>
-          ${escapeHTML(
-            consultationMedicineQuantityDisplay(
-              row
-            )
-          )}
-        </div>
-
-        <div>
-          <strong>Prescription:</strong>
-          ${escapeHTML(
-            consultationMedicinePrescriptionSummary(
-              row
-            ) ||
-            consultationMedicineDosageText(
-              row
-            )
-          )}
-        </div>
 
         <div>
           <strong>MRP:</strong>
@@ -6584,15 +6594,37 @@ function consultationMedicineSummaryCardHTML(
             0
           ).toFixed(2)}
           ${
-            batch
+            row.pack_unit
               ? " / " +
                 escapeHTML(
-                  row.pack_unit ||
-                  "pack"
+                  row.pack_unit
                 )
               : ""
           }
         </div>
+
+        <div>
+          <strong>Total Price:</strong>
+          ₹${amount.toFixed(2)}
+        </div>
+
+        ${
+          dosage
+            ? `<div><strong>Dosage:</strong> ${escapeHTML(dosage)}</div>`
+            : ""
+        }
+
+        ${
+          instructions
+            ? `<div><strong>Instructions:</strong> ${escapeHTML(instructions)}</div>`
+            : ""
+        }
+
+        ${
+          days
+            ? `<div><strong>Days:</strong> ${escapeHTML(days)}</div>`
+            : ""
+        }
 
       </div>
 
@@ -6629,7 +6661,6 @@ function consultationMedicineSummaryCardHTML(
   `;
 
 }
-
 
 function consultationMedicineRowHTML(
   mode,
@@ -9318,13 +9349,37 @@ function renderConsultationMedicinesDisplay(
         ${
           parsed.medicines
             .map(
-              function(item) {
+              function(item, index) {
+
+                const dosage =
+                  String(
+                    item.dosage ||
+                    ""
+                  ).trim();
+
+                const instructions =
+                  consultationMedicineInstructionText(item);
+
+                const days =
+                  consultationMedicineDaysText(item);
+
+                const mrp =
+                  Number(
+                    item.mrp_per_unit ||
+                    0
+                  );
+
+                const total =
+                  Number(
+                    item.amount ||
+                    0
+                  );
 
                 return `
                   <div class="consultation-medicine-display-card">
 
                     <div class="consultation-medicine-display-name">
-                      ${escapeHTML(
+                      ${Number(index) + 1}. ${escapeHTML(
                         consultationMedicineDisplayName(
                           item
                         )
@@ -9332,30 +9387,12 @@ function renderConsultationMedicinesDisplay(
                     </div>
 
                     <div class="consultation-medicine-display-meta">
-                      <strong>Dosage:</strong> ${escapeHTML(
-                        consultationMedicineDosageText(item)
+                      <strong>Quantity:</strong> ${escapeHTML(
+                        consultationMedicineQuantityText(
+                          item
+                        )
                       )}
                     </div>
-
-                    ${
-                      consultationMedicineInstructionText(item)
-                        ? `<div class="consultation-medicine-display-meta">
-                            <strong>Instructions:</strong> ${escapeHTML(
-                              consultationMedicineInstructionText(item)
-                            )}
-                          </div>`
-                        : ""
-                    }
-
-                    ${
-                      consultationMedicineDaysText(item)
-                        ? `<div class="consultation-medicine-display-meta">
-                            <strong>Days:</strong> ${escapeHTML(
-                              consultationMedicineDaysText(item)
-                            )}
-                          </div>`
-                        : ""
-                    }
 
                     ${
                       item.batch_id
@@ -9378,20 +9415,42 @@ function renderConsultationMedicinesDisplay(
                         : ""
                     }
 
-                    <div class="consultation-medicine-display-quantity">
-                      Quantity: ${escapeHTML(
-                        consultationMedicineQuantityText(
-                          item
-                        )
-                      )}
+                    <div class="consultation-medicine-display-meta">
+                      <strong>MRP:</strong> ₹${mrp.toFixed(2)}
+                      ${
+                        item.pack_unit
+                          ? " / " +
+                            escapeHTML(
+                              item.pack_unit
+                            )
+                          : ""
+                      }
+                    </div>
+
+                    <div class="consultation-medicine-display-total">
+                      <strong>Total Price:</strong> ₹${total.toFixed(2)}
                     </div>
 
                     ${
-                      Number(item.amount || 0) > 0
-                        ? `<div class="consultation-medicine-display-quantity">
-                            Amount: ₹${Number(
-                              item.amount
-                            ).toFixed(2)}
+                      dosage
+                        ? `<div class="consultation-medicine-display-meta">
+                            <strong>Dosage:</strong> ${escapeHTML(dosage)}
+                          </div>`
+                        : ""
+                    }
+
+                    ${
+                      instructions
+                        ? `<div class="consultation-medicine-display-meta">
+                            <strong>Instructions:</strong> ${escapeHTML(instructions)}
+                          </div>`
+                        : ""
+                    }
+
+                    ${
+                      days
+                        ? `<div class="consultation-medicine-display-meta">
+                            <strong>Days:</strong> ${escapeHTML(days)}
                           </div>`
                         : ""
                     }
@@ -9411,7 +9470,6 @@ function renderConsultationMedicinesDisplay(
   `;
 
 }
-
 
 function getConsultationOtherPrescription(
   value
