@@ -2184,13 +2184,13 @@ async function renderSavedBillMedicineDetails(billId, targetBox=null){
     }
 
     /*
-       Older bills may have stock-deduction transactions but no
-       billing_medicines row because itemization was introduced later.
-       In that case reconstruct the historical dispensing details from
-       the billing stock transaction audit trail. Do not use this path
-       for new itemized bills.
+       If no billing_medicines rows are available, try the historical
+       billing stock-transaction audit trail. This supports older bills
+       created before billing_medicines itemization was introduced.
+       If there are no matching dispensing transactions either, the bill
+       correctly shows that no medicine was added.
     */
-    if(!items.length && itemizationError){
+    if(!items.length){
       const txResult=await supabaseClient
         .from('medicine_stock_transactions')
         .select('id,medicine_id,batch_id,transaction_type,direction,quantity,quantity_base_units,units_per_pack,transaction_date,mrp_per_unit,purchase_price_per_unit,notes')
@@ -4863,7 +4863,7 @@ function renderBillDetails(
           type="button"
           class="light medicine-charge-clickable"
           style="border:0;background:transparent;padding:0;font:inherit;font-weight:850;"
-          onclick="toggleBillMedicineDetails(this)">
+          onclick="toggleBillMedicineDetails(${Number(bill.id)})">
           ${currency(
             bill.medicine_charges
           )}
