@@ -2161,8 +2161,8 @@ async function reverseBillingStockChanges(billId,changes){for(let i=changes.leng
 async function reconcileBillingStock(billId,oldItems,newItems,billDate){const changes=[];try{const oldById=new Map(oldItems.filter(i=>i.id).map(i=>[Number(i.id),i]));const newById=new Map(newItems.filter(i=>i.id).map(i=>[Number(i.id),i]));for(const oldItem of oldItems){const current=oldItem.id?newById.get(Number(oldItem.id)):null;if(!current){const c=await updateBillingBatchStock(Number(oldItem.batch_id),Number(oldItem.quantity_base_units||0),{...oldItem,transaction_date:billDate},billId);if(c)changes.push(c);}else if(Number(current.batch_id)!==Number(oldItem.batch_id)){const c=await updateBillingBatchStock(Number(oldItem.batch_id),Number(oldItem.quantity_base_units||0),{...oldItem,transaction_date:billDate},billId);if(c)changes.push(c);}else{const delta=Number(current.quantity_base_units||0)-Number(oldItem.quantity_base_units||0);if(delta<0){const c=await updateBillingBatchStock(Number(oldItem.batch_id),delta,{...current,transaction_date:billDate},billId);if(c)changes.push(c);}}}for(const newItem of newItems){const oldItem=newItem.id?oldById.get(Number(newItem.id)):null;if(!oldItem||Number(oldItem.batch_id)!==Number(newItem.batch_id)){const c=await updateBillingBatchStock(Number(newItem.batch_id),-Number(newItem.quantity_base_units||0),{...newItem,transaction_date:billDate},billId);if(c)changes.push(c);}else{const delta=Number(newItem.quantity_base_units||0)-Number(oldItem.quantity_base_units||0);if(delta>0){const c=await updateBillingBatchStock(Number(newItem.batch_id),-delta,{...newItem,transaction_date:billDate},billId);if(c)changes.push(c);}}}return changes;}catch(e){await reverseBillingStockChanges(billId,changes);throw e;}}
 async function saveBillingMedicineRows(billId,patientId,items){const {error:deleteError}=await supabaseClient.from('billing_medicines').delete().eq('bill_id',billId);if(deleteError)throw deleteError;if(!items.length)return;const payload=items.map(item=>({bill_id:billId,patient_id:patientId,medicine_id:item.medicine_id,batch_id:item.batch_id,medicine_name:item.medicine_name,strength:item.strength||null,dosage_form:item.dosage_form||null,batch_number:item.batch_number||null,expiry_date:item.expiry_date||null,pack_unit:item.pack_unit||null,base_unit:item.base_unit||null,units_per_pack:item.units_per_pack||1,quantity_base_units:item.quantity_base_units,mrp_per_unit:item.mrp_per_unit||0,purchase_price_per_unit:item.purchase_price_per_unit||0,amount:item.amount||0}));const {error}=await supabaseClient.from('billing_medicines').insert(payload);if(error)throw error;}
 async function prepareBillingMedicineRowsForEdit(billId){const items=await loadBillMedicines(billId);billMedicines=items.map(cloneBillingMedicine);billMedicineOriginal=items.map(cloneBillingMedicine);billingMedicineEditorTouched=false;renderBillingMedicineList();updateMedicineChargesFromList();return items;}
-async function renderSavedBillMedicineDetails(billId){
-  const box=document.getElementById(`billMedicineDetails-${Number(billId)}`);
+async function renderSavedBillMedicineDetails(billId, targetBox=null){
+  const box=targetBox || document.getElementById(`billMedicineDetails-${Number(billId)}`);
   if(!box)return;
 
   box.innerHTML='<div class="billing-medicine-muted">Loading medicine details...</div>';
@@ -2245,7 +2245,25 @@ async function renderSavedBillMedicineDetails(billId){
   }
 }
 
-function toggleBillMedicineDetails(billId){const box=document.getElementById(`billMedicineDetails-${Number(billId)}`);if(!box)return;const opening=!box.classList.contains('open');box.classList.toggle('open');if(opening)renderSavedBillMedicineDetails(billId);}
+function toggleBillMedicineDetails(trigger){
+  let box=null;
+  let billId=null;
+
+  if(trigger && typeof trigger.closest === "function"){
+    const card=trigger.closest(".bill-card");
+    box=card?.querySelector(".bill-medicine-details") || null;
+    billId=card?.querySelector(".bill-details")?.dataset.billId || null;
+  }else{
+    billId=trigger;
+    box=document.getElementById(`billMedicineDetails-${Number(billId)}`);
+  }
+
+  if(!box || !billId)return;
+
+  const opening=!box.classList.contains("open");
+  box.classList.toggle("open");
+  if(opening)renderSavedBillMedicineDetails(Number(billId),box);
+}
 window.editBillingMedicine=editBillingMedicine;window.removeBillingMedicine=removeBillingMedicine;window.toggleBillMedicineDetails=toggleBillMedicineDetails;
 
 
@@ -4845,7 +4863,7 @@ function renderBillDetails(
           type="button"
           class="light medicine-charge-clickable"
           style="border:0;background:transparent;padding:0;font:inherit;font-weight:850;"
-          onclick="toggleBillMedicineDetails(${Number(bill.id)})">
+          onclick="toggleBillMedicineDetails(this)">
           ${currency(
             bill.medicine_charges
           )}
@@ -5510,20 +5528,10 @@ async function returnToPatientBillDetails() {
   await searchPreviousBills();
 
 
-  const details =
-    document.getElementById(
-      "billDetails-" +
-      returnState.billId
-    );
-
-
-  if (details) {
-
-    details.classList.add(
-      "open"
-    );
-
-  }
+  openRenderedBillDetails(
+    "previousBillsView",
+    returnState.billId
+  );
 
 
   window.scrollTo({
@@ -5561,20 +5569,10 @@ async function returnToTodayBills() {
   await loadTodayBills();
 
 
-  const details =
-    document.getElementById(
-      "billDetails-" +
-      returnState.billId
-    );
-
-
-  if (details) {
-
-    details.classList.add(
-      "open"
-    );
-
-  }
+  openRenderedBillDetails(
+    "todayBillsView",
+    returnState.billId
+  );
 
 
   window.scrollTo({
@@ -6185,11 +6183,7 @@ async function renderBillsList(
               <button
                 type="button"
                 class="bill-summary"
-                onclick="toggleBillDetails(
-                  ${Number(
-                    bill.id
-                  )}
-                )">
+                onclick="toggleBillDetails(this)">
 
                 <div class="bill-summary-main">
 
@@ -6344,30 +6338,46 @@ async function renderBillsList(
 }
 
 
+function openRenderedBillDetails(viewId, billId) {
+
+  const view = document.getElementById(viewId);
+  if (!view) return;
+
+  const details = view.querySelector(
+    `.bill-details[data-bill-id="${Number(billId)}"]`
+  );
+
+  if (details) details.classList.add("open");
+  return details;
+}
+
+
 /* =========================================================
    TOGGLE BILL
    ========================================================= */
 
-function toggleBillDetails(
-  billId
-) {
+function toggleBillDetails(trigger) {
 
-  const element =
-    document.getElementById(
-      "billDetails-" +
-      billId
-    );
+  /*
+     Scope the toggle to the card that was clicked. The same bill can
+     exist in multiple hidden views, so a global ID may target the
+     wrong (hidden) copy.
+  */
+  if (trigger && typeof trigger.closest === "function") {
+    const card = trigger.closest(".bill-card");
+    const element = card?.querySelector(".bill-details");
 
-  if (!element) {
+    if (!element) return;
+
+    element.classList.toggle("open");
     return;
   }
 
-  element.classList.toggle(
-    "open"
-  );
+  /* Backward-compatible fallback for existing callers. */
+  const element = document.getElementById("billDetails-" + trigger);
+  if (element) element.classList.toggle("open");
 
 }
-
 
 /* =========================================================
    BILL DATE / PERIOD SEARCH
@@ -6900,20 +6910,10 @@ async function returnToBillDateSearch() {
   );
 
 
-  const details =
-    document.getElementById(
-      "billDetails-" +
-      returnState.billId
-    );
-
-
-  if (details) {
-
-    details.classList.add(
-      "open"
-    );
-
-  }
+  openRenderedBillDetails(
+    "billDateSearchView",
+    returnState.billId
+  );
 
 
   window.scrollTo({
