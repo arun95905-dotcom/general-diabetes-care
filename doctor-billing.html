@@ -799,6 +799,191 @@ textarea {
 
 </style>
 
+
+<style>
+/* =========================================================
+   DESKTOP / TABLET BILLING FORM SIZING
+   Keeps the existing mobile layout unchanged.
+   ========================================================= */
+
+@media (min-width: 801px) {
+
+  .doctor-dashboard {
+    padding: 26px 24px 50px;
+  }
+
+  .billing-page {
+    max-width: 1180px;
+  }
+
+  .billing-card {
+    padding: 24px;
+  }
+
+  .form-section {
+    padding: 18px;
+  }
+
+  .form-grid {
+    gap: 16px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 15px;
+  }
+
+  /* Charges: balanced label + comfortable entry field */
+  .charge-row {
+    grid-template-columns:
+      minmax(260px, 1fr)
+      minmax(220px, 300px);
+    gap: 24px;
+    padding: 15px 18px;
+  }
+
+  .charge-label {
+    font-size: 15px;
+  }
+
+  .charge-row input {
+    width: 100%;
+    max-width: 300px;
+    height: 44px;
+    padding: 10px 12px;
+    font-size: 15px;
+    justify-self: end;
+  }
+
+  /* Medicine search: larger, easier-to-use desktop controls */
+  .billing-medicine-search-row {
+    display: grid;
+    grid-template-columns: minmax(320px, 1fr) 110px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  #billingMedicineSearch {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 15px;
+    outline: none;
+  }
+
+  #billingMedicineSearch:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+  }
+
+  .billing-medicine-search-row .billing-button {
+    width: 110px;
+    min-height: 44px;
+  }
+
+  .billing-medicine-batch-panel {
+    margin-top: 12px;
+    padding: 14px;
+    border: 1px solid #dbe7ef;
+    border-radius: 11px;
+    background: #f8fafc;
+  }
+
+  .billing-medicine-batch-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 9px;
+    margin-top: 8px;
+  }
+
+  .billing-medicine-quantity-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .billing-medicine-quantity-grid input,
+  .billing-medicine-batch-panel input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+
+  .billing-medicine-preview {
+    margin-top: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .billing-medicine-list {
+    display: grid;
+    gap: 9px;
+    margin-top: 11px;
+  }
+
+  .billing-medicine-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    padding: 12px 14px;
+  }
+
+  .billing-medicine-item-name {
+    font-size: 15px;
+  }
+
+  .billing-medicine-item-meta {
+    font-size: 13px;
+  }
+
+  /* Total row remains compact but more readable on a wide screen */
+  .total-box {
+    padding: 17px 18px;
+  }
+
+  .total-amount {
+    font-size: 25px;
+  }
+}
+
+/* Medium tablet / narrow desktop: prevent oversized horizontal controls */
+@media (min-width: 801px) and (max-width: 1050px) {
+
+  .doctor-dashboard {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .billing-card {
+    padding: 18px;
+  }
+
+  .charge-row {
+    grid-template-columns:
+      minmax(200px, 1fr)
+      minmax(190px, 260px);
+    gap: 16px;
+  }
+
+  .charge-row input {
+    max-width: 260px;
+  }
+
+  .billing-medicine-search-row {
+    grid-template-columns: minmax(220px, 1fr) 100px;
+  }
+
+  .billing-medicine-search-row .billing-button {
+    width: 100px;
+  }
+}
+</style>
+
 </head>
 
 
