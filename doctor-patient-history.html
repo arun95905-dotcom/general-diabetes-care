@@ -663,6 +663,35 @@ select {
 
 }
 
+
+.history-medicine-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-medicine-card {
+  padding: 14px;
+  border: 1px solid #d9e2ec;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.history-medicine-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.history-medicine-row {
+  margin-top: 6px;
+  line-height: 1.45;
+}
+
+.history-medicine-total {
+  font-size: 16px;
+}
+
 </style>
 
 </head>
@@ -3788,6 +3817,184 @@ function renderConsultationHistory(
 
 
 /* =========================================================
+   STRUCTURED CONSULTATION MEDICINE DISPLAY
+   ========================================================= */
+
+function parseHistoryConsultationPrescription(value) {
+
+  const text =
+    String(value || "").trim();
+
+  if (!text) {
+    return {
+      medicines: [],
+      otherPrescription: ""
+    };
+  }
+
+  try {
+    const parsed = JSON.parse(text);
+
+    if (
+      parsed &&
+      parsed.gdc_medicines_version === 1 &&
+      Array.isArray(parsed.medicines)
+    ) {
+      return {
+        medicines: parsed.medicines,
+        otherPrescription: String(
+          parsed.otherPrescription || ""
+        ).trim()
+      };
+    }
+  } catch (error) {
+    /* Legacy free-text prescription. */
+  }
+
+  return {
+    medicines: [],
+    otherPrescription: text
+  };
+}
+
+function historyMedicineName(item) {
+  return [
+    item && item.medicine_name,
+    item && item.strength
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function historyMedicineQuantity(item) {
+  if (!item) return "-";
+
+  const units =
+    Number(item.units_per_pack) || 1;
+
+  const form = String(
+    item.dosage_form || ""
+  ).toLowerCase().trim();
+
+  if (
+    units > 1 &&
+    (form === "tablet" || form === "capsule")
+  ) {
+    const packs =
+      Number(item.pack_quantity) || 0;
+    const individual =
+      Number(item.individual_quantity) || 0;
+
+    if (packs && individual) {
+      return `${packs} ${item.pack_unit || "packs"} + ${individual} ${item.base_unit || "units"}`;
+    }
+    if (packs) {
+      return `${packs} ${item.pack_unit || "packs"}`;
+    }
+    return `${individual} ${item.base_unit || "units"}`;
+  }
+
+  return `${Number(item.single_quantity || 0).toLocaleString("en-IN")} ${item.pack_unit || item.base_unit || "units"}`;
+}
+
+function historyMedicineDosage(item) {
+  const dosage = String(
+    item && item.dosage || ""
+  ).trim();
+
+  if (dosage) return dosage;
+
+  const morning = String(
+    item && item.dosage_morning || ""
+  ).trim();
+  const afternoon = String(
+    item && item.dosage_afternoon || ""
+  ).trim();
+  const night = String(
+    item && item.dosage_night || ""
+  ).trim();
+
+  if (morning || afternoon || night) {
+    return [morning || "0", afternoon || "0", night || "0"].join("-");
+  }
+
+  return "";
+}
+
+function renderHistoryConsultationMedicines(value) {
+
+  const parsed =
+    parseHistoryConsultationPrescription(value);
+
+  if (!parsed.medicines.length) {
+    return parsed.otherPrescription
+      ? detailBox(
+          "📝 Prescription / Treatment",
+          parsed.otherPrescription
+        )
+      : "";
+  }
+
+  return `
+    <div class="detail-box">
+      <h4>💊 Medicines</h4>
+      <div class="history-medicine-list">
+        ${parsed.medicines.map(function(item, index) {
+
+          const dosage = historyMedicineDosage(item);
+          const instructions = String(item.instructions || "").trim();
+          const days = String(item.days || "").trim();
+          const mrp = Number(item.mrp_per_unit || 0);
+          const total = Number(item.amount || 0);
+
+          return `
+            <div class="history-medicine-card">
+              <div class="history-medicine-name">
+                ${Number(index) + 1}. ${escapeHTML(historyMedicineName(item))}
+              </div>
+
+              <div class="history-medicine-row">
+                <strong>Quantity:</strong>
+                ${escapeHTML(historyMedicineQuantity(item))}
+              </div>
+
+              <div class="history-medicine-row">
+                <strong>Batch:</strong>
+                ${escapeHTML(item.batch_number || item.batch_id || "-")}
+                ${item.expiry_date ? " · Exp " + escapeHTML(formatDate(item.expiry_date)) : ""}
+              </div>
+
+              <div class="history-medicine-row">
+                <strong>MRP:</strong>
+                ₹${mrp.toFixed(2)}${item.pack_unit ? " / " + escapeHTML(item.pack_unit) : ""}
+              </div>
+
+              <div class="history-medicine-row history-medicine-total">
+                <strong>Total Price:</strong>
+                ₹${total.toFixed(2)}
+              </div>
+
+              ${dosage ? `<div class="history-medicine-row"><strong>Dosage:</strong> ${escapeHTML(dosage)}</div>` : ""}
+              ${instructions ? `<div class="history-medicine-row"><strong>Instructions:</strong> ${escapeHTML(instructions)}</div>` : ""}
+              ${days ? `<div class="history-medicine-row"><strong>Days:</strong> ${escapeHTML(days)}</div>` : ""}
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+
+    ${
+      parsed.otherPrescription
+        ? detailBox(
+            "📝 Other Prescription / Treatment",
+            parsed.otherPrescription
+          )
+        : ""
+    }
+  `;
+}
+
+/* =========================================================
    FULL CONSULTATION
    ========================================================= */
 
@@ -3921,22 +4128,9 @@ async function toggleFullConsultation(
       consultation.investigations
     )}
 
-    ${renderConsultationMedicinesDisplay(
+    ${renderHistoryConsultationMedicines(
       consultation.prescription
     )}
-
-    ${
-      getConsultationOtherPrescription(
-        consultation.prescription
-      )
-        ? detailBox(
-            "📝 Other Prescription / Treatment",
-            getConsultationOtherPrescription(
-              consultation.prescription
-            )
-          )
-        : ""
-    }
 
 
     <div class="detail-box">
@@ -3983,73 +4177,6 @@ async function toggleFullConsultation(
 
   `;
 
-}
-
-
-function parseConsultationPrescriptionValue(value) {
-
-  if (!value) {
-    return { medicines: [], otherPrescription: "" };
-  }
-
-  if (typeof value === "object") {
-    return {
-      medicines: Array.isArray(value.medicines) ? value.medicines : [],
-      otherPrescription: value.otherPrescription || ""
-    };
-  }
-
-  try {
-    const parsed = JSON.parse(String(value));
-
-    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-      return {
-        medicines: Array.isArray(parsed.medicines) ? parsed.medicines : [],
-        otherPrescription: parsed.otherPrescription || ""
-      };
-    }
-  } catch (error) {
-    return { medicines: [], otherPrescription: "" };
-  }
-
-  return { medicines: [], otherPrescription: "" };
-}
-
-function getConsultationOtherPrescription(value) {
-  return parseConsultationPrescriptionValue(value).otherPrescription || "";
-}
-
-function renderConsultationMedicinesDisplay(value) {
-
-  const parsed = parseConsultationPrescriptionValue(value);
-  const medicines = parsed.medicines || [];
-
-  if (!medicines.length) {
-    return "";
-  }
-
-  return `
-    <div class="detail-box">
-      <h4>💊 Prescription / Treatment</h4>
-      <div class="medicine-history-list">
-        ${medicines.map((m, index) => `
-          <div class="medicine-history-card">
-            <div class="medicine-history-name">
-              ${index + 1}. ${escapeHTML(m.medicine_name || "Medicine")}
-              ${m.strength ? ` <span>${escapeHTML(m.strength)}</span>` : ""}
-            </div>
-            ${m.dosage ? `<div><strong>Dosage:</strong> ${escapeHTML(m.dosage)}</div>` : ""}
-            ${m.instructions ? `<div><strong>Instructions:</strong> ${escapeHTML(m.instructions)}</div>` : ""}
-            ${m.days ? `<div><strong>Days:</strong> ${escapeHTML(m.days)}</div>` : ""}
-            ${m.batch_number ? `<div><strong>Batch:</strong> ${escapeHTML(m.batch_number)}</div>` : ""}
-            ${m.expiry_date ? `<div><strong>Expiry:</strong> ${escapeHTML(m.expiry_date)}</div>` : ""}
-            ${m.quantity_display || m.quantity ? `<div><strong>Quantity:</strong> ${escapeHTML(m.quantity_display || m.quantity)}</div>` : ""}
-            ${m.amount != null && m.amount !== "" ? `<div><strong>Amount:</strong> ₹${Number(m.amount || 0).toFixed(2)}</div>` : ""}
-          </div>
-        `).join("")}
-      </div>
-    </div>
-  `;
 }
 
 
