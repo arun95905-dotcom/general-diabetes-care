@@ -448,7 +448,32 @@ function updateMedicineChargesFromList(){const total=billMedicines.reduce((sum,i
 function billingOriginalReservedBase(batchId){return billMedicineOriginal.filter(item=>Number(item.batch_id)===Number(batchId)).reduce((sum,item)=>sum+Number(item.quantity_base_units||0),0);}
 function billingAvailableForSelection(batch){const actual=Number(batch?.quantity_base_units??(Number(batch?.quantity||0)*billingUnitCount(selectedBillingMedicine,batch)))||0;return actual+billingOriginalReservedBase(batch?.id);}
 function billingDisplayAvailable(m,b){const base=billingAvailableForSelection(b),u=billingUnitCount(m,b),packs=Math.floor(base/u),rem=Math.round((base-packs*u)*100)/100;if(u<=1)return `${base} ${billingBaseUnit(m)}`;return rem?`${packs} ${billingPackUnit(m,b)} + ${rem} ${billingBaseUnit(m)}`:`${packs} ${billingPackUnit(m,b)}`;}
-async function searchBillingMedicines(){const term=document.getElementById('billingMedicineSearch')?.value.trim()||'',box=document.getElementById('billingMedicineSuggestions');if(!box)return;if(term.length<2){box.style.display='none';return;}box.innerHTML='<div class="billing-medicine-muted" style="padding:10px 12px;">🔎 Searching...</div>';box.style.display='block';const {data,error}=await supabaseClient.from('medicines').select('*').or(`medicine_name.ilike.%${term}%,generic_name.ilike.%${term}%,strength.ilike.%${term}%`).order('medicine_name').limit(15);if(error){box.innerHTML='<div class="billing-error">Unable to search medicines.</div>';return;}box.innerHTML=(data||[]).map(m=>`<div class="billing-medicine-suggestion" data-medicine-id="${Number(m.id)}"><b>${escapeHTML(m.medicine_name||'-')} ${escapeHTML(m.strength||'')}</b><br><span class="billing-medicine-muted">${escapeHTML(m.dosage_form||'')} · 1 ${escapeHTML(m.pack_unit||'Pack')} = ${Number(m.units_per_pack||1)} ${escapeHTML(m.base_unit||'Unit')}</span></div>`).join('')||'<div class="billing-medicine-muted" style="padding:10px 12px;">No medicines found.</div>';box.querySelectorAll('[data-medicine-id]').forEach(el=>el.addEventListener('click',()=>selectBillingMedicine(Number(el.dataset.medicineId))));}
+async function searchBillingMedicines(){
+  const input=document.getElementById('billingMedicineSearch');
+  const box=document.getElementById('billingMedicineSuggestions');
+  const term=input?.value.trim()||'';
+  if(!box)return;
+  if(term.length<2){box.innerHTML='';box.style.display='none';return;}
+  box.innerHTML='<div class="billing-medicine-muted" style="padding:10px 12px;">🔎 Searching...</div>';
+  box.style.display='block';
+  const like=`%${term}%`;
+  const [nameResult,genericResult,strengthResult]=await Promise.all([
+    supabaseClient.from('medicines').select('*').ilike('medicine_name',like).limit(15),
+    supabaseClient.from('medicines').select('*').ilike('generic_name',like).limit(15),
+    supabaseClient.from('medicines').select('*').ilike('strength',like).limit(15)
+  ]);
+  const firstError=nameResult.error||genericResult.error||strengthResult.error;
+  if(firstError){
+    console.error('Billing medicine search error:',firstError);
+    box.innerHTML=`<div class="billing-error">Unable to search medicines.<br><small>${escapeHTML(firstError.message||'Search failed')}</small></div>`;
+    return;
+  }
+  const merged=new Map();
+  [...(nameResult.data||[]),...(genericResult.data||[]),...(strengthResult.data||[])].forEach(m=>merged.set(Number(m.id),m));
+  const data=Array.from(merged.values()).sort((a,b)=>String(a.medicine_name||'').localeCompare(String(b.medicine_name||''))).slice(0,15);
+  box.innerHTML=data.map(m=>`<div class="billing-medicine-suggestion" data-medicine-id="${Number(m.id)}"><b>${escapeHTML(m.medicine_name||'-')} ${escapeHTML(m.strength||'')}</b><br><span class="billing-medicine-muted">${escapeHTML(m.dosage_form||'')} · 1 ${escapeHTML(m.pack_unit||'Pack')} = ${Number(m.units_per_pack||1)} ${escapeHTML(m.base_unit||'Unit')}</span></div>`).join('')||'<div class="billing-medicine-muted" style="padding:10px 12px;">No medicines found.</div>';
+  box.querySelectorAll('[data-medicine-id]').forEach(el=>el.addEventListener('click',()=>selectBillingMedicine(Number(el.dataset.medicineId))));
+}
 async function selectBillingMedicine(medicineId){const {data:medicine,error}=await supabaseClient.from('medicines').select('*').eq('id',medicineId).single();if(error||!medicine){setBillingMedicineStatus(error?.message||'Unable to load medicine.',true);return;}selectedBillingMedicine=medicine;selectedBillingBatch=null;document.getElementById('billingMedicineSuggestions').style.display='none';document.getElementById('billingMedicineSearch').value=`${medicine.medicine_name||''}${medicine.strength?' '+medicine.strength:''}`.trim();document.getElementById('billingMedicineSelectedName').textContent=document.getElementById('billingMedicineSearch').value;document.getElementById('billingMedicineBatchPanel').style.display='block';const {data:batches,error:batchError}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',medicineId).order('expiry_date',{ascending:true});if(batchError){setBillingMedicineStatus(batchError.message,true);return;}const availableBatches=(batches||[]).filter(batch=>billingAvailableForSelection(batch)>0);const select=document.getElementById('billingMedicineBatch');select.innerHTML='<option value="">Select batch</option>'+availableBatches.map(batch=>`<option value="${Number(batch.id)}">Batch ${escapeHTML(batch.batch_number||'-')} · Exp ${escapeHTML(formatDate(batch.expiry_date))} · MRP ${billingMoney(batch.mrp_per_unit)} · Available ${escapeHTML(billingDisplayAvailable(medicine,batch))}</option>`).join('');document.getElementById('billingMedicineQuantityFields').innerHTML='';document.getElementById('billingMedicineBatchInfo').innerHTML=availableBatches.length?'Select a batch to enter quantity.':'No available stock for this medicine.';document.getElementById('billingMedicineAmountPreview').innerHTML='';}
 async function loadBillingBatch(batchId){const {data:batch,error}=await supabaseClient.from('medicine_batches').select('*').eq('id',batchId).single();if(error||!batch){setBillingMedicineStatus(error?.message||'Unable to load batch.',true);return;}selectedBillingBatch=batch;const units=billingUnitCount(selectedBillingMedicine,batch),tabletMode=isBillingTabletOrCapsule(selectedBillingMedicine),fields=document.getElementById('billingMedicineQuantityFields');if(tabletMode)fields.innerHTML=`<div><label>${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}</label><input id="billingPackQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div><div><label>${escapeHTML(billingBaseUnit(selectedBillingMedicine))}</label><input id="billingIndividualQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`;else fields.innerHTML=`<div style="grid-column:1 / -1"><label>Quantity (${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))})</label><input id="billingPackQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`;fields.querySelectorAll('input').forEach(input=>input.addEventListener('input',updateBillingMedicinePreview));document.getElementById('billingMedicineBatchInfo').innerHTML=`<b>Batch:</b> ${escapeHTML(batch.batch_number||'-')} · <b>Expiry:</b> ${escapeHTML(formatDate(batch.expiry_date))}<br><b>1 ${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}</b> = ${units} ${escapeHTML(billingBaseUnit(selectedBillingMedicine))} · <b>MRP:</b> ${billingMoney(batch.mrp_per_unit)} / ${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}<br><b>Available:</b> ${escapeHTML(billingDisplayAvailable(selectedBillingMedicine,batch))}`;updateBillingMedicinePreview();}
 function getBillingEditorQuantityBase(){if(!selectedBillingMedicine||!selectedBillingBatch)return 0;return billingBaseFromParts(selectedBillingMedicine,selectedBillingBatch,document.getElementById('billingPackQty')?.value,document.getElementById('billingIndividualQty')?.value);}
@@ -467,6 +492,63 @@ async function renderSavedBillMedicineDetails(billId){try{const items=await load
 function toggleBillMedicineDetails(billId){const box=document.getElementById(`billMedicineDetails-${Number(billId)}`);if(!box)return;const opening=!box.classList.contains('open');box.classList.toggle('open');if(opening)renderSavedBillMedicineDetails(billId);}
 window.editBillingMedicine=editBillingMedicine;window.removeBillingMedicine=removeBillingMedicine;window.toggleBillMedicineDetails=toggleBillMedicineDetails;
 
+
+
+function setBillingMedicineOnlyMode(enabled) {
+  billingMedicineOnlyMode = Boolean(enabled);
+
+  const consultationRow = document.getElementById("consultationFeeChargeRow");
+  if (consultationRow) {
+    consultationRow.style.display = billingMedicineOnlyMode ? "none" : "grid";
+  }
+
+  const title = document.getElementById("createBillTitle");
+  if (title && !editingBillId) {
+    title.textContent = billingMedicineOnlyMode
+      ? "💊 Medicine Only Billing"
+      : "💰 Create Bill";
+  }
+
+  const saveButton = document.getElementById("saveBillButton");
+  if (saveButton && !editingBillId) {
+    saveButton.textContent = billingMedicineOnlyMode
+      ? "💊 Save Medicine Bill"
+      : "💾 Save Bill";
+  }
+
+  if (billingMedicineOnlyMode) {
+    const consultationFee = document.getElementById("consultationFee");
+    if (consultationFee) consultationFee.value = "0";
+  }
+
+  calculateTotal();
+}
+
+function activateMedicineOnlyBilling() {
+  if (!selectedPatient) {
+    alert("Please select a patient first.");
+    return;
+  }
+
+  selectedConsultationId = null;
+  document.getElementById("consultationLinkArea").style.display = "none";
+  document.getElementById("linkedConsultationNotice").style.display = "none";
+  setBillingMedicineOnlyMode(true);
+  window.scrollTo({ top: document.getElementById("chargesSection")?.offsetTop || 0, behavior: "smooth" });
+}
+
+function startNewBillFromDashboard() {
+  selectedConsultationId = null;
+  selectedPatient = null;
+  billEditReturnState = null;
+  resetBillMode();
+  resetBillForm();
+  document.getElementById("selectedPatientArea").style.display = "none";
+  document.getElementById("patientSearchArea").style.display = "block";
+  document.getElementById("linkedConsultationNotice").style.display = "none";
+  document.getElementById("consultationLinkArea").style.display = "none";
+  openCreateBill();
+}
 
 
 /* =========================================================
@@ -819,7 +901,8 @@ Create, view and manage patient bills
 <button
   type="button"
   class="dashboard-option"
-  id="openCreateBillButton">
+  id="openCreateBillButton"
+  onclick="startNewBillFromDashboard()">
 
 <span class="dashboard-icon">
 💰
@@ -1059,6 +1142,15 @@ Search for a patient to create a bill.
 
 </button>
 
+<button
+  type="button"
+  class="billing-button primary small"
+  id="medicineOnlyBillingButton">
+
+💊 Medicine Only
+
+</button>
+
 </div>
 
 </div>
@@ -1218,7 +1310,7 @@ Pending Amount
 </div>
 
 
-<div class="form-section">
+<div class="form-section" id="chargesSection">
 
 <h3>
 💵 Charges
@@ -1227,7 +1319,7 @@ Pending Amount
 <div class="charge-list">
 
 
-<div class="charge-row">
+<div class="charge-row" id="consultationFeeChargeRow">
 
 <div class="charge-label">
 Consultation Fee
@@ -1965,6 +2057,7 @@ let selectedBillingMedicine = null;
 let selectedBillingBatch = null;
 let editingBillingMedicineIndex = -1;
 let billingMedicineEditorTouched = false;
+let billingMedicineOnlyMode = false;
 
 
 /* =========================================================
@@ -3108,6 +3201,8 @@ async function selectPatient(
       "block";
 
 
+  setBillingMedicineOnlyMode(billingMedicineOnlyMode);
+
   document
     .getElementById(
       "patientSearchArea"
@@ -3487,6 +3582,9 @@ async function linkConsultation(
   selectedConsultationId =
     consultationNumber;
 
+  // A bill that was entered as Medicine Only can now become a
+  // normal consultation bill once a consultation is linked.
+  setBillingMedicineOnlyMode(false);
 
   await showLinkedConsultation(
     selectedConsultationId
@@ -3647,6 +3745,8 @@ async function loadPatientFromURL() {
 
 
   if (selectedConsultationId) {
+
+    setBillingMedicineOnlyMode(false);
 
     await showLinkedConsultation(
       selectedConsultationId
@@ -4002,6 +4102,11 @@ async function saveBill() {
       selectedConsultationId ||
       null,
 
+    billing_type:
+      billingMedicineOnlyMode
+        ? "MEDICINE_ONLY"
+        : "STANDARD",
+
     bill_date:
       billDate,
 
@@ -4150,6 +4255,7 @@ async function saveBill() {
         .update({
           patient_id: previousBillSnapshot.patient_id,
           consultation_id: previousBillSnapshot.consultation_id,
+          billing_type: previousBillSnapshot.billing_type || "STANDARD",
           bill_date: previousBillSnapshot.bill_date,
           consultation_fee: previousBillSnapshot.consultation_fee,
           medicine_charges: previousBillSnapshot.medicine_charges,
@@ -4601,6 +4707,8 @@ function resetBillMode() {
   editingBillId =
     null;
 
+  billingMedicineOnlyMode = false;
+
   const title =
     document.getElementById(
       "createBillTitle"
@@ -4629,6 +4737,7 @@ function resetBillMode() {
 
   }
 
+  setBillingMedicineOnlyMode(false);
 
   updateCreateBillBackButton();
 
@@ -4823,6 +4932,10 @@ async function editBill(
           bill.consultation_id
         )
       : null;
+
+  billingMedicineOnlyMode =
+    String(bill.billing_type || "STANDARD").toUpperCase() === "MEDICINE_ONLY" &&
+    !selectedConsultationId;
 
 
   showView(
@@ -5345,6 +5458,15 @@ async function showSavedBill(
 
 
     <div class="billing-actions">
+
+      ${!bill.consultation_id ? `
+        <button
+          type="button"
+          class="billing-button light"
+          onclick="editBill(${Number(bill.id)})">
+          🔗 Link to Consultation
+        </button>
+      ` : ""}
 
       <button
         type="button"
@@ -9278,6 +9400,10 @@ window.goBackFromBilling =
 
 window.returnFromCreateBill =
   returnFromCreateBill;
+window.editBillingMedicine = editBillingMedicine;
+window.removeBillingMedicine = removeBillingMedicine;
+window.startNewBillFromDashboard = startNewBillFromDashboard;
+window.activateMedicineOnlyBilling = activateMedicineOnlyBilling;
 
 
 /* =========================================================
@@ -9286,57 +9412,11 @@ window.returnFromCreateBill =
 
 document
   .getElementById(
-    "openCreateBillButton"
+    "medicineOnlyBillingButton"
   )
   .addEventListener(
     "click",
-    function() {
-
-      selectedConsultationId =
-        null;
-
-      selectedPatient =
-        null;
-
-      billEditReturnState =
-        null;
-
-      resetBillMode();
-
-      resetBillForm();
-
-      document
-        .getElementById(
-          "selectedPatientArea"
-        )
-        .style.display =
-          "none";
-
-
-      document
-        .getElementById(
-          "patientSearchArea"
-        )
-        .style.display =
-          "block";
-
-
-      document
-        .getElementById(
-          "linkedConsultationNotice"
-        )
-        .style.display =
-          "none";
-document
-  .getElementById(
-    "consultationLinkArea"
-  )
-  .style.display =
-    "none";
-
-      openCreateBill();
-
-    }
+    activateMedicineOnlyBilling
   );
 
 
