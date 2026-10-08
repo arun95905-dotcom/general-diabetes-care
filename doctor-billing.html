@@ -428,130 +428,6 @@ textarea {
 
 
 /* =========================================================
-   BILL MEDICINE BUILDER / STOCK
-   ========================================================= */
-function isBillingTabletOrCapsule(medicine){
-  return /tablet|capsule|caplet|lozenge/.test(String(medicine?.dosage_form||'').toLowerCase());
-}
-function billingUnitCount(m,b){return Number(b?.units_per_pack||m?.units_per_pack||1)||1;}
-function billingPackUnit(m,b){return b?.unit_name||m?.pack_unit||'Pack';}
-function billingBaseUnit(m){return m?.base_unit||'Unit';}
-function billingBaseFromParts(m,b,packs,individual){const u=billingUnitCount(m,b);return isBillingTabletOrCapsule(m)?(Number(packs)||0)*u+(Number(individual)||0):(Number(packs)||0)*u;}
-function billingDisplayQuantity(item){const u=Number(item.units_per_pack)||1,base=Number(item.quantity_base_units)||0,packs=Math.floor(base/u),rem=Math.round((base-packs*u)*100)/100,pack=item.pack_unit||'Pack',unit=item.base_unit||'Unit';if(u<=1)return `${base} ${unit}`;return rem?`${packs} ${pack} + ${rem} ${unit}`:`${packs} ${pack}`;}
-function billingMoney(v){return currency(v);}
-function setBillingMedicineStatus(message,error=false){const box=document.getElementById('billingMedicineStatus');if(!box)return;box.textContent=message||'';box.style.display=message?'block':'none';box.style.color=error?'#b91c1c':'#475569';box.style.background=error?'#fff1f2':'#f8fafc';}
-function clearBillingMedicineEditor(){selectedBillingMedicine=null;selectedBillingBatch=null;editingBillingMedicineIndex=-1;const search=document.getElementById('billingMedicineSearch'),suggestions=document.getElementById('billingMedicineSuggestions'),panel=document.getElementById('billingMedicineBatchPanel'),fields=document.getElementById('billingMedicineQuantityFields'),info=document.getElementById('billingMedicineBatchInfo'),preview=document.getElementById('billingMedicineAmountPreview');if(search)search.value='';if(suggestions){suggestions.innerHTML='';suggestions.style.display='none';}if(panel)panel.style.display='none';if(fields)fields.innerHTML='';if(info)info.innerHTML='';if(preview)preview.innerHTML='';setBillingMedicineStatus('');}
-function resetBillingMedicineState(){billMedicines=[];billMedicineOriginal=[];billingMedicineEditorTouched=false;clearBillingMedicineEditor();renderBillingMedicineList();updateMedicineChargesFromList();}
-function cloneBillingMedicine(item){return JSON.parse(JSON.stringify(item));}
-function renderBillingMedicineList(){const list=document.getElementById('billingMedicineList');if(!list)return;if(!billMedicines.length){list.innerHTML='<div class="billing-medicine-muted">No medicines added to this bill.</div>';return;}list.innerHTML=billMedicines.map((item,index)=>`<div class="billing-medicine-item"><div><div class="billing-medicine-item-name">${escapeHTML(item.medicine_name||'-')} ${escapeHTML(item.strength||'')}</div><div class="billing-medicine-item-meta">Batch: ${escapeHTML(item.batch_number||'-')} · Expiry: ${formatDate(item.expiry_date)}<br>Quantity: ${escapeHTML(billingDisplayQuantity(item))}<br>MRP: ${billingMoney(item.mrp_per_unit)} / ${escapeHTML(item.pack_unit||'Pack')}</div><div class="billing-medicine-item-amount">Amount: ${billingMoney(item.amount)}</div></div><div class="billing-medicine-actions"><button type="button" class="billing-medicine-edit" title="Edit medicine" onclick="editBillingMedicine(${index})">✎</button><button type="button" class="billing-medicine-remove" title="Remove medicine" onclick="removeBillingMedicine(${index})">×</button></div></div>`).join('');}
-function updateMedicineChargesFromList(){const total=billMedicines.reduce((sum,item)=>sum+Number(item.amount||0),0);const input=document.getElementById('medicineCharges');if(input)input.value=total.toFixed(2);calculateTotal();}
-function billingOriginalReservedBase(batchId){return billMedicineOriginal.filter(item=>Number(item.batch_id)===Number(batchId)).reduce((sum,item)=>sum+Number(item.quantity_base_units||0),0);}
-function billingAvailableForSelection(batch){const actual=Number(batch?.quantity_base_units??(Number(batch?.quantity||0)*billingUnitCount(selectedBillingMedicine,batch)))||0;return actual+billingOriginalReservedBase(batch?.id);}
-function billingDisplayAvailable(m,b){const base=billingAvailableForSelection(b),u=billingUnitCount(m,b),packs=Math.floor(base/u),rem=Math.round((base-packs*u)*100)/100;if(u<=1)return `${base} ${billingBaseUnit(m)}`;return rem?`${packs} ${billingPackUnit(m,b)} + ${rem} ${billingBaseUnit(m)}`:`${packs} ${billingPackUnit(m,b)}`;}
-async function searchBillingMedicines(){
-  const input=document.getElementById('billingMedicineSearch');
-  const box=document.getElementById('billingMedicineSuggestions');
-  const term=input?.value.trim()||'';
-  if(!box)return;
-  if(term.length<2){box.innerHTML='';box.style.display='none';return;}
-  box.innerHTML='<div class="billing-medicine-muted" style="padding:10px 12px;">🔎 Searching...</div>';
-  box.style.display='block';
-  const like=`%${term}%`;
-  const [nameResult,genericResult,strengthResult]=await Promise.all([
-    supabaseClient.from('medicines').select('*').ilike('medicine_name',like).limit(15),
-    supabaseClient.from('medicines').select('*').ilike('generic_name',like).limit(15),
-    supabaseClient.from('medicines').select('*').ilike('strength',like).limit(15)
-  ]);
-  const firstError=nameResult.error||genericResult.error||strengthResult.error;
-  if(firstError){
-    console.error('Billing medicine search error:',firstError);
-    box.innerHTML=`<div class="billing-error">Unable to search medicines.<br><small>${escapeHTML(firstError.message||'Search failed')}</small></div>`;
-    return;
-  }
-  const merged=new Map();
-  [...(nameResult.data||[]),...(genericResult.data||[]),...(strengthResult.data||[])].forEach(m=>merged.set(Number(m.id),m));
-  const data=Array.from(merged.values()).sort((a,b)=>String(a.medicine_name||'').localeCompare(String(b.medicine_name||''))).slice(0,15);
-  box.innerHTML=data.map(m=>`<div class="billing-medicine-suggestion" data-medicine-id="${Number(m.id)}"><b>${escapeHTML(m.medicine_name||'-')} ${escapeHTML(m.strength||'')}</b><br><span class="billing-medicine-muted">${escapeHTML(m.dosage_form||'')} · 1 ${escapeHTML(m.pack_unit||'Pack')} = ${Number(m.units_per_pack||1)} ${escapeHTML(m.base_unit||'Unit')}</span></div>`).join('')||'<div class="billing-medicine-muted" style="padding:10px 12px;">No medicines found.</div>';
-  box.querySelectorAll('[data-medicine-id]').forEach(el=>el.addEventListener('click',()=>selectBillingMedicine(Number(el.dataset.medicineId))));
-}
-async function selectBillingMedicine(medicineId){const {data:medicine,error}=await supabaseClient.from('medicines').select('*').eq('id',medicineId).single();if(error||!medicine){setBillingMedicineStatus(error?.message||'Unable to load medicine.',true);return;}selectedBillingMedicine=medicine;selectedBillingBatch=null;document.getElementById('billingMedicineSuggestions').style.display='none';document.getElementById('billingMedicineSearch').value=`${medicine.medicine_name||''}${medicine.strength?' '+medicine.strength:''}`.trim();document.getElementById('billingMedicineSelectedName').textContent=document.getElementById('billingMedicineSearch').value;document.getElementById('billingMedicineBatchPanel').style.display='block';const {data:batches,error:batchError}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',medicineId).order('expiry_date',{ascending:true});if(batchError){setBillingMedicineStatus(batchError.message,true);return;}const availableBatches=(batches||[]).filter(batch=>billingAvailableForSelection(batch)>0);const select=document.getElementById('billingMedicineBatch');select.innerHTML='<option value="">Select batch</option>'+availableBatches.map(batch=>`<option value="${Number(batch.id)}">Batch ${escapeHTML(batch.batch_number||'-')} · Exp ${escapeHTML(formatDate(batch.expiry_date))} · MRP ${billingMoney(batch.mrp_per_unit)} · Available ${escapeHTML(billingDisplayAvailable(medicine,batch))}</option>`).join('');document.getElementById('billingMedicineQuantityFields').innerHTML='';document.getElementById('billingMedicineBatchInfo').innerHTML=availableBatches.length?'Select a batch to enter quantity.':'No available stock for this medicine.';document.getElementById('billingMedicineAmountPreview').innerHTML='';}
-async function loadBillingBatch(batchId){const {data:batch,error}=await supabaseClient.from('medicine_batches').select('*').eq('id',batchId).single();if(error||!batch){setBillingMedicineStatus(error?.message||'Unable to load batch.',true);return;}selectedBillingBatch=batch;const units=billingUnitCount(selectedBillingMedicine,batch),tabletMode=isBillingTabletOrCapsule(selectedBillingMedicine),fields=document.getElementById('billingMedicineQuantityFields');if(tabletMode)fields.innerHTML=`<div><label>${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}</label><input id="billingPackQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div><div><label>${escapeHTML(billingBaseUnit(selectedBillingMedicine))}</label><input id="billingIndividualQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`;else fields.innerHTML=`<div style="grid-column:1 / -1"><label>Quantity (${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))})</label><input id="billingPackQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`;fields.querySelectorAll('input').forEach(input=>input.addEventListener('input',updateBillingMedicinePreview));document.getElementById('billingMedicineBatchInfo').innerHTML=`<b>Batch:</b> ${escapeHTML(batch.batch_number||'-')} · <b>Expiry:</b> ${escapeHTML(formatDate(batch.expiry_date))}<br><b>1 ${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}</b> = ${units} ${escapeHTML(billingBaseUnit(selectedBillingMedicine))} · <b>MRP:</b> ${billingMoney(batch.mrp_per_unit)} / ${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}<br><b>Available:</b> ${escapeHTML(billingDisplayAvailable(selectedBillingMedicine,batch))}`;updateBillingMedicinePreview();}
-function getBillingEditorQuantityBase(){if(!selectedBillingMedicine||!selectedBillingBatch)return 0;return billingBaseFromParts(selectedBillingMedicine,selectedBillingBatch,document.getElementById('billingPackQty')?.value,document.getElementById('billingIndividualQty')?.value);}
-function updateBillingMedicinePreview(){if(!selectedBillingMedicine||!selectedBillingBatch)return;const base=getBillingEditorQuantityBase(),u=billingUnitCount(selectedBillingMedicine,selectedBillingBatch),amount=(base/u)*Number(selectedBillingBatch.mrp_per_unit||0),available=billingAvailableForSelection(selectedBillingBatch),preview=document.getElementById('billingMedicineAmountPreview');preview.innerHTML=`Quantity: <b>${escapeHTML(base?billingDisplayQuantity({quantity_base_units:base,units_per_pack:u,pack_unit:billingPackUnit(selectedBillingMedicine,selectedBillingBatch),base_unit:billingBaseUnit(selectedBillingMedicine)}):'0 '+billingBaseUnit(selectedBillingMedicine))}</b><br>Amount: <b>${billingMoney(amount)}</b> · Available: <b>${escapeHTML(billingDisplayAvailable(selectedBillingMedicine,selectedBillingBatch))}</b>`;const btn=document.getElementById('addBillingMedicineButton');if(btn)btn.disabled=base<=0||base>available;}
-function addBillingMedicine(){if(!selectedBillingMedicine||!selectedBillingBatch){setBillingMedicineStatus('Select a medicine and exact batch first.',true);return;}const base=getBillingEditorQuantityBase(),u=billingUnitCount(selectedBillingMedicine,selectedBillingBatch),available=billingAvailableForSelection(selectedBillingBatch);if(base<=0){setBillingMedicineStatus('Enter a quantity.',true);return;}if(base>available){setBillingMedicineStatus(`Insufficient stock. Available: ${billingDisplayAvailable(selectedBillingMedicine,selectedBillingBatch)}.`,true);return;}const item={id:editingBillingMedicineIndex>=0?billMedicines[editingBillingMedicineIndex]?.id||null:null,medicine_id:Number(selectedBillingMedicine.id),medicine_name:selectedBillingMedicine.medicine_name||'',strength:selectedBillingMedicine.strength||'',dosage_form:selectedBillingMedicine.dosage_form||'',batch_id:Number(selectedBillingBatch.id),batch_number:selectedBillingBatch.batch_number||'',expiry_date:selectedBillingBatch.expiry_date||null,pack_unit:billingPackUnit(selectedBillingMedicine,selectedBillingBatch),base_unit:billingBaseUnit(selectedBillingMedicine),units_per_pack:u,quantity_base_units:base,mrp_per_unit:Number(selectedBillingBatch.mrp_per_unit||0),purchase_price_per_unit:Number(selectedBillingBatch.purchase_price_per_unit||0),amount:(base/u)*Number(selectedBillingBatch.mrp_per_unit||0)};if(editingBillingMedicineIndex>=0)billMedicines[editingBillingMedicineIndex]=item;else billMedicines.push(item);billingMedicineEditorTouched=true;renderBillingMedicineList();updateMedicineChargesFromList();clearBillingMedicineEditor();}
-function editBillingMedicine(index){const item=billMedicines[index];if(!item)return;editingBillingMedicineIndex=index;billingMedicineEditorTouched=true;selectBillingMedicine(item.medicine_id).then(()=>{const sel=document.getElementById('billingMedicineBatch');if(!sel)return;sel.value=String(item.batch_id);loadBillingBatch(item.batch_id).then(()=>{const u=Number(item.units_per_pack)||1,packs=Math.floor(Number(item.quantity_base_units||0)/u),rem=Math.round((Number(item.quantity_base_units||0)-packs*u)*100)/100;const pack=document.getElementById('billingPackQty'),individual=document.getElementById('billingIndividualQty');if(pack)pack.value=packs;if(individual)individual.value=rem;updateBillingMedicinePreview();});});}
-function removeBillingMedicine(index){if(index<0||index>=billMedicines.length)return;billMedicines.splice(index,1);billingMedicineEditorTouched=true;if(editingBillingMedicineIndex===index)clearBillingMedicineEditor();renderBillingMedicineList();updateMedicineChargesFromList();}
-async function loadBillMedicines(billId){const {data,error}=await supabaseClient.from('billing_medicines').select('*').eq('bill_id',billId).order('id',{ascending:true});if(error)throw error;return data||[];}
-function billingStockTransactionNote(billId,item,action,quantityBase){return `GDC-BILLING-DISPENSE:BILL:${billId}:ITEM:${item.id||'NEW'} | ${action} | Patient ID:${item.patient_id||selectedPatient?.id||''} | ${item.medicine_name||''}${item.strength?' '+item.strength:''} | Batch:${item.batch_number||''} | Quantity:${quantityBase} ${item.base_unit||'units'} | Amount:${Number(item.amount||0).toFixed(2)}`;}
-async function updateBillingBatchStock(batchId,deltaBase,item,billId){if(!deltaBase)return null;const {data:batch,error:batchError}=await supabaseClient.from('medicine_batches').select('*').eq('id',batchId).single();if(batchError||!batch)throw batchError||new Error('Unable to load medicine batch.');const u=Number(item.units_per_pack||batch.units_per_pack||1)||1,current=Number(batch.quantity_base_units??(Number(batch.quantity||0)*u))||0,newBase=current+deltaBase;if(newBase<0)throw new Error(`Insufficient stock for ${item.medicine_name||'medicine'}.`);const {data:updated,error:updateError}=await supabaseClient.from('medicine_batches').update({quantity:newBase/u,quantity_base_units:newBase,updated_at:new Date().toISOString()}).eq('id',batchId).eq('quantity_base_units',current).select().single();if(updateError||!updated)throw updateError||new Error('Stock changed while billing. Please refresh and try again.');const base=Math.abs(deltaBase),direction=deltaBase<0?'OUT':'IN',type=deltaBase<0?'DISPENSED':'RETURNED';const {data:tx,error:txError}=await supabaseClient.from('medicine_stock_transactions').insert({medicine_id:item.medicine_id,batch_id:batchId,transaction_type:type,quantity:base/u,quantity_base_units:base,units_per_pack:u,direction,transaction_date:item.transaction_date||getTodayString(),mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,notes:billingStockTransactionNote(billId,item,type,base)}).select().single();if(txError){await supabaseClient.from('medicine_batches').update({quantity:current/u,quantity_base_units:current,updated_at:new Date().toISOString()}).eq('id',batchId).eq('quantity_base_units',newBase);throw txError;}return {batchId,before:current,after:newBase,deltaBase,txId:tx.id,item};}
-async function reverseBillingStockChanges(billId,changes){for(let i=changes.length-1;i>=0;i--){const c=changes[i];try{await updateBillingBatchStock(c.batchId,-Number(c.deltaBase),c.item,billId);}catch(e){console.error('Billing stock rollback error:',e);}}}
-async function reconcileBillingStock(billId,oldItems,newItems,billDate){const changes=[];try{const oldById=new Map(oldItems.filter(i=>i.id).map(i=>[Number(i.id),i]));const newById=new Map(newItems.filter(i=>i.id).map(i=>[Number(i.id),i]));for(const oldItem of oldItems){const current=oldItem.id?newById.get(Number(oldItem.id)):null;if(!current){const c=await updateBillingBatchStock(Number(oldItem.batch_id),Number(oldItem.quantity_base_units||0),{...oldItem,transaction_date:billDate},billId);if(c)changes.push(c);}else if(Number(current.batch_id)!==Number(oldItem.batch_id)){const c=await updateBillingBatchStock(Number(oldItem.batch_id),Number(oldItem.quantity_base_units||0),{...oldItem,transaction_date:billDate},billId);if(c)changes.push(c);}else{const delta=Number(current.quantity_base_units||0)-Number(oldItem.quantity_base_units||0);if(delta<0){const c=await updateBillingBatchStock(Number(oldItem.batch_id),delta,{...current,transaction_date:billDate},billId);if(c)changes.push(c);}}}for(const newItem of newItems){const oldItem=newItem.id?oldById.get(Number(newItem.id)):null;if(!oldItem||Number(oldItem.batch_id)!==Number(newItem.batch_id)){const c=await updateBillingBatchStock(Number(newItem.batch_id),-Number(newItem.quantity_base_units||0),{...newItem,transaction_date:billDate},billId);if(c)changes.push(c);}else{const delta=Number(newItem.quantity_base_units||0)-Number(oldItem.quantity_base_units||0);if(delta>0){const c=await updateBillingBatchStock(Number(newItem.batch_id),-delta,{...newItem,transaction_date:billDate},billId);if(c)changes.push(c);}}}return changes;}catch(e){await reverseBillingStockChanges(billId,changes);throw e;}}
-async function saveBillingMedicineRows(billId,patientId,items){const {error:deleteError}=await supabaseClient.from('billing_medicines').delete().eq('bill_id',billId);if(deleteError)throw deleteError;if(!items.length)return;const payload=items.map(item=>({bill_id:billId,patient_id:patientId,medicine_id:item.medicine_id,batch_id:item.batch_id,medicine_name:item.medicine_name,strength:item.strength||null,dosage_form:item.dosage_form||null,batch_number:item.batch_number||null,expiry_date:item.expiry_date||null,pack_unit:item.pack_unit||null,base_unit:item.base_unit||null,units_per_pack:item.units_per_pack||1,quantity_base_units:item.quantity_base_units,mrp_per_unit:item.mrp_per_unit||0,purchase_price_per_unit:item.purchase_price_per_unit||0,amount:item.amount||0}));const {error}=await supabaseClient.from('billing_medicines').insert(payload);if(error)throw error;}
-async function prepareBillingMedicineRowsForEdit(billId){const items=await loadBillMedicines(billId);billMedicines=items.map(cloneBillingMedicine);billMedicineOriginal=items.map(cloneBillingMedicine);billingMedicineEditorTouched=false;renderBillingMedicineList();updateMedicineChargesFromList();return items;}
-async function renderSavedBillMedicineDetails(billId){try{const items=await loadBillMedicines(billId),box=document.getElementById(`billMedicineDetails-${Number(billId)}`);if(!box)return;if(!items.length){box.innerHTML='<div class="billing-medicine-muted">No itemized medicine dispensing recorded for this bill.</div>';return;}box.innerHTML=items.map(item=>`<div class="bill-medicine-detail-row"><span><b>${escapeHTML(item.medicine_name||'-')} ${escapeHTML(item.strength||'')}</b><br><span class="billing-medicine-muted">Batch ${escapeHTML(item.batch_number||'-')} · Exp ${escapeHTML(formatDate(item.expiry_date))} · ${escapeHTML(billingDisplayQuantity(item))}</span></span><strong>${billingMoney(item.amount)}</strong></div>`).join('');}catch(e){const box=document.getElementById(`billMedicineDetails-${Number(billId)}`);if(box)box.innerHTML='<div class="billing-error">Unable to load medicine details.</div>';}}
-function toggleBillMedicineDetails(billId){const box=document.getElementById(`billMedicineDetails-${Number(billId)}`);if(!box)return;const opening=!box.classList.contains('open');box.classList.toggle('open');if(opening)renderSavedBillMedicineDetails(billId);}
-window.editBillingMedicine=editBillingMedicine;window.removeBillingMedicine=removeBillingMedicine;window.toggleBillMedicineDetails=toggleBillMedicineDetails;
-
-
-
-function setBillingMedicineOnlyMode(enabled) {
-  billingMedicineOnlyMode = Boolean(enabled);
-
-  const consultationRow = document.getElementById("consultationFeeChargeRow");
-  if (consultationRow) {
-    consultationRow.style.display = billingMedicineOnlyMode ? "none" : "grid";
-  }
-
-  const title = document.getElementById("createBillTitle");
-  if (title && !editingBillId) {
-    title.textContent = billingMedicineOnlyMode
-      ? "💊 Medicine Only Billing"
-      : "💰 Create Bill";
-  }
-
-  const saveButton = document.getElementById("saveBillButton");
-  if (saveButton && !editingBillId) {
-    saveButton.textContent = billingMedicineOnlyMode
-      ? "💊 Save Medicine Bill"
-      : "💾 Save Bill";
-  }
-
-  if (billingMedicineOnlyMode) {
-    const consultationFee = document.getElementById("consultationFee");
-    if (consultationFee) consultationFee.value = "0";
-  }
-
-  calculateTotal();
-}
-
-function activateMedicineOnlyBilling() {
-  if (!selectedPatient) {
-    alert("Please select a patient first.");
-    return;
-  }
-
-  selectedConsultationId = null;
-  document.getElementById("consultationLinkArea").style.display = "none";
-  document.getElementById("linkedConsultationNotice").style.display = "none";
-  setBillingMedicineOnlyMode(true);
-  window.scrollTo({ top: document.getElementById("chargesSection")?.offsetTop || 0, behavior: "smooth" });
-}
-
-function startNewBillFromDashboard() {
-  selectedConsultationId = null;
-  selectedPatient = null;
-  billEditReturnState = null;
-  resetBillMode();
-  resetBillForm();
-  document.getElementById("selectedPatientArea").style.display = "none";
-  document.getElementById("patientSearchArea").style.display = "block";
-  document.getElementById("linkedConsultationNotice").style.display = "none";
-  document.getElementById("consultationLinkArea").style.display = "none";
-  openCreateBill();
-}
-
-
-/* =========================================================
    TOTAL
    ========================================================= */
 
@@ -2058,6 +1934,132 @@ let selectedBillingBatch = null;
 let editingBillingMedicineIndex = -1;
 let billingMedicineEditorTouched = false;
 let billingMedicineOnlyMode = false;
+
+
+/* =========================================================
+   BILL MEDICINE BUILDER / STOCK
+   ========================================================= */
+function isBillingTabletOrCapsule(medicine){
+  return /tablet|capsule|caplet|lozenge/.test(String(medicine?.dosage_form||'').toLowerCase());
+}
+function billingUnitCount(m,b){return Number(b?.units_per_pack||m?.units_per_pack||1)||1;}
+function billingPackUnit(m,b){return b?.unit_name||m?.pack_unit||'Pack';}
+function billingBaseUnit(m){return m?.base_unit||'Unit';}
+function billingBaseFromParts(m,b,packs,individual){const u=billingUnitCount(m,b);return isBillingTabletOrCapsule(m)?(Number(packs)||0)*u+(Number(individual)||0):(Number(packs)||0)*u;}
+function billingDisplayQuantity(item){const u=Number(item.units_per_pack)||1,base=Number(item.quantity_base_units)||0,packs=Math.floor(base/u),rem=Math.round((base-packs*u)*100)/100,pack=item.pack_unit||'Pack',unit=item.base_unit||'Unit';if(u<=1)return `${base} ${unit}`;return rem?`${packs} ${pack} + ${rem} ${unit}`:`${packs} ${pack}`;}
+function billingMoney(v){return currency(v);}
+function setBillingMedicineStatus(message,error=false){const box=document.getElementById('billingMedicineStatus');if(!box)return;box.textContent=message||'';box.style.display=message?'block':'none';box.style.color=error?'#b91c1c':'#475569';box.style.background=error?'#fff1f2':'#f8fafc';}
+function clearBillingMedicineEditor(){selectedBillingMedicine=null;selectedBillingBatch=null;editingBillingMedicineIndex=-1;const search=document.getElementById('billingMedicineSearch'),suggestions=document.getElementById('billingMedicineSuggestions'),panel=document.getElementById('billingMedicineBatchPanel'),fields=document.getElementById('billingMedicineQuantityFields'),info=document.getElementById('billingMedicineBatchInfo'),preview=document.getElementById('billingMedicineAmountPreview');if(search)search.value='';if(suggestions){suggestions.innerHTML='';suggestions.style.display='none';}if(panel)panel.style.display='none';if(fields)fields.innerHTML='';if(info)info.innerHTML='';if(preview)preview.innerHTML='';setBillingMedicineStatus('');}
+function resetBillingMedicineState(){billMedicines=[];billMedicineOriginal=[];billingMedicineEditorTouched=false;clearBillingMedicineEditor();renderBillingMedicineList();updateMedicineChargesFromList();}
+function cloneBillingMedicine(item){return JSON.parse(JSON.stringify(item));}
+function renderBillingMedicineList(){const list=document.getElementById('billingMedicineList');if(!list)return;if(!billMedicines.length){list.innerHTML='<div class="billing-medicine-muted">No medicines added to this bill.</div>';return;}list.innerHTML=billMedicines.map((item,index)=>`<div class="billing-medicine-item"><div><div class="billing-medicine-item-name">${escapeHTML(item.medicine_name||'-')} ${escapeHTML(item.strength||'')}</div><div class="billing-medicine-item-meta">Batch: ${escapeHTML(item.batch_number||'-')} · Expiry: ${formatDate(item.expiry_date)}<br>Quantity: ${escapeHTML(billingDisplayQuantity(item))}<br>MRP: ${billingMoney(item.mrp_per_unit)} / ${escapeHTML(item.pack_unit||'Pack')}</div><div class="billing-medicine-item-amount">Amount: ${billingMoney(item.amount)}</div></div><div class="billing-medicine-actions"><button type="button" class="billing-medicine-edit" title="Edit medicine" onclick="editBillingMedicine(${index})">✎</button><button type="button" class="billing-medicine-remove" title="Remove medicine" onclick="removeBillingMedicine(${index})">×</button></div></div>`).join('');}
+function updateMedicineChargesFromList(){const total=billMedicines.reduce((sum,item)=>sum+Number(item.amount||0),0);const input=document.getElementById('medicineCharges');if(input)input.value=total.toFixed(2);calculateTotal();}
+function billingOriginalReservedBase(batchId){return billMedicineOriginal.filter(item=>Number(item.batch_id)===Number(batchId)).reduce((sum,item)=>sum+Number(item.quantity_base_units||0),0);}
+function billingAvailableForSelection(batch){const actual=Number(batch?.quantity_base_units??(Number(batch?.quantity||0)*billingUnitCount(selectedBillingMedicine,batch)))||0;return actual+billingOriginalReservedBase(batch?.id);}
+function billingDisplayAvailable(m,b){const base=billingAvailableForSelection(b),u=billingUnitCount(m,b),packs=Math.floor(base/u),rem=Math.round((base-packs*u)*100)/100;if(u<=1)return `${base} ${billingBaseUnit(m)}`;return rem?`${packs} ${billingPackUnit(m,b)} + ${rem} ${billingBaseUnit(m)}`:`${packs} ${billingPackUnit(m,b)}`;}
+async function searchBillingMedicines(){
+  const input=document.getElementById('billingMedicineSearch');
+  const box=document.getElementById('billingMedicineSuggestions');
+  const term=input?.value.trim()||'';
+  if(!box)return;
+  if(term.length<2){box.innerHTML='';box.style.display='none';return;}
+  box.innerHTML='<div class="billing-medicine-muted" style="padding:10px 12px;">🔎 Searching...</div>';
+  box.style.display='block';
+  const like=`%${term}%`;
+  const [nameResult,genericResult,strengthResult]=await Promise.all([
+    supabaseClient.from('medicines').select('*').ilike('medicine_name',like).limit(15),
+    supabaseClient.from('medicines').select('*').ilike('generic_name',like).limit(15),
+    supabaseClient.from('medicines').select('*').ilike('strength',like).limit(15)
+  ]);
+  const firstError=nameResult.error||genericResult.error||strengthResult.error;
+  if(firstError){
+    console.error('Billing medicine search error:',firstError);
+    box.innerHTML=`<div class="billing-error">Unable to search medicines.<br><small>${escapeHTML(firstError.message||'Search failed')}</small></div>`;
+    return;
+  }
+  const merged=new Map();
+  [...(nameResult.data||[]),...(genericResult.data||[]),...(strengthResult.data||[])].forEach(m=>merged.set(Number(m.id),m));
+  const data=Array.from(merged.values()).sort((a,b)=>String(a.medicine_name||'').localeCompare(String(b.medicine_name||''))).slice(0,15);
+  box.innerHTML=data.map(m=>`<div class="billing-medicine-suggestion" data-medicine-id="${Number(m.id)}"><b>${escapeHTML(m.medicine_name||'-')} ${escapeHTML(m.strength||'')}</b><br><span class="billing-medicine-muted">${escapeHTML(m.dosage_form||'')} · 1 ${escapeHTML(m.pack_unit||'Pack')} = ${Number(m.units_per_pack||1)} ${escapeHTML(m.base_unit||'Unit')}</span></div>`).join('')||'<div class="billing-medicine-muted" style="padding:10px 12px;">No medicines found.</div>';
+  box.querySelectorAll('[data-medicine-id]').forEach(el=>el.addEventListener('click',()=>selectBillingMedicine(Number(el.dataset.medicineId))));
+}
+async function selectBillingMedicine(medicineId){const {data:medicine,error}=await supabaseClient.from('medicines').select('*').eq('id',medicineId).single();if(error||!medicine){setBillingMedicineStatus(error?.message||'Unable to load medicine.',true);return;}selectedBillingMedicine=medicine;selectedBillingBatch=null;document.getElementById('billingMedicineSuggestions').style.display='none';document.getElementById('billingMedicineSearch').value=`${medicine.medicine_name||''}${medicine.strength?' '+medicine.strength:''}`.trim();document.getElementById('billingMedicineSelectedName').textContent=document.getElementById('billingMedicineSearch').value;document.getElementById('billingMedicineBatchPanel').style.display='block';const {data:batches,error:batchError}=await supabaseClient.from('medicine_batches').select('*').eq('medicine_id',medicineId).order('expiry_date',{ascending:true});if(batchError){setBillingMedicineStatus(batchError.message,true);return;}const availableBatches=(batches||[]).filter(batch=>billingAvailableForSelection(batch)>0);const select=document.getElementById('billingMedicineBatch');select.innerHTML='<option value="">Select batch</option>'+availableBatches.map(batch=>`<option value="${Number(batch.id)}">Batch ${escapeHTML(batch.batch_number||'-')} · Exp ${escapeHTML(formatDate(batch.expiry_date))} · MRP ${billingMoney(batch.mrp_per_unit)} · Available ${escapeHTML(billingDisplayAvailable(medicine,batch))}</option>`).join('');document.getElementById('billingMedicineQuantityFields').innerHTML='';document.getElementById('billingMedicineBatchInfo').innerHTML=availableBatches.length?'Select a batch to enter quantity.':'No available stock for this medicine.';document.getElementById('billingMedicineAmountPreview').innerHTML='';}
+async function loadBillingBatch(batchId){const {data:batch,error}=await supabaseClient.from('medicine_batches').select('*').eq('id',batchId).single();if(error||!batch){setBillingMedicineStatus(error?.message||'Unable to load batch.',true);return;}selectedBillingBatch=batch;const units=billingUnitCount(selectedBillingMedicine,batch),tabletMode=isBillingTabletOrCapsule(selectedBillingMedicine),fields=document.getElementById('billingMedicineQuantityFields');if(tabletMode)fields.innerHTML=`<div><label>${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}</label><input id="billingPackQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div><div><label>${escapeHTML(billingBaseUnit(selectedBillingMedicine))}</label><input id="billingIndividualQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`;else fields.innerHTML=`<div style="grid-column:1 / -1"><label>Quantity (${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))})</label><input id="billingPackQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`;fields.querySelectorAll('input').forEach(input=>input.addEventListener('input',updateBillingMedicinePreview));document.getElementById('billingMedicineBatchInfo').innerHTML=`<b>Batch:</b> ${escapeHTML(batch.batch_number||'-')} · <b>Expiry:</b> ${escapeHTML(formatDate(batch.expiry_date))}<br><b>1 ${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}</b> = ${units} ${escapeHTML(billingBaseUnit(selectedBillingMedicine))} · <b>MRP:</b> ${billingMoney(batch.mrp_per_unit)} / ${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}<br><b>Available:</b> ${escapeHTML(billingDisplayAvailable(selectedBillingMedicine,batch))}`;updateBillingMedicinePreview();}
+function getBillingEditorQuantityBase(){if(!selectedBillingMedicine||!selectedBillingBatch)return 0;return billingBaseFromParts(selectedBillingMedicine,selectedBillingBatch,document.getElementById('billingPackQty')?.value,document.getElementById('billingIndividualQty')?.value);}
+function updateBillingMedicinePreview(){if(!selectedBillingMedicine||!selectedBillingBatch)return;const base=getBillingEditorQuantityBase(),u=billingUnitCount(selectedBillingMedicine,selectedBillingBatch),amount=(base/u)*Number(selectedBillingBatch.mrp_per_unit||0),available=billingAvailableForSelection(selectedBillingBatch),preview=document.getElementById('billingMedicineAmountPreview');preview.innerHTML=`Quantity: <b>${escapeHTML(base?billingDisplayQuantity({quantity_base_units:base,units_per_pack:u,pack_unit:billingPackUnit(selectedBillingMedicine,selectedBillingBatch),base_unit:billingBaseUnit(selectedBillingMedicine)}):'0 '+billingBaseUnit(selectedBillingMedicine))}</b><br>Amount: <b>${billingMoney(amount)}</b> · Available: <b>${escapeHTML(billingDisplayAvailable(selectedBillingMedicine,selectedBillingBatch))}</b>`;const btn=document.getElementById('addBillingMedicineButton');if(btn)btn.disabled=base<=0||base>available;}
+function addBillingMedicine(){if(!selectedBillingMedicine||!selectedBillingBatch){setBillingMedicineStatus('Select a medicine and exact batch first.',true);return;}const base=getBillingEditorQuantityBase(),u=billingUnitCount(selectedBillingMedicine,selectedBillingBatch),available=billingAvailableForSelection(selectedBillingBatch);if(base<=0){setBillingMedicineStatus('Enter a quantity.',true);return;}if(base>available){setBillingMedicineStatus(`Insufficient stock. Available: ${billingDisplayAvailable(selectedBillingMedicine,selectedBillingBatch)}.`,true);return;}const item={id:editingBillingMedicineIndex>=0?billMedicines[editingBillingMedicineIndex]?.id||null:null,medicine_id:Number(selectedBillingMedicine.id),medicine_name:selectedBillingMedicine.medicine_name||'',strength:selectedBillingMedicine.strength||'',dosage_form:selectedBillingMedicine.dosage_form||'',batch_id:Number(selectedBillingBatch.id),batch_number:selectedBillingBatch.batch_number||'',expiry_date:selectedBillingBatch.expiry_date||null,pack_unit:billingPackUnit(selectedBillingMedicine,selectedBillingBatch),base_unit:billingBaseUnit(selectedBillingMedicine),units_per_pack:u,quantity_base_units:base,mrp_per_unit:Number(selectedBillingBatch.mrp_per_unit||0),purchase_price_per_unit:Number(selectedBillingBatch.purchase_price_per_unit||0),amount:(base/u)*Number(selectedBillingBatch.mrp_per_unit||0)};if(editingBillingMedicineIndex>=0)billMedicines[editingBillingMedicineIndex]=item;else billMedicines.push(item);billingMedicineEditorTouched=true;renderBillingMedicineList();updateMedicineChargesFromList();clearBillingMedicineEditor();}
+function editBillingMedicine(index){const item=billMedicines[index];if(!item)return;editingBillingMedicineIndex=index;billingMedicineEditorTouched=true;selectBillingMedicine(item.medicine_id).then(()=>{const sel=document.getElementById('billingMedicineBatch');if(!sel)return;sel.value=String(item.batch_id);loadBillingBatch(item.batch_id).then(()=>{const u=Number(item.units_per_pack)||1,packs=Math.floor(Number(item.quantity_base_units||0)/u),rem=Math.round((Number(item.quantity_base_units||0)-packs*u)*100)/100;const pack=document.getElementById('billingPackQty'),individual=document.getElementById('billingIndividualQty');if(pack)pack.value=packs;if(individual)individual.value=rem;updateBillingMedicinePreview();});});}
+function removeBillingMedicine(index){if(index<0||index>=billMedicines.length)return;billMedicines.splice(index,1);billingMedicineEditorTouched=true;if(editingBillingMedicineIndex===index)clearBillingMedicineEditor();renderBillingMedicineList();updateMedicineChargesFromList();}
+async function loadBillMedicines(billId){const {data,error}=await supabaseClient.from('billing_medicines').select('*').eq('bill_id',billId).order('id',{ascending:true});if(error)throw error;return data||[];}
+function billingStockTransactionNote(billId,item,action,quantityBase){return `GDC-BILLING-DISPENSE:BILL:${billId}:ITEM:${item.id||'NEW'} | ${action} | Patient ID:${item.patient_id||selectedPatient?.id||''} | ${item.medicine_name||''}${item.strength?' '+item.strength:''} | Batch:${item.batch_number||''} | Quantity:${quantityBase} ${item.base_unit||'units'} | Amount:${Number(item.amount||0).toFixed(2)}`;}
+async function updateBillingBatchStock(batchId,deltaBase,item,billId){if(!deltaBase)return null;const {data:batch,error:batchError}=await supabaseClient.from('medicine_batches').select('*').eq('id',batchId).single();if(batchError||!batch)throw batchError||new Error('Unable to load medicine batch.');const u=Number(item.units_per_pack||batch.units_per_pack||1)||1,current=Number(batch.quantity_base_units??(Number(batch.quantity||0)*u))||0,newBase=current+deltaBase;if(newBase<0)throw new Error(`Insufficient stock for ${item.medicine_name||'medicine'}.`);const {data:updated,error:updateError}=await supabaseClient.from('medicine_batches').update({quantity:newBase/u,quantity_base_units:newBase,updated_at:new Date().toISOString()}).eq('id',batchId).eq('quantity_base_units',current).select().single();if(updateError||!updated)throw updateError||new Error('Stock changed while billing. Please refresh and try again.');const base=Math.abs(deltaBase),direction=deltaBase<0?'OUT':'IN',type=deltaBase<0?'DISPENSED':'RETURNED';const {data:tx,error:txError}=await supabaseClient.from('medicine_stock_transactions').insert({medicine_id:item.medicine_id,batch_id:batchId,transaction_type:type,quantity:base/u,quantity_base_units:base,units_per_pack:u,direction,transaction_date:item.transaction_date||getTodayString(),mrp_per_unit:item.mrp_per_unit,purchase_price_per_unit:item.purchase_price_per_unit,notes:billingStockTransactionNote(billId,item,type,base)}).select().single();if(txError){await supabaseClient.from('medicine_batches').update({quantity:current/u,quantity_base_units:current,updated_at:new Date().toISOString()}).eq('id',batchId).eq('quantity_base_units',newBase);throw txError;}return {batchId,before:current,after:newBase,deltaBase,txId:tx.id,item};}
+async function reverseBillingStockChanges(billId,changes){for(let i=changes.length-1;i>=0;i--){const c=changes[i];try{await updateBillingBatchStock(c.batchId,-Number(c.deltaBase),c.item,billId);}catch(e){console.error('Billing stock rollback error:',e);}}}
+async function reconcileBillingStock(billId,oldItems,newItems,billDate){const changes=[];try{const oldById=new Map(oldItems.filter(i=>i.id).map(i=>[Number(i.id),i]));const newById=new Map(newItems.filter(i=>i.id).map(i=>[Number(i.id),i]));for(const oldItem of oldItems){const current=oldItem.id?newById.get(Number(oldItem.id)):null;if(!current){const c=await updateBillingBatchStock(Number(oldItem.batch_id),Number(oldItem.quantity_base_units||0),{...oldItem,transaction_date:billDate},billId);if(c)changes.push(c);}else if(Number(current.batch_id)!==Number(oldItem.batch_id)){const c=await updateBillingBatchStock(Number(oldItem.batch_id),Number(oldItem.quantity_base_units||0),{...oldItem,transaction_date:billDate},billId);if(c)changes.push(c);}else{const delta=Number(current.quantity_base_units||0)-Number(oldItem.quantity_base_units||0);if(delta<0){const c=await updateBillingBatchStock(Number(oldItem.batch_id),delta,{...current,transaction_date:billDate},billId);if(c)changes.push(c);}}}for(const newItem of newItems){const oldItem=newItem.id?oldById.get(Number(newItem.id)):null;if(!oldItem||Number(oldItem.batch_id)!==Number(newItem.batch_id)){const c=await updateBillingBatchStock(Number(newItem.batch_id),-Number(newItem.quantity_base_units||0),{...newItem,transaction_date:billDate},billId);if(c)changes.push(c);}else{const delta=Number(newItem.quantity_base_units||0)-Number(oldItem.quantity_base_units||0);if(delta>0){const c=await updateBillingBatchStock(Number(newItem.batch_id),-delta,{...newItem,transaction_date:billDate},billId);if(c)changes.push(c);}}}return changes;}catch(e){await reverseBillingStockChanges(billId,changes);throw e;}}
+async function saveBillingMedicineRows(billId,patientId,items){const {error:deleteError}=await supabaseClient.from('billing_medicines').delete().eq('bill_id',billId);if(deleteError)throw deleteError;if(!items.length)return;const payload=items.map(item=>({bill_id:billId,patient_id:patientId,medicine_id:item.medicine_id,batch_id:item.batch_id,medicine_name:item.medicine_name,strength:item.strength||null,dosage_form:item.dosage_form||null,batch_number:item.batch_number||null,expiry_date:item.expiry_date||null,pack_unit:item.pack_unit||null,base_unit:item.base_unit||null,units_per_pack:item.units_per_pack||1,quantity_base_units:item.quantity_base_units,mrp_per_unit:item.mrp_per_unit||0,purchase_price_per_unit:item.purchase_price_per_unit||0,amount:item.amount||0}));const {error}=await supabaseClient.from('billing_medicines').insert(payload);if(error)throw error;}
+async function prepareBillingMedicineRowsForEdit(billId){const items=await loadBillMedicines(billId);billMedicines=items.map(cloneBillingMedicine);billMedicineOriginal=items.map(cloneBillingMedicine);billingMedicineEditorTouched=false;renderBillingMedicineList();updateMedicineChargesFromList();return items;}
+async function renderSavedBillMedicineDetails(billId){try{const items=await loadBillMedicines(billId),box=document.getElementById(`billMedicineDetails-${Number(billId)}`);if(!box)return;if(!items.length){box.innerHTML='<div class="billing-medicine-muted">No itemized medicine dispensing recorded for this bill.</div>';return;}box.innerHTML=items.map(item=>`<div class="bill-medicine-detail-row"><span><b>${escapeHTML(item.medicine_name||'-')} ${escapeHTML(item.strength||'')}</b><br><span class="billing-medicine-muted">Batch ${escapeHTML(item.batch_number||'-')} · Exp ${escapeHTML(formatDate(item.expiry_date))} · ${escapeHTML(billingDisplayQuantity(item))}</span></span><strong>${billingMoney(item.amount)}</strong></div>`).join('');}catch(e){const box=document.getElementById(`billMedicineDetails-${Number(billId)}`);if(box)box.innerHTML='<div class="billing-error">Unable to load medicine details.</div>';}}
+function toggleBillMedicineDetails(billId){const box=document.getElementById(`billMedicineDetails-${Number(billId)}`);if(!box)return;const opening=!box.classList.contains('open');box.classList.toggle('open');if(opening)renderSavedBillMedicineDetails(billId);}
+window.editBillingMedicine=editBillingMedicine;window.removeBillingMedicine=removeBillingMedicine;window.toggleBillMedicineDetails=toggleBillMedicineDetails;
+
+
+
+function setBillingMedicineOnlyMode(enabled) {
+  billingMedicineOnlyMode = Boolean(enabled);
+
+  const consultationRow = document.getElementById("consultationFeeChargeRow");
+  if (consultationRow) {
+    consultationRow.style.display = billingMedicineOnlyMode ? "none" : "grid";
+  }
+
+  const title = document.getElementById("createBillTitle");
+  if (title && !editingBillId) {
+    title.textContent = billingMedicineOnlyMode
+      ? "💊 Medicine Only Billing"
+      : "💰 Create Bill";
+  }
+
+  const saveButton = document.getElementById("saveBillButton");
+  if (saveButton && !editingBillId) {
+    saveButton.textContent = billingMedicineOnlyMode
+      ? "💊 Save Medicine Bill"
+      : "💾 Save Bill";
+  }
+
+  if (billingMedicineOnlyMode) {
+    const consultationFee = document.getElementById("consultationFee");
+    if (consultationFee) consultationFee.value = "0";
+  }
+
+  calculateTotal();
+}
+
+function activateMedicineOnlyBilling() {
+  if (!selectedPatient) {
+    alert("Please select a patient first.");
+    return;
+  }
+
+  selectedConsultationId = null;
+  document.getElementById("consultationLinkArea").style.display = "none";
+  document.getElementById("linkedConsultationNotice").style.display = "none";
+  setBillingMedicineOnlyMode(true);
+  window.scrollTo({ top: document.getElementById("chargesSection")?.offsetTop || 0, behavior: "smooth" });
+}
+
+function startNewBillFromDashboard() {
+  selectedConsultationId = null;
+  selectedPatient = null;
+  billEditReturnState = null;
+  resetBillMode();
+  resetBillForm();
+  document.getElementById("selectedPatientArea").style.display = "none";
+  document.getElementById("patientSearchArea").style.display = "block";
+  document.getElementById("linkedConsultationNotice").style.display = "none";
+  document.getElementById("consultationLinkArea").style.display = "none";
+  openCreateBill();
+}
+
+
 
 
 /* =========================================================
