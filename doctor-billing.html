@@ -1035,6 +1035,37 @@ textarea {
 }
 </style>
 
+<style>
+/* Medicine batch/detail readability and larger medicine action buttons */
+.billing-medicine-editor-actions{gap:10px;align-items:center;flex-wrap:wrap;}
+@media (min-width:801px){
+  .billing-medicine-batch-card{
+    min-height:96px;padding:16px 18px;background:#f1f5f9;
+    border:2px solid #94a3b8;color:#0f172a;
+    box-shadow:0 2px 5px rgba(15,23,42,.06);
+  }
+  .billing-medicine-batch-card:hover,
+  .billing-medicine-batch-card:focus{
+    background:#e0ecff;border-color:#2563eb;color:#0f172a;outline:none;
+  }
+  .billing-medicine-batch-card strong{color:#0f172a;font-size:16px;font-weight:850;}
+  .billing-medicine-batch-card span{color:#334155;font-size:14px;line-height:1.6;}
+  #billingMedicineBatchInfo{
+    background:#e2e8f0;border:2px solid #64748b;color:#0f172a;
+    padding:14px 16px;font-size:15px;line-height:1.7;font-weight:600;
+  }
+  #billingMedicineBatchInfo b{color:#0f172a;font-weight:850;}
+  .billing-medicine-item .billing-medicine-edit,
+  .billing-medicine-item .billing-medicine-remove{
+    width:44px;height:40px;min-width:44px;border-radius:10px;font-size:18px;
+  }
+  .billing-medicine-actions{gap:6px;}
+  .billing-medicine-editor-actions .billing-button{
+    min-height:42px;padding:9px 16px;font-size:14px;
+  }
+}
+</style>
+
 </head>
 
 
@@ -1564,8 +1595,10 @@ Medicine Charges
   <div id="billingMedicineBatchInfo" class="billing-medicine-preview"></div>
   <div id="billingMedicineQuantityFields" class="billing-medicine-quantity-grid"></div>
   <div id="billingMedicineAmountPreview" class="billing-medicine-preview"></div>
-  <div class="billing-actions">
+  <div class="billing-actions billing-medicine-editor-actions">
+    <button type="button" class="billing-button light small billing-medicine-back-button" id="backBillingMedicineButton" style="display:none;">← Back</button>
     <button type="button" class="billing-button success small" id="addBillingMedicineButton">➕ Add Medicine</button>
+    <button type="button" class="billing-button danger small billing-medicine-remove-edit-button" id="removeEditingBillingMedicineButton" style="display:none;">🗑 Remove</button>
     <button type="button" class="billing-button light small" id="cancelBillingMedicineButton">Cancel</button>
   </div>
 </div>
@@ -2293,7 +2326,28 @@ function clearBillingMedicineEditor(){
   if(info)info.innerHTML='';
   if(preview)preview.innerHTML='';
   setBillingMedicineStatus('');
+  updateBillingMedicineEditorButtons();
 }
+function updateBillingMedicineEditorButtons(){
+  const editing=editingBillingMedicineIndex>=0;
+  const addBtn=document.getElementById('addBillingMedicineButton');
+  const backBtn=document.getElementById('backBillingMedicineButton');
+  const removeEditBtn=document.getElementById('removeEditingBillingMedicineButton');
+  const cancelBtn=document.getElementById('cancelBillingMedicineButton');
+  if(addBtn)addBtn.textContent=editing?'✓ Update Medicine':'➕ Add Medicine';
+  if(backBtn)backBtn.style.display=editing?'inline-flex':'none';
+  if(removeEditBtn)removeEditBtn.style.display=editing?'inline-flex':'none';
+  if(cancelBtn)cancelBtn.style.display=editing?'none':'inline-flex';
+}
+function backFromBillingMedicineEdit(){
+  if(editingBillingMedicineIndex<0)return;
+  clearBillingMedicineEditor();
+}
+function removeEditingBillingMedicine(){
+  if(editingBillingMedicineIndex<0)return;
+  removeBillingMedicine(editingBillingMedicineIndex);
+}
+
 function resetBillingMedicineState(){
   billMedicines=[];
   billMedicineOriginal=[];
@@ -2376,6 +2430,7 @@ function editBillingMedicine(index){
   if(!item)return;
   editingBillingMedicineIndex=index;
   billingMedicineEditorTouched=true;
+  updateBillingMedicineEditorButtons();
   selectBillingMedicine(item.medicine_id).then(()=>{
     loadBillingBatch(item.batch_id).then(()=>{
       const u=Number(item.units_per_pack)||1;
@@ -10148,6 +10203,14 @@ document
 document
   .getElementById("cancelBillingMedicineButton")
   .addEventListener("click", clearBillingMedicineEditor);
+
+document
+  .getElementById("backBillingMedicineButton")
+  .addEventListener("click", backFromBillingMedicineEdit);
+
+document
+  .getElementById("removeEditingBillingMedicineButton")
+  .addEventListener("click", removeEditingBillingMedicine);
 
 
 [
