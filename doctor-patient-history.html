@@ -866,11 +866,11 @@ View laboratory reports by month and year
 <div>
 
 <div class="history-menu-title">
-Medicine Only History
+Medicine Dispensing History
 </div>
 
 <div class="history-menu-description">
-View medicine-only dispensing by month and year
+View medicine dispensing from billing by month and year
 </div>
 
 </div>
@@ -1993,118 +1993,74 @@ async function loadLabReports() {
    ========================================================= */
 
 async function loadMedicineOnlyHistory() {
+  // Medicine history now comes from medicines actually entered in Billing.
+  const { data: billItems, error: itemError } = await supabaseClient
+    .from("billing_medicines")
+    .select("*")
+    .eq("patient_id", currentPatientId)
+    .order("id", { ascending: false });
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("medicine_stock_transactions")
-      .select("*,medicines(id,medicine_name,strength,dosage_form,pack_unit,base_unit,units_per_pack),medicine_batches(batch_number,expiry_date,units_per_pack,unit_name)")
-      .like(
-        "notes",
-        `GDC-MEDICINE-ONLY:PATIENT:${currentPatientId}:%`
-      )
-      .order("id", { ascending: true });
-
-  if (error) {
-    console.error("Unable to load Medicine Only history:", error);
+  if (itemError) {
+    console.error("Unable to load billing medicine history:", itemError);
     allMedicineOnlyHistory = [];
     return;
   }
 
-  const rows = data || [];
-  const correctionRefRegex =
-    /(?:EDIT\s+(?:REVERSAL|REPLACEMENT|ADJUSTMENT)\s+OF\s+TX|DELETE\s+REVERSAL\s+OF\s+TX|DELETE\s+TX|CORRECTED\s+FROM\s+TX|CORRECTED_FROM_TX|REVERSE\s+TX|REVERSE_TX|REPLACEMENT\s+OF\s+TX|REPLACEMENT\s+OF\s+ID|REVERSAL\s+OF\s+TX)[: ]+(\d+)/i;
+  const items = billItems || [];
+  if (!items.length) {
+    allMedicineOnlyHistory = [];
+    return;
+  }
 
-  const groups = new Map();
+  const billIds = [...new Set(items.map(function(item) { return Number(item.bill_id); }).filter(Boolean))];
+  const { data: bills, error: billError } = await supabaseClient
+    .from("billing")
+    .select("id,bill_date,payment_status,payment_method,consultation_id,billing_type")
+    .in("id", billIds);
 
-  rows.forEach(function(tx) {
-    const note = String(tx.notes || "");
-    const match = note.match(correctionRefRegex);
-    const rootId = match ? Number(match[1]) : Number(tx.id);
-    if (!rootId) return;
-    if (!groups.has(rootId)) groups.set(rootId, []);
-    groups.get(rootId).push(tx);
+  if (billError) {
+    console.error("Unable to load billing headers for medicine history:", billError);
+    allMedicineOnlyHistory = [];
+    return;
+  }
+
+  const billMap = new Map((bills || []).map(function(bill) {
+    return [Number(bill.id), bill];
+  }));
+
+  allMedicineOnlyHistory = items.map(function(item) {
+    const bill = billMap.get(Number(item.bill_id)) || {};
+    return {
+      id: Number(item.id),
+      bill_id: Number(item.bill_id),
+      date: bill.bill_date || item.created_at || null,
+      billing_type: bill.billing_type || "STANDARD",
+      consultation_id: bill.consultation_id || null,
+      payment_status: bill.payment_status || "",
+      payment_method: bill.payment_method || "",
+      medicine_id: Number(item.medicine_id),
+      medicine_name: item.medicine_name || "Medicine",
+      strength: item.strength || "",
+      dosage_form: item.dosage_form || "",
+      batch_number: item.batch_number || "-",
+      expiry_date: item.expiry_date || null,
+      pack_unit: item.pack_unit || "Pack",
+      base_unit: item.base_unit || "units",
+      units_per_pack: Number(item.units_per_pack || 1) || 1,
+      quantity_base_units: Number(item.quantity_base_units || 0) || 0,
+      mrp_per_unit: Number(item.mrp_per_unit || 0) || 0,
+      purchase_price_per_unit: Number(item.purchase_price_per_unit || 0) || 0,
+      amount: Number(item.amount || 0) || 0
+    };
   });
 
-  const active = [];
-
-  groups.forEach(function(chain, rootId) {
-    const root = chain.find(function(tx) {
-      return Number(tx.id) === Number(rootId);
-    });
-
-    if (!root || String(root.transaction_type || "").toUpperCase() !== "DISPENSED") {
-      return;
-    }
-
-    // Calculate the effective quantity separately for each batch.
-    // This keeps edit/delete/batch-change audit records from appearing
-    // as duplicate dispensings in patient history.
-    const byBatch = new Map();
-
-    chain.forEach(function(tx) {
-      const batchId = Number(tx.batch_id || 0);
-      const units = Number(tx.units_per_pack || tx.medicines?.units_per_pack || tx.medicine_batches?.units_per_pack || 1) || 1;
-      const base = Number(tx.quantity_base_units ?? Number(tx.quantity || 0) * units) || 0;
-      const sign = String(tx.transaction_type || "").toUpperCase() === "RETURNED" ? -1 : 1;
-      const key = String(batchId);
-      if (!byBatch.has(key)) {
-        byBatch.set(key, {
-          base: 0,
-          latest: tx,
-          units
-        });
-      }
-      const item = byBatch.get(key);
-      item.base += sign * base;
-      item.latest = tx;
-      item.units = units;
-    });
-
-    const effectiveBatches = [];
-
-    byBatch.forEach(function(item, key) {
-      const base = Math.round(item.base * 100) / 100;
-      if (base <= 0.000001) return;
-      const source = chain.find(function(tx) {
-        return String(Number(tx.batch_id || 0)) === key && String(tx.transaction_type || "").toUpperCase() === "DISPENSED";
-      }) || root;
-      effectiveBatches.push({
-        tx: source,
-        base,
-        units: item.units
-      });
-    });
-
-    if (!effectiveBatches.length) return;
-
-    active.push({
-      rootId: Number(root.id),
-      date: root.transaction_date || null,
-      created_at: root.created_at || null,
-      medicine_id: Number(root.medicine_id),
-      medicine_name: root.medicines?.medicine_name || "Medicine",
-      strength: root.medicines?.strength || "",
-      dosage_form: root.medicines?.dosage_form || "",
-      pack_unit: root.medicines?.pack_unit || root.medicine_batches?.unit_name || "Pack",
-      base_unit: root.medicines?.base_unit || "units",
-      units_per_pack: Number(root.units_per_pack || root.medicines?.units_per_pack || 1) || 1,
-      batches: effectiveBatches
-    });
-  });
-
-  active.sort(function(a, b) {
+  allMedicineOnlyHistory.sort(function(a, b) {
     const at = a.date ? new Date(String(a.date).length === 10 ? a.date + "T00:00:00" : a.date).getTime() : 0;
     const bt = b.date ? new Date(String(b.date).length === 10 ? b.date + "T00:00:00" : b.date).getTime() : 0;
     if (bt !== at) return bt - at;
-    return Number(b.rootId || 0) - Number(a.rootId || 0);
+    return Number(b.id || 0) - Number(a.id || 0);
   });
-
-  allMedicineOnlyHistory = active;
 }
-
 
 function formatMedicineHistoryQuantity(base, medicine, units) {
   const n = Number(base) || 0;
@@ -2270,11 +2226,11 @@ function getHistoryCategoryConfig(
       sectionId: "medicineOnlyHistorySection",
       contentId: "medicineOnlyHistoryContent",
       icon: "💊",
-      title: "Medicine Only History",
+      title: "Medicine Dispensing History",
       singular: "dispensing",
       plural: "dispensings",
-      buttonText: "🔎 View Medicine Only History",
-      fullButtonText: "📚 View Full Medicine Only History"
+      buttonText: "🔎 View Medicine Dispensing History",
+      fullButtonText: "📚 View Full Medicine Dispensing History"
     },
 
     bill: {
@@ -4541,17 +4497,14 @@ function renderLabHistory(
    ========================================================= */
 
 function renderMedicineOnlyHistory(items) {
-
-  const container =
-    document.getElementById("medicineOnlyHistoryContent");
-
+  const container = document.getElementById("medicineOnlyHistoryContent");
   const rows = Array.isArray(items) ? items : allMedicineOnlyHistory;
   let html = getHistoryDisplayHeader("medicineOnly", rows.length);
 
   if (!rows.length) {
     html += `
       <div class="portal-message">
-        ${historyDisplayMode === "full" ? "No Medicine Only dispensings found." : "No Medicine Only dispensings found for the selected month."}
+        ${historyDisplayMode === "full" ? "No medicine dispensings found." : "No medicine dispensings found for the selected month."}
       </div>
     `;
   } else {
@@ -4570,51 +4523,39 @@ function renderMedicineOnlyHistory(items) {
 
     html += sortedDates.map(function(dateKey) {
       const dayRows = groups.get(dateKey) || [];
-      const medicineCount = dayRows.reduce(function(total, row) {
-        return total + row.batches.length;
-      }, 0);
-
       return `
         <div class="history-date-group">
           <div class="history-date-group-header">
             <div>
               <strong>📅 ${formatDate(dateKey)}</strong>
-              <div class="history-date-group-subtitle">${medicineCount} medicine${medicineCount === 1 ? "" : "s"} dispensed</div>
+              <div class="history-date-group-subtitle">${dayRows.length} medicine${dayRows.length === 1 ? "" : "s"} dispensed</div>
             </div>
           </div>
 
           ${dayRows.map(function(row) {
-            return row.batches.map(function(batchInfo) {
-              const tx = batchInfo.tx || {};
-              const medicine = {
-                medicine_name: row.medicine_name,
-                strength: row.strength,
-                dosage_form: row.dosage_form,
-                pack_unit: row.pack_unit,
-                base_unit: row.base_unit,
-                units_per_pack: batchInfo.units
-              };
-              const batch = tx.medicine_batches || {};
-              const amount = (Number(batchInfo.base || 0) / Number(batchInfo.units || 1)) * Number(tx.mrp_per_unit || 0);
-
-              return `
-                <div class="file-card">
-                  <div class="file-name">
-                    💊 ${escapeHTML(row.medicine_name || "Medicine")} ${row.strength ? escapeHTML(row.strength) : ""}
-                  </div>
-
-                  <div class="file-meta">
-                    🧾 Batch: ${escapeHTML(batch.batch_number || "-")}
-                    <br>
-                    📦 Quantity: ${escapeHTML(formatMedicineHistoryQuantity(batchInfo.base, medicine, batchInfo.units))}
-                    <br>
-                    💰 MRP: ₹${Number(tx.mrp_per_unit || 0).toFixed(2)} / ${escapeHTML(row.pack_unit || "Pack")}
-                    <br>
-                    💵 Amount: ₹${amount.toFixed(2)}
-                  </div>
+            const quantity = formatMedicineHistoryQuantity(row.quantity_base_units, row, row.units_per_pack);
+            return `
+              <div class="file-card">
+                <div class="file-name">
+                  💊 ${escapeHTML(row.medicine_name || "Medicine")} ${row.strength ? escapeHTML(row.strength) : ""}
                 </div>
-              `;
-            }).join("");
+                <div class="file-meta">
+                  🧾 Bill #${escapeHTML(row.bill_id)}${row.billing_type === "MEDICINE_ONLY" ? " · Medicine Only" : ""}
+                  <br>
+                  📦 Quantity: ${escapeHTML(quantity)}
+                  <br>
+                  🏷️ Batch: ${escapeHTML(row.batch_number || "-")}
+                  <br>
+                  📅 Expiry: ${escapeHTML(row.expiry_date ? formatDate(row.expiry_date) : "-")}
+                  <br>
+                  💰 MRP: ₹${Number(row.mrp_per_unit || 0).toFixed(2)} / ${escapeHTML(row.pack_unit || "Pack")}
+                  <br>
+                  💵 Amount: ₹${Number(row.amount || 0).toFixed(2)}
+                  <br>
+                  💳 Payment: ${escapeHTML(row.payment_status || "-")}
+                </div>
+              </div>
+            `;
           }).join("")}
         </div>
       `;
@@ -4624,7 +4565,6 @@ function renderMedicineOnlyHistory(items) {
   html += getHistoryRecordNavigation();
   container.innerHTML = html;
 }
-
 
 /* =========================================================
    BILL HISTORY
