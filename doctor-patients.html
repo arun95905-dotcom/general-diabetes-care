@@ -887,6 +887,77 @@ textarea {
   margin-top: 2px;
 }
 
+/* Collapsible prescription details inside each medicine builder row. */
+.consultation-medicine-prescription-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #174b63;
+  font: inherit;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+}
+
+.consultation-medicine-prescription-toggle-icon {
+  flex: 0 0 auto;
+  font-size: 15px;
+}
+
+.consultation-medicine-prescription-collapsible {
+  margin-top: 10px;
+}
+
+.consultation-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.consultation-file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 11px;
+  border: 1px solid #d7e0e8;
+  border-radius: 10px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.consultation-file-name {
+  min-width: 0;
+  color: #243447;
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.consultation-file-remove {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.consultation-file-empty {
+  color: #64748b;
+  font-size: 12px;
+}
+
 .consultation-medicine-prescription-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.25fr) minmax(0, 1fr);
@@ -2083,6 +2154,11 @@ let patientPageReturnURL =
 
 let registrationAppointmentId =
   null;
+
+/* New-consultation file queues. These let the doctor add/remove
+   individual files before the consultation is saved. */
+let consultationPrescriptionFileQueue = [];
+let consultationLabFileQueue = [];
 
 
 /* =========================================================
@@ -5212,6 +5288,9 @@ async function startConsultation(
     createEmptyConsultationMedicineRow()
   ];
 
+  consultationPrescriptionFileQueue = [];
+  consultationLabFileQueue = [];
+
 
   const appointment =
     await getCurrentAppointment();
@@ -5387,6 +5466,8 @@ async function startConsultation(
   showView(
     "consultationView"
   );
+
+  initializeConsultationFileQueues();
 
 }
 
@@ -6924,11 +7005,30 @@ function consultationMedicineRowHTML(
 
             <div class="form-group consultation-medicine-prescription-fields">
 
-              <label>
-                Dosage / Instructions / Days
-              </label>
+              <button
+                type="button"
+                class="consultation-medicine-prescription-toggle"
+                aria-expanded="false"
+                onclick="toggleConsultationMedicinePrescription(
+                  '${mode}',
+                  ${Number(index)}
+                )">
 
-              <div class="consultation-medicine-prescription-grid">
+                <span>Dosage / Instructions / Days</span>
+                <span
+                  id="${prefix}PrescriptionToggleIcon-${index}"
+                  class="consultation-medicine-prescription-toggle-icon">
+                  ▶
+                </span>
+
+              </button>
+
+              <div
+                id="${prefix}PrescriptionCollapsible-${index}"
+                class="consultation-medicine-prescription-collapsible"
+                hidden>
+
+                <div class="consultation-medicine-prescription-grid">
 
                 <div class="consultation-medicine-prescription-box">
                   <label>Morning</label>
@@ -6992,9 +7092,9 @@ function consultationMedicineRowHTML(
                 )}
               </div>
 
-              <div class="consultation-medicine-instruction-days">
+                <div class="consultation-medicine-instruction-days">
 
-                <div class="consultation-medicine-instruction-box">
+                  <div class="consultation-medicine-instruction-box">
                   <label>Instructions</label>
                   ${consultationMedicineInstructionSelectHTML(
                     mode,
@@ -7015,6 +7115,8 @@ function consultationMedicineRowHTML(
                     value="${escapeHTML(
                       row.days || ""
                     )}">
+                  </div>
+
                 </div>
 
               </div>
@@ -7071,7 +7173,9 @@ function consultationMedicinesSectionHTML(
 
   return `
 
-    <div class="form-section consultation-medicines-section">
+    <div
+      id="${mode === "edit" ? "editConsultationMedicinesSection" : "consultationMedicinesSection"}"
+      class="form-section consultation-medicines-section">
 
       <h3>
         💊 Medicines
@@ -7458,6 +7562,43 @@ function renderConsultationMedicineTotal(
 }
 
 
+function toggleConsultationMedicinePrescription(mode, index) {
+
+  const prefix =
+    mode === "edit"
+      ? "editConsultMedicine"
+      : "consultMedicine";
+
+  const panel = document.getElementById(
+    prefix + "PrescriptionCollapsible-" + index
+  );
+
+  const toggle = document.querySelector(
+    `[data-mode="${mode}"][data-index="${index}"] .consultation-medicine-prescription-toggle`
+  );
+
+  const icon = document.getElementById(
+    prefix + "PrescriptionToggleIcon-" + index
+  );
+
+  if (!panel) {
+    return;
+  }
+
+  const willOpen = panel.hidden;
+  panel.hidden = !willOpen;
+
+  if (toggle) {
+    toggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+  }
+
+  if (icon) {
+    icon.textContent = willOpen ? "▼" : "▶";
+  }
+
+}
+
+
 function confirmConsultationMedicine(
   mode,
   index
@@ -7689,6 +7830,36 @@ function confirmConsultationMedicine(
   renderConsultationMedicineTotal(
     mode
   );
+
+  scrollToConsultationMedicineSection(mode);
+
+}
+
+
+function scrollToConsultationMedicineSection(mode = "new") {
+
+  const id =
+    mode === "edit"
+      ? "editConsultationMedicinesSection"
+      : "consultationMedicinesSection";
+
+  const section = document.getElementById(id);
+
+  if (!section) {
+    return;
+  }
+
+  requestAnimationFrame(function() {
+    const top =
+      section.getBoundingClientRect().top +
+      window.pageYOffset -
+      12;
+
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: "smooth"
+    });
+  });
 
 }
 
@@ -11764,6 +11935,11 @@ function newConsultationFormHTML(
           accept="image/jpeg,image/png,image/webp"
           multiple>
 
+        <div
+          id="consultPrescriptionFileList"
+          class="consultation-file-list">
+        </div>
+
         <div class="upload-note">
           JPG, PNG or WEBP. Multiple images allowed.
         </div>
@@ -11822,6 +11998,11 @@ function newConsultationFormHTML(
           id="consultLabFiles"
           accept="image/jpeg,image/png,image/webp,application/pdf"
           multiple>
+
+        <div
+          id="consultLabFileList"
+          class="consultation-file-list">
+        </div>
 
         <div class="upload-note">
           Uploaded reports will also appear in Lab Investigations.
@@ -12129,6 +12310,176 @@ function buildVitals() {
 
 
 /* =========================================================
+   NEW CONSULTATION FILE QUEUES
+   ========================================================= */
+
+function consultationFileKey(file) {
+  return [
+    file.name,
+    file.size,
+    file.lastModified,
+    file.type
+  ].join("|");
+}
+
+
+function syncConsultationFileInput(inputId, queue) {
+  const input = document.getElementById(inputId);
+
+  if (!input) {
+    return;
+  }
+
+  try {
+    const transfer = new DataTransfer();
+    queue.forEach(function(file) {
+      transfer.items.add(file);
+    });
+    input.files = transfer.files;
+  } catch (error) {
+    /* The queue remains the source of truth; older browsers may not
+       allow assigning a FileList programmatically. */
+  }
+}
+
+
+function renderConsultationFileQueue(listId, queue, type) {
+  const list = document.getElementById(listId);
+
+  if (!list) {
+    return;
+  }
+
+  if (!queue.length) {
+    list.innerHTML = "";
+    return;
+  }
+
+  list.innerHTML = queue.map(function(file, index) {
+    const icon = type === "prescription" ? "📷" : "📄";
+
+    return `
+      <div class="consultation-file-item">
+        <div class="consultation-file-name">
+          ${icon} ${escapeHTML(file.name)}
+        </div>
+        <button
+          type="button"
+          class="consultation-file-remove"
+          aria-label="Remove ${escapeHTML(file.name)}"
+          title="Remove file"
+          onclick="removeConsultationQueuedFile(
+            '${type}',
+            ${Number(index)}
+          )">
+          ×
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+
+
+function addConsultationQueuedFiles(type, files) {
+  const queue =
+    type === "prescription"
+      ? consultationPrescriptionFileQueue
+      : consultationLabFileQueue;
+
+  const existing = new Set(
+    queue.map(consultationFileKey)
+  );
+
+  Array.from(files || []).forEach(function(file) {
+    const key = consultationFileKey(file);
+
+    if (!existing.has(key)) {
+      queue.push(file);
+      existing.add(key);
+    }
+  });
+
+  if (type === "prescription") {
+    syncConsultationFileInput(
+      "consultPrescriptionFiles",
+      consultationPrescriptionFileQueue
+    );
+    renderConsultationFileQueue(
+      "consultPrescriptionFileList",
+      consultationPrescriptionFileQueue,
+      type
+    );
+  } else {
+    syncConsultationFileInput(
+      "consultLabFiles",
+      consultationLabFileQueue
+    );
+    renderConsultationFileQueue(
+      "consultLabFileList",
+      consultationLabFileQueue,
+      type
+    );
+  }
+}
+
+
+function removeConsultationQueuedFile(type, index) {
+  const queue =
+    type === "prescription"
+      ? consultationPrescriptionFileQueue
+      : consultationLabFileQueue;
+
+  if (index < 0 || index >= queue.length) {
+    return;
+  }
+
+  queue.splice(index, 1);
+
+  addConsultationQueuedFiles(type, []);
+}
+
+
+function initializeConsultationFileQueues() {
+  const prescriptionInput = document.getElementById(
+    "consultPrescriptionFiles"
+  );
+  const labInput = document.getElementById(
+    "consultLabFiles"
+  );
+
+  if (prescriptionInput) {
+    prescriptionInput.addEventListener("change", function() {
+      addConsultationQueuedFiles(
+        "prescription",
+        prescriptionInput.files
+      );
+    });
+  }
+
+  if (labInput) {
+    labInput.addEventListener("change", function() {
+      addConsultationQueuedFiles(
+        "lab",
+        labInput.files
+      );
+    });
+  }
+
+  renderConsultationFileQueue(
+    "consultPrescriptionFileList",
+    consultationPrescriptionFileQueue,
+    "prescription"
+  );
+
+  renderConsultationFileQueue(
+    "consultLabFileList",
+    consultationLabFileQueue,
+    "lab"
+  );
+}
+
+
+/* =========================================================
    SAVE CONSULTATION
    STEP 3
    ========================================================= */
@@ -12384,14 +12735,7 @@ async function saveConsultation(
   try {
 
     const prescriptionFiles =
-      Array.from(
-        document
-          .getElementById(
-            "consultPrescriptionFiles"
-          )
-          .files ||
-        []
-      );
+      consultationPrescriptionFileQueue.slice();
 
 
     await uploadPrescriptionFiles(
@@ -12402,14 +12746,7 @@ async function saveConsultation(
 
 
     const labFiles =
-      Array.from(
-        document
-          .getElementById(
-            "consultLabFiles"
-          )
-          .files ||
-        []
-      );
+      consultationLabFileQueue.slice();
 
 
     await uploadLabFiles(
