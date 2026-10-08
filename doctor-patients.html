@@ -619,6 +619,244 @@ textarea {
   color: #b91c1c;
 }
 
+
+.consultation-medicine-builder-title {
+  margin-bottom: 10px;
+  color: #174b63;
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.consultation-medicine-grid-new {
+  grid-template-columns: minmax(0,1fr);
+}
+
+.consultation-medicine-batch-section,
+.consultation-medicine-quantity-section {
+  margin-top: 12px;
+  padding: 12px;
+  background: #f8fcff;
+  border: 1px solid #d8eaf4;
+  border-radius: 13px;
+}
+
+.consultation-medicine-batch-title,
+.consultation-medicine-quantity-heading {
+  color: #174b63;
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.consultation-medicine-batch-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 9px;
+}
+
+.consultation-medicine-batch-card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  text-align: left;
+  background: #ffffff;
+  border: 2px solid #dbe7ef;
+  border-radius: 13px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.consultation-medicine-batch-card:hover,
+.consultation-medicine-batch-card.selected {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.consultation-medicine-batch-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 9px;
+  color: #17324d;
+}
+
+.consultation-medicine-mrp {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.consultation-medicine-batch-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.consultation-medicine-batch-info-grid > div {
+  padding: 9px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.consultation-medicine-batch-info-grid span {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+
+.consultation-medicine-batch-info-grid strong {
+  display: block;
+  color: #1e293b;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.consultation-medicine-no-batches {
+  padding: 11px;
+  color: #b91c1c;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.consultation-medicine-quantity-subheading {
+  margin: 5px 0 10px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.consultation-medicine-amount-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 8px;
+  margin-top: 11px;
+  padding: 11px;
+  background: #ffffff;
+  border: 1px solid #dbe7ef;
+  border-radius: 12px;
+}
+
+.consultation-medicine-amount-box > div {
+  min-width: 0;
+}
+
+.consultation-medicine-amount-box span {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.consultation-medicine-amount-box strong {
+  display: block;
+  margin-top: 3px;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.consultation-medicine-amount-total strong {
+  color: #15803d;
+  font-size: 19px;
+}
+
+.consultation-medicine-added-card {
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #dbe7ef;
+  border-radius: 13px;
+}
+
+.consultation-medicine-added-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.consultation-medicine-added-name {
+  color: #174b63;
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.consultation-medicine-added-meta {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.consultation-medicine-added-amount {
+  color: #15803d;
+  font-size: 17px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.consultation-medicine-added-details {
+  display: grid;
+  gap: 5px;
+  margin-top: 9px;
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.consultation-medicine-added-details strong {
+  color: #1e3a5f;
+}
+
+.consultation-medicine-added-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.consultation-medicines-total {
+  margin-top: 10px;
+}
+
+.consultation-medicines-total-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  color: #166534;
+  font-weight: 850;
+}
+
+.consultation-medicines-total-card strong {
+  font-size: 18px;
+}
+
+@media(max-width:430px) {
+  .consultation-medicine-batch-info-grid,
+  .consultation-medicine-amount-box {
+    grid-template-columns: 1fr;
+  }
+
+  .consultation-medicine-added-header {
+    align-items: flex-start;
+  }
+
+  .consultation-medicine-added-actions {
+    justify-content: stretch;
+  }
+
+  .consultation-medicine-added-actions .portal-button {
+    flex: 1;
+  }
+}
+
 .consultation-medicine-quantity-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -5179,7 +5417,19 @@ function createEmptyConsultationMedicineRow() {
     pack_quantity: 0,
     individual_quantity: 0,
     single_quantity: 0,
-    available_stock_base_units: null
+    available_stock_base_units: null,
+
+    /* Medicine Only style batch / amount selection */
+    batches: [],
+    selected_batch_id: null,
+    selected_batch: null,
+    batch_id: null,
+    mrp_per_unit: 0,
+    purchase_price_per_unit: 0,
+    amount: 0,
+
+    /* Added medicines become compact list cards */
+    added: false
 
   };
 
@@ -5811,6 +6061,495 @@ function consultationMedicineStockDisplay(
 }
 
 
+function consultationMedicineAmount(row) {
+
+  if (!row || !row.selected_batch) {
+    return 0;
+  }
+
+  const base =
+    consultationMedicineQuantityBaseUnits(
+      row,
+      row.pack_quantity,
+      row.individual_quantity,
+      row.single_quantity
+    );
+
+  const units =
+    Number(
+      row.units_per_pack ||
+      row.selected_batch.units_per_pack ||
+      1
+    ) || 1;
+
+  return (
+    base /
+    units
+  ) *
+  Number(
+    row.selected_batch.mrp_per_unit ||
+    row.mrp_per_unit ||
+    0
+  );
+
+}
+
+
+function consultationMedicineSelectedBatch(row) {
+
+  if (!row) {
+    return null;
+  }
+
+  if (row.selected_batch) {
+    return row.selected_batch;
+  }
+
+  const selectedId =
+    Number(
+      row.selected_batch_id ||
+      row.batch_id
+    ) || null;
+
+  if (!selectedId) {
+    return null;
+  }
+
+  return (
+    (row.batches || [])
+      .find(
+        function(batch) {
+          return Number(batch.id) === selectedId;
+        }
+      ) ||
+    null
+  );
+
+}
+
+
+function consultationMedicineQuantityDisplay(
+  row
+) {
+
+  if (!row) {
+    return "-";
+  }
+
+  if (
+    consultationMedicineUsesPackAndIndividual(
+      row
+    )
+  ) {
+
+    const packs =
+      Number(
+        row.pack_quantity || 0
+      );
+
+    const individual =
+      Number(
+        row.individual_quantity || 0
+      );
+
+    return (
+      packs.toLocaleString("en-IN") +
+      " " +
+      (row.pack_unit || "packs") +
+      (
+        individual > 0
+          ? " + " +
+            individual.toLocaleString("en-IN") +
+            " " +
+            (row.base_unit || "units")
+          : ""
+      )
+    );
+
+  }
+
+  return (
+    Number(
+      row.single_quantity || 0
+    ).toLocaleString("en-IN") +
+    " " +
+    (
+      row.pack_unit ||
+      row.base_unit ||
+      "units"
+    )
+  );
+
+}
+
+
+function consultationMedicineBatchOptionsHTML(
+  mode,
+  index,
+  row
+) {
+
+  const batches =
+    Array.isArray(row.batches)
+      ? row.batches
+      : [];
+
+  if (!batches.length) {
+
+    return `
+      <div class="consultation-medicine-no-batches">
+        No current non-expired stock batch is available.
+        Please add stock before dispensing this medicine.
+      </div>
+    `;
+
+  }
+
+  const selectedId =
+    Number(
+      row.selected_batch_id ||
+      row.batch_id
+    ) || null;
+
+  return `
+    <div class="consultation-medicine-batch-title">
+      Select exact stock / batch
+    </div>
+
+    <div class="consultation-medicine-batch-list">
+
+      ${
+        batches
+          .map(
+            function(batch) {
+
+              const units =
+                Number(
+                  batch.units_per_pack ||
+                  row.units_per_pack ||
+                  1
+                ) || 1;
+
+              const stockBase =
+                batch.quantity_base_units !== null &&
+                batch.quantity_base_units !== undefined
+                  ? Number(
+                      batch.quantity_base_units
+                    ) || 0
+                  : (
+                      Number(
+                        batch.quantity
+                      ) || 0
+                    ) *
+                    units;
+
+              const stockPacks =
+                Math.floor(
+                  stockBase /
+                  units
+                );
+
+              const stockRemainder =
+                Math.round(
+                  (
+                    stockBase -
+                    stockPacks * units
+                  ) *
+                  100
+                ) / 100;
+
+              let stockText;
+
+              if (
+                consultationMedicineUsesPackAndIndividual(
+                  {
+                    ...row,
+                    units_per_pack: units
+                  }
+                )
+              ) {
+
+                stockText =
+                  stockPacks.toLocaleString("en-IN") +
+                  " " +
+                  (
+                    row.pack_unit ||
+                    "packs"
+                  ) +
+                  " + " +
+                  stockRemainder.toLocaleString("en-IN") +
+                  " " +
+                  (
+                    row.base_unit ||
+                    "units"
+                  );
+
+              } else {
+
+                stockText =
+                  stockPacks.toLocaleString("en-IN") +
+                  " " +
+                  (
+                    row.pack_unit ||
+                    row.base_unit ||
+                    "units"
+                  );
+
+              }
+
+              const expiry =
+                batch.expiry_date
+                  ? formatDate(
+                      batch.expiry_date
+                    )
+                  : "No expiry";
+
+              return `
+                <button
+                  type="button"
+                  class="consultation-medicine-batch-card ${
+                    Number(batch.id) === selectedId
+                      ? "selected"
+                      : ""
+                  }"
+                  onclick="selectConsultationMedicineBatch(
+                    '${mode}',
+                    ${Number(index)},
+                    ${Number(batch.id)}
+                  )">
+
+                  <div class="consultation-medicine-batch-card-top">
+
+                    <strong>
+                      Batch: ${escapeHTML(
+                        batch.batch_number ||
+                        "-"
+                      )}
+                    </strong>
+
+                    <span class="consultation-medicine-mrp">
+                      MRP ₹${Number(
+                        batch.mrp_per_unit || 0
+                      ).toFixed(2)}
+                    </span>
+
+                  </div>
+
+                  <div class="consultation-medicine-batch-info-grid">
+
+                    <div>
+                      <span>Expiry</span>
+                      <strong>${escapeHTML(expiry)}</strong>
+                    </div>
+
+                    <div>
+                      <span>Pack</span>
+                      <strong>
+                        1 ${escapeHTML(
+                          row.pack_unit ||
+                          "pack"
+                        )} =
+                        ${Number(
+                          units
+                        ).toLocaleString("en-IN")}
+                        ${escapeHTML(
+                          row.base_unit ||
+                          "units"
+                        )}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>Available</span>
+                      <strong>${escapeHTML(stockText)}</strong>
+                    </div>
+
+                    <div>
+                      <span>Purchase</span>
+                      <strong>
+                        ₹${Number(
+                          batch.purchase_price_per_unit ||
+                          0
+                        ).toFixed(2)}
+                      </strong>
+                    </div>
+
+                  </div>
+
+                </button>
+              `;
+
+            }
+          )
+          .join("")
+      }
+
+    </div>
+  `;
+
+}
+
+
+function consultationMedicineSummaryCardHTML(
+  mode,
+  index,
+  row
+) {
+
+  const batch =
+    consultationMedicineSelectedBatch(
+      row
+    );
+
+  const amount =
+    Number(
+      row.amount ||
+      consultationMedicineAmount(row) ||
+      0
+    );
+
+  return `
+
+    <div
+      class="consultation-medicine-added-card">
+
+      <div class="consultation-medicine-added-header">
+
+        <div>
+
+          <div class="consultation-medicine-added-name">
+            💊 ${escapeHTML(
+              consultationMedicineDisplayName(
+                row
+              )
+            )}
+          </div>
+
+          <div class="consultation-medicine-added-meta">
+            ${escapeHTML(
+              row.dosage_form ||
+              ""
+            )}
+            ${
+              row.generic_name
+                ? " · " +
+                  escapeHTML(
+                    row.generic_name
+                  )
+                : ""
+            }
+          </div>
+
+        </div>
+
+        <div class="consultation-medicine-added-amount">
+          ₹${amount.toFixed(2)}
+        </div>
+
+      </div>
+
+      <div class="consultation-medicine-added-details">
+
+        ${
+          batch
+            ? `
+              <div>
+                <strong>Batch:</strong>
+                ${escapeHTML(
+                  batch.batch_number ||
+                  "-"
+                )}
+                ${
+                  batch.expiry_date
+                    ? " · Exp " +
+                      escapeHTML(
+                        formatDate(
+                          batch.expiry_date
+                        )
+                      )
+                    : ""
+                }
+              </div>
+            `
+            : ""
+        }
+
+        <div>
+          <strong>Quantity:</strong>
+          ${escapeHTML(
+            consultationMedicineQuantityDisplay(
+              row
+            )
+          )}
+        </div>
+
+        <div>
+          <strong>Prescription:</strong>
+          ${escapeHTML(
+            consultationMedicinePrescriptionSummary(
+              row
+            ) ||
+            consultationMedicineDosageText(
+              row
+            )
+          )}
+        </div>
+
+        <div>
+          <strong>MRP:</strong>
+          ₹${Number(
+            batch?.mrp_per_unit ||
+            row.mrp_per_unit ||
+            0
+          ).toFixed(2)}
+          ${
+            batch
+              ? " / " +
+                escapeHTML(
+                  row.pack_unit ||
+                  "pack"
+                )
+              : ""
+          }
+        </div>
+
+      </div>
+
+      <div class="consultation-medicine-added-actions">
+
+        <button
+          type="button"
+          class="portal-button light-button small-button"
+          onclick="editConsultationMedicineDraft(
+            '${mode}',
+            ${Number(index)}
+          )">
+
+          ✏️ Edit
+
+        </button>
+
+        <button
+          type="button"
+          class="portal-button danger-button small-button"
+          onclick="removeConsultationMedicine(
+            '${mode}',
+            ${Number(index)}
+          )">
+
+          🗑 Remove
+
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
 function consultationMedicineRowHTML(
   mode,
   index
@@ -5819,26 +6558,55 @@ function consultationMedicineRowHTML(
   const rows =
     consultationMedicineState[
       mode
-    ] ||
-    [];
-
+    ] || [];
 
   const row =
     rows[index] ||
     createEmptyConsultationMedicineRow();
 
+  /*
+     Once a medicine has been added, keep it as a compact list card.
+     This gives the doctor a clean running medicine list while a new
+     blank builder row is available underneath.
+  */
+  if (row.added) {
+
+    return `
+      <div
+        class="consultation-medicine-row consultation-medicine-row-added"
+        data-mode="${mode}"
+        data-index="${index}">
+
+        ${consultationMedicineSummaryCardHTML(
+          mode,
+          index,
+          row
+        )}
+
+      </div>
+    `;
+
+  }
 
   const prefix =
     mode === "edit"
       ? "editConsultMedicine"
       : "consultMedicine";
 
-
   const usesPackAndIndividual =
     consultationMedicineUsesPackAndIndividual(
       row
     );
 
+  const selectedBatch =
+    consultationMedicineSelectedBatch(
+      row
+    );
+
+  const amount =
+    consultationMedicineAmount(
+      row
+    );
 
   const quantityHTML =
     usesPackAndIndividual
@@ -5849,9 +6617,10 @@ function consultationMedicineRowHTML(
             <span class="consultation-medicine-quantity-label">
               ${escapeHTML(
                 row.pack_unit ||
-                "Strips"
+                "Strip"
               )}
             </span>
+
             <input
               id="${prefix}Pack-${index}"
               type="number"
@@ -5859,9 +6628,13 @@ function consultationMedicineRowHTML(
               step="1"
               inputmode="numeric"
               value="${escapeHTML(
-                row.pack_quantity ||
-                0
-              )}">
+                row.pack_quantity || 0
+              )}"
+              oninput="updateConsultationMedicineAmount(
+                '${mode}',
+                ${Number(index)}
+              )">
+
           </div>
 
           <div class="consultation-medicine-quantity-box">
@@ -5871,22 +6644,29 @@ function consultationMedicineRowHTML(
                 "Units"
               )}
             </span>
+
             <input
               id="${prefix}Individual-${index}"
               type="number"
               min="0"
               max="${Math.max(
                 0,
-                (Number(
-                  row.units_per_pack
-                ) || 1) - 1
+                (
+                  Number(
+                    row.units_per_pack
+                  ) || 1
+                ) - 1
               )}"
               step="1"
               inputmode="numeric"
               value="${escapeHTML(
-                row.individual_quantity ||
-                0
-              )}">
+                row.individual_quantity || 0
+              )}"
+              oninput="updateConsultationMedicineAmount(
+                '${mode}',
+                ${Number(index)}
+              )">
+
           </div>
 
         </div>
@@ -5895,10 +6675,11 @@ function consultationMedicineRowHTML(
           1 ${escapeHTML(
             row.pack_unit ||
             "pack"
-          )} = ${Number(
-            row.units_per_pack ||
-            1
-          ).toLocaleString("en-IN")} ${escapeHTML(
+          )} =
+          ${Number(
+            row.units_per_pack || 1
+          ).toLocaleString("en-IN")}
+          ${escapeHTML(
             row.base_unit ||
             "units"
           )}
@@ -5906,13 +6687,17 @@ function consultationMedicineRowHTML(
       `
       : `
         <div class="consultation-medicine-quantity-pair" style="grid-template-columns:1fr;">
+
           <div class="consultation-medicine-quantity-box">
+
             <span class="consultation-medicine-quantity-label">
               ${escapeHTML(
                 row.pack_unit ||
+                row.base_unit ||
                 "Quantity"
               )}
             </span>
+
             <input
               id="${prefix}Single-${index}"
               type="number"
@@ -5920,25 +6705,31 @@ function consultationMedicineRowHTML(
               step="1"
               inputmode="numeric"
               value="${escapeHTML(
-                row.single_quantity ||
-                0
-              )}">
+                row.single_quantity || 0
+              )}"
+              oninput="updateConsultationMedicineAmount(
+                '${mode}',
+                ${Number(index)}
+              )">
+
           </div>
+
         </div>
 
         <div class="consultation-medicine-quantity-help">
           ${
             Number(
-              row.units_per_pack ||
-              1
+              row.units_per_pack || 1
             ) > 1
               ? `1 ${escapeHTML(
                   row.pack_unit ||
                   "pack"
-                )} = ${Number(
+                )} =
+                ${Number(
                   row.units_per_pack ||
                   1
-                ).toLocaleString("en-IN")} ${escapeHTML(
+                ).toLocaleString("en-IN")}
+                ${escapeHTML(
                   row.base_unit ||
                   "units"
                 )}`
@@ -5951,20 +6742,23 @@ function consultationMedicineRowHTML(
         </div>
       `;
 
-
   return `
 
     <div
-      class="consultation-medicine-row"
+      class="consultation-medicine-row consultation-medicine-row-builder"
       data-mode="${mode}"
       data-index="${index}">
 
-      <div class="consultation-medicine-grid">
+      <div class="consultation-medicine-builder-title">
+        💊 Add Medicine
+      </div>
+
+      <div class="consultation-medicine-grid consultation-medicine-grid-new">
 
         <div class="form-group consultation-medicine-field">
 
           <label>
-            Medicine *
+            🔎 Search Medicine *
           </label>
 
           <input
@@ -5981,15 +6775,14 @@ function consultationMedicineRowHTML(
             placeholder="Type medicine name"
             oninput="searchConsultationMedicine(
               '${mode}',
-              ${index}
+              ${Number(index)}
             )">
 
           <input
             type="hidden"
             id="${prefix}Id-${index}"
             value="${escapeHTML(
-              row.medicine_id ||
-              ""
+              row.medicine_id || ""
             )}">
 
           <div
@@ -6013,148 +6806,252 @@ function consultationMedicineRowHTML(
                         )
                       : ""
                   }
+                  ${
+                    row.pack_unit
+                      ? " · 1 " +
+                        escapeHTML(
+                          row.pack_unit
+                        ) +
+                        " = " +
+                        Number(
+                          row.units_per_pack || 1
+                        ).toLocaleString("en-IN") +
+                        " " +
+                        escapeHTML(
+                          row.base_unit ||
+                          "units"
+                        )
+                      : ""
+                  }
                 </div>
-                ${consultationMedicineStockDisplay(
-                  row
-                )}
               `
               : ""
           }
 
         </div>
 
+      </div>
 
-        <div class="form-group consultation-medicine-prescription-fields">
+      ${
+        row.medicine_id
+          ? `
+            <div class="consultation-medicine-batch-section">
 
-          <label>
-            Dosage / Instructions / Days
-          </label>
-
-          <div class="consultation-medicine-prescription-grid">
-
-            <div class="consultation-medicine-prescription-box">
-              <label>Morning</label>
-              <input
-                id="${prefix}Morning-${index}"
-                type="text"
-                oninput="updateConsultationMedicineDosageSummary(
-                  '${mode}',
-                  ${index}
-                )"
-                inputmode="decimal"
-                autocomplete="off"
-                placeholder="0"
-                value="${escapeHTML(
-                  row.dosage_morning ||
-                  ""
-                )}">
-            </div>
-
-            <div class="consultation-medicine-prescription-box">
-              <label>Afternoon</label>
-              <input
-                id="${prefix}Afternoon-${index}"
-                type="text"
-                oninput="updateConsultationMedicineDosageSummary(
-                  '${mode}',
-                  ${index}
-                )"
-                inputmode="decimal"
-                autocomplete="off"
-                placeholder="0"
-                value="${escapeHTML(
-                  row.dosage_afternoon ||
-                  ""
-                )}">
-            </div>
-
-            <div class="consultation-medicine-prescription-box">
-              <label>Night</label>
-              <input
-                id="${prefix}Night-${index}"
-                type="text"
-                oninput="updateConsultationMedicineDosageSummary(
-                  '${mode}',
-                  ${index}
-                )"
-                inputmode="decimal"
-                autocomplete="off"
-                placeholder="0"
-                value="${escapeHTML(
-                  row.dosage_night ||
-                  ""
-                )}">
-            </div>
-
-          </div>
-
-          <div
-            id="${prefix}DosageSummary-${index}"
-            class="consultation-medicine-dosage-summary">
-            Prescription: ${escapeHTML(
-              consultationMedicineDosageText(row)
-            )}
-          </div>
-
-          <div class="consultation-medicine-instruction-days">
-
-            <div class="consultation-medicine-instruction-box">
-              <label>Instructions</label>
-              ${consultationMedicineInstructionSelectHTML(
+              ${consultationMedicineBatchOptionsHTML(
                 mode,
                 index,
-                row.instructions || ""
+                row
               )}
+
             </div>
 
-            <div class="consultation-medicine-days-box">
-              <label>Days</label>
-              <input
-                id="${prefix}Days-${index}"
-                type="number"
-                min="1"
-                step="1"
-                inputmode="numeric"
-                placeholder="Days"
-                value="${escapeHTML(
-                  row.days ||
-                  ""
-                )}">
+            ${
+              selectedBatch
+                ? `
+                  <div class="consultation-medicine-quantity-section">
+
+                    <div class="consultation-medicine-quantity-heading">
+                      Quantity
+                    </div>
+
+                    <div class="consultation-medicine-quantity-subheading">
+                      1 ${escapeHTML(
+                        row.pack_unit ||
+                        "pack"
+                      )} =
+                      ${Number(
+                        row.units_per_pack || 1
+                      ).toLocaleString("en-IN")}
+                      ${escapeHTML(
+                        row.base_unit ||
+                        "units"
+                      )}
+                      &nbsp; · &nbsp;
+                      MRP ₹${Number(
+                        selectedBatch.mrp_per_unit || 0
+                      ).toFixed(2)} /
+                      ${escapeHTML(
+                        row.pack_unit ||
+                        "pack"
+                      )}
+                    </div>
+
+                    ${quantityHTML}
+
+                    <div class="consultation-medicine-amount-box">
+
+                      <div>
+                        <span>Total quantity</span>
+                        <strong>
+                          ${escapeHTML(
+                            formatMedicineBaseQuantity(
+                              row,
+                              consultationMedicineQuantityBaseUnits(
+                                row,
+                                row.pack_quantity,
+                                row.individual_quantity,
+                                row.single_quantity
+                              )
+                            )
+                          )}
+                        </strong>
+                      </div>
+
+                      <div>
+                        <span>MRP</span>
+                        <strong>
+                          ₹${Number(
+                            selectedBatch.mrp_per_unit || 0
+                          ).toFixed(2)}
+                        </strong>
+                      </div>
+
+                      <div class="consultation-medicine-amount-total">
+                        <span>Amount</span>
+                        <strong>
+                          ₹${Number(
+                            amount || 0
+                          ).toFixed(2)}
+                        </strong>
+                      </div>
+
+                    </div>
+
+                  </div>
+                `
+                : ""
+            }
+
+            <div class="form-group consultation-medicine-prescription-fields">
+
+              <label>
+                Dosage / Instructions / Days
+              </label>
+
+              <div class="consultation-medicine-prescription-grid">
+
+                <div class="consultation-medicine-prescription-box">
+                  <label>Morning</label>
+                  <input
+                    id="${prefix}Morning-${index}"
+                    type="text"
+                    oninput="updateConsultationMedicineDosageSummary(
+                      '${mode}',
+                      ${Number(index)}
+                    )"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    placeholder="0"
+                    value="${escapeHTML(
+                      row.dosage_morning || ""
+                    )}">
+                </div>
+
+                <div class="consultation-medicine-prescription-box">
+                  <label>Afternoon</label>
+                  <input
+                    id="${prefix}Afternoon-${index}"
+                    type="text"
+                    oninput="updateConsultationMedicineDosageSummary(
+                      '${mode}',
+                      ${Number(index)}
+                    )"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    placeholder="0"
+                    value="${escapeHTML(
+                      row.dosage_afternoon || ""
+                    )}">
+                </div>
+
+                <div class="consultation-medicine-prescription-box">
+                  <label>Night</label>
+                  <input
+                    id="${prefix}Night-${index}"
+                    type="text"
+                    oninput="updateConsultationMedicineDosageSummary(
+                      '${mode}',
+                      ${Number(index)
+                    })"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    placeholder="0"
+                    value="${escapeHTML(
+                      row.dosage_night || ""
+                    )}">
+                </div>
+
+              </div>
+
+              <div
+                id="${prefix}DosageSummary-${index}"
+                class="consultation-medicine-dosage-summary">
+                Prescription:
+                ${escapeHTML(
+                  consultationMedicineDosageText(row)
+                )}
+              </div>
+
+              <div class="consultation-medicine-instruction-days">
+
+                <div class="consultation-medicine-instruction-box">
+                  <label>Instructions</label>
+                  ${consultationMedicineInstructionSelectHTML(
+                    mode,
+                    index,
+                    row.instructions || ""
+                  )}
+                </div>
+
+                <div class="consultation-medicine-days-box">
+                  <label>Days</label>
+                  <input
+                    id="${prefix}Days-${index}"
+                    type="number"
+                    min="1"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="Days"
+                    value="${escapeHTML(
+                      row.days || ""
+                    )}">
+                </div>
+
+              </div>
+
             </div>
 
-          </div>
+            <div class="consultation-medicine-actions">
 
-        </div>
+              <button
+                type="button"
+                class="portal-button primary-button small-button"
+                onclick="confirmConsultationMedicine(
+                  '${mode}',
+                  ${Number(index)}
+                )">
 
+                ➕ Add Medicine
 
-        <div class="form-group">
+              </button>
 
-          <label>
-            Quantity *
-          </label>
+              <button
+                type="button"
+                class="portal-button danger-button small-button"
+                onclick="removeConsultationMedicine(
+                  '${mode}',
+                  ${Number(index)}
+                )">
 
-          ${quantityHTML}
+                🗑 Remove
 
-        </div>
+              </button>
 
-      </div>
+            </div>
 
-
-      <div class="consultation-medicine-actions">
-
-        <button
-          type="button"
-          class="portal-button danger-button small-button"
-          onclick="removeConsultationMedicine(
-            '${mode}',
-            ${index}
-          )">
-
-          🗑 Remove
-
-        </button>
-
-      </div>
+          `
+          : ""
+      }
 
     </div>
 
@@ -6170,9 +7067,7 @@ function consultationMedicinesSectionHTML(
   const rows =
     consultationMedicineState[
       mode
-    ] ||
-    [];
-
+    ] || [];
 
   return `
 
@@ -6183,10 +7078,16 @@ function consultationMedicinesSectionHTML(
       </h3>
 
       <div class="consultation-medicines-note">
-        Type a medicine name and select it from the Medicine &amp; Stock master. Dosage, instructions and days can be entered using the structured prescription fields. Quantity is entered according to the medicine form and is automatically converted to stock base units.
+        Search the Medicine &amp; Stock master, select the exact batch,
+        enter quantity, prescription instructions and days, then add
+        the medicine to the running list. Medicines are optional.
       </div>
 
-      <div id="${mode === "edit" ? "editConsultMedicineRows" : "consultMedicineRows"}">
+      <div id="${
+        mode === "edit"
+          ? "editConsultMedicineRows"
+          : "consultMedicineRows"
+      }">
 
         ${
           rows.length
@@ -6200,25 +7101,18 @@ function consultationMedicinesSectionHTML(
                   }
                 )
                 .join("")
-            : `<div class="consultation-medicine-empty">No medicines added yet.</div>`
+            : `<div class="consultation-medicine-empty">
+                 No medicines added yet.
+               </div>`
         }
 
       </div>
 
-      <div class="action-row">
-
-        <button
-          type="button"
-          class="portal-button secondary-button"
-          onclick="addConsultationMedicine(
-            '${mode}'
-          )">
-
-          ➕ Add Medicine
-
-        </button>
-
-      </div>
+      <div class="consultation-medicines-total" id="${
+        mode === "edit"
+          ? "editConsultMedicineTotal"
+          : "consultMedicineTotal"
+      }"></div>
 
     </div>
 
@@ -6234,18 +7128,19 @@ function captureConsultationMedicineStateFromDOM(
   const rows =
     consultationMedicineState[
       mode
-    ] ||
-    [];
-
+    ] || [];
 
   rows.forEach(
     function(row, index) {
+
+      if (row.added) {
+        return;
+      }
 
       const prefix =
         mode === "edit"
           ? "editConsultMedicine"
           : "consultMedicine";
-
 
       const idElement =
         document.getElementById(
@@ -6317,7 +7212,6 @@ function captureConsultationMedicineStateFromDOM(
           index
         );
 
-
       if (morningElement) {
         row.dosage_morning =
           morningElement.value.trim();
@@ -6339,7 +7233,11 @@ function captureConsultationMedicineStateFromDOM(
       if (instructionSelectElement) {
         row.instructions =
           instructionSelectElement.value === "__CUSTOM__"
-            ? (instructionCustomElement ? instructionCustomElement.value.trim() : "")
+            ? (
+                instructionCustomElement
+                  ? instructionCustomElement.value.trim()
+                  : ""
+              )
             : instructionSelectElement.value.trim();
       }
 
@@ -6351,33 +7249,26 @@ function captureConsultationMedicineStateFromDOM(
       row.dosage_instructions =
         consultationMedicinePrescriptionSummary(row);
 
-
       if (packElement) {
         row.pack_quantity =
           Number(
             packElement.value
-          ) ||
-          0;
+          ) || 0;
       }
-
 
       if (individualElement) {
         row.individual_quantity =
           Number(
             individualElement.value
-          ) ||
-          0;
+          ) || 0;
       }
-
 
       if (singleElement) {
         row.single_quantity =
           Number(
             singleElement.value
-          ) ||
-          0;
+          ) || 0;
       }
-
 
       if (idElement && idElement.value) {
         row.medicine_id =
@@ -6389,8 +7280,470 @@ function captureConsultationMedicineStateFromDOM(
     }
   );
 
-
   return rows;
+
+}
+
+
+function updateConsultationMedicineAmount(
+  mode,
+  index
+) {
+
+  captureConsultationMedicineStateFromDOM(
+    mode
+  );
+
+  const row =
+    (
+      consultationMedicineState[
+        mode
+      ] || []
+    )[index];
+
+  if (!row) {
+    return;
+  }
+
+  row.amount =
+    consultationMedicineAmount(
+      row
+    );
+
+  const container =
+    document.getElementById(
+      mode === "edit"
+        ? "editConsultMedicineRows"
+        : "consultMedicineRows"
+    );
+
+  if (container) {
+    const amountBox =
+      container.querySelector(
+        `[data-mode="${mode}"][data-index="${index}"] .consultation-medicine-amount-box`
+      );
+
+    if (amountBox) {
+      amountBox.outerHTML =
+        consultationMedicineAmountBoxHTML(
+          row,
+          mode,
+          index
+        );
+    }
+  }
+
+  renderConsultationMedicineTotal(
+    mode
+  );
+
+}
+
+
+function consultationMedicineAmountBoxHTML(
+  row,
+  mode,
+  index
+) {
+
+  const selectedBatch =
+    consultationMedicineSelectedBatch(
+      row
+    );
+
+  if (!selectedBatch) {
+    return "";
+  }
+
+  const base =
+    consultationMedicineQuantityBaseUnits(
+      row,
+      row.pack_quantity,
+      row.individual_quantity,
+      row.single_quantity
+    );
+
+  return `
+    <div class="consultation-medicine-amount-box">
+
+      <div>
+        <span>Total quantity</span>
+        <strong>
+          ${escapeHTML(
+            formatMedicineBaseQuantity(
+              row,
+              base
+            )
+          )}
+        </strong>
+      </div>
+
+      <div>
+        <span>MRP</span>
+        <strong>
+          ₹${Number(
+            selectedBatch.mrp_per_unit || 0
+          ).toFixed(2)}
+        </strong>
+      </div>
+
+      <div class="consultation-medicine-amount-total">
+        <span>Amount</span>
+        <strong>
+          ₹${Number(
+            consultationMedicineAmount(
+              row
+            ) || 0
+          ).toFixed(2)}
+        </strong>
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+function renderConsultationMedicineTotal(
+  mode
+) {
+
+  const rows =
+    consultationMedicineState[
+      mode
+    ] || [];
+
+  const total =
+    rows
+      .filter(
+        function(row) {
+          return row.added;
+        }
+      )
+      .reduce(
+        function(sum, row) {
+          return sum +
+            Number(
+              row.amount ||
+              consultationMedicineAmount(
+                row
+              ) ||
+              0
+            );
+        },
+        0
+      );
+
+  const box =
+    document.getElementById(
+      mode === "edit"
+        ? "editConsultMedicineTotal"
+        : "consultMedicineTotal"
+    );
+
+  if (!box) {
+    return;
+  }
+
+  box.innerHTML =
+    total > 0
+      ? `
+        <div class="consultation-medicines-total-card">
+          <span>Medicine Total</span>
+          <strong>₹${total.toFixed(2)}</strong>
+        </div>
+      `
+      : "";
+
+}
+
+
+function confirmConsultationMedicine(
+  mode,
+  index
+) {
+
+  captureConsultationMedicineStateFromDOM(
+    mode
+  );
+
+  const row =
+    (
+      consultationMedicineState[
+        mode
+      ] || []
+    )[index];
+
+  if (!row || !row.medicine_id) {
+    alert(
+      "Please select a medicine from the Medicine & Stock suggestions."
+    );
+    return;
+  }
+
+  const batch =
+    consultationMedicineSelectedBatch(
+      row
+    );
+
+  if (
+    !batch &&
+    !row.legacy_batch_mode
+  ) {
+    alert(
+      "Please select the exact stock/batch before adding the medicine."
+    );
+    return;
+  }
+
+  const usesPackAndIndividual =
+    consultationMedicineUsesPackAndIndividual(
+      row
+    );
+
+  if (
+    usesPackAndIndividual &&
+    Number(
+      row.individual_quantity
+    ) >=
+      Number(
+        row.units_per_pack
+      )
+  ) {
+
+    alert(
+      "For " +
+      consultationMedicineDisplayName(
+        row
+      ) +
+      ", individual " +
+      row.base_unit +
+      " quantity must be less than one " +
+      row.pack_unit +
+      "."
+    );
+
+    return;
+
+  }
+
+  const baseQuantity =
+    consultationMedicineQuantityBaseUnits(
+      row,
+      row.pack_quantity,
+      row.individual_quantity,
+      row.single_quantity
+    );
+
+  if (baseQuantity <= 0) {
+    alert(
+      "Please enter a quantity for " +
+      consultationMedicineDisplayName(
+        row
+      ) +
+      "."
+    );
+    return;
+  }
+
+  if (batch) {
+
+    const batchUnits =
+      Number(
+        batch.units_per_pack ||
+        row.units_per_pack ||
+        1
+      ) || 1;
+
+    const availableBase =
+      batch.quantity_base_units !== null &&
+      batch.quantity_base_units !== undefined
+        ? Number(
+            batch.quantity_base_units
+          ) || 0
+        : (
+            Number(
+              batch.quantity
+            ) || 0
+          ) *
+          batchUnits;
+
+    const editableAvailableBase =
+      (
+        mode === "edit" &&
+        Number(
+          row.original_batch_id
+        ) ===
+        Number(
+          batch.id
+        )
+      )
+        ? (
+            availableBase +
+            Number(
+              row.original_quantity_base_units ||
+              0
+            )
+          )
+        : availableBase;
+
+    if (baseQuantity > editableAvailableBase) {
+      alert(
+        "Insufficient stock for " +
+        consultationMedicineDisplayName(
+          row
+        ) +
+        ".\n\nAvailable: " +
+        formatMedicineBaseQuantity(
+          row,
+          editableAvailableBase
+        ) +
+        "\nRequired: " +
+        formatMedicineBaseQuantity(
+          row,
+          baseQuantity
+        )
+      );
+      return;
+    }
+
+    row.selected_batch_id =
+      Number(
+        batch.id
+      );
+
+    row.batch_id =
+      Number(
+        batch.id
+      );
+
+    row.selected_batch =
+      batch;
+
+    row.mrp_per_unit =
+      Number(
+        batch.mrp_per_unit || 0
+      );
+
+    row.purchase_price_per_unit =
+      Number(
+        batch.purchase_price_per_unit || 0
+      );
+
+    row.amount =
+      (
+        baseQuantity /
+        batchUnits
+      ) *
+      Number(
+        batch.mrp_per_unit || 0
+      );
+
+  }
+
+  row.added =
+    true;
+
+  /*
+     Always keep one clean builder row at the bottom.
+  */
+  const rows =
+    consultationMedicineState[
+      mode
+    ];
+
+  if (
+    !rows[
+      rows.length - 1
+    ] ||
+    rows[
+      rows.length - 1
+    ].added
+  ) {
+    rows.push(
+      createEmptyConsultationMedicineRow()
+    );
+  }
+
+  const container =
+    document.getElementById(
+      mode === "edit"
+        ? "editConsultMedicineRows"
+        : "consultMedicineRows"
+    );
+
+  if (container) {
+    container.innerHTML =
+      rows
+        .map(
+          function(_, rowIndex) {
+            return consultationMedicineRowHTML(
+              mode,
+              rowIndex
+            );
+          }
+        )
+        .join("");
+  }
+
+  renderConsultationMedicineTotal(
+    mode
+  );
+
+}
+
+
+function editConsultationMedicineDraft(
+  mode,
+  index
+) {
+
+  captureConsultationMedicineStateFromDOM(
+    mode
+  );
+
+  const row =
+    (
+      consultationMedicineState[
+        mode
+      ] || []
+    )[index];
+
+  if (!row) {
+    return;
+  }
+
+  row.added =
+    false;
+
+  const container =
+    document.getElementById(
+      mode === "edit"
+        ? "editConsultMedicineRows"
+        : "consultMedicineRows"
+    );
+
+  if (container) {
+    container.innerHTML =
+      (
+        consultationMedicineState[
+          mode
+        ] || []
+      )
+        .map(
+          function(_, rowIndex) {
+            return consultationMedicineRowHTML(
+              mode,
+              rowIndex
+            );
+          }
+        )
+        .join("");
+  }
+
+  renderConsultationMedicineTotal(
+    mode
+  );
 
 }
 
@@ -6403,13 +7756,23 @@ function addConsultationMedicine(
     mode
   );
 
+  const rows =
+    consultationMedicineState[
+      mode
+    ];
 
-  consultationMedicineState[
-    mode
-  ].push(
-    createEmptyConsultationMedicineRow()
-  );
+  if (
+    !rows.length ||
+    rows[
+      rows.length - 1
+    ].added
+  ) {
 
+    rows.push(
+      createEmptyConsultationMedicineRow()
+    );
+
+  }
 
   const container =
     document.getElementById(
@@ -6418,23 +7781,18 @@ function addConsultationMedicine(
         : "consultMedicineRows"
     );
 
-
   if (container) {
-
     container.innerHTML =
-      consultationMedicineState[
-        mode
-      ]
+      rows
         .map(
-          function(_, index) {
+          function(_, rowIndex) {
             return consultationMedicineRowHTML(
               mode,
-              index
+              rowIndex
             );
           }
         )
         .join("");
-
   }
 
 }
@@ -6449,7 +7807,6 @@ function removeConsultationMedicine(
     mode
   );
 
-
   consultationMedicineState[
     mode
   ].splice(
@@ -6457,11 +7814,17 @@ function removeConsultationMedicine(
     1
   );
 
-
   if (
     consultationMedicineState[
       mode
-    ].length === 0
+    ].length === 0 ||
+    consultationMedicineState[
+      mode
+    ].every(
+      function(row) {
+        return row.added;
+      }
+    )
   ) {
 
     consultationMedicineState[
@@ -6472,7 +7835,6 @@ function removeConsultationMedicine(
 
   }
 
-
   const container =
     document.getElementById(
       mode === "edit"
@@ -6480,9 +7842,7 @@ function removeConsultationMedicine(
         : "consultMedicineRows"
     );
 
-
   if (container) {
-
     container.innerHTML =
       consultationMedicineState[
         mode
@@ -6496,8 +7856,11 @@ function removeConsultationMedicine(
           }
         )
         .join("");
-
   }
+
+  renderConsultationMedicineTotal(
+    mode
+  );
 
 }
 
@@ -6511,7 +7874,6 @@ async function searchConsultationMedicine(
     mode === "edit"
       ? "editConsultMedicine"
       : "consultMedicine";
-
 
   const input =
     document.getElementById(
@@ -6527,60 +7889,46 @@ async function searchConsultationMedicine(
       index
     );
 
-
   if (!input || !box) {
     return;
   }
 
-
   const term =
     input.value.trim();
 
+  const row =
+    (
+      consultationMedicineState[
+        mode
+      ] || []
+    )[index];
 
-  /*
-     If the doctor changes the text after selecting a medicine,
-     clear the selected medicine so an old medicine cannot be
-     silently saved with a new name.
-  */
-  const selectedIdElement =
-    document.getElementById(
-      prefix +
-      "Id-" +
-      index
-    );
+  if (row && row.medicine_id) {
 
-  if (
-    selectedIdElement &&
-    selectedIdElement.value &&
-    input.value !==
+    if (
+      input.value !==
       consultationMedicineDisplayName(
-        consultationMedicineState[
-          mode
-        ][index]
+        row
       )
-  ) {
+    ) {
 
-    consultationMedicineState[
-      mode
-    ][index].medicine_id =
-      null;
+      row.medicine_id = null;
+      row.batches = [];
+      row.selected_batch_id = null;
+      row.selected_batch = null;
+      row.batch_id = null;
+      row.mrp_per_unit = 0;
+      row.purchase_price_per_unit = 0;
+      row.amount = 0;
 
-    selectedIdElement.value =
-      "";
+    }
 
   }
-
 
   if (term.length < 2) {
-
-    box.classList.add(
-      "hidden"
-    );
-
+    box.classList.add("hidden");
     return;
-
   }
-
 
   const {
     data,
@@ -6600,27 +7948,17 @@ async function searchConsultationMedicine(
         term +
         "%"
       )
-      .order(
-        "medicine_name"
-      )
+      .order("medicine_name")
       .limit(10);
 
-
   if (error) {
-
     console.error(
       "Medicine search error:",
       error
     );
-
-    box.classList.add(
-      "hidden"
-    );
-
+    box.classList.add("hidden");
     return;
-
   }
-
 
   box.innerHTML =
     (data || [])
@@ -6632,12 +7970,8 @@ async function searchConsultationMedicine(
               class="suggestion"
               onclick="selectConsultationMedicine(
                 '${mode}',
-                ${Number(
-                  index
-                )},
-                ${Number(
-                  medicine.id
-                )}
+                ${Number(index)},
+                ${Number(medicine.id)}
               )">
 
               <b>
@@ -6680,7 +8014,6 @@ async function searchConsultationMedicine(
       )
       .join("");
 
-
   if (
     !data ||
     data.length === 0
@@ -6694,10 +8027,7 @@ async function searchConsultationMedicine(
 
   }
 
-
-  box.classList.remove(
-    "hidden"
-  );
+  box.classList.remove("hidden");
 
 }
 
@@ -6715,28 +8045,19 @@ async function selectConsultationMedicine(
     await supabaseClient
       .from("medicines")
       .select("*")
-      .eq(
-        "id",
-        medicineId
-      )
+      .eq("id", medicineId)
       .single();
 
-
   if (error || !medicine) {
-
     alert(
       "Unable to load the selected medicine."
     );
-
     return;
-
   }
-
 
   captureConsultationMedicineStateFromDOM(
     mode
   );
-
 
   const row =
     consultationMedicineState[
@@ -6744,20 +8065,21 @@ async function selectConsultationMedicine(
     ][index] ||
     createEmptyConsultationMedicineRow();
 
-
   const {
     data: batches,
     error: batchError
   } =
     await supabaseClient
       .from("medicine_batches")
-      .select("quantity,quantity_base_units,units_per_pack,expiry_date")
+      .select(
+        "id,batch_number,quantity,quantity_base_units,units_per_pack,expiry_date,mrp_per_unit,purchase_price_per_unit"
+      )
       .eq(
         "medicine_id",
         medicine.id
       )
       .gt(
-        "quantity",
+        "quantity_base_units",
         0
       )
       .order(
@@ -6767,22 +8089,18 @@ async function selectConsultationMedicine(
         }
       );
 
-
   if (batchError) {
-
-    console.warn(
-      "Unable to load current medicine stock:",
-      batchError
+    alert(
+      "Unable to load medicine stock:\n\n" +
+      batchError.message
     );
-
+    return;
   }
-
 
   const today =
     getTodayString();
 
-
-  const availableStock =
+  const validBatches =
     (batches || [])
       .filter(
         function(batch) {
@@ -6795,41 +8113,7 @@ async function selectConsultationMedicine(
           );
 
         }
-      )
-      .reduce(
-        function(total, batch) {
-
-          const units =
-            Number(
-              batch.units_per_pack ||
-              medicine.units_per_pack ||
-              1
-            ) ||
-            1;
-
-          const base =
-            batch.quantity_base_units !==
-              null &&
-            batch.quantity_base_units !==
-              undefined
-              ? Number(
-                  batch.quantity_base_units
-                ) ||
-                0
-              : (
-                  Number(
-                    batch.quantity
-                  ) ||
-                  0
-                ) *
-                units;
-
-          return total + base;
-
-        },
-        0
       );
-
 
   consultationMedicineState[
     mode
@@ -6871,10 +8155,61 @@ async function selectConsultationMedicine(
       1,
 
     available_stock_base_units:
-      availableStock
+      validBatches
+        .reduce(
+          function(total, batch) {
+
+            const units =
+              Number(
+                batch.units_per_pack ||
+                medicine.units_per_pack ||
+                1
+              ) || 1;
+
+            const base =
+              batch.quantity_base_units !== null &&
+              batch.quantity_base_units !== undefined
+                ? Number(
+                    batch.quantity_base_units
+                  ) || 0
+                : (
+                    Number(
+                      batch.quantity
+                    ) || 0
+                  ) *
+                  units;
+
+            return total + base;
+
+          },
+          0
+        ),
+
+    batches:
+      validBatches,
+
+    selected_batch_id:
+      null,
+
+    selected_batch:
+      null,
+
+    batch_id:
+      null,
+
+    mrp_per_unit:
+      0,
+
+    purchase_price_per_unit:
+      0,
+
+    amount:
+      0,
+
+    added:
+      false
 
   };
-
 
   const container =
     document.getElementById(
@@ -6883,9 +8218,7 @@ async function selectConsultationMedicine(
         : "consultMedicineRows"
     );
 
-
   if (container) {
-
     container.innerHTML =
       consultationMedicineState[
         mode
@@ -6899,8 +8232,446 @@ async function selectConsultationMedicine(
           }
         )
         .join("");
+  }
+
+}
+
+
+function selectConsultationMedicineBatch(
+  mode,
+  index,
+  batchId
+) {
+
+  captureConsultationMedicineStateFromDOM(
+    mode
+  );
+
+  const row =
+    (
+      consultationMedicineState[
+        mode
+      ] || []
+    )[index];
+
+  if (!row) {
+    return;
+  }
+
+  const batch =
+    (
+      row.batches || []
+    )
+      .find(
+        function(item) {
+          return Number(item.id) === Number(batchId);
+        }
+      );
+
+  if (!batch) {
+    alert(
+      "Unable to select the requested stock batch."
+    );
+    return;
+  }
+
+  row.selected_batch_id =
+    Number(batch.id);
+
+  row.batch_id =
+    Number(batch.id);
+
+  row.selected_batch =
+    batch;
+
+  row.mrp_per_unit =
+    Number(
+      batch.mrp_per_unit || 0
+    );
+
+  row.purchase_price_per_unit =
+    Number(
+      batch.purchase_price_per_unit || 0
+    );
+
+  row.amount =
+    consultationMedicineAmount(
+      row
+    );
+
+  const container =
+    document.getElementById(
+      mode === "edit"
+        ? "editConsultMedicineRows"
+        : "consultMedicineRows"
+    );
+
+  if (container) {
+    container.innerHTML =
+      (
+        consultationMedicineState[
+          mode
+        ] || []
+      )
+        .map(
+          function(_, rowIndex) {
+            return consultationMedicineRowHTML(
+              mode,
+              rowIndex
+            );
+          }
+        )
+        .join("");
+  }
+
+  renderConsultationMedicineTotal(
+    mode
+  );
+
+}
+
+
+function getConsultationMedicineRowsFromDOM(
+  mode
+) {
+
+  captureConsultationMedicineStateFromDOM(
+    mode
+  );
+
+  const rows =
+    consultationMedicineState[
+      mode
+    ] || [];
+
+  const result =
+    [];
+
+  for (
+    let index = 0;
+    index < rows.length;
+    index++
+  ) {
+
+    const row =
+      rows[index];
+
+    /*
+       Blank builder rows are intentionally ignored.
+       Medicines are only saved after the doctor presses
+       "Add Medicine".
+    */
+    if (!row.added) {
+      continue;
+    }
+
+    if (!row.medicine_id) {
+      throw new Error(
+        "Please select the medicine from the Medicine & Stock suggestions."
+      );
+    }
+
+    const batch =
+      consultationMedicineSelectedBatch(
+        row
+      );
+
+    if (
+      !batch &&
+      !row.legacy_batch_mode
+    ) {
+      throw new Error(
+        "Please select the exact stock/batch for " +
+        consultationMedicineDisplayName(
+          row
+        ) +
+        "."
+      );
+    }
+
+    const usesPackAndIndividual =
+      consultationMedicineUsesPackAndIndividual(
+        row
+      );
+
+    if (
+      usesPackAndIndividual &&
+      Number(
+        row.individual_quantity
+      ) >=
+      Number(
+        row.units_per_pack
+      )
+    ) {
+
+      throw new Error(
+        "For " +
+        consultationMedicineDisplayName(
+          row
+        ) +
+        ", individual " +
+        row.base_unit +
+        " quantity must be less than one " +
+        row.pack_unit +
+        "."
+      );
+
+    }
+
+    const baseQuantity =
+      consultationMedicineQuantityBaseUnits(
+        row,
+        row.pack_quantity,
+        row.individual_quantity,
+        row.single_quantity
+      );
+
+    if (baseQuantity <= 0) {
+      throw new Error(
+        "Please enter a quantity for " +
+        consultationMedicineDisplayName(
+          row
+        ) +
+        "."
+      );
+    }
+
+    const batchUnits =
+      Number(
+        batch
+          ? (
+              batch.units_per_pack ||
+              row.units_per_pack ||
+              1
+            )
+          : (
+              row.units_per_pack ||
+              1
+            )
+      ) || 1;
+
+    if (batch) {
+
+      const availableBase =
+        batch.quantity_base_units !== null &&
+        batch.quantity_base_units !== undefined
+          ? Number(
+              batch.quantity_base_units
+            ) || 0
+          : (
+              Number(
+                batch.quantity
+              ) || 0
+            ) *
+            batchUnits;
+
+      /*
+         For an edit, the currently selected batch may contain less
+         physical stock than the existing prescription quantity
+         because that quantity is already out of stock. The stock
+         sync compares old vs new quantities, so only the positive
+         delta needs to be available.
+      */
+      const editableAvailableBase =
+        (
+          mode === "edit" &&
+          Number(
+            row.original_batch_id
+          ) ===
+          Number(
+            batch.id
+          )
+        )
+          ? (
+              availableBase +
+              Number(
+                row.original_quantity_base_units ||
+                0
+              )
+            )
+          : availableBase;
+
+      if (
+        !row.legacy_batch_mode &&
+        Number(baseQuantity) >
+        Number(editableAvailableBase)
+      ) {
+        throw new Error(
+          "Insufficient stock for " +
+          consultationMedicineDisplayName(
+            row
+          ) +
+          ". Available: " +
+          formatMedicineBaseQuantity(
+            row,
+            editableAvailableBase
+          ) +
+          "\nRequired: " +
+          formatMedicineBaseQuantity(
+            row,
+            baseQuantity
+          )
+        );
+      }
+
+    }
+
+    result.push({
+
+      medicine_id:
+        Number(row.medicine_id),
+
+      medicine_name:
+        row.medicine_name || "",
+
+      generic_name:
+        row.generic_name || "",
+
+      strength:
+        row.strength || "",
+
+      dosage_form:
+        row.dosage_form || "",
+
+      pack_unit:
+        row.pack_unit || "Unit/Pack",
+
+      base_unit:
+        row.base_unit || "Unit",
+
+      units_per_pack:
+        Number(row.units_per_pack) || 1,
+
+      batch_id:
+        batch
+          ? Number(batch.id)
+          : null,
+
+      batch_number:
+        batch
+          ? (
+              batch.batch_number ||
+              ""
+            )
+          : "",
+
+      expiry_date:
+        batch
+          ? (
+              batch.expiry_date ||
+              null
+            )
+          : null,
+
+      mrp_per_unit:
+        batch
+          ? Number(
+              batch.mrp_per_unit || 0
+            )
+          : Number(
+              row.mrp_per_unit || 0
+            ),
+
+      purchase_price_per_unit:
+        batch
+          ? Number(
+              batch.purchase_price_per_unit || 0
+            )
+          : Number(
+              row.purchase_price_per_unit || 0
+            ),
+
+      dosage_morning:
+        String(
+          row.dosage_morning || ""
+        ).trim(),
+
+      dosage_afternoon:
+        String(
+          row.dosage_afternoon || ""
+        ).trim(),
+
+      dosage_night:
+        String(
+          row.dosage_night || ""
+        ).trim(),
+
+      dosage:
+        consultationMedicineDosageText(
+          row
+        ),
+
+      instructions:
+        String(
+          row.instructions || ""
+        ).trim(),
+
+      days:
+        String(
+          row.days || ""
+        ).trim(),
+
+      dosage_instructions:
+        consultationMedicinePrescriptionSummary(
+          row
+        ),
+
+      pack_quantity:
+        usesPackAndIndividual
+          ? Number(
+              row.pack_quantity
+            ) || 0
+          : 0,
+
+      individual_quantity:
+        usesPackAndIndividual
+          ? Number(
+              row.individual_quantity
+            ) || 0
+          : 0,
+
+      single_quantity:
+        usesPackAndIndividual
+          ? 0
+          : Number(
+              row.single_quantity
+            ) || 0,
+
+      quantity_base_units:
+        baseQuantity,
+
+      amount:
+        batch
+          ? (
+              (
+                baseQuantity /
+                batchUnits
+              ) *
+              Number(
+                batch.mrp_per_unit || 0
+              )
+            )
+          : Number(
+              row.amount || 0
+            ),
+
+      original_batch_id:
+        Number(
+          row.original_batch_id ||
+          0
+        ) || null,
+
+      original_quantity_base_units:
+        Number(
+          row.original_quantity_base_units ||
+          0
+        ) || 0
+
+    });
 
   }
+
+  return result;
 
 }
 
@@ -7276,7 +9047,44 @@ function parseConsultationPrescriptionValue(
                     Number(
                       item.quantity_base_units
                     ) ||
-                    0
+                    0,
+                  batch_id:
+                    Number(
+                      item.batch_id
+                    ) ||
+                    null,
+                  selected_batch_id:
+                    Number(
+                      item.batch_id
+                    ) ||
+                    null,
+                  mrp_per_unit:
+                    Number(
+                      item.mrp_per_unit
+                    ) ||
+                    0,
+                  purchase_price_per_unit:
+                    Number(
+                      item.purchase_price_per_unit
+                    ) ||
+                    0,
+                  amount:
+                    Number(
+                      item.amount
+                    ) ||
+                    0,
+                  original_batch_id:
+                    Number(
+                      item.batch_id
+                    ) ||
+                    null,
+                  original_quantity_base_units:
+                    Number(
+                      item.quantity_base_units
+                    ) ||
+                    0,
+                  added:
+                    true
                 };
 
               }
@@ -7378,6 +9186,27 @@ function renderConsultationMedicinesDisplay(
                         : ""
                     }
 
+                    ${
+                      item.batch_id
+                        ? `<div class="consultation-medicine-display-meta">
+                            <strong>Batch:</strong> ${escapeHTML(
+                              item.batch_number ||
+                              item.batch_id
+                            )}
+                            ${
+                              item.expiry_date
+                                ? " · Exp " +
+                                  escapeHTML(
+                                    formatDate(
+                                      item.expiry_date
+                                    )
+                                  )
+                                : ""
+                            }
+                          </div>`
+                        : ""
+                    }
+
                     <div class="consultation-medicine-display-quantity">
                       Quantity: ${escapeHTML(
                         consultationMedicineQuantityText(
@@ -7385,6 +9214,16 @@ function renderConsultationMedicinesDisplay(
                         )
                       )}
                     </div>
+
+                    ${
+                      Number(item.amount || 0) > 0
+                        ? `<div class="consultation-medicine-display-quantity">
+                            Amount: ₹${Number(
+                              item.amount
+                            ).toFixed(2)}
+                          </div>`
+                        : ""
+                    }
 
                   </div>
                 `;
@@ -8311,6 +10150,946 @@ async function rollbackConsultationStockChanges(
   }
 
 }
+
+async function syncConsultationMedicineStockByBatch(
+  consultationId,
+  patientId,
+  medicines,
+  transactionDate
+) {
+
+  const transactions =
+    await getConsultationMedicineTransactions(
+      consultationId
+    );
+
+  const oldNetByBatch = {};
+
+  (transactions || [])
+    .forEach(
+      function(tx) {
+
+        const batchId =
+          Number(
+            tx.batch_id
+          );
+
+        if (!batchId) {
+          return;
+        }
+
+        const base =
+          Number(
+            tx.quantity_base_units
+          ) ||
+          (
+            Number(
+              tx.quantity
+            ) ||
+            0
+          ) *
+          (
+            Number(
+              tx.units_per_pack
+            ) ||
+            1
+          );
+
+        if (!oldNetByBatch[batchId]) {
+          oldNetByBatch[batchId] = 0;
+        }
+
+        if (
+          tx.direction ===
+          "OUT"
+        ) {
+          oldNetByBatch[batchId] += base;
+        } else if (
+          tx.direction ===
+          "IN"
+        ) {
+          oldNetByBatch[batchId] -= base;
+        }
+
+      }
+    );
+
+  Object.keys(
+    oldNetByBatch
+  )
+    .forEach(
+      function(key) {
+
+        if (
+          Math.abs(
+            oldNetByBatch[key]
+          ) < 0.000001
+        ) {
+          oldNetByBatch[key] = 0;
+        }
+
+      }
+    );
+
+  const newNetByBatch = {};
+  const medicineByBatch = {};
+
+  (medicines || [])
+    .forEach(
+      function(medicine) {
+
+        const batchId =
+          Number(
+            medicine.batch_id
+          );
+
+        if (!batchId) {
+          return;
+        }
+
+        const base =
+          Number(
+            medicine.quantity_base_units
+          ) ||
+          0;
+
+        newNetByBatch[batchId] =
+          (
+            newNetByBatch[batchId] ||
+            0
+          ) +
+          base;
+
+        medicineByBatch[batchId] =
+          medicine;
+
+      }
+    );
+
+  const allBatchIds =
+    Array.from(
+      new Set([
+        ...Object.keys(
+          oldNetByBatch
+        ),
+        ...Object.keys(
+          newNetByBatch
+        )
+      ])
+    )
+      .map(
+        Number
+      )
+      .filter(
+        Boolean
+      );
+
+  if (!allBatchIds.length) {
+    return {
+      transactions,
+      changeList: []
+    };
+  }
+
+  /*
+     Load every affected batch before changing stock.
+     This also lets us validate all positive deltas before the
+     first stock update is made.
+  */
+  const batchCache = {};
+
+  for (
+    const batchId of allBatchIds
+  ) {
+
+    const {
+      data: batch,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "medicine_batches"
+        )
+        .select("*")
+        .eq(
+          "id",
+          batchId
+        )
+        .single();
+
+    if (error || !batch) {
+      throw (
+        error ||
+        new Error(
+          "Unable to load stock batch " +
+          batchId +
+          "."
+        )
+      );
+    }
+
+    batchCache[batchId] =
+      batch;
+
+  }
+
+  const deltaByBatch = {};
+
+  allBatchIds
+    .forEach(
+      function(batchId) {
+
+        deltaByBatch[batchId] =
+          Number(
+            newNetByBatch[batchId] ||
+            0
+          ) -
+          Number(
+            oldNetByBatch[batchId] ||
+            0
+          );
+
+      }
+    );
+
+  /*
+     Validate all additional stock requirements before making
+     any changes. Returning stock never requires an availability
+     check.
+  */
+  const insufficient = [];
+
+  for (
+    const batchId of allBatchIds
+  ) {
+
+    const delta =
+      Number(
+        deltaByBatch[batchId] ||
+        0
+      );
+
+    if (
+      delta <= 0 ||
+      Math.abs(delta) < 0.000001
+    ) {
+      continue;
+    }
+
+    const batch =
+      batchCache[batchId];
+
+    const units =
+      Number(
+        batch.units_per_pack
+      ) ||
+      1;
+
+    const currentBase =
+      batch.quantity_base_units !== null &&
+      batch.quantity_base_units !== undefined
+        ? Number(
+            batch.quantity_base_units
+          ) || 0
+        : (
+            Number(
+              batch.quantity
+            ) || 0
+          ) *
+          units;
+
+    if (
+      delta >
+      currentBase + 0.000001
+    ) {
+
+      const medicine =
+        medicineByBatch[batchId] || {
+          medicine_name:
+            "Selected medicine",
+          strength: "",
+          pack_unit:
+            batch.unit_name ||
+            "pack",
+          base_unit:
+            "units",
+          units_per_pack:
+            units
+        };
+
+      insufficient.push({
+        medicine,
+        required: delta,
+        available: currentBase
+      });
+
+    }
+
+  }
+
+  if (insufficient.length) {
+
+    let message =
+      "Insufficient medicine stock\n\n";
+
+    insufficient.forEach(
+      function(item, index) {
+
+        if (index > 0) {
+          message += "\n";
+        }
+
+        message +=
+          "❌ " +
+          consultationMedicineDisplayName(
+            item.medicine
+          ) +
+          "\n" +
+          "Required: " +
+          formatMedicineBaseQuantity(
+            item.medicine,
+            item.required
+          ) +
+          "\n" +
+          "Available: " +
+          formatMedicineBaseQuantity(
+            item.medicine,
+            item.available
+          );
+
+      }
+    );
+
+    throw new Error(
+      message
+    );
+
+  }
+
+  const changeList = [];
+  const effectiveTransactionDate =
+    transactionDate ||
+    getTodayString();
+
+  try {
+
+    for (
+      const batchId of allBatchIds
+    ) {
+
+      const delta =
+        Number(
+          deltaByBatch[batchId] ||
+          0
+        );
+
+      if (
+        Math.abs(delta) <
+        0.000001
+      ) {
+        continue;
+      }
+
+      const batch =
+        batchCache[batchId];
+
+      const units =
+        Number(
+          batch.units_per_pack
+        ) ||
+        1;
+
+      const currentBase =
+        batch.quantity_base_units !== null &&
+        batch.quantity_base_units !== undefined
+          ? Number(
+              batch.quantity_base_units
+            ) || 0
+          : (
+              Number(
+                batch.quantity
+              ) || 0
+            ) *
+            units;
+
+      const newBase =
+        currentBase -
+        delta;
+
+      if (newBase < -0.000001) {
+        throw new Error(
+          "Stock cannot become negative for batch " +
+          (
+            batch.batch_number ||
+            batchId
+          ) +
+          "."
+        );
+      }
+
+      const medicine =
+        medicineByBatch[batchId] || {
+          medicine_id:
+            Number(
+              transactions.find(
+                function(tx) {
+                  return Number(
+                    tx.batch_id
+                  ) === batchId;
+                }
+              )?.medicine_id || 0
+            ),
+          medicine_name:
+            "Medicine",
+          strength: "",
+          base_unit:
+            "units",
+          pack_unit:
+            batch.unit_name ||
+            "pack",
+          units_per_pack:
+            units
+        };
+
+      const action =
+        delta > 0
+          ? "DISPENSED"
+          : "RETURNED";
+
+      const direction =
+        delta > 0
+          ? "OUT"
+          : "IN";
+
+      const changeBase =
+        Math.abs(delta);
+
+      const amount =
+        (
+          changeBase /
+          units
+        ) *
+        Number(
+          batch.mrp_per_unit ||
+          0
+        );
+
+      const note =
+        consultationStockNotePrefix(
+          consultationId
+        ) +
+        "MEDICINE:" +
+        Number(
+          medicine.medicine_id
+        ) +
+        " | " +
+        action +
+        " | Patient ID:" +
+        patientId +
+        " | " +
+        consultationMedicineDisplayName(
+          medicine
+        ) +
+        " | Batch:" +
+        (
+          batch.batch_number ||
+          ""
+        ) +
+        " | Quantity:" +
+        changeBase +
+        " " +
+        (
+          medicine.base_unit ||
+          "units"
+        ) +
+        " | Amount:" +
+        amount.toFixed(2);
+
+      const {
+        data: updated,
+        error: updateError
+      } =
+        await supabaseClient
+          .from(
+            "medicine_batches"
+          )
+          .update({
+            quantity:
+              Math.max(
+                newBase,
+                0
+              ) /
+              units,
+            quantity_base_units:
+              Math.max(
+                newBase,
+                0
+              ),
+            updated_at:
+              new Date().toISOString()
+          })
+          .eq(
+            "id",
+            batchId
+          )
+          .eq(
+            "quantity_base_units",
+            currentBase
+          )
+          .select()
+          .single();
+
+      if (
+        updateError ||
+        !updated
+      ) {
+
+        throw (
+          updateError ||
+          new Error(
+            "Stock changed while saving " +
+            consultationMedicineDisplayName(
+              medicine
+            ) +
+            ". Please refresh and try again."
+          )
+        );
+
+      }
+
+      let insertedTransactionId =
+        null;
+
+      try {
+
+        const {
+          data: inserted,
+          error: transactionError
+        } =
+          await supabaseClient
+            .from(
+              "medicine_stock_transactions"
+            )
+            .insert({
+              medicine_id:
+                Number(
+                  medicine.medicine_id
+                ),
+              batch_id:
+                batchId,
+              transaction_type:
+                action,
+              quantity:
+                changeBase /
+                units,
+              quantity_base_units:
+                changeBase,
+              units_per_pack:
+                units,
+              direction,
+              transaction_date:
+                effectiveTransactionDate,
+              mrp_per_unit:
+                batch.mrp_per_unit,
+              purchase_price_per_unit:
+                batch.purchase_price_per_unit,
+              notes:
+                note
+            })
+            .select("id")
+            .single();
+
+        if (
+          transactionError ||
+          !inserted
+        ) {
+          throw (
+            transactionError ||
+            new Error(
+              "Unable to create stock movement entry."
+            )
+          );
+        }
+
+        insertedTransactionId =
+          inserted.id;
+
+      } catch (transactionError) {
+
+        await supabaseClient
+          .from(
+            "medicine_batches"
+          )
+          .update({
+            quantity:
+              currentBase /
+              units,
+            quantity_base_units:
+              currentBase,
+            updated_at:
+              new Date().toISOString()
+          })
+          .eq(
+            "id",
+            batchId
+          )
+          .eq(
+            "quantity_base_units",
+            Math.max(
+              newBase,
+              0
+            )
+          );
+
+        throw transactionError;
+
+      }
+
+      changeList.push({
+        batchId,
+        medicine_id:
+          Number(
+            medicine.medicine_id
+          ),
+        medicine_name:
+          medicine.medicine_name ||
+          "",
+        generic_name:
+          medicine.generic_name ||
+          "",
+        strength:
+          medicine.strength ||
+          "",
+        base_unit:
+          medicine.base_unit ||
+          batch.unit_name ||
+          "units",
+        pack_unit:
+          medicine.pack_unit ||
+          batch.unit_name ||
+          "pack",
+        oldBase:
+          currentBase,
+        newBase:
+          Math.max(
+            newBase,
+            0
+          ),
+        delta_base_units:
+          delta,
+        units,
+        transactionId:
+          insertedTransactionId,
+        action
+      });
+
+    }
+
+    return {
+      transactions,
+      changeList
+    };
+
+  } catch (error) {
+
+    /*
+       Roll back every direct batch change already completed.
+       The compensating stock entries are retained in history so
+       the audit trail stays complete.
+    */
+    await rollbackDirectConsultationBatchChanges(
+      changeList,
+      consultationId,
+      patientId,
+      effectiveTransactionDate
+    );
+
+    throw error;
+
+  }
+
+}
+
+
+async function rollbackDirectConsultationBatchChanges(
+  changeList,
+  consultationId,
+  patientId,
+  transactionDate
+) {
+
+  const changes =
+    Array.isArray(changeList)
+      ? changeList
+      : [];
+
+  for (
+    let index =
+      changes.length - 1;
+    index >= 0;
+    index--
+  ) {
+
+    const change =
+      changes[index];
+
+    const batchId =
+      Number(
+        change.batchId
+      );
+
+    const units =
+      Number(
+        change.units
+      ) ||
+      1;
+
+    const {
+      data: batch,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "medicine_batches"
+        )
+        .select("*")
+        .eq(
+          "id",
+          batchId
+        )
+        .single();
+
+    if (
+      error ||
+      !batch
+    ) {
+      continue;
+    }
+
+    const currentBase =
+      batch.quantity_base_units !== null &&
+      batch.quantity_base_units !== undefined
+        ? Number(
+            batch.quantity_base_units
+          ) || 0
+        : (
+            Number(
+              batch.quantity
+            ) || 0
+          ) *
+          units;
+
+    const reverseDelta =
+      -Number(
+        change.delta_base_units ||
+        0
+      );
+
+    const restoredBase =
+      currentBase -
+      reverseDelta;
+
+    if (
+      restoredBase < -0.000001
+    ) {
+      continue;
+    }
+
+    const reverseAction =
+      reverseDelta > 0
+        ? "DISPENSED"
+        : "RETURNED";
+
+    const reverseDirection =
+      reverseDelta > 0
+        ? "OUT"
+        : "IN";
+
+    const reverseBase =
+      Math.abs(
+        reverseDelta
+      );
+
+    const reverseAmount =
+      (
+        reverseBase /
+        units
+      ) *
+      Number(
+        batch.mrp_per_unit ||
+        0
+      );
+
+    const medicine =
+      {
+        medicine_id:
+          Number(
+            change.medicine_id
+          ),
+        medicine_name:
+          change.medicine_name ||
+          "Medicine",
+        generic_name:
+          change.generic_name ||
+          "",
+        strength:
+          change.strength ||
+          "",
+        base_unit:
+          change.base_unit ||
+          "units",
+        pack_unit:
+          change.pack_unit ||
+          "pack",
+        units_per_pack:
+          units
+      };
+
+    const note =
+      consultationStockNotePrefix(
+        consultationId
+      ) +
+      "MEDICINE:" +
+      Number(
+        change.medicine_id
+      ) +
+      " | " +
+      reverseAction +
+      " | STOCK ROLLBACK | Patient ID:" +
+      patientId +
+      " | Batch:" +
+      (
+        batch.batch_number ||
+        ""
+      ) +
+      " | Quantity:" +
+      reverseBase +
+      " " +
+      (
+        medicine.base_unit ||
+        "units"
+      ) +
+      " | Amount:" +
+      reverseAmount.toFixed(2);
+
+    const {
+      error: updateError
+    } =
+      await supabaseClient
+        .from(
+          "medicine_batches"
+        )
+        .update({
+          quantity:
+            restoredBase /
+            units,
+          quantity_base_units:
+            restoredBase,
+          updated_at:
+            new Date().toISOString()
+        })
+        .eq(
+          "id",
+          batchId
+        )
+        .eq(
+          "quantity_base_units",
+          currentBase
+        );
+
+    if (updateError) {
+      continue;
+    }
+
+    await supabaseClient
+      .from(
+        "medicine_stock_transactions"
+      )
+      .insert({
+        medicine_id:
+          Number(
+            change.medicine_id
+          ),
+        batch_id:
+          batchId,
+        transaction_type:
+          reverseAction,
+        quantity:
+          reverseBase /
+          units,
+        quantity_base_units:
+          reverseBase,
+        units_per_pack:
+          units,
+        direction:
+          reverseDirection,
+        transaction_date:
+          transactionDate ||
+          getTodayString(),
+        mrp_per_unit:
+          batch.mrp_per_unit,
+        purchase_price_per_unit:
+          batch.purchase_price_per_unit,
+        notes:
+          note
+      });
+
+  }
+
+}
+
+
+async function syncConsultationMedicineStockSmart(
+  consultationId,
+  patientId,
+  medicines,
+  transactionDate
+) {
+
+  const rows =
+    Array.isArray(medicines)
+      ? medicines
+      : [];
+
+  const allHaveBatch =
+    rows.every(
+      function(medicine) {
+        return Boolean(
+          Number(
+            medicine.batch_id
+          )
+        );
+      }
+    );
+
+  if (allHaveBatch) {
+
+    return (
+      await syncConsultationMedicineStockByBatch(
+        consultationId,
+        patientId,
+        rows,
+        transactionDate
+      )
+    );
+
+  }
+
+  /*
+     Legacy consultation prescriptions created before exact batch
+     selection continue using the existing medicine-level stock sync.
+  */
+  return (
+    await syncConsultationMedicineStock(
+      consultationId,
+      patientId,
+      rows,
+      transactionDate
+    )
+  );
+
+}
+
 
 async function syncConsultationMedicineStock(
   consultationId,
@@ -9569,7 +12348,7 @@ async function saveConsultation(
 
   try {
 
-    await syncConsultationMedicineStock(
+    await syncConsultationMedicineStockSmart(
       data.id,
       patientId,
       consultationMedicines,
@@ -11003,6 +13782,375 @@ function parseVitals(
 }
 
 
+async function hydrateConsultationMedicineBatches(
+  mode,
+  consultationId = null
+) {
+
+  const rows =
+    consultationMedicineState[
+      mode
+    ] || [];
+
+  if (!rows.length) {
+    return;
+  }
+
+  let transactions = [];
+
+  if (consultationId) {
+    try {
+      transactions =
+        await getConsultationMedicineTransactions(
+          consultationId
+        );
+    } catch (error) {
+      console.warn(
+        "Unable to load consultation stock history for batch hydration:",
+        error
+      );
+    }
+  }
+
+  const positiveByMedicine = {};
+
+  (transactions || [])
+    .forEach(
+      function(tx) {
+
+        const medicineId =
+          Number(
+            tx.medicine_id
+          );
+
+        const batchId =
+          Number(
+            tx.batch_id
+          );
+
+        if (!medicineId || !batchId) {
+          return;
+        }
+
+        const base =
+          Number(
+            tx.quantity_base_units
+          ) ||
+          (
+            Number(
+              tx.quantity
+            ) ||
+            0
+          ) *
+          (
+            Number(
+              tx.units_per_pack
+            ) ||
+            1
+          );
+
+        if (!positiveByMedicine[medicineId]) {
+          positiveByMedicine[medicineId] = {};
+        }
+
+        if (
+          !positiveByMedicine[medicineId][batchId]
+        ) {
+          positiveByMedicine[medicineId][batchId] =
+            0;
+        }
+
+        if (
+          tx.direction ===
+          "OUT"
+        ) {
+          positiveByMedicine[medicineId][batchId] +=
+            base;
+        } else if (
+          tx.direction ===
+          "IN"
+        ) {
+          positiveByMedicine[medicineId][batchId] -=
+            base;
+        }
+
+      }
+    );
+
+  for (
+    const row of rows
+  ) {
+
+    if (!row.medicine_id) {
+      continue;
+    }
+
+    const selectedBatchId =
+      Number(
+        row.batch_id ||
+        row.selected_batch_id
+      ) || null;
+
+    const {
+      data: batches,
+      error
+    } =
+      await supabaseClient
+        .from(
+          "medicine_batches"
+        )
+        .select(
+          "id,batch_number,quantity,quantity_base_units,units_per_pack,expiry_date,mrp_per_unit,purchase_price_per_unit"
+        )
+        .eq(
+          "medicine_id",
+          Number(
+            row.medicine_id
+          )
+        )
+        .order(
+          "expiry_date",
+          {
+            ascending: true
+          }
+        );
+
+    if (error) {
+      console.warn(
+        "Unable to load medicine batches for " +
+        row.medicine_id +
+        ":",
+        error
+      );
+      continue;
+    }
+
+    const today =
+      getTodayString();
+
+    const validBatches =
+      (batches || [])
+        .filter(
+          function(batch) {
+
+            const currentBase =
+              batch.quantity_base_units !== null &&
+              batch.quantity_base_units !== undefined
+                ? Number(
+                    batch.quantity_base_units
+                  ) || 0
+                : (
+                    Number(
+                      batch.quantity
+                    ) || 0
+                  ) *
+                  (
+                    Number(
+                      batch.units_per_pack ||
+                      row.units_per_pack ||
+                      1
+                    ) || 1
+                  );
+
+            return (
+              currentBase > 0 &&
+              (
+                !batch.expiry_date ||
+                String(
+                  batch.expiry_date
+                ) >= today
+              )
+            );
+
+          }
+        );
+
+    /*
+       Keep the previously selected batch visible even if its current
+       stock has reached zero or it has since expired. This matters
+       when editing an existing consultation.
+    */
+    if (
+      selectedBatchId
+    ) {
+
+      const selected =
+        (batches || [])
+          .find(
+            function(batch) {
+              return Number(
+                batch.id
+              ) === selectedBatchId;
+            }
+          );
+
+      if (
+        selected &&
+        !validBatches.some(
+          function(batch) {
+            return Number(
+              batch.id
+            ) === selectedBatchId;
+          }
+        )
+      ) {
+
+        validBatches.unshift(
+          selected
+        );
+
+      }
+
+    }
+
+    row.batches =
+      validBatches;
+
+    if (
+      selectedBatchId
+    ) {
+
+      const selected =
+        validBatches.find(
+          function(batch) {
+            return Number(
+              batch.id
+            ) === selectedBatchId;
+          }
+        );
+
+      if (selected) {
+
+        row.selected_batch_id =
+          Number(
+            selected.id
+          );
+
+        row.batch_id =
+          Number(
+            selected.id
+          );
+
+        row.selected_batch =
+          selected;
+
+        row.mrp_per_unit =
+          Number(
+            selected.mrp_per_unit ||
+            0
+          );
+
+        row.purchase_price_per_unit =
+          Number(
+            selected.purchase_price_per_unit ||
+            0
+          );
+
+      }
+
+    } else if (
+      consultationId
+    ) {
+
+      /*
+         Legacy prescriptions created before exact batch selection:
+         if stock history points to exactly one currently effective
+         batch, safely hydrate that batch. If multiple batches are
+         involved, retain legacy stock-sync mode instead of guessing.
+      */
+      const byBatch =
+        positiveByMedicine[
+          Number(
+            row.medicine_id
+          )
+        ] || {};
+
+      const activeBatchIds =
+        Object.keys(
+          byBatch
+        )
+          .filter(
+            function(batchId) {
+              return (
+                Number(
+                  byBatch[batchId]
+                ) > 0
+              );
+            }
+          );
+
+      if (
+        activeBatchIds.length === 1
+      ) {
+
+        const inferredId =
+          Number(
+            activeBatchIds[0]
+          );
+
+        const inferred =
+          validBatches.find(
+            function(batch) {
+              return Number(
+                batch.id
+              ) === inferredId;
+            }
+          ) ||
+          (batches || [])
+            .find(
+              function(batch) {
+                return Number(
+                  batch.id
+                ) === inferredId;
+              }
+            );
+
+        if (inferred) {
+
+          row.selected_batch_id =
+            inferredId;
+
+          row.batch_id =
+            inferredId;
+
+          row.selected_batch =
+            inferred;
+
+          row.mrp_per_unit =
+            Number(
+              inferred.mrp_per_unit ||
+              0
+            );
+
+          row.purchase_price_per_unit =
+            Number(
+              inferred.purchase_price_per_unit ||
+              0
+            );
+
+        }
+
+      } else if (
+        activeBatchIds.length > 1
+      ) {
+
+        row.legacy_batch_mode =
+          true;
+
+      }
+
+    }
+
+    row.amount =
+      consultationMedicineAmount(
+        row
+      );
+
+  }
+
+}
+
+
 async function openEditConsultation(
   consultationId
 ) {
@@ -11058,6 +14206,12 @@ async function openEditConsultation(
       : [
           createEmptyConsultationMedicineRow()
         ];
+
+
+  await hydrateConsultationMedicineBatches(
+    "edit",
+    consultation.id
+  );
 
 
   const vitals =
@@ -11345,6 +14499,11 @@ async function openEditConsultation(
     `;
 
 
+  renderConsultationMedicineTotal(
+    "edit"
+  );
+
+
   showView(
     "editConsultationView"
   );
@@ -11629,7 +14788,7 @@ async function saveEditedConsultation(
   try {
 
     stockResult =
-      await syncConsultationMedicineStock(
+      await syncConsultationMedicineStockSmart(
         consultationId,
         patientId,
         consultationMedicines,
