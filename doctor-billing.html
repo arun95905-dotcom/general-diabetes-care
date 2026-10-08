@@ -984,6 +984,57 @@ textarea {
 }
 </style>
 
+
+<style>
+/* =========================================================
+   BATCH SELECTION - DESKTOP/TABLET READABILITY
+   ========================================================= */
+
+@media (min-width: 801px) {
+
+  .billing-medicine-batch-list {
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 12px;
+  }
+
+  .billing-medicine-batch-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    min-height: 76px;
+  }
+
+  .billing-medicine-batch-card strong {
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  .billing-medicine-batch-card span {
+    margin-top: 5px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .billing-medicine-batch-card span:last-child {
+    font-size: 13px;
+  }
+
+  .billing-medicine-quantity-grid {
+    gap: 14px;
+  }
+
+  .billing-medicine-quantity-grid label {
+    font-size: 13px;
+    font-weight: 750;
+    margin-bottom: 6px;
+  }
+
+  .billing-medicine-quantity-grid input {
+    min-height: 46px;
+    font-size: 15px;
+  }
+}
+</style>
+
 </head>
 
 
@@ -1471,7 +1522,7 @@ Consultation Fee
   id="consultationFee"
   min="0"
   step="1"
-  value="0">
+  placeholder="Enter consultation fee">
 
 </div>
 
@@ -1487,7 +1538,7 @@ Medicine Charges
   id="medicineCharges"
   min="0"
   step="0.01"
-  value="0"
+  placeholder="Enter medicine charges"
   class="readonly-amount medicine-charge-clickable"
   title="Automatically calculated from itemized medicines, but can also be edited manually">
 
@@ -1539,7 +1590,7 @@ Procedure / Other Charges
   id="procedureCharges"
   min="0"
   step="1"
-  value="0">
+  placeholder="Enter procedure / other charges">
 
 </div>
 
@@ -2312,7 +2363,7 @@ async function loadBillingBatch(batchId){
   const units=billingUnitCount(selectedBillingMedicine,batch),tabletMode=isBillingTabletOrCapsule(selectedBillingMedicine),fields=document.getElementById('billingMedicineQuantityFields');
   const detail=document.getElementById('billingMedicineBatchDetail');
   if(detail)detail.style.display='block';
-  if(fields)fields.innerHTML=tabletMode?`<div><label>${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}</label><input id="billingPackQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div><div><label>${escapeHTML(billingBaseUnit(selectedBillingMedicine))}</label><input id="billingIndividualQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`:`<div style="grid-column:1 / -1"><label>Quantity (${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))})</label><input id="billingPackQty" type="number" min="0" step="1" value="0" inputmode="numeric"></div>`;
+  if(fields)fields.innerHTML=tabletMode?`<div><label>${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}</label><input id="billingPackQty" type="number" min="0" step="1" placeholder="Enter ${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}" inputmode="numeric"></div><div><label>${escapeHTML(billingBaseUnit(selectedBillingMedicine))}</label><input id="billingIndividualQty" type="number" min="0" step="1" placeholder="Enter ${escapeHTML(billingBaseUnit(selectedBillingMedicine))}" inputmode="numeric"></div>`:`<div style="grid-column:1 / -1"><label>Quantity (${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))})</label><input id="billingPackQty" type="number" min="0" step="1" placeholder="Enter quantity" inputmode="numeric"></div>`;
   fields?.querySelectorAll('input').forEach(input=>input.addEventListener('input',updateBillingMedicinePreview));
   document.getElementById('billingMedicineBatchInfo').innerHTML=`<b>Batch:</b> ${escapeHTML(batch.batch_number||'-')} · <b>Expiry:</b> ${escapeHTML(formatDate(batch.expiry_date))}<br><b>1 ${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}</b> = ${units} ${escapeHTML(billingBaseUnit(selectedBillingMedicine))} · <b>MRP:</b> ${billingMoney(batch.mrp_per_unit)} / ${escapeHTML(billingPackUnit(selectedBillingMedicine,batch))}<br><b>Available:</b> ${escapeHTML(billingDisplayAvailable(selectedBillingMedicine,batch))}`;
   updateBillingMedicinePreview();
@@ -2481,7 +2532,7 @@ function setBillingMedicineOnlyMode(enabled) {
 
   if (billingMedicineOnlyMode) {
     const consultationFee = document.getElementById("consultationFee");
-    if (consultationFee) consultationFee.value = "0";
+    if (consultationFee) consultationFee.value = "";
   }
 
   calculateTotal();
@@ -9764,7 +9815,7 @@ function resetBillForm() {
       "consultationFee"
     )
     .value =
-      "0";
+      "";
 
 
   document
@@ -9772,7 +9823,7 @@ function resetBillForm() {
       "medicineCharges"
     )
     .value =
-      "0";
+      "";
 
 
   document
@@ -9780,7 +9831,7 @@ function resetBillForm() {
       "procedureCharges"
     )
     .value =
-      "0";
+      "";
 
 
   document
