@@ -236,10 +236,29 @@ function getRequestedBase(){
   if(isTabletOrCapsule(selectedMedicine)) return packs*unitCount(selectedMedicine,selectedBatch)+(Number(document.getElementById("baseQty")?.value)||0);
   return packs*unitCount(selectedMedicine,selectedBatch);
 }
+// Quantity display: tablet/capsule quantities are shown as whole packs + remaining individual units.
 function updateAmount(){
   if(!selectedMedicine||!selectedBatch)return;
-  const units=unitCount(selectedMedicine,selectedBatch),base=getRequestedBase(),available=baseStock(selectedBatch),packs=base/units;
-  document.getElementById("totalQuantity").textContent=base?`${Number.isInteger(packs)?packs:packs.toFixed(2)} ${packUnit(selectedMedicine,selectedBatch)}${isTabletOrCapsule(selectedMedicine)&&base%units?` + ${Math.round(base%units)} ${baseUnit(selectedMedicine)}`:""}`:`0 ${baseUnit(selectedMedicine)}`;
+  const units=unitCount(selectedMedicine,selectedBatch);
+  const base=getRequestedBase();
+  const available=baseStock(selectedBatch);
+  const packs=base/units;
+  const wholePacks=Math.floor(base/units);
+  const remainder=Math.round((base-wholePacks*units)*100)/100;
+
+  let quantityText;
+  if(!base){
+    quantityText=`0 ${isTabletOrCapsule(selectedMedicine) ? packUnit(selectedMedicine,selectedBatch) : baseUnit(selectedMedicine)}`;
+  }else if(isTabletOrCapsule(selectedMedicine)){
+    quantityText=`${wholePacks} ${packUnit(selectedMedicine,selectedBatch)}`;
+    if(remainder){
+      quantityText+=` + ${Math.round(remainder)} ${baseUnit(selectedMedicine)}`;
+    }
+  }else{
+    quantityText=`${Number.isInteger(packs)?packs:packs.toFixed(2)} ${packUnit(selectedMedicine,selectedBatch)}`;
+  }
+
+  document.getElementById("totalQuantity").textContent=quantityText;
   document.getElementById("mrpDisplay").textContent=money(selectedBatch.mrp_per_unit);
   document.getElementById("amountDisplay").textContent=money(packs*Number(selectedBatch.mrp_per_unit||0));
   document.getElementById("quantityAvailability").textContent=`Available: ${displayStock(selectedMedicine,selectedBatch)}`;
