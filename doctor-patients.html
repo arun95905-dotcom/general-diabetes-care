@@ -8913,16 +8913,24 @@ function getConsultationMedicineRowsFromDOM(
         : "";
 
 
+    /*
+       A completely blank medicine builder row must not block
+       saving a consultation without medicines.
+
+       consultationMedicineDosageText() intentionally displays
+       blank dosage boxes as 0-0-0, so dosage_instructions
+       must NOT be used to decide whether the row contains
+       user-entered medicine data.
+    */
     const hasAnyValue =
       Boolean(
         row.medicine_id ||
         typedName ||
-        row.dosage_morning ||
-        row.dosage_afternoon ||
-        row.dosage_night ||
-        row.instructions ||
-        row.days ||
-        row.dosage_instructions ||
+        String(row.dosage_morning || "").trim() ||
+        String(row.dosage_afternoon || "").trim() ||
+        String(row.dosage_night || "").trim() ||
+        String(row.instructions || "").trim() ||
+        String(row.days || "").trim() ||
         Number(row.pack_quantity) > 0 ||
         Number(row.individual_quantity) > 0 ||
         Number(row.single_quantity) > 0
